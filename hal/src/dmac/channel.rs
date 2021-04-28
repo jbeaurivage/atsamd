@@ -180,6 +180,7 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
     /// # Return
     ///
     /// A `Channel` with a `Ready` status
+    #[inline]
     pub fn init(mut self, lvl: PriorityLevel) -> Channel<Id, Ready> {
         // Software reset the channel for good measure
         self._reset_private();
@@ -199,12 +200,14 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
         }
     }
 
+    #[inline]
     pub fn enable_interrupts(&mut self, flags: InterruptFlags) {
         // SAFETY: This is safe as InterruptFlags is only capable of writing in
         // non-reserved bits
         self.with_chid(|d| d.chintenset.write(|w| unsafe { w.bits(flags.into()) }))
     }
 
+    #[inline]
     pub fn disable_interrupts(&mut self, flags: InterruptFlags) {
         // SAFETY: This is safe as InterruptFlags is only capable of writing in
         // non-reserved bits
@@ -274,6 +277,7 @@ impl<Id: ChId> Channel<Id, Ready> {
     /// # Return
     ///
     /// A `Channel` with a `Busy` status.
+    #[inline]
     pub(crate) fn start(
         mut self,
         trig_src: TriggerSource,
@@ -371,7 +375,7 @@ impl<Id: ChId> Channel<Id, Busy> {
 
     #[inline]
     #[cfg(any(feature = "samd11", feature = "samd21"))]
-    pub fn callback(&mut self) {
+    pub(super) fn callback(&mut self) {
         let mut xfer_complete = false;
         self.with_chid(|d| {
             // Transfer complete

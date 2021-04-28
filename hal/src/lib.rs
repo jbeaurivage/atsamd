@@ -90,7 +90,6 @@ pub mod timer_params;
 pub mod timer_traits;
 
 #[cfg(all(feature = "unproven", feature = "dma"))]
-#[macro_use]
 pub mod dmac;
 
 #[cfg(any(feature = "samd11", feature = "samd21"))]
@@ -130,7 +129,6 @@ pub mod common {
     pub use crate::timer_traits;
 
     #[cfg(all(feature = "unproven", feature = "dma"))]
-    #[macro_use]
     pub use crate::dmac;
 
     #[cfg(any(feature = "samd11", feature = "samd21"))]
