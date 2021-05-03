@@ -89,7 +89,7 @@
 //! transaction, that will now run uninterrupted until it is stopped.
 
 use super::{
-    channel::{AnyChannel, Busy, Channel, ChannelId, Ready},
+    channel::{AnyChannel, Busy, CallbackStatus, Channel, ChannelId, Ready},
     dma_controller::{ChId, TriggerAction, TriggerSource},
     BlockTransferControl, DmacDescriptor, DESCRIPTOR_SECTION,
 };
@@ -110,7 +110,8 @@ pub enum BeatSize {
     HalfWord = 0x01,
     /// Word = [`u32`](core::u32)
     Word = 0x02,
-    _RESERVED = 0x03,
+    #[doc(hidden)]
+    _Reserved = 0x03,
 }
 /// Convert 8, 16 and 32 bit types
 /// into [`BeatSize`](BeatSize)
@@ -294,6 +295,7 @@ where
     buffers: Buf,
     payload: Pld,
     waker: Option<W>,
+    complete: bool,
 }
 
 /// These methods are available to an [`Transfer`] holding a `Ready` `Channel`,
@@ -426,6 +428,7 @@ where
             chan,
             payload: (),
             waker: None,
+            complete: false,
         }
     }
 }
@@ -446,6 +449,7 @@ where
             chan: self.chan,
             waker: self.waker,
             payload,
+            complete: self.complete,
         }
     }
 }
@@ -460,7 +464,7 @@ where
 {
     /// Append a waker to the transfer. This will be called when the DMAC
     /// interrupt is called.
-    pub fn with_waker<W: FnOnce() + 'static>(
+    pub fn with_waker<W: FnOnce(CallbackStatus) + 'static>(
         self,
         waker: W,
     ) -> Transfer<C, BufferPair<S, D>, P, W> {
@@ -468,6 +472,7 @@ where
             buffers: self.buffers,
             chan: self.chan,
             payload: self.payload,
+            complete: self.complete,
             waker: Some(waker),
         }
     }
@@ -486,10 +491,15 @@ where
     /// launch the transfer. Is is therefore not necessary, in most cases,
     /// to manually issue a software trigger to the channel.
     pub fn begin(
-        self,
+        mut self,
         trig_src: TriggerSource,
         trig_act: TriggerAction,
     ) -> Transfer<Channel<ChannelId<C>, Busy>, BufferPair<S, D>, P, W> {
+        // Reset the complete flag before triggering the transfer.
+        // This way an interrupt handler could set complete to true
+        // before this function returns.
+        self.complete = false;
+
         // Memory barrier to prevent the compiler/CPU from re-ordering read/write
         // operations beyond this fence.
         // (see https://docs.rust-embedded.org/embedonomicon/dma.html#compiler-misoptimizations)
@@ -501,6 +511,7 @@ where
             chan,
             payload: self.payload,
             waker: self.waker,
+            complete: self.complete,
         }
     }
 }
@@ -541,33 +552,29 @@ where
     pub fn software_trigger(&mut self) {
         self.chan.as_mut().software_trigger();
     }
-    /// Blocking; Wait for the DMA transfer to complete and release all owned
+    /// Wait for the DMA transfer to complete and release all owned
     /// resources
-    pub fn wait(self) -> (Channel<ChannelId<C>, Ready>, S, D, P) {
-        let chan = self.chan.into().free();
-
-        // Memory barrier to prevent the compiler/CPU from re-ordering read/write
-        // operations beyond this fence.
-        // (see https://docs.rust-embedded.org/embedonomicon/dma.html#compiler-misoptimizations)
-        atomic::fence(atomic::Ordering::Acquire); // ▼
-
-        (
-            chan,
-            self.buffers.source,
-            self.buffers.destination,
-            self.payload,
-        )
+    ///
+    /// # Blocking: This method may block
+    pub fn wait(mut self) -> (Channel<ChannelId<C>, Ready>, S, D, P) {
+        // Wait for transfer to complete
+        while !self.complete() {}
+        self.stop()
     }
 
-    pub fn complete(&self) -> bool {
-        let chan = self.chan.as_ref();
-        chan.xfer_complete()
+    pub fn complete(&mut self) -> bool {
+        if !self.complete {
+            let chan = self.chan.as_ref();
+            let complete = chan.xfer_complete();
+            self.complete = complete;
+        }
+        self.complete
     }
 
     /// Non-blocking; Immediately stop the DMA transfer and release all owned
     /// resources
     pub fn stop(self) -> (Channel<ChannelId<C>, Ready>, S, D, P) {
-        let chan = self.chan.into().stop();
+        let chan = self.chan.into().free();
 
         // Memory barrier to prevent the compiler/CPU from re-ordering read/write
         // operations beyond this fence.
@@ -588,14 +595,19 @@ where
     S: Buffer,
     D: Buffer<Beat = S::Beat>,
     C: AnyChannel<Status = Busy>,
-    W: FnOnce() + 'static,
+    W: FnOnce(CallbackStatus) + 'static,
 {
     /// This function should be put inside the DMAC interrupt handler.
     /// It will take care of calling the [`Transfer`]'s waker (if it exists).
     pub fn callback(&mut self) {
-        self.chan.as_mut().callback();
+        let status = self.chan.as_mut().callback();
+
+        if let CallbackStatus::TransferComplete = status {
+            self.complete = true;
+        }
+
         if let Some(w) = self.waker.take() {
-            w()
+            w(status)
         }
     }
 }
