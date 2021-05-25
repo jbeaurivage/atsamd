@@ -89,12 +89,12 @@
 //! transaction, that will now run uninterrupted until it is stopped.
 
 use super::{
-    channel::{AnyChannel, Busy, CallbackStatus, Channel, ChannelId, Ready},
+    channel::{AnyChannel, Busy, CallbackStatus, Channel, ChannelId, InterruptFlags, Ready},
     dma_controller::{ChId, TriggerAction, TriggerSource},
     BlockTransferControl, DmacDescriptor, DESCRIPTOR_SECTION,
 };
 use crate::typelevel::{Is, Sealed};
-use core::{mem, sync::atomic};
+use core::{mem, ptr::null_mut, sync::atomic};
 use modular_bitfield::prelude::*;
 
 //==============================================================================
@@ -370,16 +370,15 @@ where
         // Enable support for circular transfers. If circular_xfer is true,
         // we set the address of the "next" block descriptor to actually
         // be the same address as the current block descriptor.
-        // Otherwise we set it to 0 (terminates the transaction)
+        // Otherwise we set it to NULL, which terminates the transaction.
         // TODO: Enable support for linked lists (?)
-        #[allow(clippy::zero_ptr)]
         let descaddr = if circular {
             // SAFETY This is safe as we are only reading the descriptor's address,
             // and not actually writing any data to it. We also assume the descriptor
             // will never be moved.
             &mut DESCRIPTOR_SECTION[id] as *mut _
         } else {
-            0 as *mut _
+            null_mut()
         };
 
         let src_ptr = source.dma_ptr();
@@ -392,6 +391,10 @@ where
 
         let length = core::cmp::max(src_len, dst_len);
 
+        // Channel::xfer_complete() tests the channel enable bit, which indicates
+        // that a transfer has completed iff the blockact field in btctrl is not
+        // set to SUSPEND.  We implicitly leave blockact set to NOACT here; if
+        // that changes Channel::xfer_complete() may need to be modified.
         let btctrl = BlockTransferControl::new()
             .with_srcinc(src_inc)
             .with_dstinc(dst_inc)
@@ -552,6 +555,7 @@ where
     pub fn software_trigger(&mut self) {
         self.chan.as_mut().software_trigger();
     }
+
     /// Wait for the DMA transfer to complete and release all owned
     /// resources
     ///
@@ -571,6 +575,13 @@ where
         self.complete
     }
 
+    /// Checks and clears the block transfer complete interrupt flag
+    #[inline]
+    pub fn block_transfer_interrupt(&mut self) -> bool {
+        self.chan.as_mut().check_and_clear_interrupts(
+            InterruptFlags::new().with_tcmpl(true)
+        ).tcmpl()
+    }
     /// Non-blocking; Immediately stop the DMA transfer and release all owned
     /// resources
     pub fn stop(self) -> (Channel<ChannelId<C>, Ready>, S, D, P) {
