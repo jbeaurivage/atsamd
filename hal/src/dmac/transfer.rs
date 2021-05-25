@@ -149,7 +149,7 @@ impl_beat!(
 pub unsafe trait Buffer {
     type Beat: Beat;
     /// Pointer to the buffer. If the buffer is incrementing, the address should
-    /// point to the last beat transfer in the block.
+    /// point to one past the last beat transfer in the block.
     fn dma_ptr(&mut self) -> *mut Self::Beat;
     /// Return whether the buffer pointer should be incrementing or not
     fn incrementing(&self) -> bool;
