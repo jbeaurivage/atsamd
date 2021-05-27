@@ -322,6 +322,12 @@ impl<Id: ChId> Channel<Id, Busy> {
         // flag raised
         CallbackStatus::TransferError
     }
+
+    /// Restart transfer using previously-configured trigger source and action
+    #[inline]
+    pub(crate) fn restart(&mut self) {
+        self.regs.chctrla.modify(|_, w| w.enable().set_bit());
+    }
 }
 
 /// Status of a transfer callback

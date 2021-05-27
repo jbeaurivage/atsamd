@@ -352,33 +352,18 @@ where
     }
 }
 
-/// These methods are available to an [`Transfer`] holding a `Ready` `Channel`.
-impl<C, S, D> Transfer<C, BufferPair<S, D>>
+/// Methods on a `Transfer` holding a channel in any status
+impl<S, D, C, P, W> Transfer<C, BufferPair<S, D>, P, W>
 where
     S: Buffer,
     D: Buffer<Beat = S::Beat>,
-    C: AnyChannel<Status = Ready>,
+    C: AnyChannel,
 {
-    /// Construct a new `Transfer` without checking for memory safety.
-    ///
-    /// # Safety
-    ///
-    /// To guarantee the safety of creating a `Transfer` using this method, you
-    /// must uphold some invariants:
-    ///
-    /// * A `Transfer` holding a `Channel<Id, Running>` must *never* be dropped.
-    ///   It should *always* be explicitly be `wait`ed upon or `stop`ped.
-    ///
-    /// * The size in bytes or the source and destination buffers should be
-    ///   exacly the same, unless one or both buffers are of length 1. The
-    ///   transfer length will be set to the longest of both buffers if they are
-    ///   not of equal size.
-    pub unsafe fn new_unchecked(
-        chan: C,
-        mut source: S,
-        mut destination: D,
+    unsafe fn fill_descriptor(
+        source: &mut S,
+        destination: &mut D,
         circular: bool,
-    ) -> Transfer<C, BufferPair<S, D>> {
+    ) {
         let id = <C as AnyChannel>::Id::USIZE;
 
         // Enable support for circular transfers. If circular_xfer is true,
@@ -434,6 +419,37 @@ where
         // in the entire library that this section or the array
         // will be written to.
         DESCRIPTOR_SECTION[id] = xfer_descriptor;
+    }
+}
+
+/// These methods are available to an [`Transfer`] holding a `Ready` `Channel`.
+impl<C, S, D> Transfer<C, BufferPair<S, D>>
+where
+    S: Buffer,
+    D: Buffer<Beat = S::Beat>,
+    C: AnyChannel<Status = Ready>,
+{
+    /// Construct a new `Transfer` without checking for memory safety.
+    ///
+    /// # Safety
+    ///
+    /// To guarantee the safety of creating a `Transfer` using this method, you
+    /// must uphold some invariants:
+    ///
+    /// * A `Transfer` holding a `Channel<Id, Running>` must *never* be dropped.
+    ///   It should *always* be explicitly be `wait`ed upon or `stop`ped.
+    ///
+    /// * The size in bytes or the source and destination buffers should be
+    ///   exacly the same, unless one or both buffers are of length 1. The
+    ///   transfer length will be set to the longest of both buffers if they are
+    ///   not of equal size.
+    pub unsafe fn new_unchecked(
+        chan: C,
+        mut source: S,
+        mut destination: D,
+        circular: bool,
+    ) -> Transfer<C, BufferPair<S, D>> {
+        Self::fill_descriptor(&mut source, &mut destination, circular);
 
         let buffers = BufferPair {
             source,
@@ -504,7 +520,7 @@ where
     C: AnyChannel<Status = Ready>,
 {
     /// Begin DMA transfer. If [TriggerSource::DISABLE](TriggerSource::DISABLE)
-    /// is used, a sowftware trigger will be issued to the DMA channel to
+    /// is used, a software trigger will be issued to the DMA channel to
     /// launch the transfer. Is is therefore not necessary, in most cases,
     /// to manually issue a software trigger to the channel.
     pub fn begin(
@@ -596,6 +612,38 @@ where
             InterruptFlags::new().with_tcmpl(true)
         ).tcmpl()
     }
+
+    /// Modify a completed transfer with new `source` and `destination`, restart
+    ///
+    /// Returns a Result containing the source and destination from the
+    /// completed transfer.
+    pub fn recycle(&mut self, mut source: S, mut destination: D) -> Result<(S, D)> {
+        Self::check_buffer_pair(&source, &destination)?;
+        
+        if !self.complete() {
+            return Err(DmacError::InvalidState);
+        }
+
+        // Circular transfers won't ever complete, so never re-fill as one
+        unsafe {
+            Self::fill_descriptor(&mut source, &mut destination, false);
+        }
+
+        let new_buffers = BufferPair {
+            source,
+            destination,
+        };
+        
+        let old_buffers = core::mem::replace(&mut self.buffers, new_buffers);
+
+        self.chan.as_mut().restart();
+
+        Ok((
+            old_buffers.source,
+            old_buffers.destination,
+        ))
+    }
+
     /// Non-blocking; Immediately stop the DMA transfer and release all owned
     /// resources
     pub fn stop(self) -> (Channel<ChannelId<C>, Ready>, S, D, P) {
