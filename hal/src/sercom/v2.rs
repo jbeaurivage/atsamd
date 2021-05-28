@@ -46,8 +46,10 @@ pub trait Sercom: Sealed + Deref<Target = sercom0::RegisterBlock> {
     /// SERCOM number
     const NUM: usize;
     /// RX Trigger source for DMA transactions
+    #[cfg(feature = "dma")]
     const DMA_RX_TRIGGER: TriggerSource;
     /// TX trigger source for DMA transactions
+    #[cfg(feature = "dma")]
     const DMA_TX_TRIGGER: TriggerSource;
     /// Enable the corresponding APB clock
     fn enable_apb_clock(&mut self, ctrl: &APB_CLK_CTRL);
@@ -62,7 +64,9 @@ macro_rules! sercom {
                 impl Sealed for Sercom#N {}
                 impl Sercom for Sercom#N {
                     const NUM: usize = N;
+                    #[cfg(feature = "dma")]
                     const DMA_RX_TRIGGER: TriggerSource = TriggerSource::[<SERCOM#N _RX>];
+                    #[cfg(feature = "dma")]
                     const DMA_TX_TRIGGER: TriggerSource = TriggerSource::[<SERCOM#N _TX>];
                     #[inline]
                     fn enable_apb_clock(&mut self, ctrl: &APB_CLK_CTRL) {
