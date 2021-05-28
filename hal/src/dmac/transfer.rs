@@ -91,7 +91,7 @@
 use super::{
     channel::{AnyChannel, Busy, CallbackStatus, Channel, ChannelId, InterruptFlags, Ready},
     dma_controller::{ChId, TriggerAction, TriggerSource},
-    BlockTransferControl, DmacDescriptor, DESCRIPTOR_SECTION,
+    BlockTransferControl, DmacDescriptor, DmacError, DESCRIPTOR_SECTION, Result
 };
 use crate::typelevel::{Is, Sealed};
 use core::{mem, ptr::null_mut, sync::atomic};
@@ -324,17 +324,31 @@ where
         source: S,
         destination: D,
         circular: bool,
-    ) -> Transfer<C, BufferPair<S, D>> {
-        let src_len = source.buffer_len();
-        let dst_len = destination.buffer_len();
-
-        if src_len > 1 && dst_len > 1 {
-            assert_eq!(src_len, dst_len);
-        }
+    ) -> Result<Transfer<C, BufferPair<S, D>>> {
+        Self::check_buffer_pair(&source, &destination)?;
 
         // SAFETY: The safety checks are done by the function signature and the buffer
         // length verification
-        unsafe { Self::new_unchecked(chan, source, destination, circular) }
+        Ok(unsafe { Self::new_unchecked(chan, source, destination, circular) })
+    }
+}
+
+/// Methods on a `Transfer` holding a channel in any status
+impl<S, D, C, P, W> Transfer<C, BufferPair<S, D>, P, W>
+where
+    S: Buffer,
+    D: Buffer<Beat = S::Beat>,
+    C: AnyChannel,
+{
+    fn check_buffer_pair(source: &S, destination: &D) -> Result<()> {
+        let src_len = source.buffer_len();
+        let dst_len = destination.buffer_len();
+
+        if src_len > 1 && dst_len > 1 && src_len != dst_len {
+            Err(DmacError::LengthMismatch)
+        } else {
+            Ok(())
+        }
     }
 }
 

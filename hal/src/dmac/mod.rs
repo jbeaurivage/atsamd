@@ -162,6 +162,20 @@ pub use dma_controller::{
 use transfer::BeatSize;
 pub use transfer::{Beat, Buffer, Transfer};
 
+#[derive(Debug)]
+pub enum DmacError {
+    /// Supplied buffers both have lengths > 1 beat, but not equal to each other
+    ///
+    /// This is a 
+    LengthMismatch,
+
+    /// Operation is not valid in the current state of the object.
+    InvalidState,
+}
+
+/// Result for DMAC operations
+pub type Result<T> = core::result::Result<T, DmacError>;
+
 #[cfg(all(feature = "samd11", feature = "max-channels"))]
 #[macro_export]
 macro_rules! with_num_channels {
