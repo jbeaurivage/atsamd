@@ -91,7 +91,7 @@
 use super::{
     channel::{AnyChannel, Busy, CallbackStatus, Channel, ChannelId, InterruptFlags, Ready},
     dma_controller::{ChId, TriggerAction, TriggerSource},
-    BlockTransferControl, DmacDescriptor, DmacError, DESCRIPTOR_SECTION, Result
+    BlockTransferControl, DmacDescriptor, DmacError, Result, DESCRIPTOR_SECTION,
 };
 use crate::typelevel::{Is, Sealed};
 use core::{mem, ptr::null_mut, sync::atomic};
@@ -359,11 +359,7 @@ where
     D: Buffer<Beat = S::Beat>,
     C: AnyChannel,
 {
-    unsafe fn fill_descriptor(
-        source: &mut S,
-        destination: &mut D,
-        circular: bool,
-    ) {
+    unsafe fn fill_descriptor(source: &mut S, destination: &mut D, circular: bool) {
         let id = <C as AnyChannel>::Id::USIZE;
 
         // Enable support for circular transfers. If circular_xfer is true,
@@ -608,9 +604,10 @@ where
     /// Checks and clears the block transfer complete interrupt flag
     #[inline]
     pub fn block_transfer_interrupt(&mut self) -> bool {
-        self.chan.as_mut().check_and_clear_interrupts(
-            InterruptFlags::new().with_tcmpl(true)
-        ).tcmpl()
+        self.chan
+            .as_mut()
+            .check_and_clear_interrupts(InterruptFlags::new().with_tcmpl(true))
+            .tcmpl()
     }
 
     /// Modify a completed transfer with new `source` and `destination`, restart
@@ -619,7 +616,7 @@ where
     /// completed transfer.
     pub fn recycle(&mut self, mut source: S, mut destination: D) -> Result<(S, D)> {
         Self::check_buffer_pair(&source, &destination)?;
-        
+
         if !self.complete() {
             return Err(DmacError::InvalidState);
         }
@@ -633,15 +630,12 @@ where
             source,
             destination,
         };
-        
+
         let old_buffers = core::mem::replace(&mut self.buffers, new_buffers);
 
         self.chan.as_mut().restart();
 
-        Ok((
-            old_buffers.source,
-            old_buffers.destination,
-        ))
+        Ok((old_buffers.source, old_buffers.destination))
     }
 
     /// Non-blocking; Immediately stop the DMA transfer and release all owned
