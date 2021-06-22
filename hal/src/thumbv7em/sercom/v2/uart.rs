@@ -1759,6 +1759,7 @@ where
     fn flush(&mut self) -> nb::Result<(), Self::Error> {
         // Ignore buffer overflow errors
         if self.read_flags().contains(TxFlags::TXC) {
+            self.clear_flags(TxFlags::TXC);
             Ok(())
         } else {
             Err(WouldBlock)
