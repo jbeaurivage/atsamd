@@ -945,6 +945,9 @@ where
         self.clear_status(
             Status::BUFOVF | Status::FERR | Status::PERR | Status::ISF | Status::COLL,
         );
+
+        // Clear error flag
+        self.clear_flags(Flags::ERROR);
     }
 }
 
