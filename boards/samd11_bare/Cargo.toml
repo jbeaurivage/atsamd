@@ -50,3 +50,6 @@ name = "serial"
 
 [[example]]
 name = "timer"
+
+[profile.dev]
+opt-level = 1
