@@ -1,4 +1,4 @@
-//! Implementations of the [`IsPad`] and [`GetPad`] traits
+//! Implementations of the [`IsPad`], [`IsI2c`], [`GetPad`] traits
 
 use crate::gpio::v2::*;
 use crate::sercom::v2::*;
@@ -8,7 +8,30 @@ use crate::sercom::v2::*;
 //==============================================================================
 
 macro_rules! pad_info {
+    // This is the entry pattern, when the pad is not I2C enabled.
     (
+        $PinId:ident,
+        $Cfg:ident,
+        $Sercom:ident,
+        $PadNum:ident
+    ) => {
+        pad_info!(@impl_pad, $PinId, $Cfg, $Sercom, $PadNum);
+    };
+
+    // This is the entry pattern, when the pad is I2C enabled.
+    (
+        $PinId:ident,
+        $Cfg:ident,
+        $Sercom:ident,
+        $PadNum:ident,
+        I2C
+    ) => {
+        impl IsI2c for Pin<$PinId, Alternate<$Cfg>> {}
+        pad_info!(@impl_pad, $PinId, $Cfg, $Sercom, $PadNum);
+    };
+
+    (
+        @impl_pad,
         $PinId:ident,
         $Cfg:ident,
         $Sercom:ident,
@@ -47,6 +70,7 @@ macro_rules! pad_table {
             pad_info!( $PinId, $Cfg, $Sercom, $PadNum );
         )+
     };
+
     (
         $PinId:ident {
             $(
@@ -60,6 +84,7 @@ macro_rules! pad_table {
             pad_info!( $PinId, $Cfg, $Sercom, $PadNum );
         )+
     };
+
     (
         $(
             $( #[$id_cfg:meta] )?
@@ -74,7 +99,7 @@ macro_rules! pad_table {
         $(
             pad_table!(
                 $( #[$id_cfg] )?
-                $PinId{
+                $PinId {
                     $(
                         $( #[$sercom_cfg] )?
                         $Cfg: ( $Sercom, $PadNum ),
