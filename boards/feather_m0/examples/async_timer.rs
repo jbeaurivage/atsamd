@@ -39,15 +39,15 @@ async fn main(_spawner: embassy::executor::Spawner) {
         .unwrap();
     clocks.configure_standby(ClockGenId::GCLK2, true);
 
-    // configure a clock for the TC2 and TC3 peripherals
+    // configure a clock for the TC4 and TC5 peripherals
     let tc45 = &clocks.tc4_tc5(&timer_clock).unwrap();
 
     // instantiate a timer objec for the TC3 peripheral
     let mut timer = TimerCounter::tc4_(tc45, peripherals.TC4, &mut peripherals.PM);
-    let mut timer_fut = timer.into_future(&mut tc4_irq);
+    let mut timer_fut = timer.as_async(&mut tc4_irq);
 
     loop {
-        timer_fut.delay_ms(Milliseconds(500)).await;
+        timer_fut.delay(Milliseconds(500)).await;
         red_led.toggle().unwrap();
         cortex_m::asm::wfi();
     }

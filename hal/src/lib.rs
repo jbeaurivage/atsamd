@@ -102,9 +102,9 @@ pub mod timer_params;
 pub mod timer_traits;
 
 #[cfg(feature = "async")]
-pub mod async_api;
+pub mod async_hal;
 #[cfg(feature = "async")]
-pub use async_api::*;
+pub use async_hal::*;
 
 #[cfg(all(feature = "unproven", feature = "dma"))]
 pub mod dmac;
