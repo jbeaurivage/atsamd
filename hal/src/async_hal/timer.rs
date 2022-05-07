@@ -94,14 +94,14 @@ impl_async_count16!((TC2, 0), (TC3, 1), (TC4, 2), (TC5, 3));
 #[cfg(feature = "min-samd51j")]
 const NUM_TIMERS: usize = 4;
 
-impl<TC: AsyncCount16> TimerCounter<TC> {
+impl<T: AsyncCount16> TimerCounter<T> {
     /// Transform a [`TimerCounter`] into an [`AsyncTimer`]
     #[inline]
     pub fn as_async<'a, 'self_mut: 'a>(
         &'self_mut mut self,
-        irq: &'a mut TC::Interrupt,
-    ) -> AsyncTimer<'a, TC> {
-        irq.set_handler(TC::on_interrupt);
+        irq: &'a mut T::Interrupt,
+    ) -> AsyncTimer<'a, T> {
+        irq.set_handler(T::on_interrupt);
         irq.enable();
         self.enable_interrupt();
 
@@ -110,18 +110,12 @@ impl<TC: AsyncCount16> TimerCounter<TC> {
 }
 
 /// Wrapper around a [`TimerCounter`] with an `async` interface
-pub struct AsyncTimer<'a, TC>
-where
-    TC: AsyncCount16,
-{
-    timer: &'a mut TimerCounter<TC>,
-    irq: &'a mut TC::Interrupt,
+pub struct AsyncTimer<'a, T: AsyncCount16> {
+    timer: &'a mut TimerCounter<T>,
+    irq: &'a mut T::Interrupt,
 }
 
-impl<'a, TC> AsyncTimer<'a, TC>
-where
-    TC: AsyncCount16,
-{
+impl<'a, T: AsyncCount16> AsyncTimer<'a, T> {
     /// Delay asynchronously
     #[inline]
     pub async fn delay(&mut self, count: impl Into<Nanoseconds>) {
@@ -129,8 +123,8 @@ where
         self.timer.enable_interrupt();
 
         poll_fn(|cx| {
-            STATE[TC::STATE_ID].register(cx.waker());
-            if STATE[TC::STATE_ID].ready() {
+            STATE[T::STATE_ID].register(cx.waker());
+            if STATE[T::STATE_ID].ready() {
                 return Poll::Ready(());
             }
 
@@ -140,7 +134,7 @@ where
     }
 }
 
-impl<'a, TC: AsyncCount16> Drop for AsyncTimer<'a, TC> {
+impl<'a, T: AsyncCount16> Drop for AsyncTimer<'a, T> {
     #[inline]
     fn drop(&mut self) {
         self.irq.remove_handler();
