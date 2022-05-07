@@ -31,6 +31,7 @@ features = ["samd21g", "samd21g-rt", "unproven", "usb"]
 
 [dependencies]
 aes = "0.7.5"
+atomic-polyfill = "0.1.8"
 bitfield = "0.13"
 bitflags = "1.2.1"
 cipher = "0.3"
@@ -56,6 +57,8 @@ fugit = {version = "0.3", optional = true}
 jlink_rtt = {version = "0.2", optional = true}
 rtic-monotonic = {version = "1.0", optional = true}
 usb-device = {version = "0.2", optional = true}
+
+
 
 #===============================================================================
 # PACs
@@ -88,6 +91,30 @@ atsame53n = {version = "0.12.0", path = "../pac/atsame53n", optional = true}
 
 atsame54n = {version = "0.12.0", path = "../pac/atsame54n", optional = true}
 atsame54p = {version = "0.12.0", path = "../pac/atsame54p", optional = true}
+
+[dependencies.embassy]
+version = "0.1.0"
+optional = true
+git = "https://github.com/embassy-rs/embassy.git"
+
+[dependencies.embassy-hal-common]
+version = "0.1.0"
+optional = true
+git = "https://github.com/embassy-rs/embassy.git"
+
+[dependencies.embedded-hal-async]
+version = "0.1.0-alpha.0"
+package = "embedded-hal"
+optional = true
+
+[dependencies.critical-section]
+version = "0.2.7"
+optional = true
+
+[dependencies.futures]
+version = "0.3.21"
+optional = true
+default-features = false
 
 #===============================================================================
 # Features
@@ -182,6 +209,15 @@ sdmmc = ["embedded-sdmmc"]
 unproven = ["embedded-hal/unproven"]
 usb = ["usb-device"]
 use_rtt = ["jlink_rtt"]
+async = [
+    "embassy",
+    "embassy-hal-common",
+    "futures",
+    "critical-section",
+    "unproven"
+]
+
+nightly = ["embedded-hal-async", "embassy/nightly"]
 
 #===============================================================================
 # Implementation-details
