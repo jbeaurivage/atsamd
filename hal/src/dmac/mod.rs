@@ -101,7 +101,7 @@
 //! stack-allocated buffers for reuse while the DMAC is still writing to/reading
 //! from them! Needless to say that is very unsafe.
 //! Refer [here](https://docs.rust-embedded.org/embedonomicon/dma.html#memforget)
-//! or [here](https://blog.japaric.io/safe-dma/) for more information. You may choose to forego
+//! or [here](https://blog.japaric.io/safe-dma/#leakpocalypse) for more information. You may choose to forego
 //! the `'static` lifetimes by using the unsafe API and the
 //! [`Transfer::new_unchecked`](transfer::Transfer::new_unchecked) method.
 //!
@@ -394,3 +394,13 @@ static mut DESCRIPTOR_SECTION: [DmacDescriptor; NUM_CHANNELS] = [DEFAULT_DESCRIP
 pub mod channel;
 pub mod dma_controller;
 pub mod transfer;
+
+#[cfg(feature = "async")]
+mod waker {
+    use embassy::waitqueue::AtomicWaker;
+
+    #[allow(clippy::declare_interior_mutable_const)]
+    const NEW_WAKER: AtomicWaker = AtomicWaker::new();
+    pub(super) static WAKERS: [AtomicWaker; with_num_channels!(get)] =
+        [NEW_WAKER; with_num_channels!(get)];
+}

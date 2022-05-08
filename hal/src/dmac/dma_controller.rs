@@ -42,6 +42,11 @@ use super::{
 };
 use crate::pac::{DMAC, PM};
 
+#[cfg(feature = "async")]
+pub mod async_api;
+#[cfg(feature = "async")]
+pub use async_api::*;
+
 /// Trait representing a DMA channel ID
 pub trait ChId {
     const U8: u8;
@@ -73,6 +78,7 @@ macro_rules! define_channels_struct {
 
 with_num_channels!(define_channels_struct);
 
+#[cfg(not(feature = "async"))]
 /// Initialized DMA Controller
 pub struct DmaController {
     dmac: DMAC,
@@ -162,10 +168,15 @@ impl DmaController {
             w.lvlen0().set_bit()
         });
 
-        // Enable DMA controller
-        dmac.ctrl.modify(|_, w| w.dmaenable().set_bit());
+        #[cfg(not(feature = "async"))]
+        let dmac = Self { dmac };
 
-        Self { dmac }
+        #[cfg(feature = "async")]
+        let dmac = Self::new_async(dmac);
+
+        // Enable DMA controller
+        dmac.dmac.ctrl.modify(|_, w| w.dmaenable().set_bit());
+        dmac
     }
 
     /// Enable multiple priority levels simultaneously
@@ -225,6 +236,7 @@ impl DmaController {
     /// moved back into the [`Channels`] struct before being able to pass it
     /// into [`free`](DmaController::free).
     #[inline]
+    #[cfg(not(feature = "async"))]
     pub fn free(mut self, _channels: Channels, _pm: &mut PM) -> DMAC {
         self.dmac.ctrl.modify(|_, w| w.dmaenable().clear_bit());
 
