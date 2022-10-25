@@ -271,6 +271,9 @@ pub enum Error {
 
     /// Operation is not valid in the current state of the object.
     InvalidState,
+
+    /// Chip reported an error during transfer
+    TransferError,
 }
 
 /// Result for DMAC operations
@@ -396,8 +399,13 @@ pub mod dma_controller;
 pub mod transfer;
 
 #[cfg(feature = "async")]
+pub mod async_api;
+#[cfg(feature = "async")]
+pub use async_api::*;
+
+#[cfg(feature = "async")]
 mod waker {
-    use embassy::waitqueue::AtomicWaker;
+    use embassy_sync::waitqueue::AtomicWaker;
 
     #[allow(clippy::declare_interior_mutable_const)]
     const NEW_WAKER: AtomicWaker = AtomicWaker::new();

@@ -151,6 +151,10 @@ name = "i2c"
 required-features = ["dma"]
 
 [[example]]
+name = "async_dmac"
+required-features = ["atsamd-hal/async", "atsamd-hal/rtic", "cortex-m-interrupt"]
+
+[[example]]
 name = "async_timer"
 required-features = ["atsamd-hal/async", "atsamd-hal/rtic", "cortex-m-interrupt"]
 

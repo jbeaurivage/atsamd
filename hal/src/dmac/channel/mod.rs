@@ -47,20 +47,60 @@ use super::dma_controller::{BurstLength, FifoThreshold};
 //==============================================================================
 // Channel Status
 //==============================================================================
-pub trait Status: Sealed {}
+pub trait Status: Sealed {
+    type Uninitialized: Status;
+    type Ready: Status;
+}
 
 /// Uninitialized channel
 pub enum Uninitialized {}
 impl Sealed for Uninitialized {}
-impl Status for Uninitialized {}
+impl Status for Uninitialized {
+    type Uninitialized = Uninitialized;
+    type Ready = Ready;
+}
+
 /// Initialized and ready to transfer channel
 pub enum Ready {}
 impl Sealed for Ready {}
-impl Status for Ready {}
+impl Status for Ready {
+    type Uninitialized = Uninitialized;
+    type Ready = Ready;
+}
+
 /// Busy channel
 pub enum Busy {}
 impl Sealed for Busy {}
-impl Status for Busy {}
+impl Status for Busy {
+    type Uninitialized = Uninitialized;
+    type Ready = Ready;
+}
+
+/// Uninitialized [`Channel`] configured for `async` operation
+#[cfg(feature = "async")]
+pub enum UninitializedFuture {}
+#[cfg(feature = "async")]
+impl Sealed for UninitializedFuture {}
+#[cfg(feature = "async")]
+impl Status for UninitializedFuture {
+    type Uninitialized = UninitializedFuture;
+    type Ready = ReadyFuture;
+}
+
+/// Initialized and ready to transfer in `async` operation
+#[cfg(feature = "async")]
+pub enum ReadyFuture {}
+#[cfg(feature = "async")]
+impl Sealed for ReadyFuture {}
+#[cfg(feature = "async")]
+impl Status for ReadyFuture {
+    type Uninitialized = UninitializedFuture;
+    type Ready = ReadyFuture;
+}
+
+pub trait ReadyChannel: Status {}
+impl ReadyChannel for Ready {}
+impl ReadyChannel for ReadyFuture {}
 
 //==============================================================================
 // AnyChannel
@@ -132,6 +172,15 @@ pub(super) fn new_chan<Id: ChId>(_id: PhantomData<Id>) -> Channel<Id, Uninitiali
     }
 }
 
+#[cfg(feature = "async")]
+#[inline]
+pub(super) fn new_chan_future<Id: ChId>(_id: PhantomData<Id>) -> Channel<Id, UninitializedFuture> {
+    Channel {
+        regs: RegisterBlock::new(_id),
+        _status: PhantomData,
+    }
+}
+
 /// These methods may be used on any DMA channel in any configuration
 impl<Id: ChId, S: Status> Channel<Id, S> {
     /// Configure the DMA channel so that it is ready to be used by a
@@ -141,7 +190,7 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
     ///
     /// A `Channel` with a `Ready` status
     #[inline]
-    pub fn init(mut self, lvl: PriorityLevel) -> Channel<Id, Ready> {
+    pub fn init(mut self, lvl: PriorityLevel) -> Channel<Id, S::Ready> {
         // Software reset the channel for good measure
         self._reset_private();
 
@@ -219,12 +268,15 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
     }
 }
 
-/// These methods may only be used on a `Ready` DMA channel
-impl<Id: ChId> Channel<Id, Ready> {
+impl<Id, R> Channel<Id, R>
+where
+    Id: ChId,
+    R: ReadyChannel,
+{
     /// Issue a software reset to the channel. This will return the channel to
     /// its startup state
     #[inline]
-    pub fn reset(mut self) -> Channel<Id, Uninitialized> {
+    pub fn reset(mut self) -> Channel<Id, R::Uninitialized> {
         self._reset_private();
 
         self.change_status()
@@ -251,30 +303,13 @@ impl<Id: ChId> Channel<Id, Ready> {
             .modify(|_, w| w.burstlen().bits(burst_length as u8));
     }
 
-    /// Start transfer on channel using the specified trigger source.
-    ///
-    /// # Return
-    ///
-    /// A `Channel` with a `Busy` status.
-    #[inline]
-    pub(crate) fn start(
-        mut self,
-        trig_src: TriggerSource,
-        trig_act: TriggerAction,
-    ) -> Channel<Id, Busy> {
-        unsafe {
-            self._start_private(trig_src, trig_act);
-        }
-        self.change_status()
-    }
-
     /// Start the transfer.
     ///
     /// # Safety
     ///
     /// This function is unsafe because it starts the transfer without changing
-    /// the channel status to [`Busy`]. A [`Ready`] channel which is actively transferring
-    /// should NEVER be leaked.
+    /// the channel status to [`Busy`]. A [`Ready`] channel which is actively
+    /// transferring should NEVER be leaked.
     #[inline]
     pub(super) unsafe fn _start_private(
         &mut self,
@@ -302,6 +337,25 @@ impl<Id: ChId> Channel<Id, Ready> {
         if trig_src == TriggerSource::DISABLE {
             self._trigger_private();
         }
+    }
+}
+
+impl<Id: ChId> Channel<Id, Ready> {
+    /// Start transfer on channel using the specified trigger source.
+    ///
+    /// # Return
+    ///
+    /// A `Channel` with a `Busy` status.
+    #[inline]
+    pub(crate) fn start(
+        mut self,
+        trig_src: TriggerSource,
+        trig_act: TriggerAction,
+    ) -> Channel<Id, Busy> {
+        unsafe {
+            self._start_private(trig_src, trig_act);
+        }
+        self.change_status()
     }
 }
 

@@ -37,15 +37,13 @@ pub use crate::pac::dmac::channel::{
 };
 
 use super::{
-    channel::{new_chan, Channel, Uninitialized},
+    channel::{Channel, Uninitialized},
     DESCRIPTOR_SECTION, WRITEBACK,
 };
-use crate::pac::{DMAC, PM};
-
-#[cfg(feature = "async")]
-pub mod async_api;
-#[cfg(feature = "async")]
-pub use async_api::*;
+use crate::{
+    pac::{DMAC, PM},
+    typelevel::NoneT,
+};
 
 /// Trait representing a DMA channel ID
 pub trait ChId {
@@ -78,10 +76,27 @@ macro_rules! define_channels_struct {
 
 with_num_channels!(define_channels_struct);
 
-#[cfg(not(feature = "async"))]
+#[cfg(feature = "async")]
+macro_rules! define_channels_struct_future {
+    ($num_channels:literal) => {
+        seq!(N in 0..$num_channels {
+            /// Struct generating individual handles to each DMA channel for `async` operation
+            pub struct FutureChannels(
+                #(
+                    pub Channel<Ch~N, super::channel::UninitializedFuture>,
+                )*
+            );
+        });
+    };
+}
+
+#[cfg(feature = "async")]
+with_num_channels!(define_channels_struct_future);
+
 /// Initialized DMA Controller
-pub struct DmaController {
+pub struct DmaController<I = NoneT> {
     dmac: DMAC,
+    interrupts: I,
 }
 
 /// Mask representing which priority levels should be enabled/disabled
@@ -168,15 +183,12 @@ impl DmaController {
             w.lvlen0().set_bit()
         });
 
-        #[cfg(not(feature = "async"))]
-        let dmac = Self { dmac };
-
-        #[cfg(feature = "async")]
-        let dmac = Self::new_async(dmac);
-
         // Enable DMA controller
-        dmac.dmac.ctrl.modify(|_, w| w.dmaenable().set_bit());
-        dmac
+        dmac.ctrl.modify(|_, w| w.dmaenable().set_bit());
+        Self {
+            dmac,
+            interrupts: NoneT,
+        }
     }
 
     /// Enable multiple priority levels simultaneously
@@ -229,6 +241,24 @@ impl DmaController {
         }
     }
 
+    /// Use the [`DmaController`] in async mode. You are required to provide
+    /// interrupt sources.
+    #[cfg(feature = "async")]
+    #[inline]
+    pub fn into_future<I, N>(self, interrupts: I) -> DmaController<super::async_api::Interrupts<N>>
+    where
+        I: cortex_m_interrupt::NvicInterruptHandle<N>,
+        N: cortex_m::interrupt::InterruptNumber,
+    {
+        use super::async_api::{on_interrupt, Interrupts};
+        let interrupt_number = interrupts.number();
+        interrupts.register(on_interrupt);
+        DmaController {
+            dmac: self.dmac,
+            interrupts: Interrupts::new(interrupt_number),
+        }
+    }
+
     /// Release the DMAC and return the register block.
     ///
     /// **Note**: The [`Channels`] struct is consumed by this method. This means
@@ -269,7 +299,7 @@ macro_rules! define_split {
             pub fn split(&mut self) -> Channels {
                 Channels(
                     #(
-                        new_chan(core::marker::PhantomData),
+                        crate::dmac::channel::new_chan(core::marker::PhantomData),
                     )*
                 )
             }
@@ -279,4 +309,25 @@ macro_rules! define_split {
 
 impl DmaController {
     with_num_channels!(define_split);
+}
+
+macro_rules! define_split_future {
+    ($num_channels:literal) => {
+        seq!(N in 0..$num_channels {
+            /// Split the DMAC into individual channels
+            #[inline]
+            pub fn split(&mut self) -> FutureChannels {
+                FutureChannels(
+                    #(
+                        crate::dmac::channel::new_chan_future(core::marker::PhantomData),
+                    )*
+                )
+            }
+        });
+    };
+}
+
+#[cfg(feature = "async")]
+impl<I: cortex_m::interrupt::InterruptNumber> DmaController<super::async_api::Interrupts<I>> {
+    with_num_channels!(define_split_future);
 }

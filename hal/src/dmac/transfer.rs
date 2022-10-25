@@ -86,7 +86,8 @@
 use super::{
     channel::{AnyChannel, Busy, Channel, ChannelId, InterruptFlags, Ready},
     dma_controller::{ChId, TriggerAction, TriggerSource},
-    BlockTransferControl, DmacDescriptor, Error, Result, DESCRIPTOR_SECTION,
+    BlockTransferControl, DmacDescriptor, Error, ReadyChannel, ReadyFuture, Result,
+    DESCRIPTOR_SECTION,
 };
 use crate::typelevel::{Is, Sealed};
 use core::{ptr::null_mut, sync::atomic};
@@ -313,11 +314,12 @@ where
     complete: bool,
 }
 
-impl<C, S, D> Transfer<C, BufferPair<S, D>>
+impl<C, S, D, R> Transfer<C, BufferPair<S, D>>
 where
     S: Buffer + 'static,
     D: Buffer<Beat = S::Beat> + 'static,
-    C: AnyChannel<Status = Ready>,
+    C: AnyChannel<Status = R>,
+    R: ReadyChannel,
 {
     /// Safely construct a new `Transfer`. To guarantee memory safety, both
     /// buffers are required to be `'static`.
@@ -426,11 +428,12 @@ where
     }
 }
 
-impl<C, S, D> Transfer<C, BufferPair<S, D>>
+impl<C, S, D, R> Transfer<C, BufferPair<S, D>>
 where
     S: Buffer,
     D: Buffer<Beat = S::Beat>,
-    C: AnyChannel<Status = Ready>,
+    C: AnyChannel<Status = R>,
+    R: ReadyChannel,
 {
     /// Construct a new `Transfer` without checking for memory safety.
     ///
@@ -475,10 +478,11 @@ where
     D: Buffer<Beat = S::Beat>,
     C: AnyChannel<Status = Ready>,
 {
-    /// Begin DMA transfer in blocking mode. If [TriggerSource::DISABLE](TriggerSource::DISABLE)
-    /// is used, a software trigger will be issued to the DMA channel to
-    /// launch the transfer. Is is therefore not necessary, in most cases,
-    /// to manually issue a software trigger to the channel.
+    /// Begin DMA transfer in blocking mode. If
+    /// [TriggerSource::DISABLE](TriggerSource::DISABLE) is used, a software
+    /// trigger will be issued to the DMA channel to launch the transfer. Is
+    /// is therefore not necessary, in most cases, to manually issue a
+    /// software trigger to the channel.
     #[inline]
     pub fn begin(
         mut self,
@@ -503,37 +507,6 @@ where
         }
     }
 
-    /// Asynchronously begin DMA transfer. If [TriggerSource::DISABLE](TriggerSource::DISABLE)
-    /// is used, a software trigger will be issued to the DMA channel to
-    /// launch the transfer. Is is therefore not necessary, in most cases,
-    /// to manually issue a software trigger to the channel.
-    #[cfg(feature = "async")]
-    #[inline]
-    pub async fn begin_async(&mut self, trig_src: TriggerSource, trig_act: TriggerAction) {
-        use crate::dmac::waker::WAKERS;
-        use core::task::Poll;
-
-        let flags = super::InterruptFlags::new()
-            .with_terr(true)
-            .with_tcmpl(true);
-        self.chan.as_mut().enable_interrupts(flags);
-
-        futures::future::poll_fn(|cx| {
-            let chan = self.chan.as_mut();
-
-            WAKERS[C::Id::USIZE].register(cx.waker());
-            unsafe {
-                chan._start_private(trig_src, trig_act);
-            }
-
-            if chan.xfer_complete() {
-                return Poll::Ready(());
-            }
-            Poll::Pending
-        })
-        .await;
-    }
-
     /// Free the [`Transfer`] and return the resources it holds.
     ///
     /// Similar to [`stop`](Transfer::stop), but it acts on a [`Transfer`]
@@ -548,10 +521,72 @@ where
     }
 }
 
-impl<B, C, const N: usize> Transfer<C, BufferPair<&'static mut [B; N]>>
+impl<C, S, D> Transfer<C, BufferPair<S, D>>
+where
+    S: Buffer + 'static,
+    D: Buffer<Beat = S::Beat> + 'static,
+    C: AnyChannel<Status = ReadyFuture>,
+{
+    /// Asynchronously begin DMA transfer. If
+    /// [TriggerSource::DISABLE](TriggerSource::DISABLE) is used, a software
+    /// trigger will be issued to the DMA channel to launch the transfer. Is
+    /// is therefore not necessary, in most cases, to manually issue a
+    /// software trigger to the channel.
+    #[cfg(feature = "async")]
+    #[inline]
+    pub async fn transfer_future(
+        chan: &mut C,
+        source: &mut S,
+        dest: &mut D,
+        trig_src: TriggerSource,
+        trig_act: TriggerAction,
+    ) -> Result<()> {
+        use crate::dmac::waker::WAKERS;
+        use core::task::Poll;
+
+        Self::check_buffer_pair(source, dest)?;
+        unsafe { Self::fill_descriptor(source, dest, false) };
+        let chan = chan.as_mut();
+
+        chan.disable_interrupts(InterruptFlags::new().with_susp(true));
+
+        atomic::fence(atomic::Ordering::Release);
+        unsafe {
+            chan._start_private(trig_src, trig_act);
+        }
+
+        core::future::poll_fn(|cx| {
+            if chan.xfer_complete() {
+                chan.as_mut()
+                    .check_and_clear_interrupts(InterruptFlags::new().with_tcmpl(true));
+
+                return Poll::Ready(());
+            }
+
+            WAKERS[C::Id::USIZE].register(cx.waker());
+            let flags = InterruptFlags::new().with_terr(true).with_tcmpl(true);
+            chan.enable_interrupts(flags);
+
+            if chan.xfer_complete() {
+                chan.disable_interrupts(flags);
+                chan.as_mut()
+                    .check_and_clear_interrupts(InterruptFlags::new().with_tcmpl(true));
+                return Poll::Ready(());
+            }
+
+            Poll::Pending
+        })
+        .await;
+
+        Ok(())
+    }
+}
+
+impl<B, C, R, const N: usize> Transfer<C, BufferPair<&'static mut [B; N]>>
 where
     B: 'static + Beat,
-    C: AnyChannel<Status = Ready>,
+    C: AnyChannel<Status = R>,
+    R: ReadyChannel,
 {
     /// Create a new `Transfer` from static array references of the same type
     /// and length. When two array references are available (instead of slice

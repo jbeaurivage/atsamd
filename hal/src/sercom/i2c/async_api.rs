@@ -34,7 +34,7 @@ where
     C: AnyConfig,
     N: InterruptNumber,
 {
-    i2c: I2c<C>,
+    pub(in super::super) i2c: I2c<C>,
     irq_number: N,
 }
 
