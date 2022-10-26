@@ -47,7 +47,7 @@ pub trait AsyncCount16: Count16 + Sealed {
     /// peripheral instance to check the interrupt flags. The only
     /// modifications it is allowed to apply to the peripheral is to clear
     /// the interrupt flag (to prevent re-firing). This method should ONLY be
-    /// able to be called while an [`AsyncTimer`] holds an unique reference
+    /// able to be called while a [`TimerFuture`] holds an unique reference
     /// to the underlying `TC` peripheral.
     fn on_interrupt();
 }
