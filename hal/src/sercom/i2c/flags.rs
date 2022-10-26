@@ -80,6 +80,8 @@ pub enum Error {
     LengthError,
     Nack,
     Timeout,
+    #[cfg(feature = "dma")]
+    DmaError(crate::dmac::Error),
 }
 
 #[cfg(feature = "nightly")]
@@ -91,6 +93,7 @@ impl embedded_hal_async::i2c::Error for Error {
             Error::BusError => ErrorKind::Bus,
             Error::LengthError | Error::Timeout => ErrorKind::Overrun,
             Error::Nack => ErrorKind::NoAcknowledge(NoAcknowledgeSource::Unknown),
+            _ => ErrorKind::Other,
         }
     }
 }
