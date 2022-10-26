@@ -10,7 +10,7 @@ use panic_probe as _;
 
 #[rtic::app(device = bsp::pac, dispatchers = [I2S])]
 mod app {
-    use bsp::{hal, pac, pin_alias};
+    use bsp::{hal, pac};
     use feather_m0 as bsp;
     use hal::{
         clock::{enable_internal_32kosc, ClockGenId, ClockSource, GenericClockController},
@@ -30,8 +30,6 @@ mod app {
     #[local]
     struct Local {
         channel: Channel<Ch0, ReadyFuture>,
-        source: &'static mut [u8; 50],
-        dest: &'static mut [u8; 50],
     }
 
     #[init]
@@ -56,13 +54,6 @@ mod app {
         let rtc_clock = clocks.rtc(&timer_clock).unwrap();
         let rtc = Rtc::count32_mode(peripherals.RTC, rtc_clock.freq(), &mut peripherals.PM);
 
-        // Initialize buffers
-        const LENGTH: usize = 50;
-        let source: &'static mut [u8; LENGTH] =
-            cortex_m::singleton!(: [u8; LENGTH] = [0xff; LENGTH]).unwrap();
-        let dest: &'static mut [u8; LENGTH] =
-            cortex_m::singleton!(: [u8; LENGTH] = [0x00; LENGTH]).unwrap();
-
         // Initialize DMA Controller
         let dmac = DmaController::init(peripherals.DMAC, &mut peripherals.PM);
         // Get handle to IRQ
@@ -76,35 +67,26 @@ mod app {
         let channel = channels.0.init(PriorityLevel::LVL0);
 
         async_task::spawn().ok();
-
-        (
-            Shared {},
-            Local {
-                channel,
-                source,
-                dest,
-            },
-            init::Monotonics(rtc),
-        )
+        (Shared {}, Local { channel }, init::Monotonics(rtc))
     }
 
-    #[task(local = [channel, source, dest])]
+    #[task(local = [channel])]
     async fn async_task(cx: async_task::Context) {
-        let async_task::LocalResources {
-            channel,
-            source,
-            dest,
-        } = cx.local;
+        let async_task::LocalResources { channel } = cx.local;
+
+        let mut source = [0xff; 50];
+        let mut dest = [0x0; 50];
 
         defmt::info!(
             "Launching a DMA transfer.\n\tSource: {}\n\tDestination: {}",
             &source,
             &dest
         );
+
         Transfer::transfer_future(
             channel,
-            source,
-            dest,
+            &mut source,
+            &mut dest,
             TriggerSource::DISABLE,
             TriggerAction::BLOCK,
         )
@@ -112,7 +94,7 @@ mod app {
         .unwrap();
 
         defmt::info!(
-            "Launching a DMA transfer.\n\tSource: {}\n\tDestination: {}",
+            "Finished DMA transfer.\n\tSource: {}\n\tDestination: {}",
             &source,
             &dest
         );

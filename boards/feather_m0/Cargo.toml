@@ -160,7 +160,7 @@ required-features = ["atsamd-hal/async", "atsamd-hal/rtic", "cortex-m-interrupt"
 
 [[example]]
 name = "async_i2c"
-required-features = ["atsamd-hal/async", "atsamd-hal/rtic", "cortex-m-interrupt"]
+required-features = ["dma", "atsamd-hal/async", "atsamd-hal/rtic", "cortex-m-interrupt"]
 
 [[example]]
 name = "async_uart"

@@ -523,29 +523,58 @@ where
 
 impl<C, S, D> Transfer<C, BufferPair<S, D>>
 where
-    S: Buffer + 'static,
-    D: Buffer<Beat = S::Beat> + 'static,
+    S: Buffer,
+    D: Buffer<Beat = S::Beat>,
     C: AnyChannel<Status = ReadyFuture>,
 {
-    /// Asynchronously begin DMA transfer. If
-    /// [TriggerSource::DISABLE](TriggerSource::DISABLE) is used, a software
+    /// Begin DMA transfer using `async` operation.
+    ///
+    /// If [TriggerSource::DISABLE](TriggerSource::DISABLE) is used, a software
     /// trigger will be issued to the DMA channel to launch the transfer. Is
     /// is therefore not necessary, in most cases, to manually issue a
     /// software trigger to the channel.
+    ///
+    /// # Safety
+    ///
+    /// In `async` mode, a [`Transfer`] does NOT require `'static` source and
+    /// destination buffers. This, in t
+    ///heory, makes [`transfer_future`
+    ///](Transfer::transfer_future) an `unsafe` function,
+    ///although it is marked as safe (for ergonomics).
+    ///
+    /// This means that, as an user, you **must** ensure that the [`Future`]
+    /// returned by this function may never be forgotten through [`forget`].
+    /// [`Channel`]s implement [`Drop`] and will automatically s
+    ///top any ongoing transfers to guarantee that the memor
+    ///y occupied by the now-dropped buffers may
+    /// not be corrupted by running transfers. This also means
+    /// memory, memory, memory, memory, that should you [`forget`] this
+    /// [`Future`] after it is first [`poll`] call, the transfer will keep
+    /// running, ruining the now-reclaimed memory, as well as the rest of
+    /// your day.
+    ///
+    /// * `await`ing is fine: the [`Future`] will run to completion.
+    /// * Dropping an incomplete transfer is also fine. Dropping can happen,
+    /// for example, if the transfer doesn't complete before a timeout
+    /// expires.
+    ///
+    /// [`forget`]: core::mem::forget
+    /// [`Future`]: core::future::Future
+    /// [`poll`]: core::future::Future::poll
     #[cfg(feature = "async")]
     #[inline]
     pub async fn transfer_future(
         chan: &mut C,
-        source: &mut S,
-        dest: &mut D,
+        mut source: S,
+        mut dest: D,
         trig_src: TriggerSource,
         trig_act: TriggerAction,
     ) -> Result<()> {
         use crate::dmac::waker::WAKERS;
         use core::task::Poll;
 
-        Self::check_buffer_pair(source, dest)?;
-        unsafe { Self::fill_descriptor(source, dest, false) };
+        Self::check_buffer_pair(&source, &dest)?;
+        unsafe { Self::fill_descriptor(&mut source, &mut dest, false) };
         let chan = chan.as_mut();
 
         chan.disable_interrupts(InterruptFlags::new().with_susp(true));
@@ -578,7 +607,7 @@ where
         })
         .await;
 
-        Ok(())
+        chan.xfer_success()
     }
 }
 

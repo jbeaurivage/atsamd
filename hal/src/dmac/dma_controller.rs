@@ -16,7 +16,7 @@
 //!
 //! # Releasing the DMAC
 //!
-//! Using the [`DmaController::free`] method will
+//! Using the [`free`](DmaController::free) method will
 //! deinitialize the DMAC and return the underlying PAC object.
 
 use modular_bitfield::prelude::*;
@@ -147,50 +147,7 @@ pub struct RoundRobinMask {
     level3: bool,
 }
 
-impl DmaController {
-    /// Initialize the DMAC and return a DmaController object useable by
-    /// [`Transfer`](super::transfer::Transfer)'s. By default, all
-    /// priority levels are enabled unless subsequently disabled using the
-    /// `level_x_enabled` methods.
-    #[inline]
-    pub fn init(mut dmac: DMAC, _pm: &mut PM) -> Self {
-        // ----- Initialize clocking ----- //
-        #[cfg(any(feature = "samd11", feature = "samd21"))]
-        {
-            // Enable clocking
-            _pm.ahbmask.modify(|_, w| w.dmac_().set_bit());
-            _pm.apbbmask.modify(|_, w| w.dmac_().set_bit());
-        }
-
-        Self::swreset(&mut dmac);
-
-        // SAFETY this is safe because we write a whole u32 to 32-bit registers,
-        // and the descriptor array addesses will never change since they are static.
-        // We just need to ensure the writeback and descriptor_section addresses
-        // are valid.
-        unsafe {
-            dmac.baseaddr
-                .write(|w| w.baseaddr().bits(DESCRIPTOR_SECTION.as_ptr() as u32));
-            dmac.wrbaddr
-                .write(|w| w.wrbaddr().bits(WRITEBACK.as_ptr() as u32));
-        }
-
-        // ----- Select priority levels ----- //
-        dmac.ctrl.modify(|_, w| {
-            w.lvlen3().set_bit();
-            w.lvlen2().set_bit();
-            w.lvlen1().set_bit();
-            w.lvlen0().set_bit()
-        });
-
-        // Enable DMA controller
-        dmac.ctrl.modify(|_, w| w.dmaenable().set_bit());
-        Self {
-            dmac,
-            interrupts: NoneT,
-        }
-    }
-
+impl<T> DmaController<T> {
     /// Enable multiple priority levels simultaneously
     #[inline]
     pub fn enable_levels(&mut self, mask: PriorityLevelMask) {
@@ -259,6 +216,58 @@ impl DmaController {
         }
     }
 
+    /// Issue a software reset to the DMAC and wait for reset to complete
+    #[inline]
+    fn swreset(dmac: &mut DMAC) {
+        dmac.ctrl.modify(|_, w| w.swrst().set_bit());
+        while dmac.ctrl.read().swrst().bit_is_set() {}
+    }
+}
+
+impl DmaController<NoneT> {
+    /// Initialize the DMAC and return a DmaController object useable by
+    /// [`Transfer`](super::transfer::Transfer)'s. By default, all
+    /// priority levels are enabled unless subsequently disabled using the
+    /// `level_x_enabled` methods.
+    #[inline]
+    pub fn init(mut dmac: DMAC, _pm: &mut PM) -> Self {
+        // ----- Initialize clocking ----- //
+        #[cfg(any(feature = "samd11", feature = "samd21"))]
+        {
+            // Enable clocking
+            _pm.ahbmask.modify(|_, w| w.dmac_().set_bit());
+            _pm.apbbmask.modify(|_, w| w.dmac_().set_bit());
+        }
+
+        Self::swreset(&mut dmac);
+
+        // SAFETY this is safe because we write a whole u32 to 32-bit registers,
+        // and the descriptor array addesses will never change since they are static.
+        // We just need to ensure the writeback and descriptor_section addresses
+        // are valid.
+        unsafe {
+            dmac.baseaddr
+                .write(|w| w.baseaddr().bits(DESCRIPTOR_SECTION.as_ptr() as u32));
+            dmac.wrbaddr
+                .write(|w| w.wrbaddr().bits(WRITEBACK.as_ptr() as u32));
+        }
+
+        // ----- Select priority levels ----- //
+        dmac.ctrl.modify(|_, w| {
+            w.lvlen3().set_bit();
+            w.lvlen2().set_bit();
+            w.lvlen1().set_bit();
+            w.lvlen0().set_bit()
+        });
+
+        // Enable DMA controller
+        dmac.ctrl.modify(|_, w| w.dmaenable().set_bit());
+        Self {
+            dmac,
+            interrupts: NoneT,
+        }
+    }
+
     /// Release the DMAC and return the register block.
     ///
     /// **Note**: The [`Channels`] struct is consumed by this method. This means
@@ -266,7 +275,6 @@ impl DmaController {
     /// moved back into the [`Channels`] struct before being able to pass it
     /// into [`free`](DmaController::free).
     #[inline]
-    #[cfg(not(feature = "async"))]
     pub fn free(mut self, _channels: Channels, _pm: &mut PM) -> DMAC {
         self.dmac.ctrl.modify(|_, w| w.dmaenable().clear_bit());
 
@@ -282,12 +290,31 @@ impl DmaController {
         // Release the DMAC
         self.dmac
     }
+}
 
-    /// Issue a software reset to the DMAC and wait for reset to complete
+#[cfg(feature = "async")]
+impl<I: cortex_m::interrupt::InterruptNumber> DmaController<I> {
+    /// Release the DMAC and return the register block.
+    ///
+    /// **Note**: The [`Channels`] struct is consumed by this method. This means
+    /// that any [`Channel`] obtained by [`split`](DmaController::split) must be
+    /// moved back into the [`Channels`] struct before being able to pass it
+    /// into [`free`](DmaController::free).
     #[inline]
-    fn swreset(dmac: &mut DMAC) {
-        dmac.ctrl.modify(|_, w| w.swrst().set_bit());
-        while dmac.ctrl.read().swrst().bit_is_set() {}
+    pub fn free(mut self, _channels: FutureChannels, _pm: &mut PM) -> DMAC {
+        self.dmac.ctrl.modify(|_, w| w.dmaenable().clear_bit());
+
+        Self::swreset(&mut self.dmac);
+
+        #[cfg(any(feature = "samd11", feature = "samd21"))]
+        {
+            // Disable the DMAC clocking
+            _pm.apbbmask.modify(|_, w| w.dmac_().clear_bit());
+            _pm.ahbmask.modify(|_, w| w.dmac_().clear_bit());
+        }
+
+        // Release the DMAC
+        self.dmac
     }
 }
 

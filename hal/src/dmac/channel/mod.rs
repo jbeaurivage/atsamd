@@ -238,8 +238,11 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
 
     #[inline]
     pub(super) fn change_status<N: Status>(self) -> Channel<Id, N> {
+        // SAFETY: Safe as longa as `RegisterBlock` doesn't implement
+        // `Drop`. Otherwise it could lead to a double-free.
+        let regs = unsafe { core::ptr::read(&self.regs) };
         Channel {
-            regs: self.regs,
+            regs,
             _status: PhantomData,
         }
     }
@@ -256,15 +259,21 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
         self.regs.swtrigctrl.set_bit();
     }
 
+    /// Stop transfer on channel whether or not the transfer has completed
+    pub(crate) fn stop(&mut self) {
+        self.regs.chctrla.modify(|_, w| w.enable().clear_bit());
+    }
+
     /// Returns whether or not the transfer is complete.
     #[inline]
     pub(crate) fn xfer_complete(&mut self) -> bool {
         !self.regs.chctrla.read().enable().bit_is_set()
     }
 
-    /// Returns whether the transfer had an error.
-    pub(crate) fn xfer_error(&mut self) -> bool {
-        self.regs.chintflag.read().terr().bit_is_set()
+    /// Returns whether the transfer's success status.
+    pub(crate) fn xfer_success(&mut self) -> super::Result<()> {
+        let is_ok = self.regs.chintflag.read().terr().bit_is_clear();
+        is_ok.then_some(()).ok_or(super::Error::TransferError)
     }
 }
 
@@ -367,7 +376,8 @@ impl<Id: ChId> Channel<Id, Busy> {
         self._trigger_private();
     }
 
-    /// Stop transfer on channel whether or not the transfer has completed
+    /// Stop transfer on channel whether or not the transfer has completed, and
+    /// return the resources it holds.
     ///
     /// # Return
     ///
@@ -375,7 +385,7 @@ impl<Id: ChId> Channel<Id, Busy> {
     /// [`Transfer`](super::transfer::Transfer)
     #[inline]
     pub(crate) fn free(mut self) -> Channel<Id, Ready> {
-        self.regs.chctrla.modify(|_, w| w.enable().clear_bit());
+        self.stop();
         while !self.xfer_complete() {}
         self.change_status()
     }
@@ -391,6 +401,12 @@ impl<Id: ChId> From<Channel<Id, Ready>> for Channel<Id, Uninitialized> {
     fn from(mut item: Channel<Id, Ready>) -> Self {
         item._reset_private();
         item.change_status()
+    }
+}
+
+impl<Id: ChId, S: Status> Drop for Channel<Id, S> {
+    fn drop(&mut self) {
+        self.stop();
     }
 }
 
