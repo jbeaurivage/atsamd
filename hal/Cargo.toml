@@ -76,9 +76,16 @@ version = "0.1"
 optional = true
 git = "https://github.com/embassy-rs/embassy.git"
 
+[dependencies.futures]
+version = "0.3"
+default-features = false
+features = ["async-await"]
+optional = true
+
 [dependencies.cortex-m-interrupt]
-version = "0.1"
-git = "https://github.com/datdenkikniet/cortex-m-interrupt"
+version = "0.2.1-git"
+git = "https://github.com/jbeaurivage/cortex-m-interrupt.git"
+branch = "atomic-polyfill"
 optional = true
 
 # Each of the supported chips is listed as an optional dependency here.
@@ -252,6 +259,7 @@ async = [
     "critical-section",
     "unproven",
     "embassy-sync",
+    "futures",
 ]
 
 nightly = ["embedded-hal-async"]
