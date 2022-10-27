@@ -81,7 +81,7 @@ pub enum Error {
     Nack,
     Timeout,
     #[cfg(feature = "dma")]
-    DmaError(crate::dmac::Error),
+    Dma(crate::dmac::Error),
 }
 
 #[cfg(feature = "nightly")]
