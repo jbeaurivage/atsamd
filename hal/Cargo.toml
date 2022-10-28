@@ -63,9 +63,8 @@ default-features = false
 version = "1.0"
 
 [dependencies.embedded-hal-async]
-version = "0.1.0-alpha.2"
+version = "0.1.0-alpha.3"
 optional = true
-git = "https://github.com/rust-embedded/embedded-hal"
 
 [dependencies.critical-section]
 version = "0.2.7"
@@ -84,8 +83,7 @@ optional = true
 
 [dependencies.cortex-m-interrupt]
 version = "0.2.1-git"
-git = "https://github.com/jbeaurivage/cortex-m-interrupt.git"
-branch = "atomic-polyfill"
+git = "https://github.com/datdenkikniet/cortex-m-interrupt.git"
 optional = true
 
 # Each of the supported chips is listed as an optional dependency here.
