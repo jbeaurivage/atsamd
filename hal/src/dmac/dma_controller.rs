@@ -186,7 +186,10 @@ impl<T> DmaController<T> {
         // Enable DMA controller
         dmac.ctrl.modify(|_, w| w.dmaenable().set_bit());
 
-        Self { dmac }
+        Self {
+            dmac,
+            _interrupts: NoneT,
+        }
     }
 
     /// Enable multiple priority levels simultaneously
