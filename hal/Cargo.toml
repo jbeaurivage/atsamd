@@ -66,6 +66,10 @@ version = "1.0"
 version = "0.1.0-alpha.3"
 optional = true
 
+[dependencies.embedded-hal-alpha]
+package = "embedded-hal"
+version = "1.0.0-alpha.9"
+
 [dependencies.critical-section]
 version = "0.2.7"
 optional = true
