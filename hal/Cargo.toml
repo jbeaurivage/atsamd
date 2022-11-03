@@ -62,6 +62,10 @@ version = "0.3"
 default-features = false
 version = "1.0"
 
+[dependencies.defmt]
+version = "0.3"
+optional = true
+
 [dependencies.embedded-hal-async]
 version = "0.1.0-alpha.3"
 optional = true
