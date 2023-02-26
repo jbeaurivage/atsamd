@@ -194,7 +194,7 @@ impl<S: Sercom> Registers<S> {
     /// Get the bit order of transmission (MSB/LSB first)
     #[inline]
     pub fn get_bit_order(&self) -> BitOrder {
-        let order = self.spi().ctrla.read().dord().bits();
+        let order = self.spi().ctrla.read().dord().bit();
         match order {
             false => BitOrder::MsbFirst,
             true => BitOrder::LsbFirst,
