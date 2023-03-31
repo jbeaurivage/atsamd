@@ -461,7 +461,9 @@ pub const OSC8M_FREQ: Hertz = Hertz(8_000_000);
 pub const OSC32K_FREQ: Hertz = Hertz(32_768);
 
 fn set_flash_to_half_auto_wait_state(nvmctrl: &mut NVMCTRL) {
-    nvmctrl.ctrlb.modify(|_, w| w.rws().half());
+    unsafe {
+        nvmctrl.ctrlb.modify(|_, w| w.rws().bits(3));
+    }
 }
 
 /// Prevent automatic writes to flash by pointers to flash area
