@@ -1,36 +1,19 @@
+//! APIs for async DMAC operations.
+
 use crate::{
+    async_hal::interrupts::{Handler, DMAC},
     dmac::{waker::WAKERS, TriggerSource},
     util::BitIter,
 };
-use cortex_m::interrupt::InterruptNumber;
-use cortex_m_interrupt::NvicInterruptRegistration;
+
+// Interrupt handler for the DMAC peripheral.
+pub struct InterruptHandler {
+    _private: (),
+}
 
 #[cfg(feature = "thumbv6")]
-mod impls {
-    use super::*;
-
-    pub struct Interrupts<N>
-    where
-        N: InterruptNumber,
-    {
-        _interrupt_number: N,
-    }
-
-    impl<N> Interrupts<N>
-    where
-        N: InterruptNumber,
-    {
-        pub fn new<I: NvicInterruptRegistration<N>>(interrupt: I) -> Self {
-            let interrupt_number = interrupt.number();
-            interrupt.occupy(on_interrupt);
-            unsafe { cortex_m::peripheral::NVIC::unmask(interrupt_number) };
-            Self {
-                _interrupt_number: interrupt_number,
-            }
-        }
-    }
-
-    fn on_interrupt() {
+impl Handler<DMAC> for InterruptHandler {
+    unsafe fn on_interrupt() {
         // SAFETY: Here we can't go through the `with_chid` method to safely access
         // the different channel interrupt flags. Instead, we read the ID in a short
         // critical section, and make sure to RESET the CHID field to whatever
@@ -75,123 +58,36 @@ mod impls {
 }
 
 #[cfg(feature = "thumbv7")]
-mod impls {
-    use super::*;
+impl Handler<DMAC> for InterruptHandler {
+    unsafe fn on_interrupt() {
+        let dmac = unsafe { crate::pac::Peripherals::steal().DMAC };
 
-    pub struct Interrupts<N>
-    where
-        N: InterruptNumber,
-    {
-        _interrupt_0: N,
-        _interrupt_1: N,
-        _interrupt_2: N,
-        _interrupt_3: N,
-        _interrupt_other: N,
-    }
+        let pending_channels = BitIter(dmac.intstatus.read().bits());
+        for channel in pending_channels.map(|c| c as usize) {
+            let wake = if dmac.channel[channel].chintflag.read().tcmpl().bit_is_set() {
+                // Transfer complete. Don't clear the flag, but
+                // disable the interrupt. Flag will be cleared when polled
+                dmac.channel[channel]
+                    .chintenclr
+                    .modify(|_, w| w.tcmpl().set_bit());
+                true
+            } else if dmac.channel[channel].chintflag.read().terr().bit_is_set() {
+                // Transfer error
+                dmac.channel[channel]
+                    .chintenclr
+                    .modify(|_, w| w.terr().set_bit());
+                true
+            } else {
+                false
+            };
 
-    impl<N> Interrupts<N>
-    where
-        N: InterruptNumber,
-    {
-        pub fn new<N0, N1, N2, N3, NOther>(
-            dmac_0: N0,
-            dmac_1: N1,
-            dmac_2: N2,
-            dmac_3: N3,
-            dmac_other: NOther,
-        ) -> Self
-        where
-            N0: NvicInterruptRegistration<N>,
-            N1: NvicInterruptRegistration<N>,
-            N2: NvicInterruptRegistration<N>,
-            N3: NvicInterruptRegistration<N>,
-            NOther: NvicInterruptRegistration<N>,
-        {
-            let n_0 = dmac_0.number();
-            dmac_0.occupy(on_interrupt_0);
-            unsafe { cortex_m::peripheral::NVIC::unmask(n_0) };
-
-            let n_1 = dmac_1.number();
-            dmac_1.occupy(on_interrupt_1);
-            unsafe { cortex_m::peripheral::NVIC::unmask(n_1) };
-
-            let n_2 = dmac_2.number();
-            dmac_2.occupy(on_interrupt_2);
-            unsafe { cortex_m::peripheral::NVIC::unmask(n_2) };
-
-            let n_3 = dmac_3.number();
-            dmac_3.occupy(on_interrupt_3);
-            unsafe { cortex_m::peripheral::NVIC::unmask(n_3) };
-
-            let n_other = dmac_other.number();
-            dmac_other.occupy(on_interrupt_other);
-            unsafe { cortex_m::peripheral::NVIC::unmask(n_other) };
-
-            Self {
-                _interrupt_0: n_0,
-                _interrupt_1: n_1,
-                _interrupt_2: n_2,
-                _interrupt_3: n_3,
-                _interrupt_other: n_other,
+            if wake {
+                dmac.channel[channel].chctrla.modify(|_, w| {
+                    w.enable().clear_bit();
+                    w.trigsrc().variant(TriggerSource::DISABLE)
+                });
+                WAKERS[channel].wake();
             }
         }
     }
-
-    fn on_interrupt(channel: usize) {
-        let dmac = unsafe { crate::pac::Peripherals::steal().DMAC };
-
-        let wake = if dmac.channel[channel].chintflag.read().tcmpl().bit_is_set() {
-            // Transfer complete. Don't clear the flag, but
-            // disable the interrupt. Flag will be cleared when polled
-            dmac.channel[channel]
-                .chintenclr
-                .modify(|_, w| w.tcmpl().set_bit());
-            true
-        } else if dmac.channel[channel].chintflag.read().terr().bit_is_set() {
-            // Transfer error
-            dmac.channel[channel]
-                .chintenclr
-                .modify(|_, w| w.terr().set_bit());
-            true
-        } else {
-            false
-        };
-
-        if wake {
-            dmac.channel[channel].chctrla.modify(|_, w| {
-                w.enable().clear_bit();
-                w.trigsrc().variant(TriggerSource::DISABLE)
-            });
-            WAKERS[channel].wake();
-        }
-    }
-
-    fn on_interrupt_0() {
-        on_interrupt(0);
-    }
-
-    fn on_interrupt_1() {
-        on_interrupt(1);
-    }
-
-    fn on_interrupt_2() {
-        on_interrupt(2);
-    }
-
-    fn on_interrupt_3() {
-        on_interrupt(3);
-    }
-
-    fn on_interrupt_other() {
-        let dmac = unsafe { crate::pac::Peripherals::steal().DMAC };
-
-        // Get pending channels, but ignore first 4 since they're handled by other
-        // interrupts.
-        let pending_channels = BitIter(dmac.intstatus.read().bits() & !0b1111);
-        for pend_chan in pending_channels {
-            on_interrupt(pend_chan as usize);
-        }
-    }
 }
-
-pub use impls::*;

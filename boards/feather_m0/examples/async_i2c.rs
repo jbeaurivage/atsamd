@@ -5,24 +5,28 @@
 use defmt_rtt as _;
 use panic_probe as _;
 
+use bsp::hal;
+use feather_m0 as bsp;
+use fugit::MillisDuration;
+use hal::{
+    clock::GenericClockController,
+    dmac::{Ch0, DmaController, PriorityLevel},
+    prelude::*,
+    sercom::{
+        i2c::{self, Config, I2cFutureDma},
+        Sercom3,
+    },
+};
+use rtic_monotonics::systick::Systick;
+
+atsamd_hal::bind_interrupts!(struct Irqs {
+    SERCOM3 => atsamd_hal::sercom::i2c::InterruptHandler<Sercom3>;
+    DMAC => atsamd_hal::dmac::InterruptHandler;
+});
+
 #[rtic::app(device = bsp::pac, dispatchers = [I2S])]
 mod app {
-    use bsp::{hal, pac};
-    use feather_m0 as bsp;
-    use fugit::MillisDuration;
-    use hal::{
-        clock::{enable_internal_32kosc, ClockGenId, ClockSource, GenericClockController},
-        dmac::{self, Ch0, DmaController, PriorityLevel},
-        prelude::*,
-        rtc::{Count32Mode, Rtc},
-        sercom::{
-            i2c::{self, Config, I2cFutureDma},
-            Interrupts,
-        },
-    };
-
-    #[monotonic(binds = RTC, default = true)]
-    type Monotonic = Rtc<Count32Mode>;
+    use super::*;
 
     #[shared]
     struct Shared {}
@@ -33,7 +37,7 @@ mod app {
     }
 
     #[init]
-    fn init(cx: init::Context) -> (Shared, Local, init::Monotonics) {
+    fn init(cx: init::Context) -> (Shared, Local) {
         let mut peripherals = cx.device;
         let _core = cx.core;
 
@@ -49,31 +53,11 @@ mod app {
         // Take SDA and SCL
         let (sda, scl) = (pins.sda, pins.scl);
 
-        let sercom3_irq = Interrupts::new(cortex_m_interrupt::take_nvic_interrupt!(
-            pac::Interrupt::SERCOM3,
-            2
-        ));
-        // tc4_irq.set_priority(2);
-
-        enable_internal_32kosc(&mut peripherals.SYSCTRL);
-        let timer_clock = clocks
-            .configure_gclk_divider_and_source(ClockGenId::GCLK2, 1, ClockSource::OSC32K, false)
-            .unwrap();
-        clocks.configure_standby(ClockGenId::GCLK2, true);
-
-        // Setup RTC monotonic
-        let rtc_clock = clocks.rtc(&timer_clock).unwrap();
-        let rtc = Rtc::count32_mode(peripherals.RTC, rtc_clock.freq(), &mut peripherals.PM);
-
         // Initialize DMA Controller
         let dmac = DmaController::init(peripherals.DMAC, &mut peripherals.PM);
-        // Get handle to IRQ
-        let dmac_irq = dmac::Interrupts::new(cortex_m_interrupt::take_nvic_interrupt!(
-            pac::Interrupt::DMAC,
-            2
-        ));
+
         // Turn dmac into an async controller
-        let mut dmac = dmac.into_future(dmac_irq);
+        let mut dmac = dmac.into_future(Irqs);
         // Get individual handles to DMA channels
         let channels = dmac.split();
 
@@ -89,14 +73,14 @@ mod app {
             pads,
             sercom3_clock.freq(),
         )
-        .baud(100.khz())
+        .baud(100.kHz())
         .enable()
-        .into_future(sercom3_irq)
+        .into_future(Irqs)
         .with_dma_channel(channel0);
 
         async_task::spawn().ok();
 
-        (Shared {}, Local { i2c }, init::Monotonics(rtc))
+        (Shared {}, Local { i2c })
     }
 
     #[task(local = [i2c])]
@@ -112,7 +96,7 @@ mod app {
             let mut buffer = [0xff; 4];
             i2c.read(0x76, &mut buffer).await.unwrap();
             defmt::info!("Read buffer: {:#x}", buffer);
-            crate::app::monotonics::delay(MillisDuration::<u32>::from_ticks(500).convert()).await;
+            Systick::delay(MillisDuration::<u32>::from_ticks(500).convert()).await;
         }
     }
 }

@@ -19,6 +19,8 @@
 //! Using the [`free`](DmaController::free) method will
 //! deinitialize the DMAC and return the underlying PAC object.
 
+use core::marker::PhantomData;
+
 use modular_bitfield::prelude::*;
 use seq_macro::seq;
 
@@ -97,7 +99,7 @@ with_num_channels!(define_channels_struct_future);
 /// Initialized DMA Controller
 pub struct DmaController<I = NoneT> {
     dmac: DMAC,
-    _interrupts: I,
+    _irqs: PhantomData<I>,
 }
 
 /// Mask representing which priority levels should be enabled/disabled
@@ -199,17 +201,32 @@ impl<T> DmaController<T> {
         }
     }
 
-    /// Use the [`DmaController`] in async mode. You are required to provide
-    /// interrupt sources.
+    /// Use the [`DmaController`] in async mode. You are required to provide the
+    /// struct created by the
+    /// [`bind_interrupts`](crate::bind_interrupts) macro to prove
+    /// that the interrupt sources have been correctly configured. This function
+    /// will automatically enable the relevant NVIC interrupt sources. However,
+    /// you are required to configure the desired interrupt priorities prior to
+    /// calling this method. Consult [`crate::async_hal::interrupts`]
+    /// module-level documentation for more information.
+    /// [`bind_interrupts`](crate::bind_interrupts).
     #[cfg(feature = "async")]
     #[inline]
-    pub fn into_future<N: cortex_m::interrupt::InterruptNumber>(
-        self,
-        interrupts: super::async_api::Interrupts<N>,
-    ) -> DmaController<super::async_api::Interrupts<N>> {
+    pub fn into_future<I>(self, _interrupts: I) -> DmaController<I>
+    where
+        I: crate::async_hal::interrupts::Binding<
+            crate::async_hal::interrupts::DMAC,
+            super::async_api::InterruptHandler,
+        >,
+    {
+        use crate::async_hal::interrupts::{InterruptSource, DMAC};
+
+        DMAC::unpend();
+        unsafe { DMAC::enable() };
+
         DmaController {
             dmac: self.dmac,
-            _interrupts: interrupts,
+            _irqs: PhantomData,
         }
     }
 
@@ -261,7 +278,7 @@ impl DmaController {
         dmac.ctrl.modify(|_, w| w.dmaenable().set_bit());
         Self {
             dmac,
-            _interrupts: NoneT,
+            _irqs: PhantomData,
         }
     }
 
@@ -290,7 +307,13 @@ impl DmaController {
 }
 
 #[cfg(feature = "async")]
-impl<I: cortex_m::interrupt::InterruptNumber> DmaController<I> {
+impl<I> DmaController<I>
+where
+    I: crate::async_hal::interrupts::Binding<
+        crate::async_hal::interrupts::DMAC,
+        super::async_api::InterruptHandler,
+    >,
+{
     /// Release the DMAC and return the register block.
     ///
     /// **Note**: The [`Channels`] struct is consumed by this method. This means
@@ -353,6 +376,12 @@ macro_rules! define_split_future {
 }
 
 #[cfg(feature = "async")]
-impl<I: cortex_m::interrupt::InterruptNumber> DmaController<super::async_api::Interrupts<I>> {
+impl<I> DmaController<I>
+where
+    I: crate::async_hal::interrupts::Binding<
+        crate::async_hal::interrupts::DMAC,
+        super::async_api::InterruptHandler,
+    >,
+{
     with_num_channels!(define_split_future);
 }
