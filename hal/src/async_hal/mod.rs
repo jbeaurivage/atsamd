@@ -15,7 +15,7 @@ pub mod timer;
 /// use atsamd_hal::bind_interrupts;
 ///
 /// bind_interrupts!(struct Irqs {
-///     SERCOM0 => sercom::InterruptHandler;
+///     SERCOM0 => artsamd_hal::sercom::i2c::InterruptHandler;
 /// });
 /// ```
 #[macro_export]
@@ -34,7 +34,9 @@ macro_rules! bind_interrupts {
             }
 
             $(
-                unsafe impl $crate::async_hal::interrupts::Binding<$crate::async_hal::interrupts::$irq, $handler> for $name {}
+                unsafe impl $crate::async_hal::interrupts::Binding<$crate::async_hal::interrupts::$irq, $handler> for $name
+                    where $crate::async_hal::interrupts::$irq: $crate::async_hal::interrupts::SingleInterruptSource
+                    {}
             )*
         )*
     };
@@ -51,6 +53,8 @@ macro_rules! bind_interrupts {
             }
         )+
 
-        unsafe impl $crate::async_hal::interrupts::Binding<$crate::async_hal::interrupts::$int_source, $handler> for $name {}
+        unsafe impl $crate::async_hal::interrupts::Binding<$crate::async_hal::interrupts::$int_source, $handler> for $name
+            where $crate::async_hal::interrupts::$int_source: $crate::async_hal::interrupts::MultipleInterruptSources
+            {}
     };
 }

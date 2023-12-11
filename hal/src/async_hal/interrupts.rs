@@ -1,10 +1,20 @@
-use core::mem;
-use core::sync::atomic::{compiler_fence, Ordering};
-use cortex_m::interrupt::InterruptNumber;
-use cortex_m::peripheral::NVIC;
+use crate::typelevel::Sealed;
+use core::{
+    mem,
+    sync::atomic::{compiler_fence, Ordering},
+};
+use cortex_m::{interrupt::InterruptNumber, peripheral::NVIC};
 use critical_section::CriticalSection;
 use paste::paste;
 use seq_macro::seq;
+
+/// Marker trait indicating that an interrupt source has one binding and
+/// one handler.
+pub trait SingleInterruptSource: Sealed {}
+
+/// Marker trait indicating that an interrupt source has multiple bindings and
+/// handlers.
+pub trait MultipleInterruptSources: Sealed {}
 
 macro_rules! declare_interrupts {
     ($($(#[$cfg:meta])* $irqs:ident),* $(,)?) => {
@@ -14,12 +24,17 @@ macro_rules! declare_interrupts {
             #[doc=stringify!($irqs)]
             #[doc=" typelevel interrupt."]
             pub enum $irqs {}
+
             $(#[$cfg])*
             impl $crate::typelevel::Sealed for $irqs{}
+
             $(#[$cfg])*
             impl $crate::async_hal::interrupts::Interrupt for $irqs {
                 const IRQ: crate::pac::Interrupt = crate::pac::Interrupt::$irqs;
             }
+
+            $(#[$cfg])*
+            impl $crate::async_hal::interrupts::SingleInterruptSource for $irqs {}
         )*
     }
 }
@@ -55,6 +70,9 @@ macro_rules! declare_multiple_interrupts {
                     $($crate::pac::Interrupt::$irq.set_priority(prio);)+
                 }
             }
+
+            $(#[$cfg])*
+            impl $crate::async_hal::interrupts::MultipleInterruptSources for $name {}
         }
     };
 }
