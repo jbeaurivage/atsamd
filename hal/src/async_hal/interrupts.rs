@@ -320,7 +320,7 @@ pub unsafe trait InterruptExt: InterruptNumber + Copy {
     /// Get the priority of the interrupt.
     #[inline]
     fn get_priority(self) -> Priority {
-        Priority::from(NVIC::get_priority(self))
+        Priority::hw2logical(NVIC::get_priority(self))
     }
 
     /// Set the interrupt priority.
@@ -331,7 +331,7 @@ pub unsafe trait InterruptExt: InterruptNumber + Copy {
 
             // On thumbv6, set_priority must do a RMW to change 8bit in a 32bit reg.
             #[cfg(feature = "thumbv6")]
-            critical_section::with(|_| nvic.set_priority(self, prio.into()));
+            critical_section::with(|_| nvic.set_priority(self, prio.logical2hw()));
             // On thumbv7+, set_priority does an atomic 8bit write, so no CS needed.
             #[cfg(not(feature = "thumbv6"))]
             nvic.set_priority(self, prio.into());
@@ -347,64 +347,84 @@ pub unsafe trait InterruptExt: InterruptNumber + Copy {
     fn set_priority_with_cs(self, _cs: CriticalSection, prio: Priority) {
         unsafe {
             let mut nvic = steal_nvic();
-            nvic.set_priority(self, prio.into());
+            nvic.set_priority(self, prio.logical2hw());
         }
     }
 }
 
 unsafe impl<T: InterruptNumber + Copy> InterruptExt for T {}
 
-impl From<u8> for Priority {
-    fn from(priority: u8) -> Self {
-        unsafe { mem::transmute(priority & PRIO_MASK) }
-    }
-}
-
-impl From<Priority> for u8 {
-    fn from(p: Priority) -> Self {
-        p as u8
-    }
-}
-
 #[cfg(feature = "thumbv6")]
-const PRIO_MASK: u8 = 0x60;
+const NVIC_PRIO_BITS: u8 = 2;
 #[cfg(feature = "thumbv7")]
-const PRIO_MASK: u8 = 0xe0;
+const NVIC_PRIO_BITS: u8 = 3;
 
-/// The interrupt priority level.
+/// Logical interrupt priority level.
 ///
-/// P0 represents the most urgent prioriry, whereas P7 represents the least
-/// urgent.
+/// P4 is the most urgent, and P1 is the least urgent priority.
 #[cfg(feature = "thumbv6")]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(u8)]
 #[allow(missing_docs)]
 pub enum Priority {
-    P0 = 0x0,
-    P1 = 0x20,
-    P2 = 0x40,
-    P3 = 0x60,
+    P1 = 1,
+    P2 = 2,
+    P3 = 3,
+    P4 = 4,
 }
 
-/// The interrupt priority level.
+/// Logical interrupt priority level.
 ///
-/// P0 represents the most urgent prioriry, whereas P7 represents the least
-/// urgent.
+/// P8 is the most urgent, and P1 is the least urgent priority.
 #[cfg(feature = "thumbv7")]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(u8)]
 #[allow(missing_docs)]
 pub enum Priority {
-    P0 = 0x0,
-    P1 = 0x20,
-    P2 = 0x40,
-    P3 = 0x60,
-    P4 = 0x80,
-    P5 = 0xa0,
-    P6 = 0xc0,
-    P7 = 0xe0,
+    P1 = 1,
+    P2 = 2,
+    P3 = 3,
+    P4 = 4,
+    P5 = 5,
+    P6 = 6,
+    P7 = 7,
+    P8 = 8,
+}
+
+impl Priority {
+    /// Convert a logical priority (where higher priority number = higher
+    /// priority level) to a hardware priority level (where lower priority
+    /// number = higher priority level).
+    ///
+    /// Taken from [`cortex-m-interrupt`]
+    ///
+    /// See LICENSE-MIT for the license.
+    ///
+    /// [`cortex-m-interrupt`]: https://github.com/datdenkikniet/cortex-m-interrupt
+    const fn logical2hw(self) -> u8 {
+        ((1 << NVIC_PRIO_BITS) - self as u8) << (8 - NVIC_PRIO_BITS)
+    }
+
+    /// Convert a hardware priority level (where lower priority number = higher
+    /// priority level) to a logical priority (where a higher priority number =
+    /// higher priority level).
+    ///
+    /// # Panics
+    ///
+    /// This method may only be used with allowed hardware priority levels. Ie,
+    /// * 0x00,
+    /// * 0x20,
+    /// * 0x40,
+    ///
+    /// and so on. Any other value will cause a panic. To save yourself some
+    /// trouble, use this method only with hardware priority values gotten
+    /// directly from the NVIC.
+    const fn hw2logical(prio: u8) -> Self {
+        assert!(prio % 0x20 == 0);
+        unsafe { mem::transmute((1 << NVIC_PRIO_BITS) - (prio >> (8 - NVIC_PRIO_BITS))) }
+    }
 }
 
 unsafe fn steal_nvic() -> NVIC {
