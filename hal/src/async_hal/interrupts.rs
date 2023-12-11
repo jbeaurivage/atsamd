@@ -403,7 +403,9 @@ impl Priority {
     /// See LICENSE-MIT for the license.
     ///
     /// [`cortex-m-interrupt`]: https://github.com/datdenkikniet/cortex-m-interrupt
-    const fn logical2hw(self) -> u8 {
+    #[inline]
+    #[must_use]
+    pub const fn logical2hw(self) -> u8 {
         ((1 << NVIC_PRIO_BITS) - self as u8) << (8 - NVIC_PRIO_BITS)
     }
 
@@ -421,7 +423,9 @@ impl Priority {
     /// and so on. Any other value will cause a panic. To save yourself some
     /// trouble, use this method only with hardware priority values gotten
     /// directly from the NVIC.
-    const fn hw2logical(prio: u8) -> Self {
+    #[inline]
+    #[must_use]
+    pub const fn hw2logical(prio: u8) -> Self {
         assert!(prio % 0x20 == 0);
         unsafe { mem::transmute((1 << NVIC_PRIO_BITS) - (prio >> (8 - NVIC_PRIO_BITS))) }
     }
