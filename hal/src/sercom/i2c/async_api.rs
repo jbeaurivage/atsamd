@@ -363,6 +363,13 @@ mod dma {
                 .await
                 .map_err(i2c::Error::Dma)?;
 
+            // Unfortunately, gotta take a polling approach here as there is no interrupt
+            // source that can notify us of an IDLE bus state. Fortunately, it's usually not
+            // long. 8-10 times around the loop will do the trick.
+            while !self.i2c.read_status().is_idle() {
+                core::hint::spin_loop();
+            }
+            self.i2c.read_status().check_bus_error()?;
             Ok(())
         }
 
@@ -397,7 +404,6 @@ mod dma {
             read_buf: &mut [u8],
         ) -> Result<(), i2c::Error> {
             self.write(addr, write_buf).await?;
-            // TODO may need some sort of delay here??
             self.read(addr, read_buf).await?;
             Ok(())
         }
