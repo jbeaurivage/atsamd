@@ -35,7 +35,7 @@ bitfield = "0.13"
 bitflags = "1.2.1"
 cipher = "0.3"
 critical-section = "1.1.2"
-cortex-m = { version = "0.7", features = ["critical-section-single-core"] }
+cortex-m = "0.7"
 embedded-hal = "0.2"
 fugit = "0.3"
 modular-bitfield = "0.11"
