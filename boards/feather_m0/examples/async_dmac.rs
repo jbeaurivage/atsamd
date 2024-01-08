@@ -3,7 +3,6 @@
 
 #![no_std]
 #![no_main]
-#![feature(type_alias_impl_trait)]
 
 use defmt_rtt as _;
 use panic_probe as _;
@@ -12,83 +11,63 @@ atsamd_hal::bind_interrupts!(struct Irqs {
     DMAC => atsamd_hal::dmac::InterruptHandler;
 });
 
-#[rtic::app(device = bsp::pac, dispatchers = [I2S])]
-mod app {
-    use bsp::hal;
-    use feather_m0 as bsp;
-    use hal::{
-        clock::GenericClockController,
-        dmac::{
-            Ch0, Channel, DmaController, PriorityLevel, ReadyFuture, TriggerAction, TriggerSource,
-        },
-    };
+use bsp::hal;
+use bsp::pac;
+use feather_m0 as bsp;
+use hal::{
+    clock::GenericClockController,
+    dmac::{DmaController, PriorityLevel, TriggerAction, TriggerSource},
+};
 
-    #[shared]
-    struct Shared {}
+#[embassy_executor::main]
+async fn main(_s: embassy_executor::Spawner) {
+    let mut peripherals = pac::Peripherals::take().unwrap();
+    let _core = pac::CorePeripherals::take().unwrap();
 
-    #[local]
-    struct Local {
-        channel: Channel<Ch0, ReadyFuture>,
-    }
+    let _clocks = GenericClockController::with_external_32kosc(
+        peripherals.GCLK,
+        &mut peripherals.PM,
+        &mut peripherals.SYSCTRL,
+        &mut peripherals.NVMCTRL,
+    );
 
-    #[init]
-    fn init(cx: init::Context) -> (Shared, Local) {
-        let mut peripherals = cx.device;
-        let _core = cx.core;
+    // Initialize DMA Controller
+    let dmac = DmaController::init(peripherals.DMAC, &mut peripherals.PM);
 
-        let _clocks = GenericClockController::with_external_32kosc(
-            peripherals.GCLK,
-            &mut peripherals.PM,
-            &mut peripherals.SYSCTRL,
-            &mut peripherals.NVMCTRL,
-        );
+    // Turn dmac into an async controller
+    let mut dmac = dmac.into_future(crate::Irqs);
+    // Get individual handles to DMA channels
+    let channels = dmac.split();
 
-        // Initialize DMA Controller
-        let dmac = DmaController::init(peripherals.DMAC, &mut peripherals.PM);
+    // Initialize DMA Channel 0
+    let mut channel = channels.0.init(PriorityLevel::LVL0);
 
-        // Turn dmac into an async controller
-        let mut dmac = dmac.into_future(crate::Irqs);
-        // Get individual handles to DMA channels
-        let channels = dmac.split();
+    let mut source = [0xff; 500];
+    let mut dest = [0x0; 500];
 
-        // Initialize DMA Channel 0
-        let channel = channels.0.init(PriorityLevel::LVL0);
+    defmt::info!(
+        "Launching a DMA transfer.\n\tSource: {}\n\tDestination: {}",
+        &source,
+        &dest
+    );
 
-        async_task::spawn().ok();
-        (Shared {}, Local { channel })
-    }
+    channel
+        .transfer_future(
+            &mut source,
+            &mut dest,
+            TriggerSource::DISABLE,
+            TriggerAction::BLOCK,
+        )
+        .await
+        .unwrap();
 
-    #[task(local = [channel])]
-    async fn async_task(cx: async_task::Context) {
-        let channel = cx.local.channel;
+    defmt::info!(
+        "Finished DMA transfer.\n\tSource: {}\n\tDestination: {}",
+        &source,
+        &dest
+    );
 
-        let mut source = [0xff; 500];
-        let mut dest = [0x0; 500];
-
-        defmt::info!(
-            "Launching a DMA transfer.\n\tSource: {}\n\tDestination: {}",
-            &source,
-            &dest
-        );
-
-        channel
-            .transfer_future(
-                &mut source,
-                &mut dest,
-                TriggerSource::DISABLE,
-                TriggerAction::BLOCK,
-            )
-            .await
-            .unwrap();
-
-        defmt::info!(
-            "Finished DMA transfer.\n\tSource: {}\n\tDestination: {}",
-            &source,
-            &dest
-        );
-
-        loop {
-            cortex_m::asm::wfi();
-        }
+    loop {
+        cortex_m::asm::wfi();
     }
 }

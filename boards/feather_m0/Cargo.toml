@@ -37,7 +37,7 @@ version = "0.3"
 optional = true
 
 [dev-dependencies]
-rtic = { version = "2.0.1", features = ["thumbv6-backend"] }
+embassy-executor = { version = "0.4.0", features = ["arch-cortex-m", "executor-thread", "task-arena-size-64"] }
 rtic-monotonics = { version = "1.3.0", features = ["cortex-m-systick", "systick-10khz"] }
 fugit = "0.3.6"
 cortex-m = "0.7"
@@ -47,11 +47,11 @@ ssd1306 = "0.7"
 embedded-graphics = "0.7.1"
 drogue-nom-utils = "0.1"
 nom = { version = "5", default-features = false }
-heapless = "0.7"
+heapless = "0.8"
 panic-halt = "0.2"
-panic-semihosting = "0.5"
+panic-semihosting = "0.6"
 defmt = "0.3"
-defmt-rtt = "0.3"
+defmt-rtt = "0.4"
 panic-probe = "0.3"
 
 [features]
@@ -71,7 +71,6 @@ max-channels = ["dma", "atsamd-hal/max-channels"]
 adalogger = []
 sdmmc = ["embedded-sdmmc", "atsamd-hal/sdmmc"]
 use_semihosting = []
-nightly = []
 
 [profile.dev]
 incremental = false
@@ -139,8 +138,8 @@ name = "adalogger"
 required-features = ["adalogger", "usb", "sdmmc", "unproven"]
 
 [[example]]
-name = "blinky_rtic"
-required-features = ["unproven", "nightly"]
+name = "blinky_monotonic"
+required-features = ["unproven"]
 
 [[example]]
 name = "uart"
@@ -152,24 +151,24 @@ required-features = ["dma"]
 
 [[example]]
 name = "async_dmac"
-required-features = ["dma", "atsamd-hal/async", "nightly"]
+required-features = ["dma", "atsamd-hal/async"]
 
 [[example]]
 name = "async_timer"
-required-features = ["atsamd-hal/async", "nightly"]
+required-features = ["atsamd-hal/async"]
 
 [[example]]
 name = "async_eic"
-required-features = ["atsamd-hal/async", "nightly"]
+required-features = ["atsamd-hal/async"]
 
 [[example]]
 name = "async_i2c"
-required-features = ["dma", "atsamd-hal/async", "nightly"]
+required-features = ["dma", "atsamd-hal/async"]
 
 [[example]]
 name = "async_spi"
-required-features = ["dma", "atsamd-hal/async", "nightly"]
+required-features = ["dma", "atsamd-hal/async"]
 
 [[example]]
 name = "async_uart"
-required-features = ["dma", "atsamd-hal/async", "nightly"]
+required-features = ["dma", "atsamd-hal/async"]

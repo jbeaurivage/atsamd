@@ -1,21 +1,18 @@
 #![no_std]
 #![no_main]
-#![feature(type_alias_impl_trait)]
 
 use defmt_rtt as _;
 use panic_probe as _;
 
 use bsp::hal;
+use bsp::pac;
 use feather_m0 as bsp;
 use fugit::MillisDuration;
 use hal::{
     clock::GenericClockController,
-    dmac::{Ch0, DmaController, PriorityLevel},
+    dmac::{DmaController, PriorityLevel},
     prelude::*,
-    sercom::{
-        i2c::{self, Config, I2cFutureDma},
-        Sercom3,
-    },
+    sercom::{i2c, Sercom3},
 };
 use rtic_monotonics::systick::Systick;
 
@@ -24,79 +21,57 @@ atsamd_hal::bind_interrupts!(struct Irqs {
     DMAC => atsamd_hal::dmac::InterruptHandler;
 });
 
-#[rtic::app(device = bsp::pac, dispatchers = [I2S])]
-mod app {
-    use super::*;
+#[embassy_executor::main]
+async fn main(_s: embassy_executor::Spawner) {
+    let mut peripherals = pac::Peripherals::take().unwrap();
+    let _core = pac::CorePeripherals::take().unwrap();
 
-    #[shared]
-    struct Shared {}
+    let mut clocks = GenericClockController::with_external_32kosc(
+        peripherals.GCLK,
+        &mut peripherals.PM,
+        &mut peripherals.SYSCTRL,
+        &mut peripherals.NVMCTRL,
+    );
 
-    #[local]
-    struct Local {
-        i2c: I2cFutureDma<Config<bsp::I2cPads>, Ch0>,
-    }
+    let pins = bsp::Pins::new(peripherals.PORT);
 
-    #[init]
-    fn init(cx: init::Context) -> (Shared, Local) {
-        let mut peripherals = cx.device;
-        let _core = cx.core;
+    // Take SDA and SCL
+    let (sda, scl) = (pins.sda, pins.scl);
 
-        let mut clocks = GenericClockController::with_external_32kosc(
-            peripherals.GCLK,
-            &mut peripherals.PM,
-            &mut peripherals.SYSCTRL,
-            &mut peripherals.NVMCTRL,
-        );
+    // Initialize DMA Controller
+    let dmac = DmaController::init(peripherals.DMAC, &mut peripherals.PM);
 
-        let pins = bsp::Pins::new(peripherals.PORT);
+    // Turn dmac into an async controller
+    let mut dmac = dmac.into_future(Irqs);
+    // Get individual handles to DMA channels
+    let channels = dmac.split();
 
-        // Take SDA and SCL
-        let (sda, scl) = (pins.sda, pins.scl);
+    // Initialize DMA Channel 0
+    let channel0 = channels.0.init(PriorityLevel::LVL0);
 
-        // Initialize DMA Controller
-        let dmac = DmaController::init(peripherals.DMAC, &mut peripherals.PM);
+    let gclk0 = clocks.gclk0();
+    let sercom3_clock = &clocks.sercom3_core(&gclk0).unwrap();
+    let pads = i2c::Pads::new(sda, scl);
+    let mut i2c = i2c::Config::new(
+        &peripherals.PM,
+        peripherals.SERCOM3,
+        pads,
+        sercom3_clock.freq(),
+    )
+    .baud(100.kHz())
+    .enable()
+    .into_future(Irqs)
+    .with_dma_channel(channel0);
 
-        // Turn dmac into an async controller
-        let mut dmac = dmac.into_future(Irqs);
-        // Get individual handles to DMA channels
-        let channels = dmac.split();
+    loop {
+        defmt::info!("Sending 0x00 to I2C device...");
+        // This test is based on the BMP388 barometer. Feel free to use any I2C
+        // peripheral you have on hand.
+        i2c.write(0x76, &[0x00]).await.unwrap();
 
-        // Initialize DMA Channel 0
-        let channel0 = channels.0.init(PriorityLevel::LVL0);
-
-        let gclk0 = clocks.gclk0();
-        let sercom3_clock = &clocks.sercom3_core(&gclk0).unwrap();
-        let pads = i2c::Pads::new(sda, scl);
-        let i2c = i2c::Config::new(
-            &peripherals.PM,
-            peripherals.SERCOM3,
-            pads,
-            sercom3_clock.freq(),
-        )
-        .baud(100.kHz())
-        .enable()
-        .into_future(Irqs)
-        .with_dma_channel(channel0);
-
-        async_task::spawn().ok();
-
-        (Shared {}, Local { i2c })
-    }
-
-    #[task(local = [i2c])]
-    async fn async_task(cx: async_task::Context) {
-        let i2c = cx.local.i2c;
-
-        loop {
-            defmt::info!("Sending 0x00 to I2C device...");
-            // This test is based on the BMP388 barometer. Feel free to use any I2C
-            // peripheral you have on hand.
-            i2c.write(0x76, &[0x00]).await.unwrap();
-
-            let mut buffer = [0xff; 4];
-            i2c.read(0x76, &mut buffer).await.unwrap();
-            defmt::info!("Read buffer: {:#x}", buffer);
-            Systick::delay(MillisDuration::<u32>::from_ticks(500).convert()).await;
-        }
+        let mut buffer = [0xff; 4];
+        i2c.read(0x76, &mut buffer).await.unwrap();
+        defmt::info!("Read buffer: {:#x}", buffer);
+        Systick::delay(MillisDuration::<u32>::from_ticks(500).convert()).await;
     }
 }

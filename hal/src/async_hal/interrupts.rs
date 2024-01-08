@@ -334,7 +334,7 @@ pub unsafe trait InterruptExt: InterruptNumber + Copy {
             critical_section::with(|_| nvic.set_priority(self, prio.logical2hw()));
             // On thumbv7+, set_priority does an atomic 8bit write, so no CS needed.
             #[cfg(not(feature = "thumbv6"))]
-            nvic.set_priority(self, prio.into());
+            nvic.set_priority(self, prio.logical2hw());
         }
     }
 

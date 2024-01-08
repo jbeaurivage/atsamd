@@ -164,6 +164,21 @@ crate::paste::item! {
             });
         }
 
+        /// Enable debouncing for this pin, with a configuration appropriate for debouncing physical buttons.
+        pub fn debounce(&mut self) {
+            self.eic.with_disable(|e| {
+                e.dprescaler.modify(|_, w| {
+                    w.tickon().set_bit()    // Use the 32k clock for debouncing.
+                    .states0().set_bit()    // Require 7 0 samples to see a falling edge.
+                    .states1().set_bit()    // Require 7 1 samples to see a rising edge.
+                    .prescaler0().div16()
+                    .prescaler1().div16()
+                });
+
+                e.debouncen.modify(|_, w| unsafe { w.bits($num) });
+            });
+        }
+
         /// Turn an EIC pin into a pin usable as a [`Future`](core::future::Future).
         /// The correct interrupt source is needed.
         #[cfg(feature = "async")]
