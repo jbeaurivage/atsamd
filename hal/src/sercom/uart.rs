@@ -969,10 +969,12 @@ where
         // TODO Is this a hardware bug???
 
         // usart.ctrlb.modify(|_, w| w.rxen().clear_bit());
-        // while usart.syncbusy.read().ctrlb().bit() || usart.ctrlb.read().rxen().bit_is_set() {}
+        // while usart.syncbusy.read().ctrlb().bit() ||
+        // usart.ctrlb.read().rxen().bit_is_set() {}
 
         // usart.ctrlb.modify(|_, w| w.rxen().set_bit());
-        // while usart.syncbusy.read().ctrlb().bit() || usart.ctrlb.read().rxen().bit_is_clear() {}
+        // while usart.syncbusy.read().ctrlb().bit() ||
+        // usart.ctrlb.read().rxen().bit_is_clear() {}
 
         for _ in 0..=2 {
             let _data = unsafe { self.config.as_mut().registers.read_data() };
