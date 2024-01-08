@@ -22,8 +22,10 @@ use crate::{
 // I2C DMA transfers
 //=============================================================================
 
-/// Token type representing an [`I2c`](super::i2c::I2c) for which the bus is
-/// ready to start a transaction. For use with
+/// Token type representing an [`I2c`] for which the bus is
+/// ready to start a transaction.
+///
+/// For use with
 /// [`send_with_dma`](super::i2c::I2c::send_with_dma) and
 /// [`receive_with_dma`](super::i2c::I2c::send_with_dma).
 pub struct I2cBusReady;
@@ -59,7 +61,7 @@ impl<C: i2c::AnyConfig> I2c<C> {
     /// # fn init_transfer<A: i2c::AnyConfig, C: AnyChannel<dmac::Ready>>(i2c: I2c<A>, chan0: C, buf_src: &'static mut [u8]){
     /// // Assume `i2c` is a fully configured `I2c`, and `chan0` a fully configured `dmac::Channel`.
     /// let token = i2c.init_dma_transfer()?;
-    /// i2c.send_with_dma(ADDRESS, token, buf_src, chan0, |_| {});
+    /// i2c.send_with_dma(ADDRESS, token, buf_src, chan0);
     /// # }
     /// ```
     ///

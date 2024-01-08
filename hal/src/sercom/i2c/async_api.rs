@@ -67,8 +67,9 @@ where
 }
 
 #[cfg(feature = "dma")]
-/// Convenience type for a [`I2cFuture`] in DMA
-/// mode. The type parameter `I` represents the DMA channel ID (`ChX`).
+/// Convenience type for a [`I2cFuture`] in DMA mode.
+///
+/// The type parameter `I` represents the DMA channel ID (`ChX`).
 pub type I2cFutureDma<C, I> = I2cFuture<C, crate::dmac::Channel<I, crate::dmac::ReadyFuture>>;
 
 impl<C, S, D> I2cFuture<C, D>
@@ -174,9 +175,10 @@ where
         Ok(())
     }
 
-    /// Asynchronously write from a buffer, then read into a buffer. This is an
-    /// extremely common pattern: writing a register address, then
-    /// read its value from the slave.
+    /// Asynchronously write from a buffer, then read into a buffer.
+    ///
+    /// This is an extremely common pattern: for example, writing a register
+    /// address, then read its value from the slave.
     #[inline]
     pub async fn write_read(
         &mut self,
@@ -194,17 +196,6 @@ where
         self.i2c.config.as_mut().registers.read_one()
     }
 }
-
-// impl<C, N, D> Drop for I2cFuture<C, N, D>
-// where
-//     C: AnyConfig,
-//     N: InterruptNumber,
-// {
-//     #[inline]
-//     fn drop(&mut self) {
-//         cortex_m::peripheral::NVIC::mask(self.irq_number);
-//     }
-// }
 
 impl<C, N> AsRef<I2c<C>> for I2cFuture<C, N>
 where
@@ -394,7 +385,9 @@ mod dma {
         }
 
         /// Asynchronously write from a buffer, then read into a buffer, all
-        /// using DMA. This is an extremely common pattern: writing a
+        /// using DMA.
+        ///
+        /// This is an extremely common pattern: for example, writing a
         /// register address, then read its value from the slave.
         #[inline]
         pub async fn write_read(

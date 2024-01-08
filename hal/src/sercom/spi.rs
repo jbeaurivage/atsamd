@@ -311,6 +311,27 @@ let (chan0, _, spi, _) = dma_transfer.wait();
 [`dmac`]: crate::dmac
 "
 )]
+//! # `async` operation
+//!
+//! When the `async` Cargo feature is enabled, a [`Spi`] can be used for
+//! `async` operations. Configuring a [`Spi`] in async mode is relatively
+//! simple:
+//!
+//! * Bind the corresponding `SERCOM` interrupt source to the SPI
+//!   [`InterruptHandler`] (refer to the module-level [`async_hal`]
+//!   documentation for more information).
+//! * Turn a previously configured [`Spi`] into a [`SpiFuture`] by calling
+//!   [`Spi::into_future`]
+//! * Optionally, add DMA channels to RX, TX or both using
+//!   [`SpiFuture::with_rx_dma_channel`] and [`SpiFuture::with_tx_dma_channel`].
+//!   The API is exactly the same whether DMA channels are used or not.
+//! * Use the provided async methods for reading or writing to the SPI
+//!   peripheral. [`SpiFuture`] implements [`embedded_hal_async::spi::SpiBus`].
+//!
+//! `SpiFuture` implements `AsRef<Spi>` and `AsMut<Spi>` so
+//! that it can be reconfigured using the regular [`Spi`] methods.
+//!
+//! [`async_hal`]: crate::async_hal
 
 use core::convert::TryFrom;
 use core::marker::PhantomData;

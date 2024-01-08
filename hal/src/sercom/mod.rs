@@ -86,7 +86,7 @@ pub trait Sercom: Sealed + Deref<Target = sercom0::RegisterBlock> {
     fn enable_apb_clock(&mut self, ctrl: &APB_CLK_CTRL);
 
     /// Get a reference to the sercom from a
-    /// [`Peripherals`](crate::pac::Peripherals) block
+    /// [`Peripherals`] block
     fn reg_block(peripherals: &mut Peripherals) -> &crate::pac::sercom0::RegisterBlock;
 
     /// Get a reference to this [`Sercom`]'s associated RX Waker

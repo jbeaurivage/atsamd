@@ -51,10 +51,12 @@ where
     A: Capability,
     S: Sercom,
 {
-    /// Turn an [`Spi`] into a [`SpiFuture`]. In cases where the underlying
-    /// [`Spi`] is [`Duplex`], reading words need to be accompanied with sending
-    /// a no-op word. By default it is set to 0x00, but you can configure it
-    /// by using the [`nop_word`](SpiFuture::nop_word) method.
+    /// Turn an [`Spi`] into a [`SpiFuture`].
+    ///
+    /// In cases where the underlying [`Spi`] is [`Duplex`], reading words need
+    /// to be accompanied with sending a no-op word. By default it is set to
+    /// 0x00, but you can configure it by using the
+    /// [`nop_word`](SpiFuture::nop_word) method.
     #[inline]
     pub fn into_future<I>(self, _interrupts: I) -> SpiFuture<C, A>
     where
@@ -110,7 +112,9 @@ pub type SpiFutureTx<C> = SpiFuture<C, Tx>;
 
 #[cfg(feature = "dma")]
 /// Convenience type for a [`SpiFuture`] with RX and TX capabilities in DMA
-/// mode. The type parameter `R` represents the RX DMA channel ID (`ChX`), and
+/// mode.
+///
+/// The type parameter `R` represents the RX DMA channel ID (`ChX`), and
 /// `T` represents the TX DMA channel ID.
 pub type SpiFutureDuplexDma<C, R, T> = SpiFuture<
     C,
@@ -120,14 +124,16 @@ pub type SpiFutureDuplexDma<C, R, T> = SpiFuture<
 >;
 
 #[cfg(feature = "dma")]
-/// Convenience type for a [`SpiFuture`] with RX capabilities in DMA mode. The
-/// type parameter `R` represents the RX DMA channel ID (`ChX`).
+/// Convenience type for a [`SpiFuture`] with RX capabilities in DMA mode.
+///
+/// The type parameter `R` represents the RX DMA channel ID (`ChX`).
 pub type SpiFutureRxDma<C, R> =
     SpiFuture<C, Rx, crate::dmac::Channel<R, crate::dmac::ReadyFuture>, NoneT>;
 
 #[cfg(feature = "dma")]
-/// Convenience type for a [`SpiFuture`] with TX capabilities in DMA mode. The
-/// type parameter `T` represents the TX DMA channel ID (`ChX`).
+/// Convenience type for a [`SpiFuture`] with TX capabilities in DMA mode.
+///
+/// The type parameter `T` represents the TX DMA channel ID (`ChX`).
 pub type SpiFutureTxDma<C, T> =
     SpiFuture<C, Tx, NoneT, crate::dmac::Channel<T, crate::dmac::ReadyFuture>>;
 
@@ -187,10 +193,11 @@ where
     DataWidth: AsPrimitive<C::Word>,
     S: Sercom,
 {
-    /// Read words into a buffer asynchronously, word by word. Since we are
-    /// using a [`Duplex`] [`SpiFuture`], we need to send a word simultaneously
-    /// while receiving one. This `no-op` word is configurable via the
-    /// [`nop_word`](Self::nop_word) method.
+    /// Read words into a buffer asynchronously, word by word.
+    ///
+    /// Since we are using a [`Duplex`] [`SpiFuture`], we need to send a word
+    /// simultaneously while receiving one. This `no-op` word is
+    /// configurable via the [`nop_word`](Self::nop_word) method.
     #[inline]
     pub async fn read(&mut self, buffer: &mut [C::Word]) -> Result<(), Error> {
         for byte in buffer.iter_mut() {
@@ -235,9 +242,10 @@ where
         Ok(word)
     }
 
-    /// Perform a transfer, word by word. No-op words will be written if `read`
-    /// is longer than `write`. Extra words are ignored if `write` is longer
-    /// than `read`.
+    /// Perform a transfer, word by word.
+    ///
+    /// No-op words will be written if `read` is longer than `write`. Extra
+    /// words are ignored if `write` is longer than `read`.
     async fn transfer_word_by_word(
         &mut self,
         read: &mut [C::Word],

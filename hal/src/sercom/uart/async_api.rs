@@ -54,8 +54,8 @@ where
     S: Sercom,
 {
     /// Turn a [`Uart`] into a [`UartFuture`]. This method is only available for
-    /// [`Uart`]s which have a [`Tx`](crate::sercom::uart::Tx),
-    /// [`Rx`](crate::sercom::uart::Rx) or [`Duplex`] [`Capability`].
+    /// [`Uart`]s which have a [`Tx`],
+    /// [`Rx`] or [`Duplex`] [`Capability`].
     #[inline]
     pub fn into_future<I>(self, _interrupts: I) -> UartFuture<C, D>
     where
@@ -84,9 +84,9 @@ where
     }
 }
 
-/// `async` version of [`Uart`].
+/// `async` version of a [`Uart`].
 ///
-/// Create this struct by calling [`I2c::into_future`](I2c::into_future).
+/// Create this struct by calling [`Uart::into_future`](Uart::into_future).
 pub struct UartFuture<C, D, R = NoneT, T = NoneT>
 where
     C: ValidConfig,
@@ -114,7 +114,9 @@ pub type UartFutureTxDuplex<C> = UartFuture<C, TxDuplex>;
 
 #[cfg(feature = "dma")]
 /// Convenience type for a [`UartFuture`] with RX and TX capabilities in DMA
-/// mode. The type parameter `R` represents the RX DMA channel ID (`ChX`), and
+/// mode.
+///
+/// The type parameter `R` represents the RX DMA channel ID (`ChX`), and
 /// `T` represents the TX DMA channel ID.
 pub type UartFutureDuplexDma<C, R, T> = UartFuture<
     C,
@@ -125,24 +127,28 @@ pub type UartFutureDuplexDma<C, R, T> = UartFuture<
 
 #[cfg(feature = "dma")]
 /// Convenience type for a RX-only [`UartFuture`] in DMA mode.
+///
 /// The type parameter `R` represents the RX DMA channel ID (`ChX`).
 pub type UartFutureRxDma<C, R> =
     UartFuture<C, Rx, crate::dmac::Channel<R, crate::dmac::ReadyFuture>, NoneT>;
 
 #[cfg(feature = "dma")]
 /// Convenience type for the RX half of a [`Duplex`] [`UartFuture`] in DMA mode.
+///
 /// The type parameter `R` represents the RX DMA channel ID (`ChX`).
 pub type UartFutureRxDuplexDma<C, R> =
     UartFuture<C, RxDuplex, crate::dmac::Channel<R, crate::dmac::ReadyFuture>, NoneT>;
 
 #[cfg(feature = "dma")]
 /// Convenience type for a TX-only [`UartFuture`] in DMA mode.
+///
 /// The type parameter `T` represents the TX DMA channel ID (`ChX`).
 pub type UartFutureTxDma<C, T> =
     UartFuture<C, Tx, NoneT, crate::dmac::Channel<T, crate::dmac::ReadyFuture>>;
 
 #[cfg(feature = "dma")]
 /// Convenience type for the TX half of a [`Duplex`] [`UartFuture`] in DMA mode.
+///
 /// The type parameter `T` represents the TX DMA channel ID (`ChX`).
 pub type UartFutureTxDuplexDma<C, T> =
     UartFuture<C, TxDuplex, NoneT, crate::dmac::Channel<T, crate::dmac::ReadyFuture>>;
@@ -246,7 +252,7 @@ where
     S: Sercom,
     DataReg: AsPrimitive<C::Word>,
 {
-    /// Add a DMA channel for receiving words
+    /// Use a DMA channel for receiving words on the RX line
     #[cfg(feature = "dma")]
     #[inline]
     pub fn with_rx_dma_channel<Chan: crate::dmac::AnyChannel<Status = crate::dmac::ReadyFuture>>(
@@ -277,9 +283,10 @@ where
     DataReg: AsPrimitive<C::Word>,
 {
     /// Read the specified number of [`Word`](crate::sercom::uart::Word)s into a
-    /// buffer, word by word. In case of an error, returns `Err(Error, usize)`
-    /// where the `usize` represents the number of valid words read before
-    /// the error occured.
+    /// buffer, word by word.
+    ///
+    /// In case of an error, returns `Err(Error, usize)` where the `usize`
+    /// represents the number of valid words read before the error occured.
     #[inline]
     pub async fn read(&mut self, buffer: &mut [C::Word]) -> Result<(), (Error, usize)> {
         for (i, word) in buffer.iter_mut().enumerate() {
@@ -302,7 +309,7 @@ where
     D: Transmit,
     S: Sercom,
 {
-    /// Add a DMA channel for sending words
+    /// Use a DMA channel for sending words on the TX line
     #[cfg(feature = "dma")]
     #[inline]
     pub fn with_tx_dma_channel<Chan: crate::dmac::AnyChannel<Status = crate::dmac::ReadyFuture>>(
