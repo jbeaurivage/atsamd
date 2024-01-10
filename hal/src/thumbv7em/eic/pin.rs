@@ -259,7 +259,7 @@ crate::paste::item! {
     }
 
     #[cfg(feature = "async")]
-    impl<GPIO> embedded_hal_alpha::digital::ErrorType for [<$PadType $num>]<GPIO>
+    impl<GPIO> embedded_hal_1::digital::ErrorType for [<$PadType $num>]<GPIO>
     where
         GPIO: AnyPin,
         Self: InputPin<Error = core::convert::Infallible>,
