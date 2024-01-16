@@ -1,0 +1,5 @@
+[peripherals.serial_number]
+variants = ["1", "2"]
+
+[peripherals.rtc]
+variants = ["thumbv6", "thumbv7"]

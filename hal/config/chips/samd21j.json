@@ -1,0 +1,13 @@
+{
+	"name": "samd21j",
+	"peripherals": [
+		{
+			"name": "serial_number",
+			"variant": "1"
+		},
+		{
+			"name": "rtc",
+			"variant": "thumbv6"
+		}
+	]
+}

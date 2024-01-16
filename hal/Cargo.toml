@@ -30,6 +30,7 @@ features = ["samd21g", "samd21g-rt", "unproven", "usb", "dma"]
 #===============================================================================
 
 [dependencies]
+atsamd-hal-macros = { version = "0.1.0", path = "../atsamd-hal-macros" }
 aes = "0.7.5"
 bitfield = "0.13"
 bitflags = "1.2.1"
@@ -112,13 +113,13 @@ samd11d = ["samd11", "atsamd11d", "periph-d11d", "pins-d11d"]
 
 samd21e = ["samd21", "atsamd21e", "periph-d21e", "pins-d21e"]
 samd21g = ["samd21", "atsamd21g", "periph-d21g", "pins-d21g"]
-samd21j = ["samd21", "atsamd21j", "periph-d21j", "pins-d21j"]
+samd21j = ["samd21", "atsamd21j", "periph-d21j", "pins-d21j", "atsamd-hal-macros/samd21j"]
 
 samd21el = ["samd21", "atsamd21e", "periph-d21el", "pins-d21el"]
 samd21gl = ["samd21", "atsamd21g", "periph-d21gl", "pins-d21gl"]
 
 samd51g = ["samd51", "atsamd51g", "periph-d51g", "pins-d51g"]
-samd51j = ["samd51", "atsamd51j", "periph-d51j", "pins-d51j"]
+samd51j = ["samd51", "atsamd51j", "periph-d51j", "pins-d51j", "atsamd-hal-macros/samd51j"]
 samd51n = ["samd51", "atsamd51n", "periph-d51n", "pins-d51n"]
 samd51p = ["samd51", "atsamd51p", "periph-d51p", "pins-d51p"]
 

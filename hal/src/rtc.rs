@@ -2,6 +2,7 @@
 use crate::ehal::timer::{CountDown, Periodic};
 use crate::pac::rtc::{MODE0, MODE2};
 use crate::pac::RTC;
+use crate::periph_variant;
 use crate::time::{Hertz, Nanoseconds};
 use crate::timer_traits::InterruptDrivenTimer;
 use crate::typelevel::Sealed;
@@ -21,14 +22,14 @@ pub type Duration = fugit::Duration<u32, 1, 32_768>;
 use rtic_monotonic::Monotonic;
 
 // SAMx5x imports
-#[cfg(feature = "thumbv7")]
+#[periph_variant("rtc", variant = "thumbv7")]
 use crate::pac::{
     rtc::mode0::ctrla::PRESCALERSELECT_A, rtc::mode0::CTRLA as MODE0_CTRLA,
     rtc::mode2::CTRLA as MODE2_CTRLA, MCLK as PM,
 };
 
 // SAMD11/SAMD21 imports
-#[cfg(feature = "thumbv6")]
+#[periph_variant("rtc", variant = "thumbv6")]
 use crate::pac::{
     rtc::mode0::ctrl::PRESCALERSELECT_A, rtc::mode0::CTRL as MODE0_CTRLA,
     rtc::mode2::CTRL as MODE2_CTRLA, PM,

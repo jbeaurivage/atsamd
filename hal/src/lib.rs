@@ -5,6 +5,8 @@ pub use fugit;
 pub use paste;
 pub mod typelevel;
 
+pub(crate) use atsamd_hal_macros::periph_variant;
+
 #[cfg(not(any(feature = "library", feature = "device")))]
 compile_error!(
     "The HAL is usually built for a specific target device, selected using a \

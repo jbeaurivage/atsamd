@@ -1,0 +1,9 @@
+[package]
+name = "macros-test"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+atsamd-hal-macros = { version = "0.1.0", path = "../atsamd-hal-macros", features = ["samd21j"] }
