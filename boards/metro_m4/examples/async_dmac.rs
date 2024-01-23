@@ -15,7 +15,7 @@ use hal::{
 };
 use metro_m4 as bsp;
 
-atsamd_hal::bind_interrupts!(struct Irqs {
+atsamd_hal::bind_multiple_interrupts!(struct Irqs {
     DMAC: [DMAC_0, DMAC_1, DMAC_2, DMAC_OTHER] => atsamd_hal::dmac::InterruptHandler;
 });
 

@@ -15,6 +15,8 @@ pub struct InterruptHandler<S: Sercom> {
     _sercom: PhantomData<S>,
 }
 
+impl<S: Sercom> crate::typelevel::Sealed for InterruptHandler<S> {}
+
 impl<S: Sercom> Handler<S::Interrupt> for InterruptHandler<S> {
     // TODO the ISR gets called twice on every MB request???
     #[inline]

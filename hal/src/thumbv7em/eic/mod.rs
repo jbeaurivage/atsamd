@@ -107,8 +107,11 @@ mod async_api {
         _private: (),
     }
 
+    impl crate::typelevel::Sealed for InterruptHandler {}
+
     seq_macro::seq!(N in 0..=15 {
         paste::paste! {
+
             impl Handler<crate::async_hal::interrupts::[<EIC_EXTINT_ ~N>]> for InterruptHandler {
                 unsafe fn on_interrupt() {
                     let eic = unsafe { pac::Peripherals::steal().EIC };

@@ -31,6 +31,8 @@ mod async_api {
         _private: (),
     }
 
+    impl crate::typelevel::Sealed for InterruptHandler {}
+
     impl Handler<EicInterrupt> for InterruptHandler {
         unsafe fn on_interrupt() {
             let eic = pac::Peripherals::steal().EIC;

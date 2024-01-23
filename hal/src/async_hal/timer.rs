@@ -1,3 +1,8 @@
+//! Async APIs for timers.
+//!
+//! Use [`TimerCounter::into_future`] to convert a regular [`TimerCounter`] into
+//! an asynchronous [`TimerFuture`].
+
 use crate::{
     async_hal::interrupts::{Binding, Handler, Interrupt},
     ehal::timer::CountDown,
@@ -55,8 +60,10 @@ pub trait AsyncCount16: Count16 + Sealed {
     /// Index of this TC in the `STATE` tracker
     const STATE_ID: usize;
 
+    /// Get a reference to the timer's register block
     fn reg_block(peripherals: &pac::Peripherals) -> &RegBlock;
 
+    /// Interrupt type for this timer
     type Interrupt: Interrupt;
 }
 
@@ -65,6 +72,8 @@ pub struct InterruptHandler<T: AsyncCount16> {
     _private: (),
     _tc: PhantomData<T>,
 }
+
+impl<T: AsyncCount16> crate::typelevel::Sealed for InterruptHandler<T> {}
 
 impl<A: AsyncCount16> Handler<A::Interrupt> for InterruptHandler<A> {
     /// Callback function when the corresponding TC interrupt is fired

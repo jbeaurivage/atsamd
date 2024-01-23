@@ -16,6 +16,8 @@ pub struct InterruptHandler<S: Sercom> {
     _sercom: PhantomData<S>,
 }
 
+impl<S: Sercom> crate::typelevel::Sealed for InterruptHandler<S> {}
+
 impl<S: Sercom> Handler<S::Interrupt> for InterruptHandler<S> {
     #[inline]
     unsafe fn on_interrupt() {
@@ -78,7 +80,7 @@ where
 
 /// `async` version of [`Spi`].
 ///
-/// Create this struct by calling [`I2c::into_future`](I2c::into_future).
+/// Create this struct by calling [`Spi::into_future`](Spi::into_future).
 pub struct SpiFuture<C, A, R = NoneT, T = NoneT>
 where
     C: ValidConfig,

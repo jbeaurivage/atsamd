@@ -1,3 +1,39 @@
+//! # Async interrupts
+//!
+//! This module provides APIs for working with interrupts, tailored towards
+//! async peripherals.
+//!
+//! Asynchronous programming relies on tasks that can be paused and resumed
+//! without blocking the entire program. When an async task is waiting for a
+//! particular event, such as data from a peripheral, it enters a suspended
+//! state. It is crucial that the task is properly woken up when the expected
+//! event occurs to resume its execution.
+//!
+//! By having peripherals take interrupts, they can signal the occurrence of
+//! relevant events, effectively waking up the associated async tasks. This
+//! ensures that the async runtime can schedule and resume tasks in a timely
+//! manner, providing the responsiveness required in embedded systems.
+//!
+//! ## Typelevel and enum-level interrupts
+//!
+//! There are two main ways of representing interrupts in the HAL: either by
+//! using [`pac::Interrupt`], where each interrupt is represented as an enum
+//! variant, or by using the typelevel interrupts defined in this module. Each
+//! interrupt source *that is usable with async peripherals* is declared as a
+//! struct with the same name of the corresponsing [`pac::Interrupt`] variant.
+//! Therefore, two distinct traits are needed to perform basic tasks on
+//! interrupt types:
+//!
+//! * Use [`Interrupt`] when dealing with the typelevel interrupt types defined
+//!   in this module;
+//! * Use [`InterruptExt`] when dealing with enum-level interrupt types defined
+//!   in [`pac`].
+//!
+//! [`pac::Interrupt`]: crate::pac::Interrupt
+//! [`Interrupt`]: crate::async_hal::interrupts::Interrupt
+//! [`InterruptExt`]: crate::async_hal::interrupts::InterruptExt
+//! [`pac`]: crate::pac
+
 use crate::typelevel::Sealed;
 use core::{
     mem,
@@ -10,10 +46,14 @@ use seq_macro::seq;
 
 /// Marker trait indicating that an interrupt source has one binding and
 /// one handler.
+///
+/// May not be implemented outside of this HAL.
 pub trait SingleInterruptSource: Sealed {}
 
 /// Marker trait indicating that an interrupt source has multiple bindings and
 /// handlers.
+///
+/// May not be implemented outside of this HAL.
 pub trait MultipleInterruptSources: Sealed {}
 
 macro_rules! declare_interrupts {
@@ -39,9 +79,10 @@ macro_rules! declare_interrupts {
     }
 }
 
-// Useful when we need to bind multiple interrupt sources to the same handler.
-// Calling the `InterruptSource` methods on the created struct will act on all
-// interrupt sources at once.
+/// Useful when we need to bind multiple interrupt sources to the same handler.
+/// Calling the `InterruptSource` methods on the created struct will act on all
+/// interrupt sources at once.
+// Lint allowed because the macro is unused for thumbv6 devices.
 #[allow(unused_macros)]
 macro_rules! declare_multiple_interrupts {
     ($(#[$cfg:meta])* $name:ident: [ $($irq:ident),+ $(,)? ]) => {
@@ -81,9 +122,6 @@ macro_rules! declare_multiple_interrupts {
 #[cfg(all(feature = "dma", feature = "thumbv7"))]
 declare_multiple_interrupts!(DMAC: [DMAC_0, DMAC_1, DMAC_2, DMAC_OTHER]);
 
-#[cfg(all(feature = "dma", feature = "thumbv7"))]
-declare_interrupts!(DMAC_OTHER);
-
 #[cfg(all(feature = "dma", feature = "thumbv6"))]
 declare_interrupts!(DMAC);
 
@@ -121,12 +159,16 @@ seq!(N in 0..= 15 {
     }
 });
 
-/// Interrupt source. This trait may implemented directly when multiple
-/// interrupt sources are needed to operate a single peripheral (eg, SERCOM and
-/// DMAC for thumbv7 devices). If using one interrupt source per peripheral,
+/// An interrupt source that may have one or many interrupt bindings.
+///
+/// This trait may implemented directly when multiple interrupt sources are
+/// needed to operate a single peripheral (eg, SERCOM and DMAC for thumbv7
+/// devices). If using one interrupt source per peripheral,
 /// implement [`Interrupt`] instead. When implemented on a type that handles
 /// multiple interrupt sources, the methods will act on all interrupt sources at
 /// once.
+///
+/// May not be implemented outside of this HAL.
 pub trait InterruptSource: crate::typelevel::Sealed {
     /// Enable the interrupt.
     ///
@@ -165,13 +207,14 @@ impl<T: Interrupt> InterruptSource for T {
 
 /// Type-level interrupt.
 ///
-/// This trait is implemented for all typelevel single interrupt types in this
-/// module.
+/// This trait is implemented for all typelevel single interrupt types defined
+/// in this module. May not be implemented outside of this HAL.
 pub trait Interrupt: crate::typelevel::Sealed {
     /// Interrupt enum variant.
     ///
-    /// This allows going from typelevel interrupts (one type per interrupt) to
-    /// non-typelevel interrupts (a single `Interrupt` enum type, with one
+    /// This allows going from typelevel interrupts (one type per interrupt,
+    /// defined in [`this module`](self)) to non-typelevel interrupts (a
+    /// single [`Interrupt`](crate::pac::Interrupt) enum type, with one
     /// variant per interrupt).
     const IRQ: crate::pac::Interrupt;
 
@@ -227,20 +270,24 @@ pub trait Interrupt: crate::typelevel::Sealed {
         Self::IRQ.set_priority(prio)
     }
 
-    /// Set the interrupt priority with an already-acquired critical section
+    /// Set the interrupt priority with an already-acquired critical section.
+    ///
+    /// Equivalent to [`set_priority`](Self::set_priority), except you pass a
+    /// [`CriticalSection`] to prove you've already acquired a critical
+    /// section. This prevents acquiring another one, which saves code size.
     #[inline]
     fn set_priority_with_cs(cs: critical_section::CriticalSection, prio: Priority) {
         Self::IRQ.set_priority_with_cs(cs, prio)
     }
 }
 
-/// Interrupt handler trait.
+/// Interrupt handler.
 ///
 /// Drivers that need to handle interrupts implement this trait.
 /// The user must ensure `on_interrupt()` is called every time the interrupt
 /// fires. Drivers must use use [`Binding`] to assert at compile time that the
 /// user has done so.
-pub trait Handler<I: InterruptSource> {
+pub trait Handler<I: InterruptSource>: Sealed {
     /// Interrupt handler function.
     ///
     /// Must be called every time the `I` interrupt fires, synchronously from
@@ -265,9 +312,11 @@ pub trait Handler<I: InterruptSource> {
 /// This allows drivers to check bindings at compile-time.
 pub unsafe trait Binding<I: InterruptSource, H: Handler<I>> {}
 
-/// Represents an interrupt type that can be configured by the HAL to handle
+/// An interrupt type that can be configured by the HAL to handle
 /// interrupts.
-pub unsafe trait InterruptExt: InterruptNumber + Copy {
+///
+/// The PAC defined enum-level interrupts implement this trait.
+pub trait InterruptExt: InterruptNumber + Copy {
     /// Enable the interrupt.
     ///
     /// # Safety
@@ -338,11 +387,11 @@ pub unsafe trait InterruptExt: InterruptNumber + Copy {
         }
     }
 
-    /// Set the interrupt priority with an already-acquired critical section
+    /// Set the interrupt priority with an already-acquired critical section.
     ///
-    /// Equivalent to `set_priority`, except you pass a `CriticalSection` to
-    /// prove you've already acquired a critical section. This prevents
-    /// acquiring another one, which saves code size.
+    /// Equivalent to [`set_priority`](Self::set_priority), except you pass a
+    /// [`CriticalSection`] to prove you've already acquired a critical
+    /// section. This prevents acquiring another one, which saves code size.
     #[inline]
     fn set_priority_with_cs(self, _cs: CriticalSection, prio: Priority) {
         unsafe {
@@ -352,7 +401,7 @@ pub unsafe trait InterruptExt: InterruptNumber + Copy {
     }
 }
 
-unsafe impl<T: InterruptNumber + Copy> InterruptExt for T {}
+impl<T: InterruptNumber + Copy> InterruptExt for T {}
 
 #[cfg(feature = "thumbv6")]
 const NVIC_PRIO_BITS: u8 = 2;
@@ -419,8 +468,9 @@ impl Priority {
     /// * 0x00,
     /// * 0x20,
     /// * 0x40,
+    /// * and so on.
     ///
-    /// and so on. Any other value will cause a panic. To save yourself some
+    /// Any other value will cause a panic. To save yourself some
     /// trouble, use this method only with hardware priority values gotten
     /// directly from the NVIC.
     #[inline]

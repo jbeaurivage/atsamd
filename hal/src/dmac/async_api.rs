@@ -6,10 +6,12 @@ use crate::{
     util::BitIter,
 };
 
-// Interrupt handler for the DMAC peripheral.
+/// Interrupt handler for the DMAC peripheral.
 pub struct InterruptHandler {
     _private: (),
 }
+
+impl crate::typelevel::Sealed for InterruptHandler {}
 
 #[cfg(feature = "thumbv6")]
 impl Handler<DMAC> for InterruptHandler {
