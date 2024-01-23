@@ -163,19 +163,28 @@ sercom!(apbbmask: (2, 3));
 sercom!(apbdmask: (4, 7));
 
 #[allow(dead_code)]
-#[cfg(feature = "samd11")]
+#[cfg(all(
+    feature = "has-sercom1",
+    not(feature = "has-sercom3"),
+    not(feature = "has-sercom5"),
+    not(feature = "has-sercom7")
+))]
 const NUM_SERCOM: usize = 2;
 
 #[allow(dead_code)]
-#[cfg(feature = "samd21e")]
+#[cfg(all(
+    feature = "has-sercom3",
+    not(feature = "has-sercom5"),
+    not(feature = "has-sercom7")
+))]
 const NUM_SERCOM: usize = 4;
 
 #[allow(dead_code)]
-#[cfg(any(feature = "periph-d21g", feature = "samd51g", feature = "samd51j"))]
+#[cfg(all(feature = "has-sercom5", not(feature = "has-sercom7")))]
 const NUM_SERCOM: usize = 6;
 
 #[allow(dead_code)]
-#[cfg(feature = "periph-d51n")]
+#[cfg(feature = "has-sercom7")]
 const NUM_SERCOM: usize = 8;
 
 #[cfg(feature = "async")]

@@ -27,18 +27,23 @@ use crate::thumbv6m::timer;
 use crate::thumbv7em::timer;
 
 #[cfg(feature = "has-tc1")]
+#[allow(unused_imports)]
 use crate::pac::TC1;
 
-#[cfg(all(feature = "has-tc2", not(feature = "samd11")))]
+#[cfg(feature = "has-tc2")]
+#[allow(unused_imports)]
 use crate::pac::TC2;
 
 #[cfg(feature = "has-tc3")]
+#[allow(unused_imports)]
 use crate::pac::TC3;
 
 #[cfg(feature = "has-tc4")]
+#[allow(unused_imports)]
 use crate::pac::TC4;
 
 #[cfg(feature = "has-tc5")]
+#[allow(unused_imports)]
 use crate::pac::TC5;
 
 use timer::{Count16, TimerCounter};
