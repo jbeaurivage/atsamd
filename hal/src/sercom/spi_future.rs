@@ -1,4 +1,3 @@
-#![allow(rustdoc::broken_intra_doc_links)]
 //! A [`Future`]-like interface for SPI transactions
 //!
 //! An [`SpiFuture`] takes ownership of an [`Spi`] `struct` and a `[u8]`-like
@@ -171,6 +170,8 @@
 //! [`Waker`]: core::task::Waker
 //! [`Poll`]: core::task::Poll
 //! [RTIC]: https://rtic.rs/
+
+#![allow(rustdoc::broken_intra_doc_links)]
 
 use core::convert::Infallible;
 use core::task::Poll;
