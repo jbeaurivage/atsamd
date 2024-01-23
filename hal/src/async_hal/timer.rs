@@ -29,7 +29,7 @@ use crate::thumbv7em::timer;
 #[cfg(feature = "has-tc1")]
 use crate::pac::TC1;
 
-#[cfg(feature = "has-tc2")]
+#[cfg(all(feature = "has-tc2", not(feature = "samd11")))]
 use crate::pac::TC2;
 
 #[cfg(feature = "has-tc3")]
