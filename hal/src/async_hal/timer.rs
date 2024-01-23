@@ -133,9 +133,9 @@ impl_async_count16!((TC3, 0), (TC4, 1), (TC5, 2));
 #[cfg(feature = "samd21")]
 const NUM_TIMERS: usize = 3;
 
-#[cfg(feature = "samd51g")]
+#[cfg(any(feature = "samd51g", feature = "periph-e51g"))]
 impl_async_count16!((TC2, 0), (TC3, 1));
-#[cfg(feature = "samd51g")]
+#[cfg(any(feature = "samd51g", feature = "periph-e51g"))]
 const NUM_TIMERS: usize = 2;
 
 #[cfg(feature = "periph-d51j")]
