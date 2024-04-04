@@ -73,10 +73,13 @@ use nb::Error::WouldBlock;
 use num_traits::{AsPrimitive, PrimInt};
 
 impl embedded_hal_nb::serial::Error for Error {
+    #[allow(unreachable_patterns)]
     fn kind(&self) -> embedded_hal_nb::serial::ErrorKind {
         match self {
             Error::Overflow => embedded_hal_nb::serial::ErrorKind::Overrun,
             Error::LengthError => embedded_hal_nb::serial::ErrorKind::Other,
+            // Pattern reachable when "dma" feature is enabled
+            _ => embedded_hal_nb::serial::ErrorKind::Other,
         }
     }
 }

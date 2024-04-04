@@ -5,7 +5,7 @@
 
 use crate::{
     async_hal::interrupts::{Binding, Handler, Interrupt},
-    ehal::timer::CountDown,
+    ehal_02::timer::CountDown,
     pac,
     timer_traits::InterruptDrivenTimer,
     typelevel::Sealed,

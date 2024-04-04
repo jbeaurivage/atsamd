@@ -471,21 +471,6 @@ pub enum Error {
     Dma(crate::dmac::Error),
 }
 
-#[cfg(feature = "async")]
-impl embedded_hal_async::spi::Error for Error {
-    // _ pattern reachable when "dma" feature enabled.
-    #[allow(unreachable_patterns)]
-    fn kind(&self) -> embedded_hal_async::spi::ErrorKind {
-        use embedded_hal_async::spi::ErrorKind;
-
-        match self {
-            Error::Overflow => ErrorKind::Overrun,
-            Error::LengthError => ErrorKind::Other,
-            _ => ErrorKind::Other,
-        }
-    }
-}
-
 //=============================================================================
 // Operating mode
 //=============================================================================
