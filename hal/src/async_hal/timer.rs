@@ -10,6 +10,7 @@ use crate::{
     timer_traits::InterruptDrivenTimer,
     typelevel::Sealed,
 };
+use atsamd_hal_macros::hal_cfg;
 use core::{
     future::poll_fn,
     marker::PhantomData,
@@ -20,41 +21,37 @@ use embassy_sync::waitqueue::AtomicWaker;
 use fugit::NanosDurationU32;
 use portable_atomic::AtomicBool;
 
-#[cfg(feature = "thumbv6")]
-use crate::thumbv6m::timer;
+use crate::peripherals::timer;
 
-#[cfg(feature = "thumbv7")]
-use crate::thumbv7em::timer;
-
-#[cfg(feature = "has-tc1")]
+#[hal_cfg("tc1")]
 #[allow(unused_imports)]
 use crate::pac::TC1;
 
-#[cfg(feature = "has-tc2")]
+#[hal_cfg("tc2")]
 #[allow(unused_imports)]
 use crate::pac::TC2;
 
-#[cfg(feature = "has-tc3")]
+#[hal_cfg("tc3")]
 #[allow(unused_imports)]
 use crate::pac::TC3;
 
-#[cfg(feature = "has-tc4")]
+#[hal_cfg("tc4")]
 #[allow(unused_imports)]
 use crate::pac::TC4;
 
-#[cfg(feature = "has-tc5")]
+#[hal_cfg("tc5")]
 #[allow(unused_imports)]
 use crate::pac::TC5;
 
 use timer::{Count16, TimerCounter};
 
-#[cfg(feature = "periph-d11c")]
+#[hal_cfg("tc1-d11")]
 type RegBlock = pac::tc1::RegisterBlock;
 
-#[cfg(feature = "periph-d21")]
+#[hal_cfg("tc3-d21")]
 type RegBlock = pac::tc3::RegisterBlock;
 
-#[cfg(feature = "periph-d51")]
+#[hal_cfg("tc1-d5x")]
 type RegBlock = pac::tc0::RegisterBlock;
 
 /// Trait enabling the use of a Timer/Counter in async mode. Specifically, this
@@ -105,42 +102,55 @@ impl<A: AsyncCount16> Handler<A::Interrupt> for InterruptHandler<A> {
 }
 
 macro_rules! impl_async_count16 {
-        ($(($TC: ident, $id: expr)),+) => {
-            $(
-                impl AsyncCount16 for $TC {
-                    const STATE_ID: usize = $id;
+    ($TC: ident, $id: expr) => {
+        impl AsyncCount16 for $TC {
+            const STATE_ID: usize = $id;
 
-                    type Interrupt = crate::async_hal::interrupts::$TC;
+            type Interrupt = crate::async_hal::interrupts::$TC;
 
+            fn reg_block(peripherals: &pac::Peripherals) -> &crate::async_hal::timer::RegBlock {
+                &*peripherals.$TC
+            }
+        }
 
-                    fn reg_block(peripherals: &pac::Peripherals) -> &crate::async_hal::timer::RegBlock {
-                        &*peripherals.$TC
-                    }
-                }
+        impl Sealed for $TC {}
+    };
+}
 
-                impl Sealed for $TC {}
-            )+
-        };
-    }
+#[hal_cfg("tc1-d11")]
+impl_async_count16!(TC1, 0);
 
-#[cfg(feature = "samd11")]
-impl_async_count16!((TC1, 0));
-#[cfg(feature = "samd11")]
+#[hal_cfg("tc3-d21")]
+impl_async_count16!(TC3, 0);
+
+#[hal_cfg("tc4-d21")]
+impl_async_count16!(TC4, 1);
+
+#[hal_cfg("tc5-d21")]
+impl_async_count16!(TC5, 2);
+
+#[hal_cfg("tc2-d5x")]
+impl_async_count16!(TC2, 0);
+
+#[hal_cfg("tc3-d5x")]
+impl_async_count16!(TC3, 1);
+
+#[hal_cfg("tc4-d5x")]
+impl_async_count16!(TC4, 2);
+
+#[hal_cfg("tc5-d5x")]
+impl_async_count16!(TC5, 3);
+
+// Reserve space for the max number of timer peripherals based on chip type,
+// even though some wakers may not be used on some chips if they actually don't
+// exist on variant's hardware
+#[hal_cfg("tc1-d11")]
 const NUM_TIMERS: usize = 1;
 
-#[cfg(feature = "samd21")]
-impl_async_count16!((TC3, 0), (TC4, 1), (TC5, 2));
-#[cfg(feature = "samd21")]
+#[hal_cfg("tc3-d21")]
 const NUM_TIMERS: usize = 3;
 
-#[cfg(any(feature = "samd51g", feature = "periph-e51g"))]
-impl_async_count16!((TC2, 0), (TC3, 1));
-#[cfg(any(feature = "samd51g", feature = "periph-e51g"))]
-const NUM_TIMERS: usize = 2;
-
-#[cfg(feature = "periph-d51j")]
-impl_async_count16!((TC2, 0), (TC3, 1), (TC4, 2), (TC5, 3));
-#[cfg(feature = "periph-d51j")]
+#[hal_cfg("tc3-d5x")]
 const NUM_TIMERS: usize = 4;
 
 impl<T> TimerCounter<T>

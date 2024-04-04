@@ -171,7 +171,7 @@
 //! [`Poll`]: core::task::Poll
 //! [RTIC]: https://rtic.rs/
 
-#![allow(rustdoc::broken_intra_doc_links)]
+use atsamd_hal_macros::hal_cfg;
 
 use core::convert::Infallible;
 use core::task::Poll;
@@ -183,7 +183,7 @@ use crate::typelevel::NoneT;
 
 use super::spi::{AnySpi, Error, Flags};
 
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("sercom0-d5x")]
 use {
     super::spi::{
         Capability, Config, DynLength, OpMode, Spi, StaticLength, ValidConfig, ValidPads,
@@ -191,13 +191,13 @@ use {
     typenum::Unsigned,
 };
 
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
 use core::mem::size_of;
 
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
 type Data = u16;
 
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("sercom0-d5x")]
 type Data = u32;
 
 //=============================================================================
@@ -207,13 +207,13 @@ type Data = u32;
 /// Trait used to verify the [`SpiFuture`] buffer length
 #[allow(clippy::len_without_is_empty)]
 pub trait CheckBufLen: AnySpi {
-    #[cfg(feature = "thumbv7")]
+    #[hal_cfg("sercom0-d5x")]
     /// [`Spi`] transaction length
     ///
     /// This value is zero for an [`Spi`] with [`DynLength`]
     const LEN: usize = <Self::Size as Unsigned>::USIZE;
 
-    #[cfg(feature = "thumbv6")]
+    #[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
     /// [`Spi`] transaction length
     ///
     /// [`Spi`]: super::spi::Spi
@@ -268,10 +268,10 @@ pub trait CheckBufLen: AnySpi {
     }
 }
 
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
 impl<S: AnySpi> CheckBufLen for S {}
 
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("sercom0-d5x")]
 impl<P, M, L, A> CheckBufLen for Spi<Config<P, M, L>, A>
 where
     Config<P, M, L>: ValidConfig,
@@ -282,7 +282,7 @@ where
 {
 }
 
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("sercom0-d5x")]
 impl<P, M, A> CheckBufLen for Spi<Config<P, M, DynLength>, A>
 where
     Config<P, M, DynLength>: ValidConfig,

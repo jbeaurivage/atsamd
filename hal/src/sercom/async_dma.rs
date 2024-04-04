@@ -4,6 +4,8 @@
 //! See the [`mod@uart`], [`mod@i2c`] and [`mod@spi`] modules for the
 //! corresponding DMA transfer implementations.
 
+use atsamd_hal_macros::hal_macro_helper;
+
 use crate::dmac::{AnyChannel, Beat, Buffer, Error, ReadyFuture, TriggerAction};
 use core::ops::Range;
 
@@ -92,6 +94,7 @@ pub(super) async fn read_dma<T: Beat, S: Sercom>(
 }
 
 /// Perform a SERCOM DMA read with a provided [`Buffer`]
+#[hal_macro_helper]
 pub(super) async fn read_dma_buffer<T, B, S>(
     channel: &mut impl AnyChannel<Status = ReadyFuture>,
     sercom_ptr: SercomPtr<T>,
@@ -102,10 +105,10 @@ where
     B: Buffer<Beat = T>,
     S: Sercom,
 {
-    #[cfg(feature = "thumbv7")]
+    #[hal_cfg("dmac-d5x")]
     let trigger_action = TriggerAction::BURST;
 
-    #[cfg(feature = "thumbv6")]
+    #[hal_cfg(any("dmac-d11", "dmac-d21"))]
     let trigger_action = TriggerAction::BEAT;
 
     channel
@@ -128,6 +131,7 @@ pub(super) async fn write_dma<T: Beat, S: Sercom>(
 }
 
 /// Perform a SERCOM DMA write with a provided [`Buffer`]
+#[hal_macro_helper]
 pub(super) async fn write_dma_buffer<T, B, S>(
     channel: &mut impl AnyChannel<Status = ReadyFuture>,
     sercom_ptr: SercomPtr<T>,
@@ -138,10 +142,10 @@ where
     B: Buffer<Beat = T>,
     S: Sercom,
 {
-    #[cfg(feature = "thumbv7")]
+    #[hal_cfg("dmac-d5x")]
     let trigger_action = TriggerAction::BURST;
 
-    #[cfg(feature = "thumbv6")]
+    #[hal_cfg(any("dmac-d11", "dmac-d21"))]
     let trigger_action = TriggerAction::BEAT;
 
     channel

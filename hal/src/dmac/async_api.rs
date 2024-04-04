@@ -1,5 +1,7 @@
 //! APIs for async DMAC operations.
 
+use atsamd_hal_macros::hal_cfg;
+
 use crate::{
     async_hal::interrupts::{Handler, DMAC},
     dmac::{waker::WAKERS, TriggerSource},
@@ -13,7 +15,7 @@ pub struct InterruptHandler {
 
 impl crate::typelevel::Sealed for InterruptHandler {}
 
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("dmac-d11", "dmac-d21"))]
 impl Handler<DMAC> for InterruptHandler {
     unsafe fn on_interrupt() {
         // SAFETY: Here we can't go through the `with_chid` method to safely access
@@ -59,7 +61,7 @@ impl Handler<DMAC> for InterruptHandler {
     }
 }
 
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("dmac-d5x")]
 impl Handler<DMAC> for InterruptHandler {
     unsafe fn on_interrupt() {
         let dmac = unsafe { crate::pac::Peripherals::steal().DMAC };

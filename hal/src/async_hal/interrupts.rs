@@ -35,14 +35,13 @@
 //! [`pac`]: crate::pac
 
 use crate::typelevel::Sealed;
+use atsamd_hal_macros::{hal_cfg, hal_macro_helper};
 use core::{
     mem,
     sync::atomic::{compiler_fence, Ordering},
 };
 use cortex_m::{interrupt::InterruptNumber, peripheral::NVIC};
 use critical_section::CriticalSection;
-use paste::paste;
-use seq_macro::seq;
 
 /// Marker trait indicating that an interrupt source has one binding and
 /// one handler.
@@ -86,7 +85,7 @@ macro_rules! declare_interrupts {
 #[allow(unused_macros)]
 macro_rules! declare_multiple_interrupts {
     ($(#[$cfg:meta])* $name:ident: [ $($irq:ident),+ $(,)? ]) => {
-        paste! {
+        ::paste::paste! {
             $(#[$cfg])*
             pub enum $name {}
 
@@ -119,39 +118,84 @@ macro_rules! declare_multiple_interrupts {
 }
 
 // ---------- DMAC Interrupts ---------- //
-#[cfg(all(feature = "dma", feature = "thumbv7"))]
+#[cfg(feature = "dma")]
+#[hal_cfg("dmac-d5x")]
 declare_multiple_interrupts!(DMAC: [DMAC_0, DMAC_1, DMAC_2, DMAC_OTHER]);
 
-#[cfg(all(feature = "dma", feature = "thumbv6"))]
+#[cfg(feature = "dma")]
+#[hal_cfg(any("dmac-d11", "dmac-d21"))]
 declare_interrupts!(DMAC);
 
 // ----------  SERCOM Interrupts ---------- //
-seq!(N in 0..=7 {
-    paste! {
-        #[cfg(all(feature = "has-" sercom~N, feature = "thumbv6"))]
-        declare_interrupts!(SERCOM~N);
-        #[cfg(all(feature = "has-" sercom~N, feature = "thumbv7"))]
-        declare_multiple_interrupts!([<SERCOM ~N>]: [ [<SERCOM ~N _0>], [<SERCOM ~N _1>], [<SERCOM ~N _2>], [<SERCOM ~N _OTHER>] ]);
-    }
-});
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
+declare_interrupts!(SERCOM0);
+
+#[hal_cfg(any("sercom1-d11", "sercom1-d21"))]
+declare_interrupts!(SERCOM1);
+
+#[hal_cfg(any("sercom2-d11", "sercom2-d21"))]
+declare_interrupts!(SERCOM2);
+
+#[hal_cfg("sercom3-d21")]
+declare_interrupts!(SERCOM3);
+
+#[hal_cfg("sercom4-d21")]
+declare_interrupts!(SERCOM4);
+
+#[hal_cfg("sercom5-d21")]
+declare_interrupts!(SERCOM5);
+
+#[hal_cfg("sercom0-d5x")]
+declare_multiple_interrupts!(SERCOM0: [SERCOM0_0, SERCOM0_1, SERCOM0_2, SERCOM0_OTHER ]);
+
+#[hal_cfg("sercom1-d5x")]
+declare_multiple_interrupts!(SERCOM1: [SERCOM1_0, SERCOM1_1, SERCOM1_2, SERCOM1_OTHER ]);
+
+#[hal_cfg("sercom2-d5x")]
+declare_multiple_interrupts!(SERCOM2: [SERCOM0_2, SERCOM2_1, SERCOM2_2, SERCOM2_OTHER ]);
+
+#[hal_cfg("sercom3-d5x")]
+declare_multiple_interrupts!(SERCOM3: [SERCOM3_0, SERCOM3_1, SERCOM3_2, SERCOM3_OTHER ]);
+
+#[hal_cfg("sercom4-d5x")]
+declare_multiple_interrupts!(SERCOM4: [SERCOM4_0, SERCOM4_1, SERCOM4_2, SERCOM4_OTHER ]);
+
+#[hal_cfg("sercom5-d5x")]
+declare_multiple_interrupts!(SERCOM5: [SERCOM5_0, SERCOM5_1, SERCOM5_2, SERCOM5_OTHER ]);
+
+#[hal_cfg("sercom6-d5x")]
+declare_multiple_interrupts!(SERCOM6: [SERCOM6_0, SERCOM6_1, SERCOM6_2, SERCOM6_OTHER ]);
+
+#[hal_cfg("sercom7-d5x")]
+declare_multiple_interrupts!(SERCOM7: [SERCOM7_0, SERCOM7_1, SERCOM7_2, SERCOM7_OTHER ]);
 
 // ----------  TC Interrupts ---------- //
-seq!(N in 0..=5{
-    paste! {
-        declare_interrupts! {
-            #[cfg(feature = "has-" tc~N)]
-            TC~N
-        }
-    }
-});
+
+#[hal_cfg("tc0")]
+declare_interrupts!(TC0);
+
+#[hal_cfg("tc1")]
+declare_interrupts!(TC1);
+
+#[hal_cfg("tc2")]
+declare_interrupts!(TC2);
+
+#[hal_cfg("tc3")]
+declare_interrupts!(TC3);
+
+#[hal_cfg("tc4")]
+declare_interrupts!(TC4);
+
+#[hal_cfg("tc5")]
+declare_interrupts!(TC5);
 
 // ----------  EIC Interrupt ---------- //
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("eic-d11", "eic-d21"))]
 declare_interrupts!(EIC);
 
-#[cfg(feature = "thumbv7")]
-seq!(N in 0..= 15 {
-    paste! {
+#[hal_cfg("eic-d5x")]
+seq_macro::seq!(N in 0..= 15 {
+    paste::paste! {
         declare_interrupts! {
             EIC_EXTINT_~N
         }
@@ -336,11 +380,11 @@ pub trait InterruptExt: InterruptNumber + Copy {
     }
 
     /// Check if interrupt is being handled.
-    #[inline]
-    #[cfg(not(feature = "thumbv6"))]
-    fn is_active(self) -> bool {
-        NVIC::is_active(self)
-    }
+    // #[inline]
+    // #[hal_cfg("nvic-d5x")]
+    // fn is_active(self) -> bool {
+    //     NVIC::is_active(self)
+    // }
 
     /// Check if interrupt is enabled.
     #[inline]
@@ -374,15 +418,16 @@ pub trait InterruptExt: InterruptNumber + Copy {
 
     /// Set the interrupt priority.
     #[inline]
+    #[hal_macro_helper]
     fn set_priority(self, prio: Priority) {
         unsafe {
             let mut nvic = steal_nvic();
 
             // On thumbv6, set_priority must do a RMW to change 8bit in a 32bit reg.
-            #[cfg(feature = "thumbv6")]
+            #[hal_cfg(any("nvic-d11", "nvic-d21"))]
             critical_section::with(|_| nvic.set_priority(self, prio.logical2hw()));
             // On thumbv7+, set_priority does an atomic 8bit write, so no CS needed.
-            #[cfg(not(feature = "thumbv6"))]
+            #[hal_cfg("nvic-d5x")]
             nvic.set_priority(self, prio.logical2hw());
         }
     }
@@ -403,15 +448,15 @@ pub trait InterruptExt: InterruptNumber + Copy {
 
 impl<T: InterruptNumber + Copy> InterruptExt for T {}
 
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("nvic-d11", "nvic-d21"))]
 const NVIC_PRIO_BITS: u8 = 2;
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("nvic-d5x")]
 const NVIC_PRIO_BITS: u8 = 3;
 
 /// Logical interrupt priority level.
 ///
 /// P4 is the most urgent, and P1 is the least urgent priority.
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("nvic-d11", "nvic-d21"))]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(u8)]
@@ -426,7 +471,7 @@ pub enum Priority {
 /// Logical interrupt priority level.
 ///
 /// P8 is the most urgent, and P1 is the least urgent priority.
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("nvic-d5x")]
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd)]
 #[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[repr(u8)]

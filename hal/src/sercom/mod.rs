@@ -2,45 +2,44 @@
 //!
 //! The SERCOM module is used to configure the SERCOM peripherals as USART, SPI
 //! or I2C interfaces.
-#![cfg_attr(
-    feature = "thumbv7",
-    doc = "
-# Undocumented features
- 
-The ATSAMx5x chips contain certain features that aren't documented in the datasheet. 
-These features are implemented in the HAL based on experimentation with certain boards
-which have verifiably demonstrated that those features work as intended.
+//! # Undocumented features
+//!
+//! The ATSAMx5x chips contain certain features that aren't documented in the
+//! datasheet. These features are implemented in the HAL based on
+//! experimentation with certain boards which have verifiably demonstrated that
+//! those features work as intended.
+//!
+//! * [`UndocIoSet1`](pad::UndocIoSet1): Implement an undocumented `IoSet` for
+//!   PA16, PA17,
+//! PB22 & PB23 configured for [`Sercom1`]. The pygamer & feather_m4 use this
+//! combination, but it is not listed as valid in the datasheet.
+//!
+//! * [`UndocIoSet2`](pad::UndocIoSet2): Implement an undocumented `IoSet` for
+//!   PA00, PA01,
+//! PB22 & PB23 configured for [`Sercom1`]. The itsybitsy_m4 uses this
+//! combination, but it is not listed as valid in the datasheet.
+//!
+//! * [`PB02`] is I2C-capable according to metro_m4. As such, [`PB02`]
+//! implements [`IsI2cPad`].
+//!
+//! * [`PB03`] is I2C-capable according to metro_m4. As such, [`PB03`]
+//! implements [`IsI2cPad`](pad::IsI2cPad).
+//!
+//! [`PB02`]: crate::gpio::pin::PB02
+//! [`PB03`]: crate::gpio::pin::PB03
+//! [`IsI2cPad`]: pad::IsI2cPad
 
-* [`UndocIoSet1`](pad::UndocIoSet1): Implement an undocumented `IoSet` for PA16, PA17,
-PB22 & PB23 configured for [`Sercom1`]. The pygamer & feather_m4 use this combination,
-but it is not listed as valid in the datasheet.
-
-* [`UndocIoSet2`](pad::UndocIoSet2): Implement an undocumented `IoSet` for PA00, PA01,
-PB22 & PB23 configured for [`Sercom1`]. The itsybitsy_m4 uses this combination, but it is
-not listed as valid in the datasheet.
-
-* [`PB02`] is I2C-capable according to metro_m4. As such, [`PB02`]
-implements [`IsI2cPad`].
-
-* [`PB03`] is I2C-capable according to metro_m4. As such, [`PB03`]
-implements [`IsI2cPad`](pad::IsI2cPad).
-
-[`PB02`]: crate::gpio::pin::PB02
-[`PB03`]: crate::gpio::pin::PB03
-[`IsI2cPad`]: pad::IsI2cPad
-"
-)]
+use atsamd_hal_macros::hal_cfg;
 
 use core::ops::Deref;
 
-use paste::paste;
-use seq_macro::seq;
+use crate::pac;
+use pac::sercom0;
+use pac::Peripherals;
 
-use crate::pac::{self, sercom0, Peripherals};
-
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("sercom0-d5x")]
 use pac::MCLK as APB_CLK_CTRL;
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
 use pac::PM as APB_CLK_CTRL;
 
 #[cfg(feature = "dma")]
@@ -98,93 +97,105 @@ pub trait Sercom: Sealed + Deref<Target = sercom0::RegisterBlock> {
     #[cfg(feature = "async")]
     #[inline]
     fn rx_waker() -> &'static embassy_sync::waitqueue::AtomicWaker {
-        &async_api::RX_WAKERS[Self::NUM]
+        &crate::sercom::async_api::RX_WAKERS[Self::NUM]
     }
 
     /// Get a reference to this [`Sercom`]'s associated TX Waker
     #[cfg(feature = "async")]
     #[inline]
     fn tx_waker() -> &'static embassy_sync::waitqueue::AtomicWaker {
-        &async_api::TX_WAKERS[Self::NUM]
+        &crate::sercom::async_api::TX_WAKERS[Self::NUM]
     }
 }
 
 macro_rules! sercom {
-    ( $apbmask:ident: ($start:literal, $end:literal) ) => {
-        seq!(N in $start..=$end {
-            paste! {
-                #[cfg(feature = "has-" sercom~N)]
-                use pac::SERCOM~N;
-                /// Type alias for the corresponding SERCOM instance
-                #[cfg(feature = "has-" sercom~N)]
-                pub type Sercom~N = SERCOM~N;
-                #[cfg(feature = "has-" sercom~N)]
-                impl Sealed for Sercom~N {}
-                #[cfg(feature = "has-" sercom~N)]
-                impl Sercom for Sercom~N {
-                    const NUM: usize = N;
+    ( $apbmask:ident, $N:expr, $alias:ident, $pac_type:ident, $pac_rx:ident, $pac_tx:ident, $pac_modify:ident) => {
+        use pac::$pac_type;
+        /// Type alias for the corresponding SERCOM instance
+        pub type $alias = $pac_type;
+        impl Sealed for $alias {}
+        impl Sercom for $alias {
+            const NUM: usize = $N;
+            #[cfg(feature = "dma")]
+            const DMA_RX_TRIGGER: TriggerSource = TriggerSource::$pac_rx;
+            #[cfg(feature = "dma")]
+            const DMA_TX_TRIGGER: TriggerSource = TriggerSource::$pac_tx;
 
-                    #[cfg(feature = "dma")]
-                    const DMA_RX_TRIGGER: TriggerSource = TriggerSource::[<SERCOM~N _RX>];
+            #[cfg(feature = "async")]
+            #[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
+            type Interrupt = crate::async_hal::interrupts::$pac_type;
 
-                    #[cfg(feature = "dma")]
-                    const DMA_TX_TRIGGER: TriggerSource = TriggerSource::[<SERCOM~N _TX>];
+            #[cfg(feature = "async")]
+            #[hal_cfg("sercom0-d5x")]
+            type Interrupt = crate::async_hal::interrupts::$pac_type;
 
-                    #[cfg(all(feature = "async", feature = "thumbv6"))]
-                    type Interrupt = crate::async_hal::interrupts::SERCOM~N;
-
-                    #[cfg(all(feature = "async", feature = "thumbv7"))]
-                    type Interrupt = crate::async_hal::interrupts::[<SERCOM ~N>];
-
-                    #[inline]
-                    fn enable_apb_clock(&mut self, ctrl: &APB_CLK_CTRL) {
-                        ctrl.$apbmask.modify(|_, w| w.[<sercom~N _>]().set_bit());
-                    }
-
-                    #[inline]
-                    fn reg_block(peripherals: &mut Peripherals) -> &crate::pac::sercom0::RegisterBlock {
-                        &*peripherals.SERCOM~N
-                    }
-
-                }
+            #[inline]
+            fn enable_apb_clock(&mut self, ctrl: &APB_CLK_CTRL) {
+                ctrl.$apbmask.modify(|_, w| w.$pac_modify().set_bit());
             }
-        });
+
+            #[inline]
+            fn reg_block(peripherals: &mut Peripherals) -> &crate::pac::sercom0::RegisterBlock {
+                &*peripherals.$pac_type
+            }
+        }
     };
 }
 
-#[cfg(feature = "thumbv6")]
-sercom!(apbcmask: (0, 5));
+// d11 and d21 families
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
+sercom!(apbcmask, 0, Sercom0, SERCOM0, SERCOM0_RX, SERCOM0_TX, sercom0_);
 
-#[cfg(feature = "thumbv7")]
-sercom!(apbamask: (0, 1));
-#[cfg(feature = "thumbv7")]
-sercom!(apbbmask: (2, 3));
-#[cfg(feature = "thumbv7")]
-sercom!(apbdmask: (4, 7));
+#[hal_cfg(any("sercom1-d11", "sercom1-d21"))]
+sercom!(apbcmask, 1, Sercom1, SERCOM1, SERCOM1_RX, SERCOM1_TX, sercom1_);
 
-#[allow(dead_code)]
-#[cfg(all(
-    feature = "has-sercom1",
-    not(feature = "has-sercom3"),
-    not(feature = "has-sercom5"),
-    not(feature = "has-sercom7")
-))]
-const NUM_SERCOM: usize = 2;
+#[hal_cfg(any("sercom2-d11", "sercom2-d21"))]
+sercom!(apbcmask, 2, Sercom2, SERCOM2, SERCOM2_RX, SERCOM2_TX, sercom2_);
 
-#[allow(dead_code)]
-#[cfg(all(
-    feature = "has-sercom3",
-    not(feature = "has-sercom5"),
-    not(feature = "has-sercom7")
-))]
-const NUM_SERCOM: usize = 4;
+#[hal_cfg("sercom3-d21")]
+sercom!(apbcmask, 3, Sercom3, SERCOM3, SERCOM3_RX, SERCOM3_TX, sercom3_);
 
-#[allow(dead_code)]
-#[cfg(all(feature = "has-sercom5", not(feature = "has-sercom7")))]
+#[hal_cfg("sercom4-d21")]
+sercom!(apbcmask, 4, Sercom4, SERCOM4, SERCOM4_RX, SERCOM4_TX, sercom4_);
+
+#[hal_cfg("sercom5-d21")]
+sercom!(apbcmask, 5, Sercom5, SERCOM5, SERCOM5_RX, SERCOM5_TX, sercom5_);
+
+// d5x family
+#[hal_cfg("sercom0-d5x")]
+sercom!(apbamask, 0, Sercom0, SERCOM0, SERCOM0_RX, SERCOM0_TX, sercom0_);
+
+#[hal_cfg("sercom1-d5x")]
+sercom!(apbamask, 1, Sercom1, SERCOM1, SERCOM1_RX, SERCOM1_TX, sercom1_);
+
+#[hal_cfg("sercom2-d5x")]
+sercom!(apbbmask, 2, Sercom2, SERCOM2, SERCOM2_RX, SERCOM2_TX, sercom2_);
+
+#[hal_cfg("sercom3-d5x")]
+sercom!(apbbmask, 3, Sercom3, SERCOM3, SERCOM3_RX, SERCOM3_TX, sercom3_);
+
+#[hal_cfg("sercom4-d5x")]
+sercom!(apbdmask, 4, Sercom4, SERCOM4, SERCOM4_RX, SERCOM4_TX, sercom4_);
+
+#[hal_cfg("sercom5-d5x")]
+sercom!(apbdmask, 5, Sercom5, SERCOM5, SERCOM5_RX, SERCOM5_TX, sercom5_);
+
+#[hal_cfg("sercom6-d5x")]
+sercom!(apbdmask, 6, Sercom6, SERCOM6, SERCOM6_RX, SERCOM6_TX, sercom6_);
+
+#[hal_cfg("sercom7-d5x")]
+sercom!(apbdmask, 7, Sercom7, SERCOM7, SERCOM7_RX, SERCOM7_TX, sercom7_);
+
+// Reserve space for the max number of SERCOM peripherals based on chip type,
+// even though some wakers may not be used on some chips if they actually don't
+// exist on variant's hardware
+#[hal_cfg("sercom0-d11")]
+const NUM_SERCOM: usize = 3;
+
+#[hal_cfg("sercom0-d21")]
 const NUM_SERCOM: usize = 6;
 
-#[allow(dead_code)]
-#[cfg(feature = "has-sercom7")]
+#[hal_cfg("sercom0-d5x")]
 const NUM_SERCOM: usize = 8;
 
 #[cfg(feature = "async")]

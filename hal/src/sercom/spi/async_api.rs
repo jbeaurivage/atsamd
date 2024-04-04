@@ -6,6 +6,7 @@ use crate::{
     },
     typelevel::NoneT,
 };
+use atsamd_hal_macros::hal_macro_helper;
 use core::{marker::PhantomData, task::Poll};
 use cortex_m::interrupt::InterruptNumber;
 use num_traits::{AsPrimitive, PrimInt};
@@ -20,13 +21,14 @@ impl<S: Sercom> crate::typelevel::Sealed for InterruptHandler<S> {}
 
 impl<S: Sercom> Handler<S::Interrupt> for InterruptHandler<S> {
     #[inline]
+    #[hal_macro_helper]
     unsafe fn on_interrupt() {
         unsafe {
             let mut peripherals = crate::pac::Peripherals::steal();
 
-            #[cfg(feature = "thumbv6")]
+            #[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
             let spi = S::reg_block(&mut peripherals).spi();
-            #[cfg(feature = "thumbv7")]
+            #[hal_cfg("sercom0-d5x")]
             let spi = S::reg_block(&mut peripherals).spim();
 
             let flags_pending = Flags::from_bits_truncate(spi.intflag.read().bits());
