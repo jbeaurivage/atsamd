@@ -292,7 +292,6 @@ where
 
 mod impl_ehal {
     use super::*;
-    use crate::sercom::spi::Error;
     use embedded_hal_async::spi::{ErrorType, SpiBus};
 
     impl<C, A, S, R, T> ErrorType for SpiFuture<C, A, R, T>
