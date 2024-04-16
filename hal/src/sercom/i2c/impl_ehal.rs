@@ -1,7 +1,22 @@
 //! [`embedded-hal`] trait implementations for [`I2c`]s
 
 use super::{config::AnyConfig, flags::Error, I2c};
-use crate::ehal::i2c::{self, ErrorType};
+use crate::ehal::i2c::{self, ErrorKind, ErrorType};
+
+impl crate::ehal::i2c::Error for Error {
+    // _ pattern reachable when "dma" feature enabled.
+    #[allow(unreachable_patterns)]
+    fn kind(&self) -> ErrorKind {
+        use i2c::NoAcknowledgeSource;
+        match self {
+            Error::ArbitrationLost => ErrorKind::ArbitrationLoss,
+            Error::BusError => ErrorKind::Bus,
+            Error::LengthError | Error::Timeout => ErrorKind::Overrun,
+            Error::Nack => ErrorKind::NoAcknowledge(NoAcknowledgeSource::Unknown),
+            _ => ErrorKind::Other,
+        }
+    }
+}
 
 impl<C: AnyConfig> ErrorType for I2c<C> {
     type Error = Error;
