@@ -54,7 +54,6 @@ version = "0.3"
 default = ["rt", "atsamd-hal/samd51j"]
 dma = ["atsamd-hal/dma"]
 rt = ["cortex-m-rt", "atsamd-hal/samd51j-rt"]
-unproven = ["atsamd-hal/unproven"]
 usb = ["atsamd-hal/usb", "usb-device"]
 
 [profile.dev]
@@ -81,7 +80,6 @@ name = "neopixel_rainbow"
 
 [[example]]
 name = "pwm"
-required-features = ["unproven"]
 
 [[example]]
 name = "serial"
@@ -94,14 +92,13 @@ name = "timer"
 
 [[example]]
 name = "adc"
-required-features = ["unproven"]
 
 [[example]]
 name = "trng"
 
 [[example]]
 name = "usb_logging"
-required-features = ["usb", "unproven"]
+required-features = ["usb"]
 
 [[example]]
 name = "i2c"
