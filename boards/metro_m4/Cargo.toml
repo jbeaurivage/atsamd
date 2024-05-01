@@ -54,7 +54,9 @@ version = "0.3"
 [features]
 # ask the HAL to enable atsamd51j support
 default = ["rt", "atsamd-hal/samd51j"]
+async = ["atsamd-hal/async"]
 dma = ["atsamd-hal/dma"]
+max-channels = ["dma", "atsamd-hal/max-channels"]
 rt = ["cortex-m-rt", "atsamd-hal/samd51j-rt"]
 usb = ["atsamd-hal/usb", "usb-device"]
 
@@ -104,8 +106,8 @@ required-features = ["usb"]
 
 [[example]]
 name = "i2c"
-required-features = ["atsamd-hal/dma"]
+required-features = ["dma"]
 
 [[example]]
 name = "async_dmac"
-required-features = ["dma", "atsamd-hal/async"]
+required-features = ["dma", "async"]
