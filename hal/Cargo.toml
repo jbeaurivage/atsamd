@@ -190,7 +190,6 @@ sdmmc = ["embedded-sdmmc"]
 usb = ["usb-device"]
 use_rtt = ["jlink_rtt"]
 async = [
-    "unproven",
     "embassy-sync",
     "embedded-hal-async",
     "futures",

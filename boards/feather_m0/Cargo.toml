@@ -66,6 +66,8 @@ rfm = []
 express = []
 dma = ["atsamd-hal/dma"]
 max-channels = ["dma", "atsamd-hal/max-channels"]
+# Enable async support from atsamd-hal
+async = ["atsamd-hal/async"]
 # Enable pins for the adalogger SD card reader
 adalogger = []
 sdmmc = ["embedded-sdmmc", "atsamd-hal/sdmmc"]
@@ -147,24 +149,24 @@ required-features = ["dma"]
 
 [[example]]
 name = "async_dmac"
-required-features = ["dma", "atsamd-hal/async"]
+required-features = ["dma", "async"]
 
 [[example]]
 name = "async_timer"
-required-features = ["atsamd-hal/async"]
+required-features = ["async"]
 
 [[example]]
 name = "async_eic"
-required-features = ["atsamd-hal/async"]
+required-features = ["async"]
 
 [[example]]
 name = "async_i2c"
-required-features = ["dma", "atsamd-hal/async"]
+required-features = ["dma", "async"]
 
 [[example]]
 name = "async_spi"
-required-features = ["dma", "atsamd-hal/async"]
+required-features = ["dma", "async"]
 
 [[example]]
 name = "async_uart"
-required-features = ["dma", "atsamd-hal/async"]
+required-features = ["dma", "async"]
