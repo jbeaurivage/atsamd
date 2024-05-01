@@ -73,7 +73,7 @@ use crate::ehal_nb;
 use nb::Error::WouldBlock;
 use num_traits::{AsPrimitive, PrimInt};
 
-impl eehal_nb::serial::Error for Error {
+impl ehal_nb::serial::Error for Error {
     #[allow(unreachable_patterns)]
     fn kind(&self) -> ehal_nb::serial::ErrorKind {
         match self {
