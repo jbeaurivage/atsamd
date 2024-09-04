@@ -1,10 +1,13 @@
 # Unreleased
 
+# v0.15.0
+
 - Upgrade PACs to latest SVD and `svd2rust`:
   - All peripheral types are now `PascalCase`
   - All register field accessors are now methods instead of struct members
   - Members of the `Peripherals` struct are now `snake_case`
 - update path of Cargo config
+ config
 
 # v0.14.0
 
