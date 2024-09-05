@@ -1,5 +1,7 @@
 # Unreleased Changes
 
+# v0.18.0
+
 - Upgrade PACs to latest SVD and `svd2rust`:
   - All peripheral types are now `PascalCase`
   - All register field accessors are now methods instead of struct members
