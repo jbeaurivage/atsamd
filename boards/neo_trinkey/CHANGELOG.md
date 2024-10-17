@@ -7,6 +7,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [0.2.1](https://github.com/jbeaurivage/atsamd/compare/neo_trinkey-0.2.0...neo_trinkey-0.2.1) - 2024-10-17
+
+### Other
+
+- Various small fixes ([#749](https://github.com/jbeaurivage/atsamd/pull/749))
+
 - update path of Cargo config
 
 # v0.2.0
