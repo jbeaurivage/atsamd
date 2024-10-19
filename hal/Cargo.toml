@@ -24,6 +24,7 @@ version = "0.18.0"
 
 [package.metadata.docs.rs]
 features = ["samd21g", "samd21g-rt", "usb", "dma"]
+rustdoc-args = ["--cfg", "docsrs"]
 
 #===============================================================================
 # Required depdendencies

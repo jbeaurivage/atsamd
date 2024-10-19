@@ -1,4 +1,5 @@
 #![no_std]
+#![cfg_attr(docsrs, feature(doc_auto_cfg))]
 
 use embedded_hal_02 as ehal_02;
 pub use embedded_hal_1 as ehal;
