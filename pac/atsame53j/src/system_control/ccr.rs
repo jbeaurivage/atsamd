@@ -1,442 +1,213 @@
 #[doc = "Register `CCR` reader"]
-pub struct R(crate::R<CCR_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<CCR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<CCR_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<CCR_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<CcrSpec>;
 #[doc = "Register `CCR` writer"]
-pub struct W(crate::W<CCR_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<CCR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<CCR_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<CCR_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<CcrSpec>;
 #[doc = "Field `NONBASETHRDENA` reader - Indicates how processor enters Thread mode"]
-pub struct NONBASETHRDENA_R(crate::FieldReader<bool, bool>);
-impl NONBASETHRDENA_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        NONBASETHRDENA_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for NONBASETHRDENA_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type NonbasethrdenaR = crate::BitReader;
 #[doc = "Field `NONBASETHRDENA` writer - Indicates how processor enters Thread mode"]
-pub struct NONBASETHRDENA_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> NONBASETHRDENA_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u32 & 0x01);
-        self.w
-    }
-}
+pub type NonbasethrdenaW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `USERSETMPEND` reader - Enables unprivileged software access to STIR register"]
-pub struct USERSETMPEND_R(crate::FieldReader<bool, bool>);
-impl USERSETMPEND_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        USERSETMPEND_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for USERSETMPEND_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type UsersetmpendR = crate::BitReader;
 #[doc = "Field `USERSETMPEND` writer - Enables unprivileged software access to STIR register"]
-pub struct USERSETMPEND_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> USERSETMPEND_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u32 & 0x01) << 1);
-        self.w
-    }
-}
+pub type UsersetmpendW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Enables unaligned access traps\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum UNALIGN_TRP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum UnalignTrpselect {
     #[doc = "0: Do not trap unaligned halfword and word accesses"]
-    VALUE_0 = 0,
+    Value0 = 0,
     #[doc = "1: Trap unaligned halfword and word accesses"]
-    VALUE_1 = 1,
+    Value1 = 1,
 }
-impl From<UNALIGN_TRP_A> for bool {
+impl From<UnalignTrpselect> for bool {
     #[inline(always)]
-    fn from(variant: UNALIGN_TRP_A) -> Self {
+    fn from(variant: UnalignTrpselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `UNALIGN_TRP` reader - Enables unaligned access traps"]
-pub struct UNALIGN_TRP_R(crate::FieldReader<bool, UNALIGN_TRP_A>);
-impl UNALIGN_TRP_R {
+pub type UnalignTrpR = crate::BitReader<UnalignTrpselect>;
+impl UnalignTrpR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        UNALIGN_TRP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> UNALIGN_TRP_A {
+    pub const fn variant(&self) -> UnalignTrpselect {
         match self.bits {
-            false => UNALIGN_TRP_A::VALUE_0,
-            true => UNALIGN_TRP_A::VALUE_1,
+            false => UnalignTrpselect::Value0,
+            true => UnalignTrpselect::Value1,
         }
-    }
-    #[doc = "Checks if the value of the field is `VALUE_0`"]
-    #[inline(always)]
-    pub fn is_value_0(&self) -> bool {
-        **self == UNALIGN_TRP_A::VALUE_0
-    }
-    #[doc = "Checks if the value of the field is `VALUE_1`"]
-    #[inline(always)]
-    pub fn is_value_1(&self) -> bool {
-        **self == UNALIGN_TRP_A::VALUE_1
-    }
-}
-impl core::ops::Deref for UNALIGN_TRP_R {
-    type Target = crate::FieldReader<bool, UNALIGN_TRP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `UNALIGN_TRP` writer - Enables unaligned access traps"]
-pub struct UNALIGN_TRP_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> UNALIGN_TRP_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: UNALIGN_TRP_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "Do not trap unaligned halfword and word accesses"]
     #[inline(always)]
-    pub fn value_0(self) -> &'a mut W {
-        self.variant(UNALIGN_TRP_A::VALUE_0)
+    pub fn is_value_0(&self) -> bool {
+        *self == UnalignTrpselect::Value0
     }
     #[doc = "Trap unaligned halfword and word accesses"]
     #[inline(always)]
-    pub fn value_1(self) -> &'a mut W {
-        self.variant(UNALIGN_TRP_A::VALUE_1)
+    pub fn is_value_1(&self) -> bool {
+        *self == UnalignTrpselect::Value1
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `UNALIGN_TRP` writer - Enables unaligned access traps"]
+pub type UnalignTrpW<'a, REG> = crate::BitWriter<'a, REG, UnalignTrpselect>;
+impl<'a, REG> UnalignTrpW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "Do not trap unaligned halfword and word accesses"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn value_0(self) -> &'a mut crate::W<REG> {
+        self.variant(UnalignTrpselect::Value0)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Trap unaligned halfword and word accesses"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 3)) | ((value as u32 & 0x01) << 3);
-        self.w
+    pub fn value_1(self) -> &'a mut crate::W<REG> {
+        self.variant(UnalignTrpselect::Value1)
     }
 }
 #[doc = "Field `DIV_0_TRP` reader - Enables divide by 0 trap"]
-pub struct DIV_0_TRP_R(crate::FieldReader<bool, bool>);
-impl DIV_0_TRP_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        DIV_0_TRP_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for DIV_0_TRP_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Div0TrpR = crate::BitReader;
 #[doc = "Field `DIV_0_TRP` writer - Enables divide by 0 trap"]
-pub struct DIV_0_TRP_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DIV_0_TRP_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 4)) | ((value as u32 & 0x01) << 4);
-        self.w
-    }
-}
+pub type Div0TrpW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `BFHFNMIGN` reader - Ignore LDM/STM BusFault for -1/-2 priority handlers"]
-pub struct BFHFNMIGN_R(crate::FieldReader<bool, bool>);
-impl BFHFNMIGN_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        BFHFNMIGN_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for BFHFNMIGN_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type BfhfnmignR = crate::BitReader;
 #[doc = "Field `BFHFNMIGN` writer - Ignore LDM/STM BusFault for -1/-2 priority handlers"]
-pub struct BFHFNMIGN_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> BFHFNMIGN_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 8)) | ((value as u32 & 0x01) << 8);
-        self.w
-    }
-}
+pub type BfhfnmignW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Indicates stack alignment on exception entry\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum STKALIGN_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Stkalignselect {
     #[doc = "0: 4-byte aligned"]
-    VALUE_0 = 0,
+    Value0 = 0,
     #[doc = "1: 8-byte aligned"]
-    VALUE_1 = 1,
+    Value1 = 1,
 }
-impl From<STKALIGN_A> for bool {
+impl From<Stkalignselect> for bool {
     #[inline(always)]
-    fn from(variant: STKALIGN_A) -> Self {
+    fn from(variant: Stkalignselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `STKALIGN` reader - Indicates stack alignment on exception entry"]
-pub struct STKALIGN_R(crate::FieldReader<bool, STKALIGN_A>);
-impl STKALIGN_R {
+pub type StkalignR = crate::BitReader<Stkalignselect>;
+impl StkalignR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        STKALIGN_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> STKALIGN_A {
+    pub const fn variant(&self) -> Stkalignselect {
         match self.bits {
-            false => STKALIGN_A::VALUE_0,
-            true => STKALIGN_A::VALUE_1,
+            false => Stkalignselect::Value0,
+            true => Stkalignselect::Value1,
         }
-    }
-    #[doc = "Checks if the value of the field is `VALUE_0`"]
-    #[inline(always)]
-    pub fn is_value_0(&self) -> bool {
-        **self == STKALIGN_A::VALUE_0
-    }
-    #[doc = "Checks if the value of the field is `VALUE_1`"]
-    #[inline(always)]
-    pub fn is_value_1(&self) -> bool {
-        **self == STKALIGN_A::VALUE_1
-    }
-}
-impl core::ops::Deref for STKALIGN_R {
-    type Target = crate::FieldReader<bool, STKALIGN_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `STKALIGN` writer - Indicates stack alignment on exception entry"]
-pub struct STKALIGN_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> STKALIGN_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: STKALIGN_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "4-byte aligned"]
     #[inline(always)]
-    pub fn value_0(self) -> &'a mut W {
-        self.variant(STKALIGN_A::VALUE_0)
+    pub fn is_value_0(&self) -> bool {
+        *self == Stkalignselect::Value0
     }
     #[doc = "8-byte aligned"]
     #[inline(always)]
-    pub fn value_1(self) -> &'a mut W {
-        self.variant(STKALIGN_A::VALUE_1)
+    pub fn is_value_1(&self) -> bool {
+        *self == Stkalignselect::Value1
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `STKALIGN` writer - Indicates stack alignment on exception entry"]
+pub type StkalignW<'a, REG> = crate::BitWriter<'a, REG, Stkalignselect>;
+impl<'a, REG> StkalignW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "4-byte aligned"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn value_0(self) -> &'a mut crate::W<REG> {
+        self.variant(Stkalignselect::Value0)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "8-byte aligned"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 9)) | ((value as u32 & 0x01) << 9);
-        self.w
+    pub fn value_1(self) -> &'a mut crate::W<REG> {
+        self.variant(Stkalignselect::Value1)
     }
 }
 impl R {
     #[doc = "Bit 0 - Indicates how processor enters Thread mode"]
     #[inline(always)]
-    pub fn nonbasethrdena(&self) -> NONBASETHRDENA_R {
-        NONBASETHRDENA_R::new((self.bits & 0x01) != 0)
+    pub fn nonbasethrdena(&self) -> NonbasethrdenaR {
+        NonbasethrdenaR::new((self.bits & 1) != 0)
     }
     #[doc = "Bit 1 - Enables unprivileged software access to STIR register"]
     #[inline(always)]
-    pub fn usersetmpend(&self) -> USERSETMPEND_R {
-        USERSETMPEND_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn usersetmpend(&self) -> UsersetmpendR {
+        UsersetmpendR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bit 3 - Enables unaligned access traps"]
     #[inline(always)]
-    pub fn unalign_trp(&self) -> UNALIGN_TRP_R {
-        UNALIGN_TRP_R::new(((self.bits >> 3) & 0x01) != 0)
+    pub fn unalign_trp(&self) -> UnalignTrpR {
+        UnalignTrpR::new(((self.bits >> 3) & 1) != 0)
     }
     #[doc = "Bit 4 - Enables divide by 0 trap"]
     #[inline(always)]
-    pub fn div_0_trp(&self) -> DIV_0_TRP_R {
-        DIV_0_TRP_R::new(((self.bits >> 4) & 0x01) != 0)
+    pub fn div_0_trp(&self) -> Div0TrpR {
+        Div0TrpR::new(((self.bits >> 4) & 1) != 0)
     }
     #[doc = "Bit 8 - Ignore LDM/STM BusFault for -1/-2 priority handlers"]
     #[inline(always)]
-    pub fn bfhfnmign(&self) -> BFHFNMIGN_R {
-        BFHFNMIGN_R::new(((self.bits >> 8) & 0x01) != 0)
+    pub fn bfhfnmign(&self) -> BfhfnmignR {
+        BfhfnmignR::new(((self.bits >> 8) & 1) != 0)
     }
     #[doc = "Bit 9 - Indicates stack alignment on exception entry"]
     #[inline(always)]
-    pub fn stkalign(&self) -> STKALIGN_R {
-        STKALIGN_R::new(((self.bits >> 9) & 0x01) != 0)
+    pub fn stkalign(&self) -> StkalignR {
+        StkalignR::new(((self.bits >> 9) & 1) != 0)
     }
 }
 impl W {
     #[doc = "Bit 0 - Indicates how processor enters Thread mode"]
     #[inline(always)]
-    pub fn nonbasethrdena(&mut self) -> NONBASETHRDENA_W {
-        NONBASETHRDENA_W { w: self }
+    #[must_use]
+    pub fn nonbasethrdena(&mut self) -> NonbasethrdenaW<CcrSpec> {
+        NonbasethrdenaW::new(self, 0)
     }
     #[doc = "Bit 1 - Enables unprivileged software access to STIR register"]
     #[inline(always)]
-    pub fn usersetmpend(&mut self) -> USERSETMPEND_W {
-        USERSETMPEND_W { w: self }
+    #[must_use]
+    pub fn usersetmpend(&mut self) -> UsersetmpendW<CcrSpec> {
+        UsersetmpendW::new(self, 1)
     }
     #[doc = "Bit 3 - Enables unaligned access traps"]
     #[inline(always)]
-    pub fn unalign_trp(&mut self) -> UNALIGN_TRP_W {
-        UNALIGN_TRP_W { w: self }
+    #[must_use]
+    pub fn unalign_trp(&mut self) -> UnalignTrpW<CcrSpec> {
+        UnalignTrpW::new(self, 3)
     }
     #[doc = "Bit 4 - Enables divide by 0 trap"]
     #[inline(always)]
-    pub fn div_0_trp(&mut self) -> DIV_0_TRP_W {
-        DIV_0_TRP_W { w: self }
+    #[must_use]
+    pub fn div_0_trp(&mut self) -> Div0TrpW<CcrSpec> {
+        Div0TrpW::new(self, 4)
     }
     #[doc = "Bit 8 - Ignore LDM/STM BusFault for -1/-2 priority handlers"]
     #[inline(always)]
-    pub fn bfhfnmign(&mut self) -> BFHFNMIGN_W {
-        BFHFNMIGN_W { w: self }
+    #[must_use]
+    pub fn bfhfnmign(&mut self) -> BfhfnmignW<CcrSpec> {
+        BfhfnmignW::new(self, 8)
     }
     #[doc = "Bit 9 - Indicates stack alignment on exception entry"]
     #[inline(always)]
-    pub fn stkalign(&mut self) -> STKALIGN_W {
-        STKALIGN_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn stkalign(&mut self) -> StkalignW<CcrSpec> {
+        StkalignW::new(self, 9)
     }
 }
-#[doc = "Configuration and Control Register\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [ccr](index.html) module"]
-pub struct CCR_SPEC;
-impl crate::RegisterSpec for CCR_SPEC {
+#[doc = "Configuration and Control Register\n\nYou can [`read`](crate::Reg::read) this register and get [`ccr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ccr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct CcrSpec;
+impl crate::RegisterSpec for CcrSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [ccr::R](R) reader structure"]
-impl crate::Readable for CCR_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [ccr::W](W) writer structure"]
-impl crate::Writable for CCR_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`ccr::R`](R) reader structure"]
+impl crate::Readable for CcrSpec {}
+#[doc = "`write(|w| ..)` method takes [`ccr::W`](W) writer structure"]
+impl crate::Writable for CcrSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets CCR to value 0x0200"]
-impl crate::Resettable for CCR_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0x0200
-    }
+impl crate::Resettable for CcrSpec {
+    const RESET_VALUE: u32 = 0x0200;
 }

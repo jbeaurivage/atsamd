@@ -1,259 +1,173 @@
 #[doc = "Register `PCR` reader"]
-pub struct R(crate::R<PCR_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<PCR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<PCR_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<PCR_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<PcrSpec>;
 #[doc = "Register `PCR` writer"]
-pub struct W(crate::W<PCR_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<PCR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<PCR_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<PCR_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<PcrSpec>;
 #[doc = "SD Bus Power\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum SDBPWR_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Sdbpwrselect {
     #[doc = "0: Power off"]
-    OFF = 0,
+    Off = 0,
     #[doc = "1: Power on"]
-    ON = 1,
+    On = 1,
 }
-impl From<SDBPWR_A> for bool {
+impl From<Sdbpwrselect> for bool {
     #[inline(always)]
-    fn from(variant: SDBPWR_A) -> Self {
+    fn from(variant: Sdbpwrselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `SDBPWR` reader - SD Bus Power"]
-pub struct SDBPWR_R(crate::FieldReader<bool, SDBPWR_A>);
-impl SDBPWR_R {
+pub type SdbpwrR = crate::BitReader<Sdbpwrselect>;
+impl SdbpwrR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SDBPWR_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> SDBPWR_A {
+    pub const fn variant(&self) -> Sdbpwrselect {
         match self.bits {
-            false => SDBPWR_A::OFF,
-            true => SDBPWR_A::ON,
+            false => Sdbpwrselect::Off,
+            true => Sdbpwrselect::On,
         }
-    }
-    #[doc = "Checks if the value of the field is `OFF`"]
-    #[inline(always)]
-    pub fn is_off(&self) -> bool {
-        **self == SDBPWR_A::OFF
-    }
-    #[doc = "Checks if the value of the field is `ON`"]
-    #[inline(always)]
-    pub fn is_on(&self) -> bool {
-        **self == SDBPWR_A::ON
-    }
-}
-impl core::ops::Deref for SDBPWR_R {
-    type Target = crate::FieldReader<bool, SDBPWR_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `SDBPWR` writer - SD Bus Power"]
-pub struct SDBPWR_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SDBPWR_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: SDBPWR_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "Power off"]
     #[inline(always)]
-    pub fn off(self) -> &'a mut W {
-        self.variant(SDBPWR_A::OFF)
+    pub fn is_off(&self) -> bool {
+        *self == Sdbpwrselect::Off
     }
     #[doc = "Power on"]
     #[inline(always)]
-    pub fn on(self) -> &'a mut W {
-        self.variant(SDBPWR_A::ON)
+    pub fn is_on(&self) -> bool {
+        *self == Sdbpwrselect::On
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `SDBPWR` writer - SD Bus Power"]
+pub type SdbpwrW<'a, REG> = crate::BitWriter<'a, REG, Sdbpwrselect>;
+impl<'a, REG> SdbpwrW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "Power off"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn off(self) -> &'a mut crate::W<REG> {
+        self.variant(Sdbpwrselect::Off)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Power on"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u8 & 0x01);
-        self.w
+    pub fn on(self) -> &'a mut crate::W<REG> {
+        self.variant(Sdbpwrselect::On)
     }
 }
 #[doc = "SD Bus Voltage Select\n\nValue on reset: 7"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum SDBVSEL_A {
+pub enum Sdbvselselect {
     #[doc = "5: 1.8V (Typ.)"]
-    _1V8 = 5,
+    _1v8 = 5,
     #[doc = "6: 3.0V (Typ.)"]
-    _3V0 = 6,
+    _3v0 = 6,
     #[doc = "7: 3.3V (Typ.)"]
-    _3V3 = 7,
+    _3v3 = 7,
 }
-impl From<SDBVSEL_A> for u8 {
+impl From<Sdbvselselect> for u8 {
     #[inline(always)]
-    fn from(variant: SDBVSEL_A) -> Self {
+    fn from(variant: Sdbvselselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Sdbvselselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Sdbvselselect {}
 #[doc = "Field `SDBVSEL` reader - SD Bus Voltage Select"]
-pub struct SDBVSEL_R(crate::FieldReader<u8, SDBVSEL_A>);
-impl SDBVSEL_R {
+pub type SdbvselR = crate::FieldReader<Sdbvselselect>;
+impl SdbvselR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        SDBVSEL_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<SDBVSEL_A> {
+    pub const fn variant(&self) -> Option<Sdbvselselect> {
         match self.bits {
-            5 => Some(SDBVSEL_A::_1V8),
-            6 => Some(SDBVSEL_A::_3V0),
-            7 => Some(SDBVSEL_A::_3V3),
+            5 => Some(Sdbvselselect::_1v8),
+            6 => Some(Sdbvselselect::_3v0),
+            7 => Some(Sdbvselselect::_3v3),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `_1V8`"]
-    #[inline(always)]
-    pub fn is_1v8(&self) -> bool {
-        **self == SDBVSEL_A::_1V8
-    }
-    #[doc = "Checks if the value of the field is `_3V0`"]
-    #[inline(always)]
-    pub fn is_3v0(&self) -> bool {
-        **self == SDBVSEL_A::_3V0
-    }
-    #[doc = "Checks if the value of the field is `_3V3`"]
-    #[inline(always)]
-    pub fn is_3v3(&self) -> bool {
-        **self == SDBVSEL_A::_3V3
-    }
-}
-impl core::ops::Deref for SDBVSEL_R {
-    type Target = crate::FieldReader<u8, SDBVSEL_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `SDBVSEL` writer - SD Bus Voltage Select"]
-pub struct SDBVSEL_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SDBVSEL_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: SDBVSEL_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
     #[doc = "1.8V (Typ.)"]
     #[inline(always)]
-    pub fn _1v8(self) -> &'a mut W {
-        self.variant(SDBVSEL_A::_1V8)
+    pub fn is_1v8(&self) -> bool {
+        *self == Sdbvselselect::_1v8
     }
     #[doc = "3.0V (Typ.)"]
     #[inline(always)]
-    pub fn _3v0(self) -> &'a mut W {
-        self.variant(SDBVSEL_A::_3V0)
+    pub fn is_3v0(&self) -> bool {
+        *self == Sdbvselselect::_3v0
     }
     #[doc = "3.3V (Typ.)"]
     #[inline(always)]
-    pub fn _3v3(self) -> &'a mut W {
-        self.variant(SDBVSEL_A::_3V3)
+    pub fn is_3v3(&self) -> bool {
+        *self == Sdbvselselect::_3v3
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `SDBVSEL` writer - SD Bus Voltage Select"]
+pub type SdbvselW<'a, REG> = crate::FieldWriter<'a, REG, 3, Sdbvselselect>;
+impl<'a, REG> SdbvselW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "1.8V (Typ.)"]
     #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x07 << 1)) | ((value as u8 & 0x07) << 1);
-        self.w
+    pub fn _1v8(self) -> &'a mut crate::W<REG> {
+        self.variant(Sdbvselselect::_1v8)
+    }
+    #[doc = "3.0V (Typ.)"]
+    #[inline(always)]
+    pub fn _3v0(self) -> &'a mut crate::W<REG> {
+        self.variant(Sdbvselselect::_3v0)
+    }
+    #[doc = "3.3V (Typ.)"]
+    #[inline(always)]
+    pub fn _3v3(self) -> &'a mut crate::W<REG> {
+        self.variant(Sdbvselselect::_3v3)
     }
 }
 impl R {
     #[doc = "Bit 0 - SD Bus Power"]
     #[inline(always)]
-    pub fn sdbpwr(&self) -> SDBPWR_R {
-        SDBPWR_R::new((self.bits & 0x01) != 0)
+    pub fn sdbpwr(&self) -> SdbpwrR {
+        SdbpwrR::new((self.bits & 1) != 0)
     }
     #[doc = "Bits 1:3 - SD Bus Voltage Select"]
     #[inline(always)]
-    pub fn sdbvsel(&self) -> SDBVSEL_R {
-        SDBVSEL_R::new(((self.bits >> 1) & 0x07) as u8)
+    pub fn sdbvsel(&self) -> SdbvselR {
+        SdbvselR::new((self.bits >> 1) & 7)
     }
 }
 impl W {
     #[doc = "Bit 0 - SD Bus Power"]
     #[inline(always)]
-    pub fn sdbpwr(&mut self) -> SDBPWR_W {
-        SDBPWR_W { w: self }
+    #[must_use]
+    pub fn sdbpwr(&mut self) -> SdbpwrW<PcrSpec> {
+        SdbpwrW::new(self, 0)
     }
     #[doc = "Bits 1:3 - SD Bus Voltage Select"]
     #[inline(always)]
-    pub fn sdbvsel(&mut self) -> SDBVSEL_W {
-        SDBVSEL_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u8) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn sdbvsel(&mut self) -> SdbvselW<PcrSpec> {
+        SdbvselW::new(self, 1)
     }
 }
-#[doc = "Power Control\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [pcr](index.html) module"]
-pub struct PCR_SPEC;
-impl crate::RegisterSpec for PCR_SPEC {
+#[doc = "Power Control\n\nYou can [`read`](crate::Reg::read) this register and get [`pcr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pcr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct PcrSpec;
+impl crate::RegisterSpec for PcrSpec {
     type Ux = u8;
 }
-#[doc = "`read()` method returns [pcr::R](R) reader structure"]
-impl crate::Readable for PCR_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [pcr::W](W) writer structure"]
-impl crate::Writable for PCR_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`pcr::R`](R) reader structure"]
+impl crate::Readable for PcrSpec {}
+#[doc = "`write(|w| ..)` method takes [`pcr::W`](W) writer structure"]
+impl crate::Writable for PcrSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
 }
 #[doc = "`reset()` method sets PCR to value 0x0e"]
-impl crate::Resettable for PCR_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0x0e
-    }
+impl crate::Resettable for PcrSpec {
+    const RESET_VALUE: u8 = 0x0e;
 }

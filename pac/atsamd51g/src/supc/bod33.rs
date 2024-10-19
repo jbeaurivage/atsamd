@@ -1,688 +1,391 @@
 #[doc = "Register `BOD33` reader"]
-pub struct R(crate::R<BOD33_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<BOD33_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<BOD33_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<BOD33_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<Bod33Spec>;
 #[doc = "Register `BOD33` writer"]
-pub struct W(crate::W<BOD33_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<BOD33_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<BOD33_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<BOD33_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<Bod33Spec>;
 #[doc = "Field `ENABLE` reader - Enable"]
-pub struct ENABLE_R(crate::FieldReader<bool, bool>);
-impl ENABLE_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ENABLE_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for ENABLE_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type EnableR = crate::BitReader;
 #[doc = "Field `ENABLE` writer - Enable"]
-pub struct ENABLE_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ENABLE_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u32 & 0x01) << 1);
-        self.w
-    }
-}
+pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Action when Threshold Crossed\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum ACTION_A {
+pub enum Actionselect {
     #[doc = "0: No action"]
-    NONE = 0,
+    None = 0,
     #[doc = "1: The BOD33 generates a reset"]
-    RESET = 1,
+    Reset = 1,
     #[doc = "2: The BOD33 generates an interrupt"]
-    INT = 2,
+    Int = 2,
     #[doc = "3: The BOD33 puts the device in backup sleep mode"]
-    BKUP = 3,
+    Bkup = 3,
 }
-impl From<ACTION_A> for u8 {
+impl From<Actionselect> for u8 {
     #[inline(always)]
-    fn from(variant: ACTION_A) -> Self {
+    fn from(variant: Actionselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Actionselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Actionselect {}
 #[doc = "Field `ACTION` reader - Action when Threshold Crossed"]
-pub struct ACTION_R(crate::FieldReader<u8, ACTION_A>);
-impl ACTION_R {
+pub type ActionR = crate::FieldReader<Actionselect>;
+impl ActionR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        ACTION_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> ACTION_A {
+    pub const fn variant(&self) -> Actionselect {
         match self.bits {
-            0 => ACTION_A::NONE,
-            1 => ACTION_A::RESET,
-            2 => ACTION_A::INT,
-            3 => ACTION_A::BKUP,
+            0 => Actionselect::None,
+            1 => Actionselect::Reset,
+            2 => Actionselect::Int,
+            3 => Actionselect::Bkup,
             _ => unreachable!(),
         }
-    }
-    #[doc = "Checks if the value of the field is `NONE`"]
-    #[inline(always)]
-    pub fn is_none(&self) -> bool {
-        **self == ACTION_A::NONE
-    }
-    #[doc = "Checks if the value of the field is `RESET`"]
-    #[inline(always)]
-    pub fn is_reset(&self) -> bool {
-        **self == ACTION_A::RESET
-    }
-    #[doc = "Checks if the value of the field is `INT`"]
-    #[inline(always)]
-    pub fn is_int(&self) -> bool {
-        **self == ACTION_A::INT
-    }
-    #[doc = "Checks if the value of the field is `BKUP`"]
-    #[inline(always)]
-    pub fn is_bkup(&self) -> bool {
-        **self == ACTION_A::BKUP
-    }
-}
-impl core::ops::Deref for ACTION_R {
-    type Target = crate::FieldReader<u8, ACTION_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `ACTION` writer - Action when Threshold Crossed"]
-pub struct ACTION_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ACTION_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: ACTION_A) -> &'a mut W {
-        self.bits(variant.into())
     }
     #[doc = "No action"]
     #[inline(always)]
-    pub fn none(self) -> &'a mut W {
-        self.variant(ACTION_A::NONE)
+    pub fn is_none(&self) -> bool {
+        *self == Actionselect::None
     }
     #[doc = "The BOD33 generates a reset"]
     #[inline(always)]
-    pub fn reset(self) -> &'a mut W {
-        self.variant(ACTION_A::RESET)
+    pub fn is_reset(&self) -> bool {
+        *self == Actionselect::Reset
     }
     #[doc = "The BOD33 generates an interrupt"]
     #[inline(always)]
-    pub fn int(self) -> &'a mut W {
-        self.variant(ACTION_A::INT)
+    pub fn is_int(&self) -> bool {
+        *self == Actionselect::Int
     }
     #[doc = "The BOD33 puts the device in backup sleep mode"]
     #[inline(always)]
-    pub fn bkup(self) -> &'a mut W {
-        self.variant(ACTION_A::BKUP)
+    pub fn is_bkup(&self) -> bool {
+        *self == Actionselect::Bkup
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `ACTION` writer - Action when Threshold Crossed"]
+pub type ActionW<'a, REG> = crate::FieldWriter<'a, REG, 2, Actionselect, crate::Safe>;
+impl<'a, REG> ActionW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "No action"]
     #[inline(always)]
-    pub fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x03 << 2)) | ((value as u32 & 0x03) << 2);
-        self.w
+    pub fn none(self) -> &'a mut crate::W<REG> {
+        self.variant(Actionselect::None)
+    }
+    #[doc = "The BOD33 generates a reset"]
+    #[inline(always)]
+    pub fn reset(self) -> &'a mut crate::W<REG> {
+        self.variant(Actionselect::Reset)
+    }
+    #[doc = "The BOD33 generates an interrupt"]
+    #[inline(always)]
+    pub fn int(self) -> &'a mut crate::W<REG> {
+        self.variant(Actionselect::Int)
+    }
+    #[doc = "The BOD33 puts the device in backup sleep mode"]
+    #[inline(always)]
+    pub fn bkup(self) -> &'a mut crate::W<REG> {
+        self.variant(Actionselect::Bkup)
     }
 }
 #[doc = "Field `STDBYCFG` reader - Configuration in Standby mode"]
-pub struct STDBYCFG_R(crate::FieldReader<bool, bool>);
-impl STDBYCFG_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        STDBYCFG_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for STDBYCFG_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type StdbycfgR = crate::BitReader;
 #[doc = "Field `STDBYCFG` writer - Configuration in Standby mode"]
-pub struct STDBYCFG_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> STDBYCFG_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 4)) | ((value as u32 & 0x01) << 4);
-        self.w
-    }
-}
+pub type StdbycfgW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `RUNSTDBY` reader - Run in Standby mode"]
-pub struct RUNSTDBY_R(crate::FieldReader<bool, bool>);
-impl RUNSTDBY_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        RUNSTDBY_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for RUNSTDBY_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type RunstdbyR = crate::BitReader;
 #[doc = "Field `RUNSTDBY` writer - Run in Standby mode"]
-pub struct RUNSTDBY_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> RUNSTDBY_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 5)) | ((value as u32 & 0x01) << 5);
-        self.w
-    }
-}
+pub type RunstdbyW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `RUNHIB` reader - Run in Hibernate mode"]
-pub struct RUNHIB_R(crate::FieldReader<bool, bool>);
-impl RUNHIB_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        RUNHIB_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for RUNHIB_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type RunhibR = crate::BitReader;
 #[doc = "Field `RUNHIB` writer - Run in Hibernate mode"]
-pub struct RUNHIB_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> RUNHIB_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 6)) | ((value as u32 & 0x01) << 6);
-        self.w
-    }
-}
+pub type RunhibW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `RUNBKUP` reader - Run in Backup mode"]
-pub struct RUNBKUP_R(crate::FieldReader<bool, bool>);
-impl RUNBKUP_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        RUNBKUP_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for RUNBKUP_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type RunbkupR = crate::BitReader;
 #[doc = "Field `RUNBKUP` writer - Run in Backup mode"]
-pub struct RUNBKUP_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> RUNBKUP_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 7)) | ((value as u32 & 0x01) << 7);
-        self.w
-    }
-}
+pub type RunbkupW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `HYST` reader - Hysteresis value"]
-pub struct HYST_R(crate::FieldReader<u8, u8>);
-impl HYST_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        HYST_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for HYST_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type HystR = crate::FieldReader;
 #[doc = "Field `HYST` writer - Hysteresis value"]
-pub struct HYST_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> HYST_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x0f << 8)) | ((value as u32 & 0x0f) << 8);
-        self.w
-    }
-}
+pub type HystW<'a, REG> = crate::FieldWriter<'a, REG, 4>;
 #[doc = "Prescaler Select\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum PSEL_A {
+pub enum Pselselect {
     #[doc = "0: Not divided"]
-    NODIV = 0,
+    Nodiv = 0,
     #[doc = "1: Divide clock by 4"]
-    DIV4 = 1,
+    Div4 = 1,
     #[doc = "2: Divide clock by 8"]
-    DIV8 = 2,
+    Div8 = 2,
     #[doc = "3: Divide clock by 16"]
-    DIV16 = 3,
+    Div16 = 3,
     #[doc = "4: Divide clock by 32"]
-    DIV32 = 4,
+    Div32 = 4,
     #[doc = "5: Divide clock by 64"]
-    DIV64 = 5,
+    Div64 = 5,
     #[doc = "6: Divide clock by 128"]
-    DIV128 = 6,
+    Div128 = 6,
     #[doc = "7: Divide clock by 256"]
-    DIV256 = 7,
+    Div256 = 7,
 }
-impl From<PSEL_A> for u8 {
+impl From<Pselselect> for u8 {
     #[inline(always)]
-    fn from(variant: PSEL_A) -> Self {
+    fn from(variant: Pselselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Pselselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Pselselect {}
 #[doc = "Field `PSEL` reader - Prescaler Select"]
-pub struct PSEL_R(crate::FieldReader<u8, PSEL_A>);
-impl PSEL_R {
+pub type PselR = crate::FieldReader<Pselselect>;
+impl PselR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        PSEL_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> PSEL_A {
+    pub const fn variant(&self) -> Pselselect {
         match self.bits {
-            0 => PSEL_A::NODIV,
-            1 => PSEL_A::DIV4,
-            2 => PSEL_A::DIV8,
-            3 => PSEL_A::DIV16,
-            4 => PSEL_A::DIV32,
-            5 => PSEL_A::DIV64,
-            6 => PSEL_A::DIV128,
-            7 => PSEL_A::DIV256,
+            0 => Pselselect::Nodiv,
+            1 => Pselselect::Div4,
+            2 => Pselselect::Div8,
+            3 => Pselselect::Div16,
+            4 => Pselselect::Div32,
+            5 => Pselselect::Div64,
+            6 => Pselselect::Div128,
+            7 => Pselselect::Div256,
             _ => unreachable!(),
         }
     }
-    #[doc = "Checks if the value of the field is `NODIV`"]
-    #[inline(always)]
-    pub fn is_nodiv(&self) -> bool {
-        **self == PSEL_A::NODIV
-    }
-    #[doc = "Checks if the value of the field is `DIV4`"]
-    #[inline(always)]
-    pub fn is_div4(&self) -> bool {
-        **self == PSEL_A::DIV4
-    }
-    #[doc = "Checks if the value of the field is `DIV8`"]
-    #[inline(always)]
-    pub fn is_div8(&self) -> bool {
-        **self == PSEL_A::DIV8
-    }
-    #[doc = "Checks if the value of the field is `DIV16`"]
-    #[inline(always)]
-    pub fn is_div16(&self) -> bool {
-        **self == PSEL_A::DIV16
-    }
-    #[doc = "Checks if the value of the field is `DIV32`"]
-    #[inline(always)]
-    pub fn is_div32(&self) -> bool {
-        **self == PSEL_A::DIV32
-    }
-    #[doc = "Checks if the value of the field is `DIV64`"]
-    #[inline(always)]
-    pub fn is_div64(&self) -> bool {
-        **self == PSEL_A::DIV64
-    }
-    #[doc = "Checks if the value of the field is `DIV128`"]
-    #[inline(always)]
-    pub fn is_div128(&self) -> bool {
-        **self == PSEL_A::DIV128
-    }
-    #[doc = "Checks if the value of the field is `DIV256`"]
-    #[inline(always)]
-    pub fn is_div256(&self) -> bool {
-        **self == PSEL_A::DIV256
-    }
-}
-impl core::ops::Deref for PSEL_R {
-    type Target = crate::FieldReader<u8, PSEL_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `PSEL` writer - Prescaler Select"]
-pub struct PSEL_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> PSEL_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: PSEL_A) -> &'a mut W {
-        self.bits(variant.into())
-    }
     #[doc = "Not divided"]
     #[inline(always)]
-    pub fn nodiv(self) -> &'a mut W {
-        self.variant(PSEL_A::NODIV)
+    pub fn is_nodiv(&self) -> bool {
+        *self == Pselselect::Nodiv
     }
     #[doc = "Divide clock by 4"]
     #[inline(always)]
-    pub fn div4(self) -> &'a mut W {
-        self.variant(PSEL_A::DIV4)
+    pub fn is_div4(&self) -> bool {
+        *self == Pselselect::Div4
     }
     #[doc = "Divide clock by 8"]
     #[inline(always)]
-    pub fn div8(self) -> &'a mut W {
-        self.variant(PSEL_A::DIV8)
+    pub fn is_div8(&self) -> bool {
+        *self == Pselselect::Div8
     }
     #[doc = "Divide clock by 16"]
     #[inline(always)]
-    pub fn div16(self) -> &'a mut W {
-        self.variant(PSEL_A::DIV16)
+    pub fn is_div16(&self) -> bool {
+        *self == Pselselect::Div16
     }
     #[doc = "Divide clock by 32"]
     #[inline(always)]
-    pub fn div32(self) -> &'a mut W {
-        self.variant(PSEL_A::DIV32)
+    pub fn is_div32(&self) -> bool {
+        *self == Pselselect::Div32
     }
     #[doc = "Divide clock by 64"]
     #[inline(always)]
-    pub fn div64(self) -> &'a mut W {
-        self.variant(PSEL_A::DIV64)
+    pub fn is_div64(&self) -> bool {
+        *self == Pselselect::Div64
     }
     #[doc = "Divide clock by 128"]
     #[inline(always)]
-    pub fn div128(self) -> &'a mut W {
-        self.variant(PSEL_A::DIV128)
+    pub fn is_div128(&self) -> bool {
+        *self == Pselselect::Div128
     }
     #[doc = "Divide clock by 256"]
     #[inline(always)]
-    pub fn div256(self) -> &'a mut W {
-        self.variant(PSEL_A::DIV256)
+    pub fn is_div256(&self) -> bool {
+        *self == Pselselect::Div256
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `PSEL` writer - Prescaler Select"]
+pub type PselW<'a, REG> = crate::FieldWriter<'a, REG, 3, Pselselect, crate::Safe>;
+impl<'a, REG> PselW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "Not divided"]
     #[inline(always)]
-    pub fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x07 << 12)) | ((value as u32 & 0x07) << 12);
-        self.w
+    pub fn nodiv(self) -> &'a mut crate::W<REG> {
+        self.variant(Pselselect::Nodiv)
+    }
+    #[doc = "Divide clock by 4"]
+    #[inline(always)]
+    pub fn div4(self) -> &'a mut crate::W<REG> {
+        self.variant(Pselselect::Div4)
+    }
+    #[doc = "Divide clock by 8"]
+    #[inline(always)]
+    pub fn div8(self) -> &'a mut crate::W<REG> {
+        self.variant(Pselselect::Div8)
+    }
+    #[doc = "Divide clock by 16"]
+    #[inline(always)]
+    pub fn div16(self) -> &'a mut crate::W<REG> {
+        self.variant(Pselselect::Div16)
+    }
+    #[doc = "Divide clock by 32"]
+    #[inline(always)]
+    pub fn div32(self) -> &'a mut crate::W<REG> {
+        self.variant(Pselselect::Div32)
+    }
+    #[doc = "Divide clock by 64"]
+    #[inline(always)]
+    pub fn div64(self) -> &'a mut crate::W<REG> {
+        self.variant(Pselselect::Div64)
+    }
+    #[doc = "Divide clock by 128"]
+    #[inline(always)]
+    pub fn div128(self) -> &'a mut crate::W<REG> {
+        self.variant(Pselselect::Div128)
+    }
+    #[doc = "Divide clock by 256"]
+    #[inline(always)]
+    pub fn div256(self) -> &'a mut crate::W<REG> {
+        self.variant(Pselselect::Div256)
     }
 }
 #[doc = "Field `LEVEL` reader - Threshold Level for VDD"]
-pub struct LEVEL_R(crate::FieldReader<u8, u8>);
-impl LEVEL_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        LEVEL_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for LEVEL_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type LevelR = crate::FieldReader;
 #[doc = "Field `LEVEL` writer - Threshold Level for VDD"]
-pub struct LEVEL_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> LEVEL_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0xff << 16)) | ((value as u32 & 0xff) << 16);
-        self.w
-    }
-}
+pub type LevelW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
 #[doc = "Field `VBATLEVEL` reader - Threshold Level in battery backup sleep mode for VBAT"]
-pub struct VBATLEVEL_R(crate::FieldReader<u8, u8>);
-impl VBATLEVEL_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        VBATLEVEL_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for VBATLEVEL_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type VbatlevelR = crate::FieldReader;
 #[doc = "Field `VBATLEVEL` writer - Threshold Level in battery backup sleep mode for VBAT"]
-pub struct VBATLEVEL_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> VBATLEVEL_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0xff << 24)) | ((value as u32 & 0xff) << 24);
-        self.w
-    }
-}
+pub type VbatlevelW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
 impl R {
     #[doc = "Bit 1 - Enable"]
     #[inline(always)]
-    pub fn enable(&self) -> ENABLE_R {
-        ENABLE_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn enable(&self) -> EnableR {
+        EnableR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bits 2:3 - Action when Threshold Crossed"]
     #[inline(always)]
-    pub fn action(&self) -> ACTION_R {
-        ACTION_R::new(((self.bits >> 2) & 0x03) as u8)
+    pub fn action(&self) -> ActionR {
+        ActionR::new(((self.bits >> 2) & 3) as u8)
     }
     #[doc = "Bit 4 - Configuration in Standby mode"]
     #[inline(always)]
-    pub fn stdbycfg(&self) -> STDBYCFG_R {
-        STDBYCFG_R::new(((self.bits >> 4) & 0x01) != 0)
+    pub fn stdbycfg(&self) -> StdbycfgR {
+        StdbycfgR::new(((self.bits >> 4) & 1) != 0)
     }
     #[doc = "Bit 5 - Run in Standby mode"]
     #[inline(always)]
-    pub fn runstdby(&self) -> RUNSTDBY_R {
-        RUNSTDBY_R::new(((self.bits >> 5) & 0x01) != 0)
+    pub fn runstdby(&self) -> RunstdbyR {
+        RunstdbyR::new(((self.bits >> 5) & 1) != 0)
     }
     #[doc = "Bit 6 - Run in Hibernate mode"]
     #[inline(always)]
-    pub fn runhib(&self) -> RUNHIB_R {
-        RUNHIB_R::new(((self.bits >> 6) & 0x01) != 0)
+    pub fn runhib(&self) -> RunhibR {
+        RunhibR::new(((self.bits >> 6) & 1) != 0)
     }
     #[doc = "Bit 7 - Run in Backup mode"]
     #[inline(always)]
-    pub fn runbkup(&self) -> RUNBKUP_R {
-        RUNBKUP_R::new(((self.bits >> 7) & 0x01) != 0)
+    pub fn runbkup(&self) -> RunbkupR {
+        RunbkupR::new(((self.bits >> 7) & 1) != 0)
     }
     #[doc = "Bits 8:11 - Hysteresis value"]
     #[inline(always)]
-    pub fn hyst(&self) -> HYST_R {
-        HYST_R::new(((self.bits >> 8) & 0x0f) as u8)
+    pub fn hyst(&self) -> HystR {
+        HystR::new(((self.bits >> 8) & 0x0f) as u8)
     }
     #[doc = "Bits 12:14 - Prescaler Select"]
     #[inline(always)]
-    pub fn psel(&self) -> PSEL_R {
-        PSEL_R::new(((self.bits >> 12) & 0x07) as u8)
+    pub fn psel(&self) -> PselR {
+        PselR::new(((self.bits >> 12) & 7) as u8)
     }
     #[doc = "Bits 16:23 - Threshold Level for VDD"]
     #[inline(always)]
-    pub fn level(&self) -> LEVEL_R {
-        LEVEL_R::new(((self.bits >> 16) & 0xff) as u8)
+    pub fn level(&self) -> LevelR {
+        LevelR::new(((self.bits >> 16) & 0xff) as u8)
     }
     #[doc = "Bits 24:31 - Threshold Level in battery backup sleep mode for VBAT"]
     #[inline(always)]
-    pub fn vbatlevel(&self) -> VBATLEVEL_R {
-        VBATLEVEL_R::new(((self.bits >> 24) & 0xff) as u8)
+    pub fn vbatlevel(&self) -> VbatlevelR {
+        VbatlevelR::new(((self.bits >> 24) & 0xff) as u8)
     }
 }
 impl W {
     #[doc = "Bit 1 - Enable"]
     #[inline(always)]
-    pub fn enable(&mut self) -> ENABLE_W {
-        ENABLE_W { w: self }
+    #[must_use]
+    pub fn enable(&mut self) -> EnableW<Bod33Spec> {
+        EnableW::new(self, 1)
     }
     #[doc = "Bits 2:3 - Action when Threshold Crossed"]
     #[inline(always)]
-    pub fn action(&mut self) -> ACTION_W {
-        ACTION_W { w: self }
+    #[must_use]
+    pub fn action(&mut self) -> ActionW<Bod33Spec> {
+        ActionW::new(self, 2)
     }
     #[doc = "Bit 4 - Configuration in Standby mode"]
     #[inline(always)]
-    pub fn stdbycfg(&mut self) -> STDBYCFG_W {
-        STDBYCFG_W { w: self }
+    #[must_use]
+    pub fn stdbycfg(&mut self) -> StdbycfgW<Bod33Spec> {
+        StdbycfgW::new(self, 4)
     }
     #[doc = "Bit 5 - Run in Standby mode"]
     #[inline(always)]
-    pub fn runstdby(&mut self) -> RUNSTDBY_W {
-        RUNSTDBY_W { w: self }
+    #[must_use]
+    pub fn runstdby(&mut self) -> RunstdbyW<Bod33Spec> {
+        RunstdbyW::new(self, 5)
     }
     #[doc = "Bit 6 - Run in Hibernate mode"]
     #[inline(always)]
-    pub fn runhib(&mut self) -> RUNHIB_W {
-        RUNHIB_W { w: self }
+    #[must_use]
+    pub fn runhib(&mut self) -> RunhibW<Bod33Spec> {
+        RunhibW::new(self, 6)
     }
     #[doc = "Bit 7 - Run in Backup mode"]
     #[inline(always)]
-    pub fn runbkup(&mut self) -> RUNBKUP_W {
-        RUNBKUP_W { w: self }
+    #[must_use]
+    pub fn runbkup(&mut self) -> RunbkupW<Bod33Spec> {
+        RunbkupW::new(self, 7)
     }
     #[doc = "Bits 8:11 - Hysteresis value"]
     #[inline(always)]
-    pub fn hyst(&mut self) -> HYST_W {
-        HYST_W { w: self }
+    #[must_use]
+    pub fn hyst(&mut self) -> HystW<Bod33Spec> {
+        HystW::new(self, 8)
     }
     #[doc = "Bits 12:14 - Prescaler Select"]
     #[inline(always)]
-    pub fn psel(&mut self) -> PSEL_W {
-        PSEL_W { w: self }
+    #[must_use]
+    pub fn psel(&mut self) -> PselW<Bod33Spec> {
+        PselW::new(self, 12)
     }
     #[doc = "Bits 16:23 - Threshold Level for VDD"]
     #[inline(always)]
-    pub fn level(&mut self) -> LEVEL_W {
-        LEVEL_W { w: self }
+    #[must_use]
+    pub fn level(&mut self) -> LevelW<Bod33Spec> {
+        LevelW::new(self, 16)
     }
     #[doc = "Bits 24:31 - Threshold Level in battery backup sleep mode for VBAT"]
     #[inline(always)]
-    pub fn vbatlevel(&mut self) -> VBATLEVEL_W {
-        VBATLEVEL_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn vbatlevel(&mut self) -> VbatlevelW<Bod33Spec> {
+        VbatlevelW::new(self, 24)
     }
 }
-#[doc = "BOD33 Control\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [bod33](index.html) module"]
-pub struct BOD33_SPEC;
-impl crate::RegisterSpec for BOD33_SPEC {
+#[doc = "BOD33 Control\n\nYou can [`read`](crate::Reg::read) this register and get [`bod33::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`bod33::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct Bod33Spec;
+impl crate::RegisterSpec for Bod33Spec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [bod33::R](R) reader structure"]
-impl crate::Readable for BOD33_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [bod33::W](W) writer structure"]
-impl crate::Writable for BOD33_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`bod33::R`](R) reader structure"]
+impl crate::Readable for Bod33Spec {}
+#[doc = "`write(|w| ..)` method takes [`bod33::W`](W) writer structure"]
+impl crate::Writable for Bod33Spec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets BOD33 to value 0"]
-impl crate::Resettable for BOD33_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for Bod33Spec {
+    const RESET_VALUE: u32 = 0;
 }

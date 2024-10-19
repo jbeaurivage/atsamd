@@ -251,13 +251,16 @@
 // This is necessary until modular_bitfield fixes all their identity_op warnings
 #![allow(clippy::identity_op)]
 
+use atsamd_hal_macros::hal_cfg;
+
 use modular_bitfield::prelude::*;
 
 pub use channel::*;
 pub use dma_controller::*;
 pub use transfer::*;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 /// Runtime errors that may occur when dealing with DMA transfers.
 pub enum Error {
     /// Supplied buffers both have lengths > 1 beat, but not equal to each other
@@ -276,7 +279,8 @@ pub enum Error {
 /// Result for DMAC operations
 pub type Result<T> = core::result::Result<T, Error>;
 
-#[cfg(all(feature = "samd11", feature = "max-channels"))]
+#[cfg(feature = "max-channels")]
+#[hal_cfg("dmac-d11")]
 #[macro_export]
 macro_rules! with_num_channels {
     ($some_macro:ident) => {
@@ -284,7 +288,8 @@ macro_rules! with_num_channels {
     };
 }
 
-#[cfg(all(feature = "samd21", feature = "max-channels"))]
+#[cfg(feature = "max-channels")]
+#[hal_cfg("dmac-d21")]
 #[macro_export]
 macro_rules! with_num_channels {
     ($some_macro:ident) => {
@@ -292,7 +297,8 @@ macro_rules! with_num_channels {
     };
 }
 
-#[cfg(all(feature = "thumbv7", feature = "max-channels"))]
+#[cfg(feature = "max-channels")]
+#[hal_cfg("dmac-d5x")]
 #[macro_export]
 macro_rules! with_num_channels {
     ($some_macro:ident) => {
@@ -300,7 +306,8 @@ macro_rules! with_num_channels {
     };
 }
 
-#[cfg(all(feature = "samd11", not(feature = "max-channels")))]
+#[cfg(not(feature = "max-channels"))]
+#[hal_cfg("dmac-d11")]
 #[macro_export]
 macro_rules! with_num_channels {
     ($some_macro:ident) => {
@@ -308,7 +315,8 @@ macro_rules! with_num_channels {
     };
 }
 
-#[cfg(all(feature = "samd21", not(feature = "max-channels")))]
+#[cfg(not(feature = "max-channels"))]
+#[hal_cfg("dmac-d21")]
 #[macro_export]
 macro_rules! with_num_channels {
     ($some_macro:ident) => {
@@ -316,7 +324,8 @@ macro_rules! with_num_channels {
     };
 }
 
-#[cfg(all(feature = "thumbv7", not(feature = "max-channels")))]
+#[cfg(not(feature = "max-channels"))]
+#[hal_cfg("dmac-d5x")]
 #[macro_export]
 macro_rules! with_num_channels {
     ($some_macro:ident) => {
@@ -334,6 +343,12 @@ macro_rules! get {
 pub const NUM_CHANNELS: usize = with_num_channels!(get);
 
 // ----- DMAC SRAM registers ----- //
+impl Default for BlockTransferControl {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 /// Bitfield representing the BTCTRL SRAM DMAC register
 #[bitfield]
 #[derive(Clone, Copy)]

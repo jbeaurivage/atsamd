@@ -1,949 +1,578 @@
 #[doc = "Register `XOSCCTRL[%s]` reader"]
-pub struct R(crate::R<XOSCCTRL_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<XOSCCTRL_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<XOSCCTRL_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<XOSCCTRL_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<XoscctrlSpec>;
 #[doc = "Register `XOSCCTRL[%s]` writer"]
-pub struct W(crate::W<XOSCCTRL_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<XOSCCTRL_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<XOSCCTRL_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<XOSCCTRL_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<XoscctrlSpec>;
 #[doc = "Field `ENABLE` reader - Oscillator Enable"]
-pub struct ENABLE_R(crate::FieldReader<bool, bool>);
-impl ENABLE_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ENABLE_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for ENABLE_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type EnableR = crate::BitReader;
 #[doc = "Field `ENABLE` writer - Oscillator Enable"]
-pub struct ENABLE_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ENABLE_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u32 & 0x01) << 1);
-        self.w
-    }
-}
+pub type EnableW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `XTALEN` reader - Crystal Oscillator Enable"]
-pub struct XTALEN_R(crate::FieldReader<bool, bool>);
-impl XTALEN_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        XTALEN_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for XTALEN_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type XtalenR = crate::BitReader;
 #[doc = "Field `XTALEN` writer - Crystal Oscillator Enable"]
-pub struct XTALEN_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> XTALEN_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 2)) | ((value as u32 & 0x01) << 2);
-        self.w
-    }
-}
+pub type XtalenW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `RUNSTDBY` reader - Run in Standby"]
-pub struct RUNSTDBY_R(crate::FieldReader<bool, bool>);
-impl RUNSTDBY_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        RUNSTDBY_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for RUNSTDBY_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type RunstdbyR = crate::BitReader;
 #[doc = "Field `RUNSTDBY` writer - Run in Standby"]
-pub struct RUNSTDBY_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> RUNSTDBY_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 6)) | ((value as u32 & 0x01) << 6);
-        self.w
-    }
-}
+pub type RunstdbyW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `ONDEMAND` reader - On Demand Control"]
-pub struct ONDEMAND_R(crate::FieldReader<bool, bool>);
-impl ONDEMAND_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ONDEMAND_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for ONDEMAND_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type OndemandR = crate::BitReader;
 #[doc = "Field `ONDEMAND` writer - On Demand Control"]
-pub struct ONDEMAND_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ONDEMAND_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 7)) | ((value as u32 & 0x01) << 7);
-        self.w
-    }
-}
+pub type OndemandW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `LOWBUFGAIN` reader - Low Buffer Gain Enable"]
-pub struct LOWBUFGAIN_R(crate::FieldReader<bool, bool>);
-impl LOWBUFGAIN_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        LOWBUFGAIN_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for LOWBUFGAIN_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type LowbufgainR = crate::BitReader;
 #[doc = "Field `LOWBUFGAIN` writer - Low Buffer Gain Enable"]
-pub struct LOWBUFGAIN_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> LOWBUFGAIN_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 8)) | ((value as u32 & 0x01) << 8);
-        self.w
-    }
-}
+pub type LowbufgainW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `IPTAT` reader - Oscillator Current Reference"]
-pub struct IPTAT_R(crate::FieldReader<u8, u8>);
-impl IPTAT_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        IPTAT_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for IPTAT_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type IptatR = crate::FieldReader;
 #[doc = "Field `IPTAT` writer - Oscillator Current Reference"]
-pub struct IPTAT_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> IPTAT_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x03 << 9)) | ((value as u32 & 0x03) << 9);
-        self.w
-    }
-}
+pub type IptatW<'a, REG> = crate::FieldWriter<'a, REG, 2>;
 #[doc = "Field `IMULT` reader - Oscillator Current Multiplier"]
-pub struct IMULT_R(crate::FieldReader<u8, u8>);
-impl IMULT_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        IMULT_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for IMULT_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type ImultR = crate::FieldReader;
 #[doc = "Field `IMULT` writer - Oscillator Current Multiplier"]
-pub struct IMULT_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> IMULT_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x0f << 11)) | ((value as u32 & 0x0f) << 11);
-        self.w
-    }
-}
+pub type ImultW<'a, REG> = crate::FieldWriter<'a, REG, 4>;
 #[doc = "Field `ENALC` reader - Automatic Loop Control Enable"]
-pub struct ENALC_R(crate::FieldReader<bool, bool>);
-impl ENALC_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ENALC_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for ENALC_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type EnalcR = crate::BitReader;
 #[doc = "Field `ENALC` writer - Automatic Loop Control Enable"]
-pub struct ENALC_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ENALC_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 15)) | ((value as u32 & 0x01) << 15);
-        self.w
-    }
-}
+pub type EnalcW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CFDEN` reader - Clock Failure Detector Enable"]
-pub struct CFDEN_R(crate::FieldReader<bool, bool>);
-impl CFDEN_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CFDEN_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for CFDEN_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type CfdenR = crate::BitReader;
 #[doc = "Field `CFDEN` writer - Clock Failure Detector Enable"]
-pub struct CFDEN_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CFDEN_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 16)) | ((value as u32 & 0x01) << 16);
-        self.w
-    }
-}
+pub type CfdenW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `SWBEN` reader - Xosc Clock Switch Enable"]
-pub struct SWBEN_R(crate::FieldReader<bool, bool>);
-impl SWBEN_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SWBEN_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for SWBEN_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type SwbenR = crate::BitReader;
 #[doc = "Field `SWBEN` writer - Xosc Clock Switch Enable"]
-pub struct SWBEN_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SWBEN_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 17)) | ((value as u32 & 0x01) << 17);
-        self.w
-    }
-}
+pub type SwbenW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Start-Up Time\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum STARTUP_A {
+pub enum Startupselect {
     #[doc = "0: 31 us"]
-    CYCLE1 = 0,
+    Cycle1 = 0,
     #[doc = "1: 61 us"]
-    CYCLE2 = 1,
+    Cycle2 = 1,
     #[doc = "2: 122 us"]
-    CYCLE4 = 2,
+    Cycle4 = 2,
     #[doc = "3: 244 us"]
-    CYCLE8 = 3,
+    Cycle8 = 3,
     #[doc = "4: 488 us"]
-    CYCLE16 = 4,
+    Cycle16 = 4,
     #[doc = "5: 977 us"]
-    CYCLE32 = 5,
+    Cycle32 = 5,
     #[doc = "6: 1953 us"]
-    CYCLE64 = 6,
+    Cycle64 = 6,
     #[doc = "7: 3906 us"]
-    CYCLE128 = 7,
+    Cycle128 = 7,
     #[doc = "8: 7813 us"]
-    CYCLE256 = 8,
+    Cycle256 = 8,
     #[doc = "9: 15625 us"]
-    CYCLE512 = 9,
+    Cycle512 = 9,
     #[doc = "10: 31250 us"]
-    CYCLE1024 = 10,
+    Cycle1024 = 10,
     #[doc = "11: 62500 us"]
-    CYCLE2048 = 11,
+    Cycle2048 = 11,
     #[doc = "12: 125000 us"]
-    CYCLE4096 = 12,
+    Cycle4096 = 12,
     #[doc = "13: 250000 us"]
-    CYCLE8192 = 13,
+    Cycle8192 = 13,
     #[doc = "14: 500000 us"]
-    CYCLE16384 = 14,
+    Cycle16384 = 14,
     #[doc = "15: 1000000 us"]
-    CYCLE32768 = 15,
+    Cycle32768 = 15,
 }
-impl From<STARTUP_A> for u8 {
+impl From<Startupselect> for u8 {
     #[inline(always)]
-    fn from(variant: STARTUP_A) -> Self {
+    fn from(variant: Startupselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Startupselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Startupselect {}
 #[doc = "Field `STARTUP` reader - Start-Up Time"]
-pub struct STARTUP_R(crate::FieldReader<u8, STARTUP_A>);
-impl STARTUP_R {
+pub type StartupR = crate::FieldReader<Startupselect>;
+impl StartupR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        STARTUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> STARTUP_A {
+    pub const fn variant(&self) -> Startupselect {
         match self.bits {
-            0 => STARTUP_A::CYCLE1,
-            1 => STARTUP_A::CYCLE2,
-            2 => STARTUP_A::CYCLE4,
-            3 => STARTUP_A::CYCLE8,
-            4 => STARTUP_A::CYCLE16,
-            5 => STARTUP_A::CYCLE32,
-            6 => STARTUP_A::CYCLE64,
-            7 => STARTUP_A::CYCLE128,
-            8 => STARTUP_A::CYCLE256,
-            9 => STARTUP_A::CYCLE512,
-            10 => STARTUP_A::CYCLE1024,
-            11 => STARTUP_A::CYCLE2048,
-            12 => STARTUP_A::CYCLE4096,
-            13 => STARTUP_A::CYCLE8192,
-            14 => STARTUP_A::CYCLE16384,
-            15 => STARTUP_A::CYCLE32768,
+            0 => Startupselect::Cycle1,
+            1 => Startupselect::Cycle2,
+            2 => Startupselect::Cycle4,
+            3 => Startupselect::Cycle8,
+            4 => Startupselect::Cycle16,
+            5 => Startupselect::Cycle32,
+            6 => Startupselect::Cycle64,
+            7 => Startupselect::Cycle128,
+            8 => Startupselect::Cycle256,
+            9 => Startupselect::Cycle512,
+            10 => Startupselect::Cycle1024,
+            11 => Startupselect::Cycle2048,
+            12 => Startupselect::Cycle4096,
+            13 => Startupselect::Cycle8192,
+            14 => Startupselect::Cycle16384,
+            15 => Startupselect::Cycle32768,
             _ => unreachable!(),
         }
     }
-    #[doc = "Checks if the value of the field is `CYCLE1`"]
-    #[inline(always)]
-    pub fn is_cycle1(&self) -> bool {
-        **self == STARTUP_A::CYCLE1
-    }
-    #[doc = "Checks if the value of the field is `CYCLE2`"]
-    #[inline(always)]
-    pub fn is_cycle2(&self) -> bool {
-        **self == STARTUP_A::CYCLE2
-    }
-    #[doc = "Checks if the value of the field is `CYCLE4`"]
-    #[inline(always)]
-    pub fn is_cycle4(&self) -> bool {
-        **self == STARTUP_A::CYCLE4
-    }
-    #[doc = "Checks if the value of the field is `CYCLE8`"]
-    #[inline(always)]
-    pub fn is_cycle8(&self) -> bool {
-        **self == STARTUP_A::CYCLE8
-    }
-    #[doc = "Checks if the value of the field is `CYCLE16`"]
-    #[inline(always)]
-    pub fn is_cycle16(&self) -> bool {
-        **self == STARTUP_A::CYCLE16
-    }
-    #[doc = "Checks if the value of the field is `CYCLE32`"]
-    #[inline(always)]
-    pub fn is_cycle32(&self) -> bool {
-        **self == STARTUP_A::CYCLE32
-    }
-    #[doc = "Checks if the value of the field is `CYCLE64`"]
-    #[inline(always)]
-    pub fn is_cycle64(&self) -> bool {
-        **self == STARTUP_A::CYCLE64
-    }
-    #[doc = "Checks if the value of the field is `CYCLE128`"]
-    #[inline(always)]
-    pub fn is_cycle128(&self) -> bool {
-        **self == STARTUP_A::CYCLE128
-    }
-    #[doc = "Checks if the value of the field is `CYCLE256`"]
-    #[inline(always)]
-    pub fn is_cycle256(&self) -> bool {
-        **self == STARTUP_A::CYCLE256
-    }
-    #[doc = "Checks if the value of the field is `CYCLE512`"]
-    #[inline(always)]
-    pub fn is_cycle512(&self) -> bool {
-        **self == STARTUP_A::CYCLE512
-    }
-    #[doc = "Checks if the value of the field is `CYCLE1024`"]
-    #[inline(always)]
-    pub fn is_cycle1024(&self) -> bool {
-        **self == STARTUP_A::CYCLE1024
-    }
-    #[doc = "Checks if the value of the field is `CYCLE2048`"]
-    #[inline(always)]
-    pub fn is_cycle2048(&self) -> bool {
-        **self == STARTUP_A::CYCLE2048
-    }
-    #[doc = "Checks if the value of the field is `CYCLE4096`"]
-    #[inline(always)]
-    pub fn is_cycle4096(&self) -> bool {
-        **self == STARTUP_A::CYCLE4096
-    }
-    #[doc = "Checks if the value of the field is `CYCLE8192`"]
-    #[inline(always)]
-    pub fn is_cycle8192(&self) -> bool {
-        **self == STARTUP_A::CYCLE8192
-    }
-    #[doc = "Checks if the value of the field is `CYCLE16384`"]
-    #[inline(always)]
-    pub fn is_cycle16384(&self) -> bool {
-        **self == STARTUP_A::CYCLE16384
-    }
-    #[doc = "Checks if the value of the field is `CYCLE32768`"]
-    #[inline(always)]
-    pub fn is_cycle32768(&self) -> bool {
-        **self == STARTUP_A::CYCLE32768
-    }
-}
-impl core::ops::Deref for STARTUP_R {
-    type Target = crate::FieldReader<u8, STARTUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `STARTUP` writer - Start-Up Time"]
-pub struct STARTUP_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> STARTUP_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: STARTUP_A) -> &'a mut W {
-        self.bits(variant.into())
-    }
     #[doc = "31 us"]
     #[inline(always)]
-    pub fn cycle1(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE1)
+    pub fn is_cycle1(&self) -> bool {
+        *self == Startupselect::Cycle1
     }
     #[doc = "61 us"]
     #[inline(always)]
-    pub fn cycle2(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE2)
+    pub fn is_cycle2(&self) -> bool {
+        *self == Startupselect::Cycle2
     }
     #[doc = "122 us"]
     #[inline(always)]
-    pub fn cycle4(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE4)
+    pub fn is_cycle4(&self) -> bool {
+        *self == Startupselect::Cycle4
     }
     #[doc = "244 us"]
     #[inline(always)]
-    pub fn cycle8(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE8)
+    pub fn is_cycle8(&self) -> bool {
+        *self == Startupselect::Cycle8
     }
     #[doc = "488 us"]
     #[inline(always)]
-    pub fn cycle16(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE16)
+    pub fn is_cycle16(&self) -> bool {
+        *self == Startupselect::Cycle16
     }
     #[doc = "977 us"]
     #[inline(always)]
-    pub fn cycle32(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE32)
+    pub fn is_cycle32(&self) -> bool {
+        *self == Startupselect::Cycle32
     }
     #[doc = "1953 us"]
     #[inline(always)]
-    pub fn cycle64(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE64)
+    pub fn is_cycle64(&self) -> bool {
+        *self == Startupselect::Cycle64
     }
     #[doc = "3906 us"]
     #[inline(always)]
-    pub fn cycle128(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE128)
+    pub fn is_cycle128(&self) -> bool {
+        *self == Startupselect::Cycle128
     }
     #[doc = "7813 us"]
     #[inline(always)]
-    pub fn cycle256(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE256)
+    pub fn is_cycle256(&self) -> bool {
+        *self == Startupselect::Cycle256
     }
     #[doc = "15625 us"]
     #[inline(always)]
-    pub fn cycle512(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE512)
+    pub fn is_cycle512(&self) -> bool {
+        *self == Startupselect::Cycle512
     }
     #[doc = "31250 us"]
     #[inline(always)]
-    pub fn cycle1024(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE1024)
+    pub fn is_cycle1024(&self) -> bool {
+        *self == Startupselect::Cycle1024
     }
     #[doc = "62500 us"]
     #[inline(always)]
-    pub fn cycle2048(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE2048)
+    pub fn is_cycle2048(&self) -> bool {
+        *self == Startupselect::Cycle2048
     }
     #[doc = "125000 us"]
     #[inline(always)]
-    pub fn cycle4096(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE4096)
+    pub fn is_cycle4096(&self) -> bool {
+        *self == Startupselect::Cycle4096
     }
     #[doc = "250000 us"]
     #[inline(always)]
-    pub fn cycle8192(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE8192)
+    pub fn is_cycle8192(&self) -> bool {
+        *self == Startupselect::Cycle8192
     }
     #[doc = "500000 us"]
     #[inline(always)]
-    pub fn cycle16384(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE16384)
+    pub fn is_cycle16384(&self) -> bool {
+        *self == Startupselect::Cycle16384
     }
     #[doc = "1000000 us"]
     #[inline(always)]
-    pub fn cycle32768(self) -> &'a mut W {
-        self.variant(STARTUP_A::CYCLE32768)
+    pub fn is_cycle32768(&self) -> bool {
+        *self == Startupselect::Cycle32768
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `STARTUP` writer - Start-Up Time"]
+pub type StartupW<'a, REG> = crate::FieldWriter<'a, REG, 4, Startupselect, crate::Safe>;
+impl<'a, REG> StartupW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "31 us"]
     #[inline(always)]
-    pub fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x0f << 20)) | ((value as u32 & 0x0f) << 20);
-        self.w
+    pub fn cycle1(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle1)
+    }
+    #[doc = "61 us"]
+    #[inline(always)]
+    pub fn cycle2(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle2)
+    }
+    #[doc = "122 us"]
+    #[inline(always)]
+    pub fn cycle4(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle4)
+    }
+    #[doc = "244 us"]
+    #[inline(always)]
+    pub fn cycle8(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle8)
+    }
+    #[doc = "488 us"]
+    #[inline(always)]
+    pub fn cycle16(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle16)
+    }
+    #[doc = "977 us"]
+    #[inline(always)]
+    pub fn cycle32(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle32)
+    }
+    #[doc = "1953 us"]
+    #[inline(always)]
+    pub fn cycle64(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle64)
+    }
+    #[doc = "3906 us"]
+    #[inline(always)]
+    pub fn cycle128(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle128)
+    }
+    #[doc = "7813 us"]
+    #[inline(always)]
+    pub fn cycle256(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle256)
+    }
+    #[doc = "15625 us"]
+    #[inline(always)]
+    pub fn cycle512(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle512)
+    }
+    #[doc = "31250 us"]
+    #[inline(always)]
+    pub fn cycle1024(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle1024)
+    }
+    #[doc = "62500 us"]
+    #[inline(always)]
+    pub fn cycle2048(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle2048)
+    }
+    #[doc = "125000 us"]
+    #[inline(always)]
+    pub fn cycle4096(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle4096)
+    }
+    #[doc = "250000 us"]
+    #[inline(always)]
+    pub fn cycle8192(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle8192)
+    }
+    #[doc = "500000 us"]
+    #[inline(always)]
+    pub fn cycle16384(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle16384)
+    }
+    #[doc = "1000000 us"]
+    #[inline(always)]
+    pub fn cycle32768(self) -> &'a mut crate::W<REG> {
+        self.variant(Startupselect::Cycle32768)
     }
 }
 #[doc = "Clock Failure Detector Prescaler\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum CFDPRESC_A {
+pub enum Cfdprescselect {
     #[doc = "0: 48 MHz"]
-    DIV1 = 0,
+    Div1 = 0,
     #[doc = "1: 24 MHz"]
-    DIV2 = 1,
+    Div2 = 1,
     #[doc = "2: 12 MHz"]
-    DIV4 = 2,
+    Div4 = 2,
     #[doc = "3: 6 MHz"]
-    DIV8 = 3,
+    Div8 = 3,
     #[doc = "4: 3 MHz"]
-    DIV16 = 4,
+    Div16 = 4,
     #[doc = "5: 1.5 MHz"]
-    DIV32 = 5,
+    Div32 = 5,
     #[doc = "6: 0.75 MHz"]
-    DIV64 = 6,
+    Div64 = 6,
     #[doc = "7: 0.3125 MHz"]
-    DIV128 = 7,
+    Div128 = 7,
 }
-impl From<CFDPRESC_A> for u8 {
+impl From<Cfdprescselect> for u8 {
     #[inline(always)]
-    fn from(variant: CFDPRESC_A) -> Self {
+    fn from(variant: Cfdprescselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Cfdprescselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Cfdprescselect {}
 #[doc = "Field `CFDPRESC` reader - Clock Failure Detector Prescaler"]
-pub struct CFDPRESC_R(crate::FieldReader<u8, CFDPRESC_A>);
-impl CFDPRESC_R {
+pub type CfdprescR = crate::FieldReader<Cfdprescselect>;
+impl CfdprescR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        CFDPRESC_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<CFDPRESC_A> {
+    pub const fn variant(&self) -> Option<Cfdprescselect> {
         match self.bits {
-            0 => Some(CFDPRESC_A::DIV1),
-            1 => Some(CFDPRESC_A::DIV2),
-            2 => Some(CFDPRESC_A::DIV4),
-            3 => Some(CFDPRESC_A::DIV8),
-            4 => Some(CFDPRESC_A::DIV16),
-            5 => Some(CFDPRESC_A::DIV32),
-            6 => Some(CFDPRESC_A::DIV64),
-            7 => Some(CFDPRESC_A::DIV128),
+            0 => Some(Cfdprescselect::Div1),
+            1 => Some(Cfdprescselect::Div2),
+            2 => Some(Cfdprescselect::Div4),
+            3 => Some(Cfdprescselect::Div8),
+            4 => Some(Cfdprescselect::Div16),
+            5 => Some(Cfdprescselect::Div32),
+            6 => Some(Cfdprescselect::Div64),
+            7 => Some(Cfdprescselect::Div128),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `DIV1`"]
-    #[inline(always)]
-    pub fn is_div1(&self) -> bool {
-        **self == CFDPRESC_A::DIV1
-    }
-    #[doc = "Checks if the value of the field is `DIV2`"]
-    #[inline(always)]
-    pub fn is_div2(&self) -> bool {
-        **self == CFDPRESC_A::DIV2
-    }
-    #[doc = "Checks if the value of the field is `DIV4`"]
-    #[inline(always)]
-    pub fn is_div4(&self) -> bool {
-        **self == CFDPRESC_A::DIV4
-    }
-    #[doc = "Checks if the value of the field is `DIV8`"]
-    #[inline(always)]
-    pub fn is_div8(&self) -> bool {
-        **self == CFDPRESC_A::DIV8
-    }
-    #[doc = "Checks if the value of the field is `DIV16`"]
-    #[inline(always)]
-    pub fn is_div16(&self) -> bool {
-        **self == CFDPRESC_A::DIV16
-    }
-    #[doc = "Checks if the value of the field is `DIV32`"]
-    #[inline(always)]
-    pub fn is_div32(&self) -> bool {
-        **self == CFDPRESC_A::DIV32
-    }
-    #[doc = "Checks if the value of the field is `DIV64`"]
-    #[inline(always)]
-    pub fn is_div64(&self) -> bool {
-        **self == CFDPRESC_A::DIV64
-    }
-    #[doc = "Checks if the value of the field is `DIV128`"]
-    #[inline(always)]
-    pub fn is_div128(&self) -> bool {
-        **self == CFDPRESC_A::DIV128
-    }
-}
-impl core::ops::Deref for CFDPRESC_R {
-    type Target = crate::FieldReader<u8, CFDPRESC_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `CFDPRESC` writer - Clock Failure Detector Prescaler"]
-pub struct CFDPRESC_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CFDPRESC_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: CFDPRESC_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
     #[doc = "48 MHz"]
     #[inline(always)]
-    pub fn div1(self) -> &'a mut W {
-        self.variant(CFDPRESC_A::DIV1)
+    pub fn is_div1(&self) -> bool {
+        *self == Cfdprescselect::Div1
     }
     #[doc = "24 MHz"]
     #[inline(always)]
-    pub fn div2(self) -> &'a mut W {
-        self.variant(CFDPRESC_A::DIV2)
+    pub fn is_div2(&self) -> bool {
+        *self == Cfdprescselect::Div2
     }
     #[doc = "12 MHz"]
     #[inline(always)]
-    pub fn div4(self) -> &'a mut W {
-        self.variant(CFDPRESC_A::DIV4)
+    pub fn is_div4(&self) -> bool {
+        *self == Cfdprescselect::Div4
     }
     #[doc = "6 MHz"]
     #[inline(always)]
-    pub fn div8(self) -> &'a mut W {
-        self.variant(CFDPRESC_A::DIV8)
+    pub fn is_div8(&self) -> bool {
+        *self == Cfdprescselect::Div8
     }
     #[doc = "3 MHz"]
     #[inline(always)]
-    pub fn div16(self) -> &'a mut W {
-        self.variant(CFDPRESC_A::DIV16)
+    pub fn is_div16(&self) -> bool {
+        *self == Cfdprescselect::Div16
     }
     #[doc = "1.5 MHz"]
     #[inline(always)]
-    pub fn div32(self) -> &'a mut W {
-        self.variant(CFDPRESC_A::DIV32)
+    pub fn is_div32(&self) -> bool {
+        *self == Cfdprescselect::Div32
     }
     #[doc = "0.75 MHz"]
     #[inline(always)]
-    pub fn div64(self) -> &'a mut W {
-        self.variant(CFDPRESC_A::DIV64)
+    pub fn is_div64(&self) -> bool {
+        *self == Cfdprescselect::Div64
     }
     #[doc = "0.3125 MHz"]
     #[inline(always)]
-    pub fn div128(self) -> &'a mut W {
-        self.variant(CFDPRESC_A::DIV128)
+    pub fn is_div128(&self) -> bool {
+        *self == Cfdprescselect::Div128
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `CFDPRESC` writer - Clock Failure Detector Prescaler"]
+pub type CfdprescW<'a, REG> = crate::FieldWriter<'a, REG, 4, Cfdprescselect>;
+impl<'a, REG> CfdprescW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "48 MHz"]
     #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x0f << 24)) | ((value as u32 & 0x0f) << 24);
-        self.w
+    pub fn div1(self) -> &'a mut crate::W<REG> {
+        self.variant(Cfdprescselect::Div1)
+    }
+    #[doc = "24 MHz"]
+    #[inline(always)]
+    pub fn div2(self) -> &'a mut crate::W<REG> {
+        self.variant(Cfdprescselect::Div2)
+    }
+    #[doc = "12 MHz"]
+    #[inline(always)]
+    pub fn div4(self) -> &'a mut crate::W<REG> {
+        self.variant(Cfdprescselect::Div4)
+    }
+    #[doc = "6 MHz"]
+    #[inline(always)]
+    pub fn div8(self) -> &'a mut crate::W<REG> {
+        self.variant(Cfdprescselect::Div8)
+    }
+    #[doc = "3 MHz"]
+    #[inline(always)]
+    pub fn div16(self) -> &'a mut crate::W<REG> {
+        self.variant(Cfdprescselect::Div16)
+    }
+    #[doc = "1.5 MHz"]
+    #[inline(always)]
+    pub fn div32(self) -> &'a mut crate::W<REG> {
+        self.variant(Cfdprescselect::Div32)
+    }
+    #[doc = "0.75 MHz"]
+    #[inline(always)]
+    pub fn div64(self) -> &'a mut crate::W<REG> {
+        self.variant(Cfdprescselect::Div64)
+    }
+    #[doc = "0.3125 MHz"]
+    #[inline(always)]
+    pub fn div128(self) -> &'a mut crate::W<REG> {
+        self.variant(Cfdprescselect::Div128)
     }
 }
 impl R {
     #[doc = "Bit 1 - Oscillator Enable"]
     #[inline(always)]
-    pub fn enable(&self) -> ENABLE_R {
-        ENABLE_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn enable(&self) -> EnableR {
+        EnableR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bit 2 - Crystal Oscillator Enable"]
     #[inline(always)]
-    pub fn xtalen(&self) -> XTALEN_R {
-        XTALEN_R::new(((self.bits >> 2) & 0x01) != 0)
+    pub fn xtalen(&self) -> XtalenR {
+        XtalenR::new(((self.bits >> 2) & 1) != 0)
     }
     #[doc = "Bit 6 - Run in Standby"]
     #[inline(always)]
-    pub fn runstdby(&self) -> RUNSTDBY_R {
-        RUNSTDBY_R::new(((self.bits >> 6) & 0x01) != 0)
+    pub fn runstdby(&self) -> RunstdbyR {
+        RunstdbyR::new(((self.bits >> 6) & 1) != 0)
     }
     #[doc = "Bit 7 - On Demand Control"]
     #[inline(always)]
-    pub fn ondemand(&self) -> ONDEMAND_R {
-        ONDEMAND_R::new(((self.bits >> 7) & 0x01) != 0)
+    pub fn ondemand(&self) -> OndemandR {
+        OndemandR::new(((self.bits >> 7) & 1) != 0)
     }
     #[doc = "Bit 8 - Low Buffer Gain Enable"]
     #[inline(always)]
-    pub fn lowbufgain(&self) -> LOWBUFGAIN_R {
-        LOWBUFGAIN_R::new(((self.bits >> 8) & 0x01) != 0)
+    pub fn lowbufgain(&self) -> LowbufgainR {
+        LowbufgainR::new(((self.bits >> 8) & 1) != 0)
     }
     #[doc = "Bits 9:10 - Oscillator Current Reference"]
     #[inline(always)]
-    pub fn iptat(&self) -> IPTAT_R {
-        IPTAT_R::new(((self.bits >> 9) & 0x03) as u8)
+    pub fn iptat(&self) -> IptatR {
+        IptatR::new(((self.bits >> 9) & 3) as u8)
     }
     #[doc = "Bits 11:14 - Oscillator Current Multiplier"]
     #[inline(always)]
-    pub fn imult(&self) -> IMULT_R {
-        IMULT_R::new(((self.bits >> 11) & 0x0f) as u8)
+    pub fn imult(&self) -> ImultR {
+        ImultR::new(((self.bits >> 11) & 0x0f) as u8)
     }
     #[doc = "Bit 15 - Automatic Loop Control Enable"]
     #[inline(always)]
-    pub fn enalc(&self) -> ENALC_R {
-        ENALC_R::new(((self.bits >> 15) & 0x01) != 0)
+    pub fn enalc(&self) -> EnalcR {
+        EnalcR::new(((self.bits >> 15) & 1) != 0)
     }
     #[doc = "Bit 16 - Clock Failure Detector Enable"]
     #[inline(always)]
-    pub fn cfden(&self) -> CFDEN_R {
-        CFDEN_R::new(((self.bits >> 16) & 0x01) != 0)
+    pub fn cfden(&self) -> CfdenR {
+        CfdenR::new(((self.bits >> 16) & 1) != 0)
     }
     #[doc = "Bit 17 - Xosc Clock Switch Enable"]
     #[inline(always)]
-    pub fn swben(&self) -> SWBEN_R {
-        SWBEN_R::new(((self.bits >> 17) & 0x01) != 0)
+    pub fn swben(&self) -> SwbenR {
+        SwbenR::new(((self.bits >> 17) & 1) != 0)
     }
     #[doc = "Bits 20:23 - Start-Up Time"]
     #[inline(always)]
-    pub fn startup(&self) -> STARTUP_R {
-        STARTUP_R::new(((self.bits >> 20) & 0x0f) as u8)
+    pub fn startup(&self) -> StartupR {
+        StartupR::new(((self.bits >> 20) & 0x0f) as u8)
     }
     #[doc = "Bits 24:27 - Clock Failure Detector Prescaler"]
     #[inline(always)]
-    pub fn cfdpresc(&self) -> CFDPRESC_R {
-        CFDPRESC_R::new(((self.bits >> 24) & 0x0f) as u8)
+    pub fn cfdpresc(&self) -> CfdprescR {
+        CfdprescR::new(((self.bits >> 24) & 0x0f) as u8)
     }
 }
 impl W {
     #[doc = "Bit 1 - Oscillator Enable"]
     #[inline(always)]
-    pub fn enable(&mut self) -> ENABLE_W {
-        ENABLE_W { w: self }
+    #[must_use]
+    pub fn enable(&mut self) -> EnableW<XoscctrlSpec> {
+        EnableW::new(self, 1)
     }
     #[doc = "Bit 2 - Crystal Oscillator Enable"]
     #[inline(always)]
-    pub fn xtalen(&mut self) -> XTALEN_W {
-        XTALEN_W { w: self }
+    #[must_use]
+    pub fn xtalen(&mut self) -> XtalenW<XoscctrlSpec> {
+        XtalenW::new(self, 2)
     }
     #[doc = "Bit 6 - Run in Standby"]
     #[inline(always)]
-    pub fn runstdby(&mut self) -> RUNSTDBY_W {
-        RUNSTDBY_W { w: self }
+    #[must_use]
+    pub fn runstdby(&mut self) -> RunstdbyW<XoscctrlSpec> {
+        RunstdbyW::new(self, 6)
     }
     #[doc = "Bit 7 - On Demand Control"]
     #[inline(always)]
-    pub fn ondemand(&mut self) -> ONDEMAND_W {
-        ONDEMAND_W { w: self }
+    #[must_use]
+    pub fn ondemand(&mut self) -> OndemandW<XoscctrlSpec> {
+        OndemandW::new(self, 7)
     }
     #[doc = "Bit 8 - Low Buffer Gain Enable"]
     #[inline(always)]
-    pub fn lowbufgain(&mut self) -> LOWBUFGAIN_W {
-        LOWBUFGAIN_W { w: self }
+    #[must_use]
+    pub fn lowbufgain(&mut self) -> LowbufgainW<XoscctrlSpec> {
+        LowbufgainW::new(self, 8)
     }
     #[doc = "Bits 9:10 - Oscillator Current Reference"]
     #[inline(always)]
-    pub fn iptat(&mut self) -> IPTAT_W {
-        IPTAT_W { w: self }
+    #[must_use]
+    pub fn iptat(&mut self) -> IptatW<XoscctrlSpec> {
+        IptatW::new(self, 9)
     }
     #[doc = "Bits 11:14 - Oscillator Current Multiplier"]
     #[inline(always)]
-    pub fn imult(&mut self) -> IMULT_W {
-        IMULT_W { w: self }
+    #[must_use]
+    pub fn imult(&mut self) -> ImultW<XoscctrlSpec> {
+        ImultW::new(self, 11)
     }
     #[doc = "Bit 15 - Automatic Loop Control Enable"]
     #[inline(always)]
-    pub fn enalc(&mut self) -> ENALC_W {
-        ENALC_W { w: self }
+    #[must_use]
+    pub fn enalc(&mut self) -> EnalcW<XoscctrlSpec> {
+        EnalcW::new(self, 15)
     }
     #[doc = "Bit 16 - Clock Failure Detector Enable"]
     #[inline(always)]
-    pub fn cfden(&mut self) -> CFDEN_W {
-        CFDEN_W { w: self }
+    #[must_use]
+    pub fn cfden(&mut self) -> CfdenW<XoscctrlSpec> {
+        CfdenW::new(self, 16)
     }
     #[doc = "Bit 17 - Xosc Clock Switch Enable"]
     #[inline(always)]
-    pub fn swben(&mut self) -> SWBEN_W {
-        SWBEN_W { w: self }
+    #[must_use]
+    pub fn swben(&mut self) -> SwbenW<XoscctrlSpec> {
+        SwbenW::new(self, 17)
     }
     #[doc = "Bits 20:23 - Start-Up Time"]
     #[inline(always)]
-    pub fn startup(&mut self) -> STARTUP_W {
-        STARTUP_W { w: self }
+    #[must_use]
+    pub fn startup(&mut self) -> StartupW<XoscctrlSpec> {
+        StartupW::new(self, 20)
     }
     #[doc = "Bits 24:27 - Clock Failure Detector Prescaler"]
     #[inline(always)]
-    pub fn cfdpresc(&mut self) -> CFDPRESC_W {
-        CFDPRESC_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn cfdpresc(&mut self) -> CfdprescW<XoscctrlSpec> {
+        CfdprescW::new(self, 24)
     }
 }
-#[doc = "External Multipurpose Crystal Oscillator Control\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [xoscctrl](index.html) module"]
-pub struct XOSCCTRL_SPEC;
-impl crate::RegisterSpec for XOSCCTRL_SPEC {
+#[doc = "External Multipurpose Crystal Oscillator Control\n\nYou can [`read`](crate::Reg::read) this register and get [`xoscctrl::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`xoscctrl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct XoscctrlSpec;
+impl crate::RegisterSpec for XoscctrlSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [xoscctrl::R](R) reader structure"]
-impl crate::Readable for XOSCCTRL_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [xoscctrl::W](W) writer structure"]
-impl crate::Writable for XOSCCTRL_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`xoscctrl::R`](R) reader structure"]
+impl crate::Readable for XoscctrlSpec {}
+#[doc = "`write(|w| ..)` method takes [`xoscctrl::W`](W) writer structure"]
+impl crate::Writable for XoscctrlSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets XOSCCTRL[%s]
 to value 0x80"]
-impl crate::Resettable for XOSCCTRL_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0x80
-    }
+impl crate::Resettable for XoscctrlSpec {
+    const RESET_VALUE: u32 = 0x80;
 }

@@ -172,17 +172,19 @@
 //! [`Poll`]: core::task::Poll
 //! [RTIC]: https://rtic.rs/
 
+use atsamd_hal_macros::hal_cfg;
+
 use core::convert::Infallible;
 use core::task::Poll;
 
-use embedded_hal::digital::v2::OutputPin;
+use crate::ehal_02::digital::v2::OutputPin;
 
 use crate::gpio::pin::{OptionalPin, SomePin};
 use crate::typelevel::NoneT;
 
 use super::spi::{AnySpi, Error, Flags};
 
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("sercom0-d5x")]
 use {
     super::spi::{
         Capability, Config, DynLength, OpMode, Spi, StaticLength, ValidConfig, ValidPads,
@@ -190,13 +192,13 @@ use {
     typenum::Unsigned,
 };
 
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
 use core::mem::size_of;
 
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
 type Data = u16;
 
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("sercom0-d5x")]
 type Data = u32;
 
 //=============================================================================
@@ -206,13 +208,13 @@ type Data = u32;
 /// Trait used to verify the [`SpiFuture`] buffer length
 #[allow(clippy::len_without_is_empty)]
 pub trait CheckBufLen: AnySpi {
-    #[cfg(feature = "thumbv7")]
+    #[hal_cfg("sercom0-d5x")]
     /// [`Spi`] transaction length
     ///
     /// This value is zero for an [`Spi`] with [`DynLength`]
     const LEN: usize = <Self::Size as Unsigned>::USIZE;
 
-    #[cfg(feature = "thumbv6")]
+    #[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
     /// [`Spi`] transaction length
     ///
     /// [`Spi`]: super::spi::Spi
@@ -267,10 +269,10 @@ pub trait CheckBufLen: AnySpi {
     }
 }
 
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
 impl<S: AnySpi> CheckBufLen for S {}
 
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("sercom0-d5x")]
 impl<P, M, L, A> CheckBufLen for Spi<Config<P, M, L>, A>
 where
     Config<P, M, L>: ValidConfig,
@@ -281,7 +283,7 @@ where
 {
 }
 
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("sercom0-d5x")]
 impl<P, M, A> CheckBufLen for Spi<Config<P, M, DynLength>, A>
 where
     Config<P, M, DynLength>: ValidConfig,
@@ -489,6 +491,8 @@ where
         if self.rcvd < self.sent {
             let buf = unsafe { buf.get_unchecked_mut(self.rcvd..) };
             let mut data = buf.iter_mut();
+            // Allow this lint as it will put out a warning on thumbv7em but not thumbv6m
+            #[allow(clippy::unnecessary_cast)]
             let word = unsafe { self.spi.as_mut().read_data() as u32 };
             let bytes = word.to_le_bytes();
             let mut iter = bytes.iter();
@@ -543,6 +547,8 @@ where
 
     /// Consume the [`SpiFuture`] and free its components without checking for
     /// completion
+    ///
+    /// # Safety
     ///
     /// Ending the transaction prematurely could leave the [`Spi`] in an
     /// inconsistent state. It is not safe to call this function unless the

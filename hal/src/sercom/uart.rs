@@ -34,22 +34,17 @@
 //! type Tx = Pin<PA09, AlternateC>;
 //! type Pads = uart::Pads<Sercom0, Rx, Tx>;
 //! ```
-#![cfg_attr(
-    not(feature = "samd11"),
-    doc = "
-Alternatively, you can use the [`PadsFromIds`] alias to define a set of
-`Pads` in terms of [`PinId`]s instead of `Pin`s. This is useful when you
-don't have [`Pin`] aliases pre-defined.
-
-```
-use atsamd_hal::gpio::{PA08, PA09};
-use atsamd_hal::sercom::{Sercom0, uart};
-
-type Pads = uart::PadsFromIds<Sercom0, PA08, PA09>;
-```
-
-"
-)]
+//!
+//! Alternatively, you can use the [`PadsFromIds`] alias to define a set of
+//! `Pads` in terms of [`PinId`]s instead of `Pin`s. This is useful when you
+//! don't have [`Pin`] aliases pre-defined.
+//!
+//! ```
+//! use atsamd_hal::gpio::{PA08, PA09};
+//! use atsamd_hal::sercom::{Sercom0, uart};
+//!
+//! type Pads = uart::PadsFromIds<Sercom0, PA08, PA09>;
+//! ```
 //!
 //! Instances of [`Pads`] are created using the builder pattern. Start by
 //! creating an empty set of [`Pads`] using [`Default`]. Then pass each
@@ -178,9 +173,9 @@ type Pads = uart::PadsFromIds<Sercom0, PA08, PA09>;
 //! * [`Rx`] or [`RxDuplex`]: Can perform receive transactions
 //! * [`Tx`] or [`TxDuplex`]: Can perform transmit transactions
 //! * [`Duplex`]: UART configured as duplex that can perform receive and
-//!   transmit transactions. Additionally, the [`split`] method can be
-//!  called to return a `Uart<C, RxDuplex>, Uart<C, TxDuplex>)` tuple. See the
-//! [Splitting](self#Splitting) section for more information.
+//!   transmit transactions. Additionally, the [`split`] method can be called to
+//!   return a `Uart<C, RxDuplex>, Uart<C, TxDuplex>)` tuple. See the
+//!   [Splitting](self#Splitting) section for more information.
 //!
 //! The nature of the underlying [`Pads`] contained inside [`Config`] determines
 //! the type returned by a call to [`enable`]. If the pads only have a `TX` pin
@@ -387,13 +382,13 @@ let (chan1, rx, rx_buffer) = rx_dma.wait();
 "
 )]
 
-#[cfg(feature = "thumbv6")]
-#[path = "uart/pads_thumbv6m.rs"]
-mod pads;
+use atsamd_hal_macros::{hal_cfg, hal_module};
 
-#[cfg(feature = "thumbv7")]
-#[path = "uart/pads_thumbv7em.rs"]
-mod pads;
+#[hal_module(
+    any("sercom0-d11", "sercom0-d21") => "uart/pads_thumbv6m.rs",
+    "sercom0-d5x" => "uart/pads_thumbv7em.rs",
+)]
+mod pads {}
 
 pub use pads::*;
 
@@ -411,16 +406,16 @@ pub use config::*;
 
 pub mod impl_ehal;
 
-use crate::{sercom::*, typelevel::Sealed};
-use core::{convert::TryInto, marker::PhantomData};
+use crate::{sercom::pad::SomePad, typelevel::Sealed};
+use core::marker::PhantomData;
 use num_traits::AsPrimitive;
 
 /// Size of the SERCOM's `DATA` register
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
 pub type DataReg = u16;
 
 /// Size of the SERCOM's `DATA` register
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("sercom0-d5x")]
 pub type DataReg = u32;
 
 //=============================================================================
@@ -624,14 +619,14 @@ where
     /// `Capability`
     #[inline]
     fn capability_flags(flags: Flags) -> Flags {
-        flags & unsafe { Flags::from_bits_unchecked(D::FLAG_MASK) }
+        flags & Flags::from_bits_retain(D::FLAG_MASK)
     }
 
     /// Helper method to remove the status flags not pertinent to `Self`'s
     /// `Capability`
     #[inline]
     fn capability_status(status: Status) -> Status {
-        status & unsafe { Status::from_bits_unchecked(D::STATUS_MASK) }
+        status & Status::from_bits_retain(D::STATUS_MASK)
     }
 
     /// Read the interrupt flags
@@ -756,7 +751,7 @@ where
         self.config
             .as_mut()
             .registers
-            .clear_flags(unsafe { Flags::from_bits_unchecked(bit) });
+            .clear_flags(Flags::from_bits_retain(bit));
     }
 
     /// Enable the `CTSIC` interrupt
@@ -766,7 +761,7 @@ where
         self.config
             .as_mut()
             .registers
-            .enable_interrupts(unsafe { Flags::from_bits_unchecked(bit) });
+            .enable_interrupts(Flags::from_bits_retain(bit));
     }
 
     /// Disable the `CTSIC` interrupt
@@ -776,7 +771,7 @@ where
         self.config
             .as_mut()
             .registers
-            .disable_interrupts(unsafe { Flags::from_bits_unchecked(bit) });
+            .disable_interrupts(Flags::from_bits_retain(bit));
     }
 }
 
@@ -915,7 +910,7 @@ where
     /// containing the corresponding [`Flags`] or [`Error`]
     #[inline]
     fn read_flags_errors(&self) -> Result<Flags, Error> {
-        self.read_status().try_into()?;
+        self.read_status().check_bus_error()?;
         Ok(self.read_flags())
     }
 

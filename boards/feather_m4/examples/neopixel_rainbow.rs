@@ -19,9 +19,11 @@ use panic_semihosting as _;
 use bsp::entry;
 use hal::clock::GenericClockController;
 use hal::delay::Delay;
+use hal::ehal::delay::DelayNs;
 use hal::pac::{CorePeripherals, Peripherals};
-use hal::prelude::*;
+use hal::time::Hertz;
 use hal::timer::*;
+use hal::timer_traits::InterruptDrivenTimer;
 
 use smart_leds::{
     hsv::{hsv2rgb, Hsv},
@@ -34,19 +36,19 @@ fn main() -> ! {
     let mut peripherals = Peripherals::take().unwrap();
     let core = CorePeripherals::take().unwrap();
     let mut clocks = GenericClockController::with_external_32kosc(
-        peripherals.GCLK,
-        &mut peripherals.MCLK,
-        &mut peripherals.OSC32KCTRL,
-        &mut peripherals.OSCCTRL,
-        &mut peripherals.NVMCTRL,
+        peripherals.gclk,
+        &mut peripherals.mclk,
+        &mut peripherals.osc32kctrl,
+        &mut peripherals.oscctrl,
+        &mut peripherals.nvmctrl,
     );
-    let pins = bsp::Pins::new(peripherals.PORT);
+    let pins = bsp::Pins::new(peripherals.port);
     let mut delay = Delay::new(core.SYST, &mut clocks);
 
     let gclk0 = clocks.gclk0();
     let timer_clock = clocks.tc2_tc3(&gclk0).unwrap();
-    let mut timer = TimerCounter::tc3_(&timer_clock, peripherals.TC3, &mut peripherals.MCLK);
-    timer.start(3.mhz());
+    let mut timer = TimerCounter::tc3_(&timer_clock, peripherals.tc3, &mut peripherals.mclk);
+    timer.start(Hertz::MHz(3).into_duration());
 
     let neopixel_pin = pins.neopixel.into_push_pull_output();
     let mut neopixel = Ws2812::new(timer, neopixel_pin);
@@ -61,7 +63,7 @@ fn main() -> ! {
                 val: 2,
             })];
             neopixel.write(colors.iter().cloned()).unwrap();
-            delay.delay_ms(5u8);
+            delay.delay_ms(5);
         }
     }
 }

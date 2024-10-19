@@ -1,264 +1,193 @@
 #[doc = "Register `CPACR` reader"]
-pub struct R(crate::R<CPACR_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<CPACR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<CPACR_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<CPACR_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<CpacrSpec>;
 #[doc = "Register `CPACR` writer"]
-pub struct W(crate::W<CPACR_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<CPACR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<CPACR_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<CPACR_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<CpacrSpec>;
 #[doc = "Access privileges for coprocessor 10\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum CP10_A {
+pub enum Cp10select {
     #[doc = "0: Access denied"]
-    DENIED = 0,
+    Denied = 0,
     #[doc = "1: Privileged access only"]
-    PRIV = 1,
+    Priv = 1,
     #[doc = "3: Full access"]
-    FULL = 3,
+    Full = 3,
 }
-impl From<CP10_A> for u8 {
+impl From<Cp10select> for u8 {
     #[inline(always)]
-    fn from(variant: CP10_A) -> Self {
+    fn from(variant: Cp10select) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Cp10select {
+    type Ux = u8;
+}
+impl crate::IsEnum for Cp10select {}
 #[doc = "Field `CP10` reader - Access privileges for coprocessor 10"]
-pub struct CP10_R(crate::FieldReader<u8, CP10_A>);
-impl CP10_R {
+pub type Cp10R = crate::FieldReader<Cp10select>;
+impl Cp10R {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        CP10_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<CP10_A> {
+    pub const fn variant(&self) -> Option<Cp10select> {
         match self.bits {
-            0 => Some(CP10_A::DENIED),
-            1 => Some(CP10_A::PRIV),
-            3 => Some(CP10_A::FULL),
+            0 => Some(Cp10select::Denied),
+            1 => Some(Cp10select::Priv),
+            3 => Some(Cp10select::Full),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `DENIED`"]
+    #[doc = "Access denied"]
     #[inline(always)]
     pub fn is_denied(&self) -> bool {
-        **self == CP10_A::DENIED
+        *self == Cp10select::Denied
     }
-    #[doc = "Checks if the value of the field is `PRIV`"]
+    #[doc = "Privileged access only"]
     #[inline(always)]
     pub fn is_priv(&self) -> bool {
-        **self == CP10_A::PRIV
+        *self == Cp10select::Priv
     }
-    #[doc = "Checks if the value of the field is `FULL`"]
+    #[doc = "Full access"]
     #[inline(always)]
     pub fn is_full(&self) -> bool {
-        **self == CP10_A::FULL
-    }
-}
-impl core::ops::Deref for CP10_R {
-    type Target = crate::FieldReader<u8, CP10_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Cp10select::Full
     }
 }
 #[doc = "Field `CP10` writer - Access privileges for coprocessor 10"]
-pub struct CP10_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CP10_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: CP10_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
+pub type Cp10W<'a, REG> = crate::FieldWriter<'a, REG, 2, Cp10select>;
+impl<'a, REG> Cp10W<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
     #[doc = "Access denied"]
     #[inline(always)]
-    pub fn denied(self) -> &'a mut W {
-        self.variant(CP10_A::DENIED)
+    pub fn denied(self) -> &'a mut crate::W<REG> {
+        self.variant(Cp10select::Denied)
     }
     #[doc = "Privileged access only"]
     #[inline(always)]
-    pub fn priv_(self) -> &'a mut W {
-        self.variant(CP10_A::PRIV)
+    pub fn priv_(self) -> &'a mut crate::W<REG> {
+        self.variant(Cp10select::Priv)
     }
     #[doc = "Full access"]
     #[inline(always)]
-    pub fn full(self) -> &'a mut W {
-        self.variant(CP10_A::FULL)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x03 << 20)) | ((value as u32 & 0x03) << 20);
-        self.w
+    pub fn full(self) -> &'a mut crate::W<REG> {
+        self.variant(Cp10select::Full)
     }
 }
 #[doc = "Access privileges for coprocessor 11\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum CP11_A {
+pub enum Cp11select {
     #[doc = "0: Access denied"]
-    DENIED = 0,
+    Denied = 0,
     #[doc = "1: Privileged access only"]
-    PRIV = 1,
+    Priv = 1,
     #[doc = "3: Full access"]
-    FULL = 3,
+    Full = 3,
 }
-impl From<CP11_A> for u8 {
+impl From<Cp11select> for u8 {
     #[inline(always)]
-    fn from(variant: CP11_A) -> Self {
+    fn from(variant: Cp11select) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Cp11select {
+    type Ux = u8;
+}
+impl crate::IsEnum for Cp11select {}
 #[doc = "Field `CP11` reader - Access privileges for coprocessor 11"]
-pub struct CP11_R(crate::FieldReader<u8, CP11_A>);
-impl CP11_R {
+pub type Cp11R = crate::FieldReader<Cp11select>;
+impl Cp11R {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        CP11_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<CP11_A> {
+    pub const fn variant(&self) -> Option<Cp11select> {
         match self.bits {
-            0 => Some(CP11_A::DENIED),
-            1 => Some(CP11_A::PRIV),
-            3 => Some(CP11_A::FULL),
+            0 => Some(Cp11select::Denied),
+            1 => Some(Cp11select::Priv),
+            3 => Some(Cp11select::Full),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `DENIED`"]
-    #[inline(always)]
-    pub fn is_denied(&self) -> bool {
-        **self == CP11_A::DENIED
-    }
-    #[doc = "Checks if the value of the field is `PRIV`"]
-    #[inline(always)]
-    pub fn is_priv(&self) -> bool {
-        **self == CP11_A::PRIV
-    }
-    #[doc = "Checks if the value of the field is `FULL`"]
-    #[inline(always)]
-    pub fn is_full(&self) -> bool {
-        **self == CP11_A::FULL
-    }
-}
-impl core::ops::Deref for CP11_R {
-    type Target = crate::FieldReader<u8, CP11_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `CP11` writer - Access privileges for coprocessor 11"]
-pub struct CP11_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CP11_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: CP11_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
     #[doc = "Access denied"]
     #[inline(always)]
-    pub fn denied(self) -> &'a mut W {
-        self.variant(CP11_A::DENIED)
+    pub fn is_denied(&self) -> bool {
+        *self == Cp11select::Denied
     }
     #[doc = "Privileged access only"]
     #[inline(always)]
-    pub fn priv_(self) -> &'a mut W {
-        self.variant(CP11_A::PRIV)
+    pub fn is_priv(&self) -> bool {
+        *self == Cp11select::Priv
     }
     #[doc = "Full access"]
     #[inline(always)]
-    pub fn full(self) -> &'a mut W {
-        self.variant(CP11_A::FULL)
+    pub fn is_full(&self) -> bool {
+        *self == Cp11select::Full
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `CP11` writer - Access privileges for coprocessor 11"]
+pub type Cp11W<'a, REG> = crate::FieldWriter<'a, REG, 2, Cp11select>;
+impl<'a, REG> Cp11W<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "Access denied"]
     #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x03 << 22)) | ((value as u32 & 0x03) << 22);
-        self.w
+    pub fn denied(self) -> &'a mut crate::W<REG> {
+        self.variant(Cp11select::Denied)
+    }
+    #[doc = "Privileged access only"]
+    #[inline(always)]
+    pub fn priv_(self) -> &'a mut crate::W<REG> {
+        self.variant(Cp11select::Priv)
+    }
+    #[doc = "Full access"]
+    #[inline(always)]
+    pub fn full(self) -> &'a mut crate::W<REG> {
+        self.variant(Cp11select::Full)
     }
 }
 impl R {
     #[doc = "Bits 20:21 - Access privileges for coprocessor 10"]
     #[inline(always)]
-    pub fn cp10(&self) -> CP10_R {
-        CP10_R::new(((self.bits >> 20) & 0x03) as u8)
+    pub fn cp10(&self) -> Cp10R {
+        Cp10R::new(((self.bits >> 20) & 3) as u8)
     }
     #[doc = "Bits 22:23 - Access privileges for coprocessor 11"]
     #[inline(always)]
-    pub fn cp11(&self) -> CP11_R {
-        CP11_R::new(((self.bits >> 22) & 0x03) as u8)
+    pub fn cp11(&self) -> Cp11R {
+        Cp11R::new(((self.bits >> 22) & 3) as u8)
     }
 }
 impl W {
     #[doc = "Bits 20:21 - Access privileges for coprocessor 10"]
     #[inline(always)]
-    pub fn cp10(&mut self) -> CP10_W {
-        CP10_W { w: self }
+    #[must_use]
+    pub fn cp10(&mut self) -> Cp10W<CpacrSpec> {
+        Cp10W::new(self, 20)
     }
     #[doc = "Bits 22:23 - Access privileges for coprocessor 11"]
     #[inline(always)]
-    pub fn cp11(&mut self) -> CP11_W {
-        CP11_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn cp11(&mut self) -> Cp11W<CpacrSpec> {
+        Cp11W::new(self, 22)
     }
 }
-#[doc = "Coprocessor Access Control Register\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [cpacr](index.html) module"]
-pub struct CPACR_SPEC;
-impl crate::RegisterSpec for CPACR_SPEC {
+#[doc = "Coprocessor Access Control Register\n\nYou can [`read`](crate::Reg::read) this register and get [`cpacr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`cpacr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct CpacrSpec;
+impl crate::RegisterSpec for CpacrSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [cpacr::R](R) reader structure"]
-impl crate::Readable for CPACR_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [cpacr::W](W) writer structure"]
-impl crate::Writable for CPACR_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`cpacr::R`](R) reader structure"]
+impl crate::Readable for CpacrSpec {}
+#[doc = "`write(|w| ..)` method takes [`cpacr::W`](W) writer structure"]
+impl crate::Writable for CpacrSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets CPACR to value 0"]
-impl crate::Resettable for CPACR_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for CpacrSpec {
+    const RESET_VALUE: u32 = 0;
 }

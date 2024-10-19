@@ -1,6 +1,6 @@
 [package]
 name = "neokey_trinkey"
-version = "0.2.0"
+version = "0.2.2"
 authors = ["Broderick Carlin <broderick.carlin@gmail.com>"]
 description = "Board Support crate for the Adafruit Neokey Trinkey"
 keywords = ["no-std", "arm", "cortex-m", "embedded-hal"]
@@ -17,7 +17,6 @@ optional = true
 [dependencies.cortex-m-rt]
 version = "0.7"
 optional = true
-
 
 [dependencies.atsamd-hal]
 version = "0.14"
@@ -57,6 +56,10 @@ required-features = ["leds"]
 [[example]]
 name = "button"
 required-features = ["leds", "unproven"]
+
+[[example]]
+name = "rainbow"
+required-features = ["leds"]
 
 [[example]]
 name = "usb_echo"

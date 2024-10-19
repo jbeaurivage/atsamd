@@ -12,26 +12,28 @@ use panic_semihosting as _;
 use bsp::{entry, periph_alias, pin_alias};
 use hal::clock::GenericClockController;
 use hal::delay::Delay;
-use hal::pac::gclk::genctrl::SRC_A;
-use hal::pac::gclk::pchctrl::GEN_A;
+use hal::ehal::delay::DelayNs;
+use hal::ehal_nb::serial::Write;
+use hal::fugit::RateExtU32;
+use hal::nb;
+use hal::pac::gclk::genctrl::Srcselect;
+use hal::pac::gclk::pchctrl::Genselect;
 use hal::pac::{CorePeripherals, Peripherals};
-use hal::prelude::*;
-use hal::time::Hertz;
 
 #[entry]
 fn main() -> ! {
     let mut peripherals = Peripherals::take().unwrap();
     let core = CorePeripherals::take().unwrap();
     let mut clocks = GenericClockController::with_external_32kosc(
-        peripherals.GCLK,
-        &mut peripherals.MCLK,
-        &mut peripherals.OSC32KCTRL,
-        &mut peripherals.OSCCTRL,
-        &mut peripherals.NVMCTRL,
+        peripherals.gclk,
+        &mut peripherals.mclk,
+        &mut peripherals.osc32kctrl,
+        &mut peripherals.oscctrl,
+        &mut peripherals.nvmctrl,
     );
-    clocks.configure_gclk_divider_and_source(GEN_A::GCLK2, 1, SRC_A::DFLL, false);
+    clocks.configure_gclk_divider_and_source(Genselect::Gclk2, 1, Srcselect::Dfll, false);
 
-    let pins = bsp::Pins::new(peripherals.PORT);
+    let pins = bsp::Pins::new(peripherals.port);
     let uart_rx = pin_alias!(pins.uart_rx);
     let uart_tx = pin_alias!(pins.uart_tx);
     let mut delay = Delay::new(core.SYST, &mut clocks);
@@ -39,9 +41,9 @@ fn main() -> ! {
 
     let mut uart = bsp::uart(
         &mut clocks,
-        Hertz(19200),
+        19200.Hz(),
         uart_sercom,
-        &mut peripherals.MCLK,
+        &mut peripherals.mclk,
         uart_rx,
         uart_tx,
     );
@@ -50,6 +52,6 @@ fn main() -> ! {
         for byte in b"Hello, world!" {
             nb::block!(uart.write(*byte)).unwrap();
         }
-        delay.delay_ms(1000u16);
+        delay.delay_ms(1000);
     }
 }

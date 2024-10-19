@@ -1,927 +1,440 @@
 #[doc = "Register `WAVEB` reader"]
-pub struct R(crate::R<WAVEB_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<WAVEB_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<WAVEB_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<WAVEB_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<WavebSpec>;
 #[doc = "Register `WAVEB` writer"]
-pub struct W(crate::W<WAVEB_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<WAVEB_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<WAVEB_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<WAVEB_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<WavebSpec>;
 #[doc = "Waveform Generation Buffer\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum WAVEGENB_A {
+pub enum Wavegenbselect {
     #[doc = "0: Normal frequency"]
-    NFRQ = 0,
+    Nfrq = 0,
     #[doc = "1: Match frequency"]
-    MFRQ = 1,
+    Mfrq = 1,
     #[doc = "2: Normal PWM"]
-    NPWM = 2,
+    Npwm = 2,
     #[doc = "4: Dual-slope critical"]
-    DSCRITICAL = 4,
+    Dscritical = 4,
     #[doc = "5: Dual-slope with interrupt/event condition when COUNT reaches ZERO"]
-    DSBOTTOM = 5,
+    Dsbottom = 5,
     #[doc = "6: Dual-slope with interrupt/event condition when COUNT reaches ZERO or TOP"]
-    DSBOTH = 6,
+    Dsboth = 6,
     #[doc = "7: Dual-slope with interrupt/event condition when COUNT reaches TOP"]
-    DSTOP = 7,
+    Dstop = 7,
 }
-impl From<WAVEGENB_A> for u8 {
+impl From<Wavegenbselect> for u8 {
     #[inline(always)]
-    fn from(variant: WAVEGENB_A) -> Self {
+    fn from(variant: Wavegenbselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Wavegenbselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Wavegenbselect {}
 #[doc = "Field `WAVEGENB` reader - Waveform Generation Buffer"]
-pub struct WAVEGENB_R(crate::FieldReader<u8, WAVEGENB_A>);
-impl WAVEGENB_R {
+pub type WavegenbR = crate::FieldReader<Wavegenbselect>;
+impl WavegenbR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        WAVEGENB_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<WAVEGENB_A> {
+    pub const fn variant(&self) -> Option<Wavegenbselect> {
         match self.bits {
-            0 => Some(WAVEGENB_A::NFRQ),
-            1 => Some(WAVEGENB_A::MFRQ),
-            2 => Some(WAVEGENB_A::NPWM),
-            4 => Some(WAVEGENB_A::DSCRITICAL),
-            5 => Some(WAVEGENB_A::DSBOTTOM),
-            6 => Some(WAVEGENB_A::DSBOTH),
-            7 => Some(WAVEGENB_A::DSTOP),
+            0 => Some(Wavegenbselect::Nfrq),
+            1 => Some(Wavegenbselect::Mfrq),
+            2 => Some(Wavegenbselect::Npwm),
+            4 => Some(Wavegenbselect::Dscritical),
+            5 => Some(Wavegenbselect::Dsbottom),
+            6 => Some(Wavegenbselect::Dsboth),
+            7 => Some(Wavegenbselect::Dstop),
             _ => None,
         }
-    }
-    #[doc = "Checks if the value of the field is `NFRQ`"]
-    #[inline(always)]
-    pub fn is_nfrq(&self) -> bool {
-        **self == WAVEGENB_A::NFRQ
-    }
-    #[doc = "Checks if the value of the field is `MFRQ`"]
-    #[inline(always)]
-    pub fn is_mfrq(&self) -> bool {
-        **self == WAVEGENB_A::MFRQ
-    }
-    #[doc = "Checks if the value of the field is `NPWM`"]
-    #[inline(always)]
-    pub fn is_npwm(&self) -> bool {
-        **self == WAVEGENB_A::NPWM
-    }
-    #[doc = "Checks if the value of the field is `DSCRITICAL`"]
-    #[inline(always)]
-    pub fn is_dscritical(&self) -> bool {
-        **self == WAVEGENB_A::DSCRITICAL
-    }
-    #[doc = "Checks if the value of the field is `DSBOTTOM`"]
-    #[inline(always)]
-    pub fn is_dsbottom(&self) -> bool {
-        **self == WAVEGENB_A::DSBOTTOM
-    }
-    #[doc = "Checks if the value of the field is `DSBOTH`"]
-    #[inline(always)]
-    pub fn is_dsboth(&self) -> bool {
-        **self == WAVEGENB_A::DSBOTH
-    }
-    #[doc = "Checks if the value of the field is `DSTOP`"]
-    #[inline(always)]
-    pub fn is_dstop(&self) -> bool {
-        **self == WAVEGENB_A::DSTOP
-    }
-}
-impl core::ops::Deref for WAVEGENB_R {
-    type Target = crate::FieldReader<u8, WAVEGENB_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `WAVEGENB` writer - Waveform Generation Buffer"]
-pub struct WAVEGENB_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> WAVEGENB_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: WAVEGENB_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
     }
     #[doc = "Normal frequency"]
     #[inline(always)]
-    pub fn nfrq(self) -> &'a mut W {
-        self.variant(WAVEGENB_A::NFRQ)
+    pub fn is_nfrq(&self) -> bool {
+        *self == Wavegenbselect::Nfrq
     }
     #[doc = "Match frequency"]
     #[inline(always)]
-    pub fn mfrq(self) -> &'a mut W {
-        self.variant(WAVEGENB_A::MFRQ)
+    pub fn is_mfrq(&self) -> bool {
+        *self == Wavegenbselect::Mfrq
     }
     #[doc = "Normal PWM"]
     #[inline(always)]
-    pub fn npwm(self) -> &'a mut W {
-        self.variant(WAVEGENB_A::NPWM)
+    pub fn is_npwm(&self) -> bool {
+        *self == Wavegenbselect::Npwm
     }
     #[doc = "Dual-slope critical"]
     #[inline(always)]
-    pub fn dscritical(self) -> &'a mut W {
-        self.variant(WAVEGENB_A::DSCRITICAL)
+    pub fn is_dscritical(&self) -> bool {
+        *self == Wavegenbselect::Dscritical
     }
     #[doc = "Dual-slope with interrupt/event condition when COUNT reaches ZERO"]
     #[inline(always)]
-    pub fn dsbottom(self) -> &'a mut W {
-        self.variant(WAVEGENB_A::DSBOTTOM)
+    pub fn is_dsbottom(&self) -> bool {
+        *self == Wavegenbselect::Dsbottom
     }
     #[doc = "Dual-slope with interrupt/event condition when COUNT reaches ZERO or TOP"]
     #[inline(always)]
-    pub fn dsboth(self) -> &'a mut W {
-        self.variant(WAVEGENB_A::DSBOTH)
+    pub fn is_dsboth(&self) -> bool {
+        *self == Wavegenbselect::Dsboth
     }
     #[doc = "Dual-slope with interrupt/event condition when COUNT reaches TOP"]
     #[inline(always)]
-    pub fn dstop(self) -> &'a mut W {
-        self.variant(WAVEGENB_A::DSTOP)
+    pub fn is_dstop(&self) -> bool {
+        *self == Wavegenbselect::Dstop
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `WAVEGENB` writer - Waveform Generation Buffer"]
+pub type WavegenbW<'a, REG> = crate::FieldWriter<'a, REG, 3, Wavegenbselect>;
+impl<'a, REG> WavegenbW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "Normal frequency"]
     #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x07) | (value as u32 & 0x07);
-        self.w
+    pub fn nfrq(self) -> &'a mut crate::W<REG> {
+        self.variant(Wavegenbselect::Nfrq)
+    }
+    #[doc = "Match frequency"]
+    #[inline(always)]
+    pub fn mfrq(self) -> &'a mut crate::W<REG> {
+        self.variant(Wavegenbselect::Mfrq)
+    }
+    #[doc = "Normal PWM"]
+    #[inline(always)]
+    pub fn npwm(self) -> &'a mut crate::W<REG> {
+        self.variant(Wavegenbselect::Npwm)
+    }
+    #[doc = "Dual-slope critical"]
+    #[inline(always)]
+    pub fn dscritical(self) -> &'a mut crate::W<REG> {
+        self.variant(Wavegenbselect::Dscritical)
+    }
+    #[doc = "Dual-slope with interrupt/event condition when COUNT reaches ZERO"]
+    #[inline(always)]
+    pub fn dsbottom(self) -> &'a mut crate::W<REG> {
+        self.variant(Wavegenbselect::Dsbottom)
+    }
+    #[doc = "Dual-slope with interrupt/event condition when COUNT reaches ZERO or TOP"]
+    #[inline(always)]
+    pub fn dsboth(self) -> &'a mut crate::W<REG> {
+        self.variant(Wavegenbselect::Dsboth)
+    }
+    #[doc = "Dual-slope with interrupt/event condition when COUNT reaches TOP"]
+    #[inline(always)]
+    pub fn dstop(self) -> &'a mut crate::W<REG> {
+        self.variant(Wavegenbselect::Dstop)
     }
 }
 #[doc = "Ramp Mode Buffer\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum RAMPB_A {
+pub enum Rampbselect {
     #[doc = "0: RAMP1 operation"]
-    RAMP1 = 0,
+    Ramp1 = 0,
     #[doc = "1: Alternative RAMP2 operation"]
-    RAMP2A = 1,
+    Ramp2a = 1,
     #[doc = "2: RAMP2 operation"]
-    RAMP2 = 2,
+    Ramp2 = 2,
 }
-impl From<RAMPB_A> for u8 {
+impl From<Rampbselect> for u8 {
     #[inline(always)]
-    fn from(variant: RAMPB_A) -> Self {
+    fn from(variant: Rampbselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Rampbselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Rampbselect {}
 #[doc = "Field `RAMPB` reader - Ramp Mode Buffer"]
-pub struct RAMPB_R(crate::FieldReader<u8, RAMPB_A>);
-impl RAMPB_R {
+pub type RampbR = crate::FieldReader<Rampbselect>;
+impl RampbR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        RAMPB_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<RAMPB_A> {
+    pub const fn variant(&self) -> Option<Rampbselect> {
         match self.bits {
-            0 => Some(RAMPB_A::RAMP1),
-            1 => Some(RAMPB_A::RAMP2A),
-            2 => Some(RAMPB_A::RAMP2),
+            0 => Some(Rampbselect::Ramp1),
+            1 => Some(Rampbselect::Ramp2a),
+            2 => Some(Rampbselect::Ramp2),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `RAMP1`"]
-    #[inline(always)]
-    pub fn is_ramp1(&self) -> bool {
-        **self == RAMPB_A::RAMP1
-    }
-    #[doc = "Checks if the value of the field is `RAMP2A`"]
-    #[inline(always)]
-    pub fn is_ramp2a(&self) -> bool {
-        **self == RAMPB_A::RAMP2A
-    }
-    #[doc = "Checks if the value of the field is `RAMP2`"]
-    #[inline(always)]
-    pub fn is_ramp2(&self) -> bool {
-        **self == RAMPB_A::RAMP2
-    }
-}
-impl core::ops::Deref for RAMPB_R {
-    type Target = crate::FieldReader<u8, RAMPB_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `RAMPB` writer - Ramp Mode Buffer"]
-pub struct RAMPB_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> RAMPB_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: RAMPB_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
     #[doc = "RAMP1 operation"]
     #[inline(always)]
-    pub fn ramp1(self) -> &'a mut W {
-        self.variant(RAMPB_A::RAMP1)
+    pub fn is_ramp1(&self) -> bool {
+        *self == Rampbselect::Ramp1
     }
     #[doc = "Alternative RAMP2 operation"]
     #[inline(always)]
-    pub fn ramp2a(self) -> &'a mut W {
-        self.variant(RAMPB_A::RAMP2A)
+    pub fn is_ramp2a(&self) -> bool {
+        *self == Rampbselect::Ramp2a
     }
     #[doc = "RAMP2 operation"]
     #[inline(always)]
-    pub fn ramp2(self) -> &'a mut W {
-        self.variant(RAMPB_A::RAMP2)
+    pub fn is_ramp2(&self) -> bool {
+        *self == Rampbselect::Ramp2
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `RAMPB` writer - Ramp Mode Buffer"]
+pub type RampbW<'a, REG> = crate::FieldWriter<'a, REG, 2, Rampbselect>;
+impl<'a, REG> RampbW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "RAMP1 operation"]
     #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x03 << 4)) | ((value as u32 & 0x03) << 4);
-        self.w
+    pub fn ramp1(self) -> &'a mut crate::W<REG> {
+        self.variant(Rampbselect::Ramp1)
+    }
+    #[doc = "Alternative RAMP2 operation"]
+    #[inline(always)]
+    pub fn ramp2a(self) -> &'a mut crate::W<REG> {
+        self.variant(Rampbselect::Ramp2a)
+    }
+    #[doc = "RAMP2 operation"]
+    #[inline(always)]
+    pub fn ramp2(self) -> &'a mut crate::W<REG> {
+        self.variant(Rampbselect::Ramp2)
     }
 }
 #[doc = "Field `CIPERENB` reader - Circular Period Enable Buffer"]
-pub struct CIPERENB_R(crate::FieldReader<bool, bool>);
-impl CIPERENB_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CIPERENB_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for CIPERENB_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type CiperenbR = crate::BitReader;
 #[doc = "Field `CIPERENB` writer - Circular Period Enable Buffer"]
-pub struct CIPERENB_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CIPERENB_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 7)) | ((value as u32 & 0x01) << 7);
-        self.w
-    }
-}
+pub type CiperenbW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CICCENB0` reader - Circular Channel 0 Enable Buffer"]
-pub struct CICCENB0_R(crate::FieldReader<bool, bool>);
-impl CICCENB0_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CICCENB0_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for CICCENB0_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Ciccenb0R = crate::BitReader;
 #[doc = "Field `CICCENB0` writer - Circular Channel 0 Enable Buffer"]
-pub struct CICCENB0_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CICCENB0_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 8)) | ((value as u32 & 0x01) << 8);
-        self.w
-    }
-}
+pub type Ciccenb0W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CICCENB1` reader - Circular Channel 1 Enable Buffer"]
-pub struct CICCENB1_R(crate::FieldReader<bool, bool>);
-impl CICCENB1_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CICCENB1_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for CICCENB1_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Ciccenb1R = crate::BitReader;
 #[doc = "Field `CICCENB1` writer - Circular Channel 1 Enable Buffer"]
-pub struct CICCENB1_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CICCENB1_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 9)) | ((value as u32 & 0x01) << 9);
-        self.w
-    }
-}
+pub type Ciccenb1W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CICCENB2` reader - Circular Channel 2 Enable Buffer"]
-pub struct CICCENB2_R(crate::FieldReader<bool, bool>);
-impl CICCENB2_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CICCENB2_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for CICCENB2_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Ciccenb2R = crate::BitReader;
 #[doc = "Field `CICCENB2` writer - Circular Channel 2 Enable Buffer"]
-pub struct CICCENB2_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CICCENB2_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 10)) | ((value as u32 & 0x01) << 10);
-        self.w
-    }
-}
+pub type Ciccenb2W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CICCENB3` reader - Circular Channel 3 Enable Buffer"]
-pub struct CICCENB3_R(crate::FieldReader<bool, bool>);
-impl CICCENB3_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CICCENB3_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for CICCENB3_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Ciccenb3R = crate::BitReader;
 #[doc = "Field `CICCENB3` writer - Circular Channel 3 Enable Buffer"]
-pub struct CICCENB3_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CICCENB3_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 11)) | ((value as u32 & 0x01) << 11);
-        self.w
-    }
-}
+pub type Ciccenb3W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `POLB0` reader - Channel 0 Polarity Buffer"]
-pub struct POLB0_R(crate::FieldReader<bool, bool>);
-impl POLB0_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        POLB0_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for POLB0_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Polb0R = crate::BitReader;
 #[doc = "Field `POLB0` writer - Channel 0 Polarity Buffer"]
-pub struct POLB0_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> POLB0_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 16)) | ((value as u32 & 0x01) << 16);
-        self.w
-    }
-}
+pub type Polb0W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `POLB1` reader - Channel 1 Polarity Buffer"]
-pub struct POLB1_R(crate::FieldReader<bool, bool>);
-impl POLB1_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        POLB1_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for POLB1_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Polb1R = crate::BitReader;
 #[doc = "Field `POLB1` writer - Channel 1 Polarity Buffer"]
-pub struct POLB1_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> POLB1_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 17)) | ((value as u32 & 0x01) << 17);
-        self.w
-    }
-}
+pub type Polb1W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `POLB2` reader - Channel 2 Polarity Buffer"]
-pub struct POLB2_R(crate::FieldReader<bool, bool>);
-impl POLB2_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        POLB2_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for POLB2_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Polb2R = crate::BitReader;
 #[doc = "Field `POLB2` writer - Channel 2 Polarity Buffer"]
-pub struct POLB2_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> POLB2_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 18)) | ((value as u32 & 0x01) << 18);
-        self.w
-    }
-}
+pub type Polb2W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `POLB3` reader - Channel 3 Polarity Buffer"]
-pub struct POLB3_R(crate::FieldReader<bool, bool>);
-impl POLB3_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        POLB3_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for POLB3_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Polb3R = crate::BitReader;
 #[doc = "Field `POLB3` writer - Channel 3 Polarity Buffer"]
-pub struct POLB3_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> POLB3_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 19)) | ((value as u32 & 0x01) << 19);
-        self.w
-    }
-}
+pub type Polb3W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `SWAPB0` reader - Swap DTI Output Pair 0 Buffer"]
-pub struct SWAPB0_R(crate::FieldReader<bool, bool>);
-impl SWAPB0_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SWAPB0_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for SWAPB0_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Swapb0R = crate::BitReader;
 #[doc = "Field `SWAPB0` writer - Swap DTI Output Pair 0 Buffer"]
-pub struct SWAPB0_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SWAPB0_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 24)) | ((value as u32 & 0x01) << 24);
-        self.w
-    }
-}
+pub type Swapb0W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `SWAPB1` reader - Swap DTI Output Pair 1 Buffer"]
-pub struct SWAPB1_R(crate::FieldReader<bool, bool>);
-impl SWAPB1_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SWAPB1_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for SWAPB1_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Swapb1R = crate::BitReader;
 #[doc = "Field `SWAPB1` writer - Swap DTI Output Pair 1 Buffer"]
-pub struct SWAPB1_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SWAPB1_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 25)) | ((value as u32 & 0x01) << 25);
-        self.w
-    }
-}
+pub type Swapb1W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `SWAPB2` reader - Swap DTI Output Pair 2 Buffer"]
-pub struct SWAPB2_R(crate::FieldReader<bool, bool>);
-impl SWAPB2_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SWAPB2_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for SWAPB2_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Swapb2R = crate::BitReader;
 #[doc = "Field `SWAPB2` writer - Swap DTI Output Pair 2 Buffer"]
-pub struct SWAPB2_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SWAPB2_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 26)) | ((value as u32 & 0x01) << 26);
-        self.w
-    }
-}
+pub type Swapb2W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `SWAPB3` reader - Swap DTI Output Pair 3 Buffer"]
-pub struct SWAPB3_R(crate::FieldReader<bool, bool>);
-impl SWAPB3_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SWAPB3_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for SWAPB3_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Swapb3R = crate::BitReader;
 #[doc = "Field `SWAPB3` writer - Swap DTI Output Pair 3 Buffer"]
-pub struct SWAPB3_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SWAPB3_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 27)) | ((value as u32 & 0x01) << 27);
-        self.w
-    }
-}
+pub type Swapb3W<'a, REG> = crate::BitWriter<'a, REG>;
 impl R {
     #[doc = "Bits 0:2 - Waveform Generation Buffer"]
     #[inline(always)]
-    pub fn wavegenb(&self) -> WAVEGENB_R {
-        WAVEGENB_R::new((self.bits & 0x07) as u8)
+    pub fn wavegenb(&self) -> WavegenbR {
+        WavegenbR::new((self.bits & 7) as u8)
     }
     #[doc = "Bits 4:5 - Ramp Mode Buffer"]
     #[inline(always)]
-    pub fn rampb(&self) -> RAMPB_R {
-        RAMPB_R::new(((self.bits >> 4) & 0x03) as u8)
+    pub fn rampb(&self) -> RampbR {
+        RampbR::new(((self.bits >> 4) & 3) as u8)
     }
     #[doc = "Bit 7 - Circular Period Enable Buffer"]
     #[inline(always)]
-    pub fn ciperenb(&self) -> CIPERENB_R {
-        CIPERENB_R::new(((self.bits >> 7) & 0x01) != 0)
+    pub fn ciperenb(&self) -> CiperenbR {
+        CiperenbR::new(((self.bits >> 7) & 1) != 0)
     }
     #[doc = "Bit 8 - Circular Channel 0 Enable Buffer"]
     #[inline(always)]
-    pub fn ciccenb0(&self) -> CICCENB0_R {
-        CICCENB0_R::new(((self.bits >> 8) & 0x01) != 0)
+    pub fn ciccenb0(&self) -> Ciccenb0R {
+        Ciccenb0R::new(((self.bits >> 8) & 1) != 0)
     }
     #[doc = "Bit 9 - Circular Channel 1 Enable Buffer"]
     #[inline(always)]
-    pub fn ciccenb1(&self) -> CICCENB1_R {
-        CICCENB1_R::new(((self.bits >> 9) & 0x01) != 0)
+    pub fn ciccenb1(&self) -> Ciccenb1R {
+        Ciccenb1R::new(((self.bits >> 9) & 1) != 0)
     }
     #[doc = "Bit 10 - Circular Channel 2 Enable Buffer"]
     #[inline(always)]
-    pub fn ciccenb2(&self) -> CICCENB2_R {
-        CICCENB2_R::new(((self.bits >> 10) & 0x01) != 0)
+    pub fn ciccenb2(&self) -> Ciccenb2R {
+        Ciccenb2R::new(((self.bits >> 10) & 1) != 0)
     }
     #[doc = "Bit 11 - Circular Channel 3 Enable Buffer"]
     #[inline(always)]
-    pub fn ciccenb3(&self) -> CICCENB3_R {
-        CICCENB3_R::new(((self.bits >> 11) & 0x01) != 0)
+    pub fn ciccenb3(&self) -> Ciccenb3R {
+        Ciccenb3R::new(((self.bits >> 11) & 1) != 0)
     }
     #[doc = "Bit 16 - Channel 0 Polarity Buffer"]
     #[inline(always)]
-    pub fn polb0(&self) -> POLB0_R {
-        POLB0_R::new(((self.bits >> 16) & 0x01) != 0)
+    pub fn polb0(&self) -> Polb0R {
+        Polb0R::new(((self.bits >> 16) & 1) != 0)
     }
     #[doc = "Bit 17 - Channel 1 Polarity Buffer"]
     #[inline(always)]
-    pub fn polb1(&self) -> POLB1_R {
-        POLB1_R::new(((self.bits >> 17) & 0x01) != 0)
+    pub fn polb1(&self) -> Polb1R {
+        Polb1R::new(((self.bits >> 17) & 1) != 0)
     }
     #[doc = "Bit 18 - Channel 2 Polarity Buffer"]
     #[inline(always)]
-    pub fn polb2(&self) -> POLB2_R {
-        POLB2_R::new(((self.bits >> 18) & 0x01) != 0)
+    pub fn polb2(&self) -> Polb2R {
+        Polb2R::new(((self.bits >> 18) & 1) != 0)
     }
     #[doc = "Bit 19 - Channel 3 Polarity Buffer"]
     #[inline(always)]
-    pub fn polb3(&self) -> POLB3_R {
-        POLB3_R::new(((self.bits >> 19) & 0x01) != 0)
+    pub fn polb3(&self) -> Polb3R {
+        Polb3R::new(((self.bits >> 19) & 1) != 0)
     }
     #[doc = "Bit 24 - Swap DTI Output Pair 0 Buffer"]
     #[inline(always)]
-    pub fn swapb0(&self) -> SWAPB0_R {
-        SWAPB0_R::new(((self.bits >> 24) & 0x01) != 0)
+    pub fn swapb0(&self) -> Swapb0R {
+        Swapb0R::new(((self.bits >> 24) & 1) != 0)
     }
     #[doc = "Bit 25 - Swap DTI Output Pair 1 Buffer"]
     #[inline(always)]
-    pub fn swapb1(&self) -> SWAPB1_R {
-        SWAPB1_R::new(((self.bits >> 25) & 0x01) != 0)
+    pub fn swapb1(&self) -> Swapb1R {
+        Swapb1R::new(((self.bits >> 25) & 1) != 0)
     }
     #[doc = "Bit 26 - Swap DTI Output Pair 2 Buffer"]
     #[inline(always)]
-    pub fn swapb2(&self) -> SWAPB2_R {
-        SWAPB2_R::new(((self.bits >> 26) & 0x01) != 0)
+    pub fn swapb2(&self) -> Swapb2R {
+        Swapb2R::new(((self.bits >> 26) & 1) != 0)
     }
     #[doc = "Bit 27 - Swap DTI Output Pair 3 Buffer"]
     #[inline(always)]
-    pub fn swapb3(&self) -> SWAPB3_R {
-        SWAPB3_R::new(((self.bits >> 27) & 0x01) != 0)
+    pub fn swapb3(&self) -> Swapb3R {
+        Swapb3R::new(((self.bits >> 27) & 1) != 0)
     }
 }
 impl W {
     #[doc = "Bits 0:2 - Waveform Generation Buffer"]
     #[inline(always)]
-    pub fn wavegenb(&mut self) -> WAVEGENB_W {
-        WAVEGENB_W { w: self }
+    #[must_use]
+    pub fn wavegenb(&mut self) -> WavegenbW<WavebSpec> {
+        WavegenbW::new(self, 0)
     }
     #[doc = "Bits 4:5 - Ramp Mode Buffer"]
     #[inline(always)]
-    pub fn rampb(&mut self) -> RAMPB_W {
-        RAMPB_W { w: self }
+    #[must_use]
+    pub fn rampb(&mut self) -> RampbW<WavebSpec> {
+        RampbW::new(self, 4)
     }
     #[doc = "Bit 7 - Circular Period Enable Buffer"]
     #[inline(always)]
-    pub fn ciperenb(&mut self) -> CIPERENB_W {
-        CIPERENB_W { w: self }
+    #[must_use]
+    pub fn ciperenb(&mut self) -> CiperenbW<WavebSpec> {
+        CiperenbW::new(self, 7)
     }
     #[doc = "Bit 8 - Circular Channel 0 Enable Buffer"]
     #[inline(always)]
-    pub fn ciccenb0(&mut self) -> CICCENB0_W {
-        CICCENB0_W { w: self }
+    #[must_use]
+    pub fn ciccenb0(&mut self) -> Ciccenb0W<WavebSpec> {
+        Ciccenb0W::new(self, 8)
     }
     #[doc = "Bit 9 - Circular Channel 1 Enable Buffer"]
     #[inline(always)]
-    pub fn ciccenb1(&mut self) -> CICCENB1_W {
-        CICCENB1_W { w: self }
+    #[must_use]
+    pub fn ciccenb1(&mut self) -> Ciccenb1W<WavebSpec> {
+        Ciccenb1W::new(self, 9)
     }
     #[doc = "Bit 10 - Circular Channel 2 Enable Buffer"]
     #[inline(always)]
-    pub fn ciccenb2(&mut self) -> CICCENB2_W {
-        CICCENB2_W { w: self }
+    #[must_use]
+    pub fn ciccenb2(&mut self) -> Ciccenb2W<WavebSpec> {
+        Ciccenb2W::new(self, 10)
     }
     #[doc = "Bit 11 - Circular Channel 3 Enable Buffer"]
     #[inline(always)]
-    pub fn ciccenb3(&mut self) -> CICCENB3_W {
-        CICCENB3_W { w: self }
+    #[must_use]
+    pub fn ciccenb3(&mut self) -> Ciccenb3W<WavebSpec> {
+        Ciccenb3W::new(self, 11)
     }
     #[doc = "Bit 16 - Channel 0 Polarity Buffer"]
     #[inline(always)]
-    pub fn polb0(&mut self) -> POLB0_W {
-        POLB0_W { w: self }
+    #[must_use]
+    pub fn polb0(&mut self) -> Polb0W<WavebSpec> {
+        Polb0W::new(self, 16)
     }
     #[doc = "Bit 17 - Channel 1 Polarity Buffer"]
     #[inline(always)]
-    pub fn polb1(&mut self) -> POLB1_W {
-        POLB1_W { w: self }
+    #[must_use]
+    pub fn polb1(&mut self) -> Polb1W<WavebSpec> {
+        Polb1W::new(self, 17)
     }
     #[doc = "Bit 18 - Channel 2 Polarity Buffer"]
     #[inline(always)]
-    pub fn polb2(&mut self) -> POLB2_W {
-        POLB2_W { w: self }
+    #[must_use]
+    pub fn polb2(&mut self) -> Polb2W<WavebSpec> {
+        Polb2W::new(self, 18)
     }
     #[doc = "Bit 19 - Channel 3 Polarity Buffer"]
     #[inline(always)]
-    pub fn polb3(&mut self) -> POLB3_W {
-        POLB3_W { w: self }
+    #[must_use]
+    pub fn polb3(&mut self) -> Polb3W<WavebSpec> {
+        Polb3W::new(self, 19)
     }
     #[doc = "Bit 24 - Swap DTI Output Pair 0 Buffer"]
     #[inline(always)]
-    pub fn swapb0(&mut self) -> SWAPB0_W {
-        SWAPB0_W { w: self }
+    #[must_use]
+    pub fn swapb0(&mut self) -> Swapb0W<WavebSpec> {
+        Swapb0W::new(self, 24)
     }
     #[doc = "Bit 25 - Swap DTI Output Pair 1 Buffer"]
     #[inline(always)]
-    pub fn swapb1(&mut self) -> SWAPB1_W {
-        SWAPB1_W { w: self }
+    #[must_use]
+    pub fn swapb1(&mut self) -> Swapb1W<WavebSpec> {
+        Swapb1W::new(self, 25)
     }
     #[doc = "Bit 26 - Swap DTI Output Pair 2 Buffer"]
     #[inline(always)]
-    pub fn swapb2(&mut self) -> SWAPB2_W {
-        SWAPB2_W { w: self }
+    #[must_use]
+    pub fn swapb2(&mut self) -> Swapb2W<WavebSpec> {
+        Swapb2W::new(self, 26)
     }
     #[doc = "Bit 27 - Swap DTI Output Pair 3 Buffer"]
     #[inline(always)]
-    pub fn swapb3(&mut self) -> SWAPB3_W {
-        SWAPB3_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn swapb3(&mut self) -> Swapb3W<WavebSpec> {
+        Swapb3W::new(self, 27)
     }
 }
-#[doc = "Waveform Control Buffer\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [waveb](index.html) module"]
-pub struct WAVEB_SPEC;
-impl crate::RegisterSpec for WAVEB_SPEC {
+#[doc = "Waveform Control Buffer\n\nYou can [`read`](crate::Reg::read) this register and get [`waveb::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`waveb::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct WavebSpec;
+impl crate::RegisterSpec for WavebSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [waveb::R](R) reader structure"]
-impl crate::Readable for WAVEB_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [waveb::W](W) writer structure"]
-impl crate::Writable for WAVEB_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`waveb::R`](R) reader structure"]
+impl crate::Readable for WavebSpec {}
+#[doc = "`write(|w| ..)` method takes [`waveb::W`](W) writer structure"]
+impl crate::Writable for WavebSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets WAVEB to value 0"]
-impl crate::Resettable for WAVEB_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for WavebSpec {
+    const RESET_VALUE: u32 = 0;
 }

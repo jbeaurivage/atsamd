@@ -1,528 +1,173 @@
 #[doc = "Register `CTRLB` reader"]
-pub struct R(crate::R<CTRLB_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<CTRLB_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<CTRLB_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<CTRLB_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<CtrlbSpec>;
 #[doc = "Register `CTRLB` writer"]
-pub struct W(crate::W<CTRLB_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<CTRLB_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<CTRLB_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<CTRLB_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<CtrlbSpec>;
 #[doc = "Field `RESUME` reader - Send USB Resume"]
-pub struct RESUME_R(crate::FieldReader<bool, bool>);
-impl RESUME_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        RESUME_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for RESUME_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type ResumeR = crate::BitReader;
 #[doc = "Field `RESUME` writer - Send USB Resume"]
-pub struct RESUME_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> RESUME_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u16 & 0x01) << 1);
-        self.w
-    }
-}
+pub type ResumeW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Speed Configuration for Host\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum SPDCONF_A {
-    #[doc = "0: Normal mode: the host starts in full-speed mode and performs a high-speed reset to switch to the high speed mode if the downstream peripheral is high-speed capable."]
-    NORMAL = 0,
-    #[doc = "3: Full-speed: the host remains in full-speed mode whatever is the peripheral speed capability. Relevant in UTMI mode only."]
-    FS = 3,
+pub enum Spdconfselect {
+    #[doc = "0: Low and Full Speed capable"]
+    Normal = 0,
 }
-impl From<SPDCONF_A> for u8 {
+impl From<Spdconfselect> for u8 {
     #[inline(always)]
-    fn from(variant: SPDCONF_A) -> Self {
+    fn from(variant: Spdconfselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Spdconfselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Spdconfselect {}
 #[doc = "Field `SPDCONF` reader - Speed Configuration for Host"]
-pub struct SPDCONF_R(crate::FieldReader<u8, SPDCONF_A>);
-impl SPDCONF_R {
+pub type SpdconfR = crate::FieldReader<Spdconfselect>;
+impl SpdconfR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        SPDCONF_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<SPDCONF_A> {
+    pub const fn variant(&self) -> Option<Spdconfselect> {
         match self.bits {
-            0 => Some(SPDCONF_A::NORMAL),
-            3 => Some(SPDCONF_A::FS),
+            0 => Some(Spdconfselect::Normal),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `NORMAL`"]
+    #[doc = "Low and Full Speed capable"]
     #[inline(always)]
     pub fn is_normal(&self) -> bool {
-        **self == SPDCONF_A::NORMAL
-    }
-    #[doc = "Checks if the value of the field is `FS`"]
-    #[inline(always)]
-    pub fn is_fs(&self) -> bool {
-        **self == SPDCONF_A::FS
-    }
-}
-impl core::ops::Deref for SPDCONF_R {
-    type Target = crate::FieldReader<u8, SPDCONF_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Spdconfselect::Normal
     }
 }
 #[doc = "Field `SPDCONF` writer - Speed Configuration for Host"]
-pub struct SPDCONF_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SPDCONF_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
+pub type SpdconfW<'a, REG> = crate::FieldWriter<'a, REG, 2, Spdconfselect>;
+impl<'a, REG> SpdconfW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "Low and Full Speed capable"]
     #[inline(always)]
-    pub fn variant(self, variant: SPDCONF_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
-    #[doc = "Normal mode: the host starts in full-speed mode and performs a high-speed reset to switch to the high speed mode if the downstream peripheral is high-speed capable."]
-    #[inline(always)]
-    pub fn normal(self) -> &'a mut W {
-        self.variant(SPDCONF_A::NORMAL)
-    }
-    #[doc = "Full-speed: the host remains in full-speed mode whatever is the peripheral speed capability. Relevant in UTMI mode only."]
-    #[inline(always)]
-    pub fn fs(self) -> &'a mut W {
-        self.variant(SPDCONF_A::FS)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x03 << 2)) | ((value as u16 & 0x03) << 2);
-        self.w
+    pub fn normal(self) -> &'a mut crate::W<REG> {
+        self.variant(Spdconfselect::Normal)
     }
 }
 #[doc = "Field `AUTORESUME` reader - Auto Resume Enable"]
-pub struct AUTORESUME_R(crate::FieldReader<bool, bool>);
-impl AUTORESUME_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        AUTORESUME_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for AUTORESUME_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type AutoresumeR = crate::BitReader;
 #[doc = "Field `AUTORESUME` writer - Auto Resume Enable"]
-pub struct AUTORESUME_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> AUTORESUME_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 4)) | ((value as u16 & 0x01) << 4);
-        self.w
-    }
-}
-#[doc = "Field `TSTJ` reader - Test mode J"]
-pub struct TSTJ_R(crate::FieldReader<bool, bool>);
-impl TSTJ_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        TSTJ_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for TSTJ_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `TSTJ` writer - Test mode J"]
-pub struct TSTJ_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> TSTJ_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 5)) | ((value as u16 & 0x01) << 5);
-        self.w
-    }
-}
-#[doc = "Field `TSTK` reader - Test mode K"]
-pub struct TSTK_R(crate::FieldReader<bool, bool>);
-impl TSTK_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        TSTK_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for TSTK_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `TSTK` writer - Test mode K"]
-pub struct TSTK_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> TSTK_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 6)) | ((value as u16 & 0x01) << 6);
-        self.w
-    }
-}
+pub type AutoresumeW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `SOFE` reader - Start of Frame Generation Enable"]
-pub struct SOFE_R(crate::FieldReader<bool, bool>);
-impl SOFE_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SOFE_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for SOFE_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type SofeR = crate::BitReader;
 #[doc = "Field `SOFE` writer - Start of Frame Generation Enable"]
-pub struct SOFE_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SOFE_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 8)) | ((value as u16 & 0x01) << 8);
-        self.w
-    }
-}
+pub type SofeW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `BUSRESET` reader - Send USB Reset"]
-pub struct BUSRESET_R(crate::FieldReader<bool, bool>);
-impl BUSRESET_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        BUSRESET_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for BUSRESET_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type BusresetR = crate::BitReader;
 #[doc = "Field `BUSRESET` writer - Send USB Reset"]
-pub struct BUSRESET_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> BUSRESET_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 9)) | ((value as u16 & 0x01) << 9);
-        self.w
-    }
-}
+pub type BusresetW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `VBUSOK` reader - VBUS is OK"]
-pub struct VBUSOK_R(crate::FieldReader<bool, bool>);
-impl VBUSOK_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        VBUSOK_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for VBUSOK_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type VbusokR = crate::BitReader;
 #[doc = "Field `VBUSOK` writer - VBUS is OK"]
-pub struct VBUSOK_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> VBUSOK_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 10)) | ((value as u16 & 0x01) << 10);
-        self.w
-    }
-}
+pub type VbusokW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `L1RESUME` reader - Send L1 Resume"]
-pub struct L1RESUME_R(crate::FieldReader<bool, bool>);
-impl L1RESUME_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        L1RESUME_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for L1RESUME_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type L1resumeR = crate::BitReader;
 #[doc = "Field `L1RESUME` writer - Send L1 Resume"]
-pub struct L1RESUME_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> L1RESUME_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 11)) | ((value as u16 & 0x01) << 11);
-        self.w
-    }
-}
+pub type L1resumeW<'a, REG> = crate::BitWriter<'a, REG>;
 impl R {
     #[doc = "Bit 1 - Send USB Resume"]
     #[inline(always)]
-    pub fn resume(&self) -> RESUME_R {
-        RESUME_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn resume(&self) -> ResumeR {
+        ResumeR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bits 2:3 - Speed Configuration for Host"]
     #[inline(always)]
-    pub fn spdconf(&self) -> SPDCONF_R {
-        SPDCONF_R::new(((self.bits >> 2) & 0x03) as u8)
+    pub fn spdconf(&self) -> SpdconfR {
+        SpdconfR::new(((self.bits >> 2) & 3) as u8)
     }
     #[doc = "Bit 4 - Auto Resume Enable"]
     #[inline(always)]
-    pub fn autoresume(&self) -> AUTORESUME_R {
-        AUTORESUME_R::new(((self.bits >> 4) & 0x01) != 0)
-    }
-    #[doc = "Bit 5 - Test mode J"]
-    #[inline(always)]
-    pub fn tstj(&self) -> TSTJ_R {
-        TSTJ_R::new(((self.bits >> 5) & 0x01) != 0)
-    }
-    #[doc = "Bit 6 - Test mode K"]
-    #[inline(always)]
-    pub fn tstk(&self) -> TSTK_R {
-        TSTK_R::new(((self.bits >> 6) & 0x01) != 0)
+    pub fn autoresume(&self) -> AutoresumeR {
+        AutoresumeR::new(((self.bits >> 4) & 1) != 0)
     }
     #[doc = "Bit 8 - Start of Frame Generation Enable"]
     #[inline(always)]
-    pub fn sofe(&self) -> SOFE_R {
-        SOFE_R::new(((self.bits >> 8) & 0x01) != 0)
+    pub fn sofe(&self) -> SofeR {
+        SofeR::new(((self.bits >> 8) & 1) != 0)
     }
     #[doc = "Bit 9 - Send USB Reset"]
     #[inline(always)]
-    pub fn busreset(&self) -> BUSRESET_R {
-        BUSRESET_R::new(((self.bits >> 9) & 0x01) != 0)
+    pub fn busreset(&self) -> BusresetR {
+        BusresetR::new(((self.bits >> 9) & 1) != 0)
     }
     #[doc = "Bit 10 - VBUS is OK"]
     #[inline(always)]
-    pub fn vbusok(&self) -> VBUSOK_R {
-        VBUSOK_R::new(((self.bits >> 10) & 0x01) != 0)
+    pub fn vbusok(&self) -> VbusokR {
+        VbusokR::new(((self.bits >> 10) & 1) != 0)
     }
     #[doc = "Bit 11 - Send L1 Resume"]
     #[inline(always)]
-    pub fn l1resume(&self) -> L1RESUME_R {
-        L1RESUME_R::new(((self.bits >> 11) & 0x01) != 0)
+    pub fn l1resume(&self) -> L1resumeR {
+        L1resumeR::new(((self.bits >> 11) & 1) != 0)
     }
 }
 impl W {
     #[doc = "Bit 1 - Send USB Resume"]
     #[inline(always)]
-    pub fn resume(&mut self) -> RESUME_W {
-        RESUME_W { w: self }
+    #[must_use]
+    pub fn resume(&mut self) -> ResumeW<CtrlbSpec> {
+        ResumeW::new(self, 1)
     }
     #[doc = "Bits 2:3 - Speed Configuration for Host"]
     #[inline(always)]
-    pub fn spdconf(&mut self) -> SPDCONF_W {
-        SPDCONF_W { w: self }
+    #[must_use]
+    pub fn spdconf(&mut self) -> SpdconfW<CtrlbSpec> {
+        SpdconfW::new(self, 2)
     }
     #[doc = "Bit 4 - Auto Resume Enable"]
     #[inline(always)]
-    pub fn autoresume(&mut self) -> AUTORESUME_W {
-        AUTORESUME_W { w: self }
-    }
-    #[doc = "Bit 5 - Test mode J"]
-    #[inline(always)]
-    pub fn tstj(&mut self) -> TSTJ_W {
-        TSTJ_W { w: self }
-    }
-    #[doc = "Bit 6 - Test mode K"]
-    #[inline(always)]
-    pub fn tstk(&mut self) -> TSTK_W {
-        TSTK_W { w: self }
+    #[must_use]
+    pub fn autoresume(&mut self) -> AutoresumeW<CtrlbSpec> {
+        AutoresumeW::new(self, 4)
     }
     #[doc = "Bit 8 - Start of Frame Generation Enable"]
     #[inline(always)]
-    pub fn sofe(&mut self) -> SOFE_W {
-        SOFE_W { w: self }
+    #[must_use]
+    pub fn sofe(&mut self) -> SofeW<CtrlbSpec> {
+        SofeW::new(self, 8)
     }
     #[doc = "Bit 9 - Send USB Reset"]
     #[inline(always)]
-    pub fn busreset(&mut self) -> BUSRESET_W {
-        BUSRESET_W { w: self }
+    #[must_use]
+    pub fn busreset(&mut self) -> BusresetW<CtrlbSpec> {
+        BusresetW::new(self, 9)
     }
     #[doc = "Bit 10 - VBUS is OK"]
     #[inline(always)]
-    pub fn vbusok(&mut self) -> VBUSOK_W {
-        VBUSOK_W { w: self }
+    #[must_use]
+    pub fn vbusok(&mut self) -> VbusokW<CtrlbSpec> {
+        VbusokW::new(self, 10)
     }
     #[doc = "Bit 11 - Send L1 Resume"]
     #[inline(always)]
-    pub fn l1resume(&mut self) -> L1RESUME_W {
-        L1RESUME_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u16) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn l1resume(&mut self) -> L1resumeW<CtrlbSpec> {
+        L1resumeW::new(self, 11)
     }
 }
-#[doc = "HOST Control B\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [ctrlb](index.html) module"]
-pub struct CTRLB_SPEC;
-impl crate::RegisterSpec for CTRLB_SPEC {
+#[doc = "HOST Control B\n\nYou can [`read`](crate::Reg::read) this register and get [`ctrlb::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ctrlb::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct CtrlbSpec;
+impl crate::RegisterSpec for CtrlbSpec {
     type Ux = u16;
 }
-#[doc = "`read()` method returns [ctrlb::R](R) reader structure"]
-impl crate::Readable for CTRLB_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [ctrlb::W](W) writer structure"]
-impl crate::Writable for CTRLB_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`ctrlb::R`](R) reader structure"]
+impl crate::Readable for CtrlbSpec {}
+#[doc = "`write(|w| ..)` method takes [`ctrlb::W`](W) writer structure"]
+impl crate::Writable for CtrlbSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u16 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u16 = 0;
 }
 #[doc = "`reset()` method sets CTRLB to value 0"]
-impl crate::Resettable for CTRLB_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for CtrlbSpec {
+    const RESET_VALUE: u16 = 0;
 }

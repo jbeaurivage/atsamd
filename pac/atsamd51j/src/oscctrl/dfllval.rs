@@ -1,177 +1,70 @@
 #[doc = "Register `DFLLVAL` reader"]
-pub struct R(crate::R<DFLLVAL_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<DFLLVAL_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<DFLLVAL_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<DFLLVAL_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<DfllvalSpec>;
 #[doc = "Register `DFLLVAL` writer"]
-pub struct W(crate::W<DFLLVAL_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<DFLLVAL_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<DFLLVAL_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<DFLLVAL_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<DfllvalSpec>;
 #[doc = "Field `FINE` reader - Fine Value"]
-pub struct FINE_R(crate::FieldReader<u8, u8>);
-impl FINE_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        FINE_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for FINE_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type FineR = crate::FieldReader;
 #[doc = "Field `FINE` writer - Fine Value"]
-pub struct FINE_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> FINE_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0xff) | (value as u32 & 0xff);
-        self.w
-    }
-}
+pub type FineW<'a, REG> = crate::FieldWriter<'a, REG, 8>;
 #[doc = "Field `COARSE` reader - Coarse Value"]
-pub struct COARSE_R(crate::FieldReader<u8, u8>);
-impl COARSE_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        COARSE_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for COARSE_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type CoarseR = crate::FieldReader;
 #[doc = "Field `COARSE` writer - Coarse Value"]
-pub struct COARSE_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> COARSE_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x3f << 10)) | ((value as u32 & 0x3f) << 10);
-        self.w
-    }
-}
+pub type CoarseW<'a, REG> = crate::FieldWriter<'a, REG, 6>;
 #[doc = "Field `DIFF` reader - Multiplication Ratio Difference"]
-pub struct DIFF_R(crate::FieldReader<u16, u16>);
-impl DIFF_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u16) -> Self {
-        DIFF_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for DIFF_R {
-    type Target = crate::FieldReader<u16, u16>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type DiffR = crate::FieldReader<u16>;
 #[doc = "Field `DIFF` writer - Multiplication Ratio Difference"]
-pub struct DIFF_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DIFF_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u16) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0xffff << 16)) | ((value as u32 & 0xffff) << 16);
-        self.w
-    }
-}
+pub type DiffW<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
 impl R {
     #[doc = "Bits 0:7 - Fine Value"]
     #[inline(always)]
-    pub fn fine(&self) -> FINE_R {
-        FINE_R::new((self.bits & 0xff) as u8)
+    pub fn fine(&self) -> FineR {
+        FineR::new((self.bits & 0xff) as u8)
     }
     #[doc = "Bits 10:15 - Coarse Value"]
     #[inline(always)]
-    pub fn coarse(&self) -> COARSE_R {
-        COARSE_R::new(((self.bits >> 10) & 0x3f) as u8)
+    pub fn coarse(&self) -> CoarseR {
+        CoarseR::new(((self.bits >> 10) & 0x3f) as u8)
     }
     #[doc = "Bits 16:31 - Multiplication Ratio Difference"]
     #[inline(always)]
-    pub fn diff(&self) -> DIFF_R {
-        DIFF_R::new(((self.bits >> 16) & 0xffff) as u16)
+    pub fn diff(&self) -> DiffR {
+        DiffR::new(((self.bits >> 16) & 0xffff) as u16)
     }
 }
 impl W {
     #[doc = "Bits 0:7 - Fine Value"]
     #[inline(always)]
-    pub fn fine(&mut self) -> FINE_W {
-        FINE_W { w: self }
+    #[must_use]
+    pub fn fine(&mut self) -> FineW<DfllvalSpec> {
+        FineW::new(self, 0)
     }
     #[doc = "Bits 10:15 - Coarse Value"]
     #[inline(always)]
-    pub fn coarse(&mut self) -> COARSE_W {
-        COARSE_W { w: self }
+    #[must_use]
+    pub fn coarse(&mut self) -> CoarseW<DfllvalSpec> {
+        CoarseW::new(self, 10)
     }
     #[doc = "Bits 16:31 - Multiplication Ratio Difference"]
     #[inline(always)]
-    pub fn diff(&mut self) -> DIFF_W {
-        DIFF_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn diff(&mut self) -> DiffW<DfllvalSpec> {
+        DiffW::new(self, 16)
     }
 }
-#[doc = "DFLL48M Value\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [dfllval](index.html) module"]
-pub struct DFLLVAL_SPEC;
-impl crate::RegisterSpec for DFLLVAL_SPEC {
+#[doc = "DFLL48M Value\n\nYou can [`read`](crate::Reg::read) this register and get [`dfllval::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`dfllval::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct DfllvalSpec;
+impl crate::RegisterSpec for DfllvalSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [dfllval::R](R) reader structure"]
-impl crate::Readable for DFLLVAL_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [dfllval::W](W) writer structure"]
-impl crate::Writable for DFLLVAL_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`dfllval::R`](R) reader structure"]
+impl crate::Readable for DfllvalSpec {}
+#[doc = "`write(|w| ..)` method takes [`dfllval::W`](W) writer structure"]
+impl crate::Writable for DfllvalSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets DFLLVAL to value 0"]
-impl crate::Resettable for DFLLVAL_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for DfllvalSpec {
+    const RESET_VALUE: u32 = 0;
 }

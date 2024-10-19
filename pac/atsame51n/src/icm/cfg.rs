@@ -1,558 +1,214 @@
 #[doc = "Register `CFG` reader"]
-pub struct R(crate::R<CFG_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<CFG_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<CFG_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<CFG_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<CfgSpec>;
 #[doc = "Register `CFG` writer"]
-pub struct W(crate::W<CFG_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<CFG_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<CFG_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<CFG_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<CfgSpec>;
 #[doc = "Field `WBDIS` reader - Write Back Disable"]
-pub struct WBDIS_R(crate::FieldReader<bool, bool>);
-impl WBDIS_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        WBDIS_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for WBDIS_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type WbdisR = crate::BitReader;
 #[doc = "Field `WBDIS` writer - Write Back Disable"]
-pub struct WBDIS_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> WBDIS_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u32 & 0x01);
-        self.w
-    }
-}
+pub type WbdisW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `EOMDIS` reader - End of Monitoring Disable"]
-pub struct EOMDIS_R(crate::FieldReader<bool, bool>);
-impl EOMDIS_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        EOMDIS_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for EOMDIS_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type EomdisR = crate::BitReader;
 #[doc = "Field `EOMDIS` writer - End of Monitoring Disable"]
-pub struct EOMDIS_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> EOMDIS_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u32 & 0x01) << 1);
-        self.w
-    }
-}
+pub type EomdisW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `SLBDIS` reader - Secondary List Branching Disable"]
-pub struct SLBDIS_R(crate::FieldReader<bool, bool>);
-impl SLBDIS_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SLBDIS_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for SLBDIS_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type SlbdisR = crate::BitReader;
 #[doc = "Field `SLBDIS` writer - Secondary List Branching Disable"]
-pub struct SLBDIS_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SLBDIS_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 2)) | ((value as u32 & 0x01) << 2);
-        self.w
-    }
-}
+pub type SlbdisW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `BBC` reader - Bus Burden Control"]
-pub struct BBC_R(crate::FieldReader<u8, u8>);
-impl BBC_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        BBC_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for BBC_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type BbcR = crate::FieldReader;
 #[doc = "Field `BBC` writer - Bus Burden Control"]
-pub struct BBC_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> BBC_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x0f << 4)) | ((value as u32 & 0x0f) << 4);
-        self.w
-    }
-}
+pub type BbcW<'a, REG> = crate::FieldWriter<'a, REG, 4>;
 #[doc = "Field `ASCD` reader - Automatic Switch To Compare Digest"]
-pub struct ASCD_R(crate::FieldReader<bool, bool>);
-impl ASCD_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ASCD_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for ASCD_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type AscdR = crate::BitReader;
 #[doc = "Field `ASCD` writer - Automatic Switch To Compare Digest"]
-pub struct ASCD_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ASCD_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 8)) | ((value as u32 & 0x01) << 8);
-        self.w
-    }
-}
+pub type AscdW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `DUALBUFF` reader - Dual Input Buffer"]
-pub struct DUALBUFF_R(crate::FieldReader<bool, bool>);
-impl DUALBUFF_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        DUALBUFF_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for DUALBUFF_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type DualbuffR = crate::BitReader;
 #[doc = "Field `DUALBUFF` writer - Dual Input Buffer"]
-pub struct DUALBUFF_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DUALBUFF_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 9)) | ((value as u32 & 0x01) << 9);
-        self.w
-    }
-}
+pub type DualbuffW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `UIHASH` reader - User Initial Hash Value"]
-pub struct UIHASH_R(crate::FieldReader<bool, bool>);
-impl UIHASH_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        UIHASH_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for UIHASH_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type UihashR = crate::BitReader;
 #[doc = "Field `UIHASH` writer - User Initial Hash Value"]
-pub struct UIHASH_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> UIHASH_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 12)) | ((value as u32 & 0x01) << 12);
-        self.w
-    }
-}
+pub type UihashW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "User SHA Algorithm\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum UALGO_A {
+pub enum Ualgoselect {
     #[doc = "0: SHA1 Algorithm"]
-    SHA1 = 0,
+    Sha1 = 0,
     #[doc = "1: SHA256 Algorithm"]
-    SHA256 = 1,
+    Sha256 = 1,
     #[doc = "4: SHA224 Algorithm"]
-    SHA224 = 4,
+    Sha224 = 4,
 }
-impl From<UALGO_A> for u8 {
+impl From<Ualgoselect> for u8 {
     #[inline(always)]
-    fn from(variant: UALGO_A) -> Self {
+    fn from(variant: Ualgoselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Ualgoselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Ualgoselect {}
 #[doc = "Field `UALGO` reader - User SHA Algorithm"]
-pub struct UALGO_R(crate::FieldReader<u8, UALGO_A>);
-impl UALGO_R {
+pub type UalgoR = crate::FieldReader<Ualgoselect>;
+impl UalgoR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        UALGO_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<UALGO_A> {
+    pub const fn variant(&self) -> Option<Ualgoselect> {
         match self.bits {
-            0 => Some(UALGO_A::SHA1),
-            1 => Some(UALGO_A::SHA256),
-            4 => Some(UALGO_A::SHA224),
+            0 => Some(Ualgoselect::Sha1),
+            1 => Some(Ualgoselect::Sha256),
+            4 => Some(Ualgoselect::Sha224),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `SHA1`"]
-    #[inline(always)]
-    pub fn is_sha1(&self) -> bool {
-        **self == UALGO_A::SHA1
-    }
-    #[doc = "Checks if the value of the field is `SHA256`"]
-    #[inline(always)]
-    pub fn is_sha256(&self) -> bool {
-        **self == UALGO_A::SHA256
-    }
-    #[doc = "Checks if the value of the field is `SHA224`"]
-    #[inline(always)]
-    pub fn is_sha224(&self) -> bool {
-        **self == UALGO_A::SHA224
-    }
-}
-impl core::ops::Deref for UALGO_R {
-    type Target = crate::FieldReader<u8, UALGO_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `UALGO` writer - User SHA Algorithm"]
-pub struct UALGO_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> UALGO_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: UALGO_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
     #[doc = "SHA1 Algorithm"]
     #[inline(always)]
-    pub fn sha1(self) -> &'a mut W {
-        self.variant(UALGO_A::SHA1)
+    pub fn is_sha1(&self) -> bool {
+        *self == Ualgoselect::Sha1
     }
     #[doc = "SHA256 Algorithm"]
     #[inline(always)]
-    pub fn sha256(self) -> &'a mut W {
-        self.variant(UALGO_A::SHA256)
+    pub fn is_sha256(&self) -> bool {
+        *self == Ualgoselect::Sha256
     }
     #[doc = "SHA224 Algorithm"]
     #[inline(always)]
-    pub fn sha224(self) -> &'a mut W {
-        self.variant(UALGO_A::SHA224)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x07 << 13)) | ((value as u32 & 0x07) << 13);
-        self.w
+    pub fn is_sha224(&self) -> bool {
+        *self == Ualgoselect::Sha224
     }
 }
-#[doc = "Field `HAPROT` reader - Region Hash Area Protection"]
-pub struct HAPROT_R(crate::FieldReader<u8, u8>);
-impl HAPROT_R {
+#[doc = "Field `UALGO` writer - User SHA Algorithm"]
+pub type UalgoW<'a, REG> = crate::FieldWriter<'a, REG, 3, Ualgoselect>;
+impl<'a, REG> UalgoW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "SHA1 Algorithm"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        HAPROT_R(crate::FieldReader::new(bits))
+    pub fn sha1(self) -> &'a mut crate::W<REG> {
+        self.variant(Ualgoselect::Sha1)
     }
-}
-impl core::ops::Deref for HAPROT_R {
-    type Target = crate::FieldReader<u8, u8>;
+    #[doc = "SHA256 Algorithm"]
     #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+    pub fn sha256(self) -> &'a mut crate::W<REG> {
+        self.variant(Ualgoselect::Sha256)
     }
-}
-#[doc = "Field `HAPROT` writer - Region Hash Area Protection"]
-pub struct HAPROT_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> HAPROT_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
+    #[doc = "SHA224 Algorithm"]
     #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x3f << 16)) | ((value as u32 & 0x3f) << 16);
-        self.w
-    }
-}
-#[doc = "Field `DAPROT` reader - Region Descriptor Area Protection"]
-pub struct DAPROT_R(crate::FieldReader<u8, u8>);
-impl DAPROT_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        DAPROT_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for DAPROT_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `DAPROT` writer - Region Descriptor Area Protection"]
-pub struct DAPROT_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DAPROT_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x3f << 24)) | ((value as u32 & 0x3f) << 24);
-        self.w
+    pub fn sha224(self) -> &'a mut crate::W<REG> {
+        self.variant(Ualgoselect::Sha224)
     }
 }
 impl R {
     #[doc = "Bit 0 - Write Back Disable"]
     #[inline(always)]
-    pub fn wbdis(&self) -> WBDIS_R {
-        WBDIS_R::new((self.bits & 0x01) != 0)
+    pub fn wbdis(&self) -> WbdisR {
+        WbdisR::new((self.bits & 1) != 0)
     }
     #[doc = "Bit 1 - End of Monitoring Disable"]
     #[inline(always)]
-    pub fn eomdis(&self) -> EOMDIS_R {
-        EOMDIS_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn eomdis(&self) -> EomdisR {
+        EomdisR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bit 2 - Secondary List Branching Disable"]
     #[inline(always)]
-    pub fn slbdis(&self) -> SLBDIS_R {
-        SLBDIS_R::new(((self.bits >> 2) & 0x01) != 0)
+    pub fn slbdis(&self) -> SlbdisR {
+        SlbdisR::new(((self.bits >> 2) & 1) != 0)
     }
     #[doc = "Bits 4:7 - Bus Burden Control"]
     #[inline(always)]
-    pub fn bbc(&self) -> BBC_R {
-        BBC_R::new(((self.bits >> 4) & 0x0f) as u8)
+    pub fn bbc(&self) -> BbcR {
+        BbcR::new(((self.bits >> 4) & 0x0f) as u8)
     }
     #[doc = "Bit 8 - Automatic Switch To Compare Digest"]
     #[inline(always)]
-    pub fn ascd(&self) -> ASCD_R {
-        ASCD_R::new(((self.bits >> 8) & 0x01) != 0)
+    pub fn ascd(&self) -> AscdR {
+        AscdR::new(((self.bits >> 8) & 1) != 0)
     }
     #[doc = "Bit 9 - Dual Input Buffer"]
     #[inline(always)]
-    pub fn dualbuff(&self) -> DUALBUFF_R {
-        DUALBUFF_R::new(((self.bits >> 9) & 0x01) != 0)
+    pub fn dualbuff(&self) -> DualbuffR {
+        DualbuffR::new(((self.bits >> 9) & 1) != 0)
     }
     #[doc = "Bit 12 - User Initial Hash Value"]
     #[inline(always)]
-    pub fn uihash(&self) -> UIHASH_R {
-        UIHASH_R::new(((self.bits >> 12) & 0x01) != 0)
+    pub fn uihash(&self) -> UihashR {
+        UihashR::new(((self.bits >> 12) & 1) != 0)
     }
     #[doc = "Bits 13:15 - User SHA Algorithm"]
     #[inline(always)]
-    pub fn ualgo(&self) -> UALGO_R {
-        UALGO_R::new(((self.bits >> 13) & 0x07) as u8)
-    }
-    #[doc = "Bits 16:21 - Region Hash Area Protection"]
-    #[inline(always)]
-    pub fn haprot(&self) -> HAPROT_R {
-        HAPROT_R::new(((self.bits >> 16) & 0x3f) as u8)
-    }
-    #[doc = "Bits 24:29 - Region Descriptor Area Protection"]
-    #[inline(always)]
-    pub fn daprot(&self) -> DAPROT_R {
-        DAPROT_R::new(((self.bits >> 24) & 0x3f) as u8)
+    pub fn ualgo(&self) -> UalgoR {
+        UalgoR::new(((self.bits >> 13) & 7) as u8)
     }
 }
 impl W {
     #[doc = "Bit 0 - Write Back Disable"]
     #[inline(always)]
-    pub fn wbdis(&mut self) -> WBDIS_W {
-        WBDIS_W { w: self }
+    #[must_use]
+    pub fn wbdis(&mut self) -> WbdisW<CfgSpec> {
+        WbdisW::new(self, 0)
     }
     #[doc = "Bit 1 - End of Monitoring Disable"]
     #[inline(always)]
-    pub fn eomdis(&mut self) -> EOMDIS_W {
-        EOMDIS_W { w: self }
+    #[must_use]
+    pub fn eomdis(&mut self) -> EomdisW<CfgSpec> {
+        EomdisW::new(self, 1)
     }
     #[doc = "Bit 2 - Secondary List Branching Disable"]
     #[inline(always)]
-    pub fn slbdis(&mut self) -> SLBDIS_W {
-        SLBDIS_W { w: self }
+    #[must_use]
+    pub fn slbdis(&mut self) -> SlbdisW<CfgSpec> {
+        SlbdisW::new(self, 2)
     }
     #[doc = "Bits 4:7 - Bus Burden Control"]
     #[inline(always)]
-    pub fn bbc(&mut self) -> BBC_W {
-        BBC_W { w: self }
+    #[must_use]
+    pub fn bbc(&mut self) -> BbcW<CfgSpec> {
+        BbcW::new(self, 4)
     }
     #[doc = "Bit 8 - Automatic Switch To Compare Digest"]
     #[inline(always)]
-    pub fn ascd(&mut self) -> ASCD_W {
-        ASCD_W { w: self }
+    #[must_use]
+    pub fn ascd(&mut self) -> AscdW<CfgSpec> {
+        AscdW::new(self, 8)
     }
     #[doc = "Bit 9 - Dual Input Buffer"]
     #[inline(always)]
-    pub fn dualbuff(&mut self) -> DUALBUFF_W {
-        DUALBUFF_W { w: self }
+    #[must_use]
+    pub fn dualbuff(&mut self) -> DualbuffW<CfgSpec> {
+        DualbuffW::new(self, 9)
     }
     #[doc = "Bit 12 - User Initial Hash Value"]
     #[inline(always)]
-    pub fn uihash(&mut self) -> UIHASH_W {
-        UIHASH_W { w: self }
+    #[must_use]
+    pub fn uihash(&mut self) -> UihashW<CfgSpec> {
+        UihashW::new(self, 12)
     }
     #[doc = "Bits 13:15 - User SHA Algorithm"]
     #[inline(always)]
-    pub fn ualgo(&mut self) -> UALGO_W {
-        UALGO_W { w: self }
-    }
-    #[doc = "Bits 16:21 - Region Hash Area Protection"]
-    #[inline(always)]
-    pub fn haprot(&mut self) -> HAPROT_W {
-        HAPROT_W { w: self }
-    }
-    #[doc = "Bits 24:29 - Region Descriptor Area Protection"]
-    #[inline(always)]
-    pub fn daprot(&mut self) -> DAPROT_W {
-        DAPROT_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn ualgo(&mut self) -> UalgoW<CfgSpec> {
+        UalgoW::new(self, 13)
     }
 }
-#[doc = "Configuration\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-pub struct CFG_SPEC;
-impl crate::RegisterSpec for CFG_SPEC {
+#[doc = "Configuration\n\nYou can [`read`](crate::Reg::read) this register and get [`cfg::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`cfg::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct CfgSpec;
+impl crate::RegisterSpec for CfgSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [cfg::R](R) reader structure"]
-impl crate::Readable for CFG_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [cfg::W](W) writer structure"]
-impl crate::Writable for CFG_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`cfg::R`](R) reader structure"]
+impl crate::Readable for CfgSpec {}
+#[doc = "`write(|w| ..)` method takes [`cfg::W`](W) writer structure"]
+impl crate::Writable for CfgSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets CFG to value 0"]
-impl crate::Resettable for CFG_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for CfgSpec {
+    const RESET_VALUE: u32 = 0;
 }

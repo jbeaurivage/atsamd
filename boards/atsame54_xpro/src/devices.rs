@@ -17,18 +17,18 @@ use uart::{BaudMode, Oversampling};
 use hal::usb::{usb_device::bus::UsbBusAllocator, UsbBus};
 
 hal::bsp_peripherals!(
-    SERCOM0 { Ext1UartSercom }
-    SERCOM1 { Ext3UartSercom }
-    SERCOM2 { EdbgUartSercom }
-    SERCOM3 { Ext1I2cSercom }
-    SERCOM4 { Ext1SpiSercom }
-    SERCOM5 { Ext2UartSercom }
-    SERCOM6 { Ext2SpiSercom }
-    SERCOM6 { Ext3SpiSercom }
-    SERCOM6 { DgiSpiSercom }
-    SERCOM7 { Ext2I2cSercom }
-    SERCOM7 { Ext3I2cSercom }
-    SERCOM7 { DgiI2cSercom }
+    Sercom0 { Ext1UartSercom }
+    Sercom1 { Ext3UartSercom }
+    Sercom2 { EdbgUartSercom }
+    Sercom3 { Ext1I2cSercom }
+    Sercom4 { Ext1SpiSercom }
+    Sercom5 { Ext2UartSercom }
+    Sercom6 { Ext2SpiSercom }
+    Sercom6 { Ext3SpiSercom }
+    Sercom6 { DgiSpiSercom }
+    Sercom7 { Ext2I2cSercom }
+    Sercom7 { Ext3I2cSercom }
+    Sercom7 { DgiI2cSercom }
 );
 
 /// UART pads for the extension 1 connection
@@ -40,15 +40,14 @@ pub type Ext1Uart = uart::Uart<uart::Config<Ext1UartPads>, uart::Duplex>;
 /// Set up the extension 1 UART device
 pub fn ext1_uart(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     ext1_uart_sercom: Ext1UartSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     uart_rx: impl Into<Ext1UartRx>,
     uart_tx: impl Into<Ext1UartTx>,
 ) -> Ext1Uart {
     let gclk0 = clocks.gclk0();
     let clock = clocks.sercom0_core(&gclk0).unwrap();
-    let baud = baud.into();
     let pads = uart::Pads::default().rx(uart_rx.into()).tx(uart_tx.into());
     uart::Config::new(mclk, ext1_uart_sercom, pads, clock.freq())
         .baud(baud, BaudMode::Fractional(Oversampling::Bits16))
@@ -66,9 +65,9 @@ pub type Ext1FlowControlUart = uart::Uart<uart::Config<Ext1FlowControlUartPads>,
 #[allow(clippy::too_many_arguments)]
 pub fn ext1_flow_control_uart(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     ext1_uart_sercom: Ext1UartSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     uart_rx: impl Into<Ext1UartRx>,
     uart_tx: impl Into<Ext1UartTx>,
     uart_rts: impl Into<Ext1UartRts>,
@@ -76,7 +75,6 @@ pub fn ext1_flow_control_uart(
 ) -> Ext1FlowControlUart {
     let gclk0 = clocks.gclk0();
     let clock = clocks.sercom0_core(&gclk0).unwrap();
-    let baud = baud.into();
     let pads = uart::Pads::default()
         .rx(uart_rx.into())
         .tx(uart_tx.into())
@@ -96,15 +94,14 @@ pub type Ext3Uart = uart::Uart<uart::Config<Ext3UartPads>, uart::Duplex>;
 /// Set up the extension 3 UART device
 pub fn ext3_uart(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     ext3_uart_sercom: Ext3UartSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     uart_rx: impl Into<Ext3UartRx>,
     uart_tx: impl Into<Ext3UartTx>,
 ) -> Ext3Uart {
     let gclk0 = clocks.gclk0();
     let clock = clocks.sercom1_core(&gclk0).unwrap();
-    let baud = baud.into();
     let pads = uart::Pads::default().rx(uart_rx.into()).tx(uart_tx.into());
     uart::Config::new(mclk, ext3_uart_sercom, pads, clock.freq())
         .baud(baud, BaudMode::Fractional(Oversampling::Bits16))
@@ -120,15 +117,14 @@ pub type EdbgUart = uart::Uart<uart::Config<EdbgUartPads>, uart::Duplex>;
 /// Set up the EDBG UART device
 pub fn edbg_uart(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     edbg_uart_sercom: EdbgUartSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     uart_rx: impl Into<EdbgUartRx>,
     uart_tx: impl Into<EdbgUartTx>,
 ) -> EdbgUart {
     let gclk0 = clocks.gclk0();
     let clock = clocks.sercom2_core(&gclk0).unwrap();
-    let baud = baud.into();
     let pads = uart::Pads::default().rx(uart_rx.into()).tx(uart_tx.into());
     uart::Config::new(mclk, edbg_uart_sercom, pads, clock.freq())
         .baud(baud, BaudMode::Fractional(Oversampling::Bits16))
@@ -144,16 +140,15 @@ pub type Ext1I2c = i2c::I2c<i2c::Config<Ext1I2cPads>>;
 /// Set up the extension 1 I2C device
 pub fn ext1_i2c(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     ext1_i2c_sercom: Ext1I2cSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     sda: impl Into<Ext1I2cSda>,
     scl: impl Into<Ext1I2cScl>,
 ) -> Ext1I2c {
     let gclk0 = clocks.gclk0();
     let clock = &clocks.sercom3_core(&gclk0).unwrap();
     let freq = clock.freq();
-    let baud = baud.into();
     let pads = i2c::Pads::new(sda.into(), scl.into());
     i2c::Config::new(mclk, ext1_i2c_sercom, pads, freq)
         .baud(baud)
@@ -169,9 +164,9 @@ pub type Ext1Spi = spi::Spi<spi::Config<Ext1SpiPads>, spi::Duplex>;
 /// Set up the extension 1 SPI device
 pub fn ext1_spi(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     ext1_spi_sercom: Ext1SpiSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     miso: impl Into<Ext1SpiMiso>,
     mosi: impl Into<Ext1SpiMosi>,
     sck: impl Into<Ext1SpiSck>,
@@ -196,15 +191,14 @@ pub type Ext2Uart = uart::Uart<uart::Config<Ext2UartPads>, uart::Duplex>;
 /// Set up the extension 2 UART device
 pub fn ext2_uart(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     ext2_uart_sercom: Ext2UartSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     uart_rx: impl Into<Ext2UartRx>,
     uart_tx: impl Into<Ext2UartTx>,
 ) -> Ext2Uart {
     let gclk0 = clocks.gclk0();
     let clock = clocks.sercom5_core(&gclk0).unwrap();
-    let baud = baud.into();
     let pads = uart::Pads::default().rx(uart_rx.into()).tx(uart_tx.into());
     uart::Config::new(mclk, ext2_uart_sercom, pads, clock.freq())
         .baud(baud, BaudMode::Fractional(Oversampling::Bits16))
@@ -220,9 +214,9 @@ pub type Ext2Spi = spi::Spi<spi::Config<Ext2SpiPads>, spi::Duplex>;
 /// Set up the extension 2 SPI device
 pub fn ext2_spi(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     ext2_spi_sercom: Ext2SpiSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     miso: impl Into<Ext2SpiMiso>,
     mosi: impl Into<Ext2SpiMosi>,
     sck: impl Into<Ext2SpiSck>,
@@ -247,9 +241,9 @@ pub type Ext3Spi = spi::Spi<spi::Config<Ext3SpiPads>, spi::Duplex>;
 /// Set up the extension 3 SPI device
 pub fn ext3_spi(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     ext3_spi_sercom: Ext3SpiSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     miso: impl Into<Ext3SpiMiso>,
     mosi: impl Into<Ext3SpiMosi>,
     sck: impl Into<Ext3SpiSck>,
@@ -274,9 +268,9 @@ pub type DgiSpi = spi::Spi<spi::Config<DgiSpiPads>, spi::Duplex>;
 /// Set up the DGI SPI device
 pub fn dgi_spi(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     dgi_spi_sercom: DgiSpiSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     miso: impl Into<DgiSpiMiso>,
     mosi: impl Into<DgiSpiMosi>,
     sck: impl Into<DgiSpiSck>,
@@ -301,16 +295,15 @@ pub type Ext2I2c = i2c::I2c<i2c::Config<Ext2I2cPads>>;
 /// Set up the extension 1 I2C device
 pub fn ext2_i2c(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     ext2_i2c_sercom: Ext2I2cSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     sda: impl Into<Ext2I2cSda>,
     scl: impl Into<Ext2I2cScl>,
 ) -> Ext2I2c {
     let gclk0 = clocks.gclk0();
     let clock = &clocks.sercom7_core(&gclk0).unwrap();
     let freq = clock.freq();
-    let baud = baud.into();
     let pads = i2c::Pads::new(sda.into(), scl.into());
     i2c::Config::new(mclk, ext2_i2c_sercom, pads, freq)
         .baud(baud)
@@ -326,16 +319,15 @@ pub type Ext3I2c = i2c::I2c<i2c::Config<Ext3I2cPads>>;
 /// Set up the extension 1 I2C device
 pub fn ext3_i2c(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     ext3_i2c_sercom: Ext3I2cSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     sda: impl Into<Ext3I2cSda>,
     scl: impl Into<Ext3I2cScl>,
 ) -> Ext3I2c {
     let gclk0 = clocks.gclk0();
     let clock = &clocks.sercom7_core(&gclk0).unwrap();
     let freq = clock.freq();
-    let baud = baud.into();
     let pads = i2c::Pads::new(sda.into(), scl.into());
     i2c::Config::new(mclk, ext3_i2c_sercom, pads, freq)
         .baud(baud)
@@ -351,16 +343,15 @@ pub type DgiI2c = i2c::I2c<i2c::Config<DgiI2cPads>>;
 /// Set up the DGI I2C device
 pub fn dgi_i2c(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     dgi_i2c_sercom: DgiI2cSercom,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     sda: impl Into<DgiI2cSda>,
     scl: impl Into<DgiI2cScl>,
 ) -> DgiI2c {
     let gclk0 = clocks.gclk0();
     let clock = &clocks.sercom7_core(&gclk0).unwrap();
     let freq = clock.freq();
-    let baud = baud.into();
     let pads = i2c::Pads::new(sda.into(), scl.into());
     i2c::Config::new(mclk, dgi_i2c_sercom, pads, freq)
         .baud(baud)
@@ -370,16 +361,16 @@ pub fn dgi_i2c(
 /// Convenience for setting up the USB
 #[cfg(feature = "usb")]
 pub fn usb_allocator(
-    usb: pac::USB,
+    usb: pac::Usb,
     clocks: &mut GenericClockController,
-    mclk: &mut pac::MCLK,
+    mclk: &mut pac::Mclk,
     dm: impl Into<UsbDm>,
     dp: impl Into<UsbDp>,
 ) -> UsbBusAllocator<UsbBus> {
-    use pac::gclk::{genctrl::SRC_A, pchctrl::GEN_A};
+    use pac::gclk::{genctrl::Srcselect, pchctrl::Genselect};
 
-    clocks.configure_gclk_divider_and_source(GEN_A::GCLK2, 1, SRC_A::DFLL, false);
-    let usb_gclk = clocks.get_gclk(GEN_A::GCLK2).unwrap();
+    clocks.configure_gclk_divider_and_source(Genselect::Gclk2, 1, Srcselect::Dfll, false);
+    let usb_gclk = clocks.get_gclk(Genselect::Gclk2).unwrap();
     let usb_clock = &clocks.usb(&usb_gclk).unwrap();
     let (dm, dp) = (dm.into(), dp.into());
     UsbBusAllocator::new(UsbBus::new(usb_clock, mclk, dm, dp, usb))

@@ -1,813 +1,630 @@
 #[doc = "Register `CA0R` reader"]
-pub struct R(crate::R<CA0R_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<CA0R_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<CA0R_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<CA0R_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<Ca0rSpec>;
 #[doc = "Timeout Clock Frequency\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum TEOCLKF_A {
+pub enum Teoclkfselect {
     #[doc = "0: Get information via another method"]
-    OTHER = 0,
+    Other = 0,
 }
-impl From<TEOCLKF_A> for u8 {
+impl From<Teoclkfselect> for u8 {
     #[inline(always)]
-    fn from(variant: TEOCLKF_A) -> Self {
+    fn from(variant: Teoclkfselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Teoclkfselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Teoclkfselect {}
 #[doc = "Field `TEOCLKF` reader - Timeout Clock Frequency"]
-pub struct TEOCLKF_R(crate::FieldReader<u8, TEOCLKF_A>);
-impl TEOCLKF_R {
+pub type TeoclkfR = crate::FieldReader<Teoclkfselect>;
+impl TeoclkfR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        TEOCLKF_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<TEOCLKF_A> {
+    pub const fn variant(&self) -> Option<Teoclkfselect> {
         match self.bits {
-            0 => Some(TEOCLKF_A::OTHER),
+            0 => Some(Teoclkfselect::Other),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `OTHER`"]
+    #[doc = "Get information via another method"]
     #[inline(always)]
     pub fn is_other(&self) -> bool {
-        **self == TEOCLKF_A::OTHER
-    }
-}
-impl core::ops::Deref for TEOCLKF_R {
-    type Target = crate::FieldReader<u8, TEOCLKF_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Teoclkfselect::Other
     }
 }
 #[doc = "Timeout Clock Unit\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum TEOCLKU_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Teoclkuselect {
     #[doc = "0: KHz"]
-    KHZ = 0,
+    Khz = 0,
     #[doc = "1: MHz"]
-    MHZ = 1,
+    Mhz = 1,
 }
-impl From<TEOCLKU_A> for bool {
+impl From<Teoclkuselect> for bool {
     #[inline(always)]
-    fn from(variant: TEOCLKU_A) -> Self {
+    fn from(variant: Teoclkuselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `TEOCLKU` reader - Timeout Clock Unit"]
-pub struct TEOCLKU_R(crate::FieldReader<bool, TEOCLKU_A>);
-impl TEOCLKU_R {
+pub type TeoclkuR = crate::BitReader<Teoclkuselect>;
+impl TeoclkuR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        TEOCLKU_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> TEOCLKU_A {
+    pub const fn variant(&self) -> Teoclkuselect {
         match self.bits {
-            false => TEOCLKU_A::KHZ,
-            true => TEOCLKU_A::MHZ,
+            false => Teoclkuselect::Khz,
+            true => Teoclkuselect::Mhz,
         }
     }
-    #[doc = "Checks if the value of the field is `KHZ`"]
+    #[doc = "KHz"]
     #[inline(always)]
     pub fn is_khz(&self) -> bool {
-        **self == TEOCLKU_A::KHZ
+        *self == Teoclkuselect::Khz
     }
-    #[doc = "Checks if the value of the field is `MHZ`"]
+    #[doc = "MHz"]
     #[inline(always)]
     pub fn is_mhz(&self) -> bool {
-        **self == TEOCLKU_A::MHZ
-    }
-}
-impl core::ops::Deref for TEOCLKU_R {
-    type Target = crate::FieldReader<bool, TEOCLKU_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Teoclkuselect::Mhz
     }
 }
 #[doc = "Base Clock Frequency\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum BASECLKF_A {
+pub enum Baseclkfselect {
     #[doc = "0: Get information via another method"]
-    OTHER = 0,
+    Other = 0,
 }
-impl From<BASECLKF_A> for u8 {
+impl From<Baseclkfselect> for u8 {
     #[inline(always)]
-    fn from(variant: BASECLKF_A) -> Self {
+    fn from(variant: Baseclkfselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Baseclkfselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Baseclkfselect {}
 #[doc = "Field `BASECLKF` reader - Base Clock Frequency"]
-pub struct BASECLKF_R(crate::FieldReader<u8, BASECLKF_A>);
-impl BASECLKF_R {
+pub type BaseclkfR = crate::FieldReader<Baseclkfselect>;
+impl BaseclkfR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        BASECLKF_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<BASECLKF_A> {
+    pub const fn variant(&self) -> Option<Baseclkfselect> {
         match self.bits {
-            0 => Some(BASECLKF_A::OTHER),
+            0 => Some(Baseclkfselect::Other),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `OTHER`"]
+    #[doc = "Get information via another method"]
     #[inline(always)]
     pub fn is_other(&self) -> bool {
-        **self == BASECLKF_A::OTHER
-    }
-}
-impl core::ops::Deref for BASECLKF_R {
-    type Target = crate::FieldReader<u8, BASECLKF_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Baseclkfselect::Other
     }
 }
 #[doc = "Max Block Length\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum MAXBLKL_A {
+pub enum Maxblklselect {
     #[doc = "0: 512 bytes"]
     _512 = 0,
-    #[doc = "1: 1024 bytes"]
-    _1024 = 1,
-    #[doc = "2: 2048 bytes"]
-    _2048 = 2,
 }
-impl From<MAXBLKL_A> for u8 {
+impl From<Maxblklselect> for u8 {
     #[inline(always)]
-    fn from(variant: MAXBLKL_A) -> Self {
+    fn from(variant: Maxblklselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Maxblklselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Maxblklselect {}
 #[doc = "Field `MAXBLKL` reader - Max Block Length"]
-pub struct MAXBLKL_R(crate::FieldReader<u8, MAXBLKL_A>);
-impl MAXBLKL_R {
+pub type MaxblklR = crate::FieldReader<Maxblklselect>;
+impl MaxblklR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        MAXBLKL_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<MAXBLKL_A> {
+    pub const fn variant(&self) -> Option<Maxblklselect> {
         match self.bits {
-            0 => Some(MAXBLKL_A::_512),
-            1 => Some(MAXBLKL_A::_1024),
-            2 => Some(MAXBLKL_A::_2048),
+            0 => Some(Maxblklselect::_512),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `_512`"]
+    #[doc = "512 bytes"]
     #[inline(always)]
     pub fn is_512(&self) -> bool {
-        **self == MAXBLKL_A::_512
-    }
-    #[doc = "Checks if the value of the field is `_1024`"]
-    #[inline(always)]
-    pub fn is_1024(&self) -> bool {
-        **self == MAXBLKL_A::_1024
-    }
-    #[doc = "Checks if the value of the field is `_2048`"]
-    #[inline(always)]
-    pub fn is_2048(&self) -> bool {
-        **self == MAXBLKL_A::_2048
-    }
-}
-impl core::ops::Deref for MAXBLKL_R {
-    type Target = crate::FieldReader<u8, MAXBLKL_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Maxblklselect::_512
     }
 }
 #[doc = "8-bit Support for Embedded Device\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum ED8SUP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Ed8supselect {
     #[doc = "0: 8-bit Bus Width not Supported"]
-    NO = 0,
+    No = 0,
     #[doc = "1: 8-bit Bus Width Supported"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<ED8SUP_A> for bool {
+impl From<Ed8supselect> for bool {
     #[inline(always)]
-    fn from(variant: ED8SUP_A) -> Self {
+    fn from(variant: Ed8supselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `ED8SUP` reader - 8-bit Support for Embedded Device"]
-pub struct ED8SUP_R(crate::FieldReader<bool, ED8SUP_A>);
-impl ED8SUP_R {
+pub type Ed8supR = crate::BitReader<Ed8supselect>;
+impl Ed8supR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ED8SUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> ED8SUP_A {
+    pub const fn variant(&self) -> Ed8supselect {
         match self.bits {
-            false => ED8SUP_A::NO,
-            true => ED8SUP_A::YES,
+            false => Ed8supselect::No,
+            true => Ed8supselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "8-bit Bus Width not Supported"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == ED8SUP_A::NO
+        *self == Ed8supselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "8-bit Bus Width Supported"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == ED8SUP_A::YES
-    }
-}
-impl core::ops::Deref for ED8SUP_R {
-    type Target = crate::FieldReader<bool, ED8SUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Ed8supselect::Yes
     }
 }
 #[doc = "ADMA2 Support\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum ADMA2SUP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Adma2supselect {
     #[doc = "0: ADMA2 not Supported"]
-    NO = 0,
+    No = 0,
     #[doc = "1: ADMA2 Supported"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<ADMA2SUP_A> for bool {
+impl From<Adma2supselect> for bool {
     #[inline(always)]
-    fn from(variant: ADMA2SUP_A) -> Self {
+    fn from(variant: Adma2supselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `ADMA2SUP` reader - ADMA2 Support"]
-pub struct ADMA2SUP_R(crate::FieldReader<bool, ADMA2SUP_A>);
-impl ADMA2SUP_R {
+pub type Adma2supR = crate::BitReader<Adma2supselect>;
+impl Adma2supR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ADMA2SUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> ADMA2SUP_A {
+    pub const fn variant(&self) -> Adma2supselect {
         match self.bits {
-            false => ADMA2SUP_A::NO,
-            true => ADMA2SUP_A::YES,
+            false => Adma2supselect::No,
+            true => Adma2supselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "ADMA2 not Supported"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == ADMA2SUP_A::NO
+        *self == Adma2supselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "ADMA2 Supported"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == ADMA2SUP_A::YES
-    }
-}
-impl core::ops::Deref for ADMA2SUP_R {
-    type Target = crate::FieldReader<bool, ADMA2SUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Adma2supselect::Yes
     }
 }
 #[doc = "High Speed Support\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum HSSUP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Hssupselect {
     #[doc = "0: High Speed not Supported"]
-    NO = 0,
+    No = 0,
     #[doc = "1: High Speed Supported"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<HSSUP_A> for bool {
+impl From<Hssupselect> for bool {
     #[inline(always)]
-    fn from(variant: HSSUP_A) -> Self {
+    fn from(variant: Hssupselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `HSSUP` reader - High Speed Support"]
-pub struct HSSUP_R(crate::FieldReader<bool, HSSUP_A>);
-impl HSSUP_R {
+pub type HssupR = crate::BitReader<Hssupselect>;
+impl HssupR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        HSSUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> HSSUP_A {
+    pub const fn variant(&self) -> Hssupselect {
         match self.bits {
-            false => HSSUP_A::NO,
-            true => HSSUP_A::YES,
+            false => Hssupselect::No,
+            true => Hssupselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "High Speed not Supported"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == HSSUP_A::NO
+        *self == Hssupselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "High Speed Supported"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == HSSUP_A::YES
-    }
-}
-impl core::ops::Deref for HSSUP_R {
-    type Target = crate::FieldReader<bool, HSSUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Hssupselect::Yes
     }
 }
 #[doc = "SDMA Support\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum SDMASUP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Sdmasupselect {
     #[doc = "0: SDMA not Supported"]
-    NO = 0,
+    No = 0,
     #[doc = "1: SDMA Supported"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<SDMASUP_A> for bool {
+impl From<Sdmasupselect> for bool {
     #[inline(always)]
-    fn from(variant: SDMASUP_A) -> Self {
+    fn from(variant: Sdmasupselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `SDMASUP` reader - SDMA Support"]
-pub struct SDMASUP_R(crate::FieldReader<bool, SDMASUP_A>);
-impl SDMASUP_R {
+pub type SdmasupR = crate::BitReader<Sdmasupselect>;
+impl SdmasupR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SDMASUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> SDMASUP_A {
+    pub const fn variant(&self) -> Sdmasupselect {
         match self.bits {
-            false => SDMASUP_A::NO,
-            true => SDMASUP_A::YES,
+            false => Sdmasupselect::No,
+            true => Sdmasupselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "SDMA not Supported"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == SDMASUP_A::NO
+        *self == Sdmasupselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "SDMA Supported"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == SDMASUP_A::YES
-    }
-}
-impl core::ops::Deref for SDMASUP_R {
-    type Target = crate::FieldReader<bool, SDMASUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Sdmasupselect::Yes
     }
 }
 #[doc = "Suspend/Resume Support\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum SRSUP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Srsupselect {
     #[doc = "0: Suspend/Resume not Supported"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Suspend/Resume Supported"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<SRSUP_A> for bool {
+impl From<Srsupselect> for bool {
     #[inline(always)]
-    fn from(variant: SRSUP_A) -> Self {
+    fn from(variant: Srsupselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `SRSUP` reader - Suspend/Resume Support"]
-pub struct SRSUP_R(crate::FieldReader<bool, SRSUP_A>);
-impl SRSUP_R {
+pub type SrsupR = crate::BitReader<Srsupselect>;
+impl SrsupR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SRSUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> SRSUP_A {
+    pub const fn variant(&self) -> Srsupselect {
         match self.bits {
-            false => SRSUP_A::NO,
-            true => SRSUP_A::YES,
+            false => Srsupselect::No,
+            true => Srsupselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "Suspend/Resume not Supported"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == SRSUP_A::NO
+        *self == Srsupselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "Suspend/Resume Supported"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == SRSUP_A::YES
-    }
-}
-impl core::ops::Deref for SRSUP_R {
-    type Target = crate::FieldReader<bool, SRSUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Srsupselect::Yes
     }
 }
 #[doc = "Voltage Support 3.3V\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum V33VSUP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum V33vsupselect {
     #[doc = "0: 3.3V Not Supported"]
-    NO = 0,
+    No = 0,
     #[doc = "1: 3.3V Supported"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<V33VSUP_A> for bool {
+impl From<V33vsupselect> for bool {
     #[inline(always)]
-    fn from(variant: V33VSUP_A) -> Self {
+    fn from(variant: V33vsupselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `V33VSUP` reader - Voltage Support 3.3V"]
-pub struct V33VSUP_R(crate::FieldReader<bool, V33VSUP_A>);
-impl V33VSUP_R {
+pub type V33vsupR = crate::BitReader<V33vsupselect>;
+impl V33vsupR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        V33VSUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> V33VSUP_A {
+    pub const fn variant(&self) -> V33vsupselect {
         match self.bits {
-            false => V33VSUP_A::NO,
-            true => V33VSUP_A::YES,
+            false => V33vsupselect::No,
+            true => V33vsupselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "3.3V Not Supported"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == V33VSUP_A::NO
+        *self == V33vsupselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "3.3V Supported"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == V33VSUP_A::YES
-    }
-}
-impl core::ops::Deref for V33VSUP_R {
-    type Target = crate::FieldReader<bool, V33VSUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == V33vsupselect::Yes
     }
 }
 #[doc = "Voltage Support 3.0V\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum V30VSUP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum V30vsupselect {
     #[doc = "0: 3.0V Not Supported"]
-    NO = 0,
+    No = 0,
     #[doc = "1: 3.0V Supported"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<V30VSUP_A> for bool {
+impl From<V30vsupselect> for bool {
     #[inline(always)]
-    fn from(variant: V30VSUP_A) -> Self {
+    fn from(variant: V30vsupselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `V30VSUP` reader - Voltage Support 3.0V"]
-pub struct V30VSUP_R(crate::FieldReader<bool, V30VSUP_A>);
-impl V30VSUP_R {
+pub type V30vsupR = crate::BitReader<V30vsupselect>;
+impl V30vsupR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        V30VSUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> V30VSUP_A {
+    pub const fn variant(&self) -> V30vsupselect {
         match self.bits {
-            false => V30VSUP_A::NO,
-            true => V30VSUP_A::YES,
+            false => V30vsupselect::No,
+            true => V30vsupselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "3.0V Not Supported"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == V30VSUP_A::NO
+        *self == V30vsupselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "3.0V Supported"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == V30VSUP_A::YES
-    }
-}
-impl core::ops::Deref for V30VSUP_R {
-    type Target = crate::FieldReader<bool, V30VSUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == V30vsupselect::Yes
     }
 }
 #[doc = "Voltage Support 1.8V\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum V18VSUP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum V18vsupselect {
     #[doc = "0: 1.8V Not Supported"]
-    NO = 0,
+    No = 0,
     #[doc = "1: 1.8V Supported"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<V18VSUP_A> for bool {
+impl From<V18vsupselect> for bool {
     #[inline(always)]
-    fn from(variant: V18VSUP_A) -> Self {
+    fn from(variant: V18vsupselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `V18VSUP` reader - Voltage Support 1.8V"]
-pub struct V18VSUP_R(crate::FieldReader<bool, V18VSUP_A>);
-impl V18VSUP_R {
+pub type V18vsupR = crate::BitReader<V18vsupselect>;
+impl V18vsupR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        V18VSUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> V18VSUP_A {
+    pub const fn variant(&self) -> V18vsupselect {
         match self.bits {
-            false => V18VSUP_A::NO,
-            true => V18VSUP_A::YES,
+            false => V18vsupselect::No,
+            true => V18vsupselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "1.8V Not Supported"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == V18VSUP_A::NO
+        *self == V18vsupselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "1.8V Supported"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == V18VSUP_A::YES
-    }
-}
-impl core::ops::Deref for V18VSUP_R {
-    type Target = crate::FieldReader<bool, V18VSUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == V18vsupselect::Yes
     }
 }
 #[doc = "64-Bit System Bus Support\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum SB64SUP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Sb64supselect {
     #[doc = "0: 32-bit Address Descriptors and System Bus"]
-    NO = 0,
+    No = 0,
     #[doc = "1: 64-bit Address Descriptors and System Bus"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<SB64SUP_A> for bool {
+impl From<Sb64supselect> for bool {
     #[inline(always)]
-    fn from(variant: SB64SUP_A) -> Self {
+    fn from(variant: Sb64supselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `SB64SUP` reader - 64-Bit System Bus Support"]
-pub struct SB64SUP_R(crate::FieldReader<bool, SB64SUP_A>);
-impl SB64SUP_R {
+pub type Sb64supR = crate::BitReader<Sb64supselect>;
+impl Sb64supR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SB64SUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> SB64SUP_A {
+    pub const fn variant(&self) -> Sb64supselect {
         match self.bits {
-            false => SB64SUP_A::NO,
-            true => SB64SUP_A::YES,
+            false => Sb64supselect::No,
+            true => Sb64supselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "32-bit Address Descriptors and System Bus"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == SB64SUP_A::NO
+        *self == Sb64supselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "64-bit Address Descriptors and System Bus"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == SB64SUP_A::YES
-    }
-}
-impl core::ops::Deref for SB64SUP_R {
-    type Target = crate::FieldReader<bool, SB64SUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Sb64supselect::Yes
     }
 }
 #[doc = "Asynchronous Interrupt Support\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum ASINTSUP_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Asintsupselect {
     #[doc = "0: Asynchronous Interrupt not Supported"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Asynchronous Interrupt supported"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<ASINTSUP_A> for bool {
+impl From<Asintsupselect> for bool {
     #[inline(always)]
-    fn from(variant: ASINTSUP_A) -> Self {
+    fn from(variant: Asintsupselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `ASINTSUP` reader - Asynchronous Interrupt Support"]
-pub struct ASINTSUP_R(crate::FieldReader<bool, ASINTSUP_A>);
-impl ASINTSUP_R {
+pub type AsintsupR = crate::BitReader<Asintsupselect>;
+impl AsintsupR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ASINTSUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> ASINTSUP_A {
+    pub const fn variant(&self) -> Asintsupselect {
         match self.bits {
-            false => ASINTSUP_A::NO,
-            true => ASINTSUP_A::YES,
+            false => Asintsupselect::No,
+            true => Asintsupselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "Asynchronous Interrupt not Supported"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == ASINTSUP_A::NO
+        *self == Asintsupselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "Asynchronous Interrupt supported"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == ASINTSUP_A::YES
-    }
-}
-impl core::ops::Deref for ASINTSUP_R {
-    type Target = crate::FieldReader<bool, ASINTSUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Asintsupselect::Yes
     }
 }
 #[doc = "Slot Type\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum SLTYPE_A {
+pub enum Sltypeselect {
     #[doc = "0: Removable Card Slot"]
-    REMOVABLE = 0,
+    Removable = 0,
     #[doc = "1: Embedded Slot for One Device"]
-    EMBEDDED = 1,
+    Embedded = 1,
 }
-impl From<SLTYPE_A> for u8 {
+impl From<Sltypeselect> for u8 {
     #[inline(always)]
-    fn from(variant: SLTYPE_A) -> Self {
+    fn from(variant: Sltypeselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Sltypeselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Sltypeselect {}
 #[doc = "Field `SLTYPE` reader - Slot Type"]
-pub struct SLTYPE_R(crate::FieldReader<u8, SLTYPE_A>);
-impl SLTYPE_R {
+pub type SltypeR = crate::FieldReader<Sltypeselect>;
+impl SltypeR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        SLTYPE_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<SLTYPE_A> {
+    pub const fn variant(&self) -> Option<Sltypeselect> {
         match self.bits {
-            0 => Some(SLTYPE_A::REMOVABLE),
-            1 => Some(SLTYPE_A::EMBEDDED),
+            0 => Some(Sltypeselect::Removable),
+            1 => Some(Sltypeselect::Embedded),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `REMOVABLE`"]
+    #[doc = "Removable Card Slot"]
     #[inline(always)]
     pub fn is_removable(&self) -> bool {
-        **self == SLTYPE_A::REMOVABLE
+        *self == Sltypeselect::Removable
     }
-    #[doc = "Checks if the value of the field is `EMBEDDED`"]
+    #[doc = "Embedded Slot for One Device"]
     #[inline(always)]
     pub fn is_embedded(&self) -> bool {
-        **self == SLTYPE_A::EMBEDDED
-    }
-}
-impl core::ops::Deref for SLTYPE_R {
-    type Target = crate::FieldReader<u8, SLTYPE_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Sltypeselect::Embedded
     }
 }
 impl R {
     #[doc = "Bits 0:5 - Timeout Clock Frequency"]
     #[inline(always)]
-    pub fn teoclkf(&self) -> TEOCLKF_R {
-        TEOCLKF_R::new((self.bits & 0x3f) as u8)
+    pub fn teoclkf(&self) -> TeoclkfR {
+        TeoclkfR::new((self.bits & 0x3f) as u8)
     }
     #[doc = "Bit 7 - Timeout Clock Unit"]
     #[inline(always)]
-    pub fn teoclku(&self) -> TEOCLKU_R {
-        TEOCLKU_R::new(((self.bits >> 7) & 0x01) != 0)
+    pub fn teoclku(&self) -> TeoclkuR {
+        TeoclkuR::new(((self.bits >> 7) & 1) != 0)
     }
     #[doc = "Bits 8:15 - Base Clock Frequency"]
     #[inline(always)]
-    pub fn baseclkf(&self) -> BASECLKF_R {
-        BASECLKF_R::new(((self.bits >> 8) & 0xff) as u8)
+    pub fn baseclkf(&self) -> BaseclkfR {
+        BaseclkfR::new(((self.bits >> 8) & 0xff) as u8)
     }
     #[doc = "Bits 16:17 - Max Block Length"]
     #[inline(always)]
-    pub fn maxblkl(&self) -> MAXBLKL_R {
-        MAXBLKL_R::new(((self.bits >> 16) & 0x03) as u8)
+    pub fn maxblkl(&self) -> MaxblklR {
+        MaxblklR::new(((self.bits >> 16) & 3) as u8)
     }
     #[doc = "Bit 18 - 8-bit Support for Embedded Device"]
     #[inline(always)]
-    pub fn ed8sup(&self) -> ED8SUP_R {
-        ED8SUP_R::new(((self.bits >> 18) & 0x01) != 0)
+    pub fn ed8sup(&self) -> Ed8supR {
+        Ed8supR::new(((self.bits >> 18) & 1) != 0)
     }
     #[doc = "Bit 19 - ADMA2 Support"]
     #[inline(always)]
-    pub fn adma2sup(&self) -> ADMA2SUP_R {
-        ADMA2SUP_R::new(((self.bits >> 19) & 0x01) != 0)
+    pub fn adma2sup(&self) -> Adma2supR {
+        Adma2supR::new(((self.bits >> 19) & 1) != 0)
     }
     #[doc = "Bit 21 - High Speed Support"]
     #[inline(always)]
-    pub fn hssup(&self) -> HSSUP_R {
-        HSSUP_R::new(((self.bits >> 21) & 0x01) != 0)
+    pub fn hssup(&self) -> HssupR {
+        HssupR::new(((self.bits >> 21) & 1) != 0)
     }
     #[doc = "Bit 22 - SDMA Support"]
     #[inline(always)]
-    pub fn sdmasup(&self) -> SDMASUP_R {
-        SDMASUP_R::new(((self.bits >> 22) & 0x01) != 0)
+    pub fn sdmasup(&self) -> SdmasupR {
+        SdmasupR::new(((self.bits >> 22) & 1) != 0)
     }
     #[doc = "Bit 23 - Suspend/Resume Support"]
     #[inline(always)]
-    pub fn srsup(&self) -> SRSUP_R {
-        SRSUP_R::new(((self.bits >> 23) & 0x01) != 0)
+    pub fn srsup(&self) -> SrsupR {
+        SrsupR::new(((self.bits >> 23) & 1) != 0)
     }
     #[doc = "Bit 24 - Voltage Support 3.3V"]
     #[inline(always)]
-    pub fn v33vsup(&self) -> V33VSUP_R {
-        V33VSUP_R::new(((self.bits >> 24) & 0x01) != 0)
+    pub fn v33vsup(&self) -> V33vsupR {
+        V33vsupR::new(((self.bits >> 24) & 1) != 0)
     }
     #[doc = "Bit 25 - Voltage Support 3.0V"]
     #[inline(always)]
-    pub fn v30vsup(&self) -> V30VSUP_R {
-        V30VSUP_R::new(((self.bits >> 25) & 0x01) != 0)
+    pub fn v30vsup(&self) -> V30vsupR {
+        V30vsupR::new(((self.bits >> 25) & 1) != 0)
     }
     #[doc = "Bit 26 - Voltage Support 1.8V"]
     #[inline(always)]
-    pub fn v18vsup(&self) -> V18VSUP_R {
-        V18VSUP_R::new(((self.bits >> 26) & 0x01) != 0)
+    pub fn v18vsup(&self) -> V18vsupR {
+        V18vsupR::new(((self.bits >> 26) & 1) != 0)
     }
     #[doc = "Bit 28 - 64-Bit System Bus Support"]
     #[inline(always)]
-    pub fn sb64sup(&self) -> SB64SUP_R {
-        SB64SUP_R::new(((self.bits >> 28) & 0x01) != 0)
+    pub fn sb64sup(&self) -> Sb64supR {
+        Sb64supR::new(((self.bits >> 28) & 1) != 0)
     }
     #[doc = "Bit 29 - Asynchronous Interrupt Support"]
     #[inline(always)]
-    pub fn asintsup(&self) -> ASINTSUP_R {
-        ASINTSUP_R::new(((self.bits >> 29) & 0x01) != 0)
+    pub fn asintsup(&self) -> AsintsupR {
+        AsintsupR::new(((self.bits >> 29) & 1) != 0)
     }
     #[doc = "Bits 30:31 - Slot Type"]
     #[inline(always)]
-    pub fn sltype(&self) -> SLTYPE_R {
-        SLTYPE_R::new(((self.bits >> 30) & 0x03) as u8)
+    pub fn sltype(&self) -> SltypeR {
+        SltypeR::new(((self.bits >> 30) & 3) as u8)
     }
 }
-#[doc = "Capabilities 0\n\nThis register you can [`read`](crate::generic::Reg::read). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [ca0r](index.html) module"]
-pub struct CA0R_SPEC;
-impl crate::RegisterSpec for CA0R_SPEC {
+#[doc = "Capabilities 0\n\nYou can [`read`](crate::Reg::read) this register and get [`ca0r::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct Ca0rSpec;
+impl crate::RegisterSpec for Ca0rSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [ca0r::R](R) reader structure"]
-impl crate::Readable for CA0R_SPEC {
-    type Reader = R;
-}
+#[doc = "`read()` method returns [`ca0r::R`](R) reader structure"]
+impl crate::Readable for Ca0rSpec {}
 #[doc = "`reset()` method sets CA0R to value 0x27e8_0080"]
-impl crate::Resettable for CA0R_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0x27e8_0080
-    }
+impl crate::Resettable for Ca0rSpec {
+    const RESET_VALUE: u32 = 0x27e8_0080;
 }

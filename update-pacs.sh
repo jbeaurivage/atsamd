@@ -4,8 +4,8 @@ set -xe
 
 # INSTALL DEPENDENCIES
 
-cargo install --force --version 0.20.0 svd2rust
-cargo install --force --version 0.8.0 form
+cargo install --version 0.33.4 svd2rust
+cargo install --version 0.12.1 form
 
 # PATCH SVD FILES AND GENERATE CRATES
 
@@ -23,7 +23,7 @@ for xsl in svd/devices/*\.xsl; do
   # remove last characters, because they just represent the memory size
   pushd "${TOP}/pac/${chip:0:9}"
 
-  xsltproc "${TOP}/${xsl}" "${TOP}/${svd}" | svd2rust --nightly
+  xsltproc "${TOP}/${xsl}" "${TOP}/${svd}" | svd2rust --reexport-core-peripherals --reexport-interrupt
 
   rm "${TOP}/${svd}"
   rm -rf src/
@@ -38,6 +38,8 @@ for xsl in svd/devices/*\.xsl; do
 
   # ignore all clippy warnings/errors in auto-generated code
   ${SED} -i "s/#\!\[no_std\]/#\!\[allow\(clippy::all\)\]\n#\!\[no_std\]/g" src/lib.rs
+
+  ${SED} -ri '/#\[cfg\(feature = "critical-section"\)\]/d' src/lib.rs
 
   popd
 done

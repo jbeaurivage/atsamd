@@ -2,8 +2,6 @@
 #![no_main]
 
 // Pulse Width Modulation
-//
-// cargo build --features="unproven"
 
 use bsp::hal;
 use feather_m4 as bsp;
@@ -16,6 +14,7 @@ use panic_semihosting as _;
 use cortex_m_rt::entry;
 use hal::clock::GenericClockController;
 use hal::delay::Delay;
+use hal::fugit::RateExtU32;
 use hal::pac::{CorePeripherals, Peripherals};
 use hal::prelude::*;
 use hal::pwm::Pwm4;
@@ -26,24 +25,24 @@ fn main() -> ! {
     let core = CorePeripherals::take().unwrap();
 
     let mut clocks = GenericClockController::with_external_32kosc(
-        peripherals.GCLK,
-        &mut peripherals.MCLK,
-        &mut peripherals.OSC32KCTRL,
-        &mut peripherals.OSCCTRL,
-        &mut peripherals.NVMCTRL,
+        peripherals.gclk,
+        &mut peripherals.mclk,
+        &mut peripherals.osc32kctrl,
+        &mut peripherals.oscctrl,
+        &mut peripherals.nvmctrl,
     );
 
     let mut delay = Delay::new(core.SYST, &mut clocks);
-    let pins = bsp::Pins::new(peripherals.PORT);
+    let pins = bsp::Pins::new(peripherals.port);
     let red_led: bsp::RedLedPwm = pins.d13.into();
 
     let gclk0 = clocks.gclk0();
     let mut pwm4 = Pwm4::new(
         &clocks.tc4_tc5(&gclk0).unwrap(),
-        1.khz(),
-        peripherals.TC4,
+        1.kHz(),
+        peripherals.tc4,
         hal::pwm::TC4Pinout::Pa23(red_led),
-        &mut peripherals.MCLK,
+        &mut peripherals.mclk,
     );
     let max_duty = pwm4.get_max_duty();
 

@@ -69,7 +69,6 @@ use bsp::{entry, periph_alias, pin_alias};
 use hal::clock::GenericClockController;
 use hal::delay::Delay;
 use hal::prelude::*;
-use hal::time::MegaHertz;
 use pac::{CorePeripherals, Peripherals};
 
 #[entry]
@@ -77,21 +76,21 @@ fn main() -> ! {
     let mut peripherals = Peripherals::take().unwrap();
     let core = CorePeripherals::take().unwrap();
     let mut clocks = GenericClockController::with_internal_32kosc(
-        peripherals.GCLK,
-        &mut peripherals.PM,
-        &mut peripherals.SYSCTRL,
-        &mut peripherals.NVMCTRL,
+        peripherals.gclk,
+        &mut peripherals.pm,
+        &mut peripherals.sysctrl,
+        &mut peripherals.nvmctrl,
     );
-    let pins = bsp::Pins::new(peripherals.PORT);
+    let pins = bsp::Pins::new(peripherals.port);
     let mut red_led: bsp::RedLed = pin_alias!(pins.red_led).into();
     let mut delay = Delay::new(core.SYST, &mut clocks);
 
     let spi_sercom = periph_alias!(peripherals.spi_sercom);
     let spi = bsp::spi_master(
         &mut clocks,
-        MegaHertz(10),
+        10.MHz(),
         spi_sercom,
-        &mut peripherals.PM,
+        &mut peripherals.pm,
         pins.sclk,
         pins.mosi,
         pins.miso,

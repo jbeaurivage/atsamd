@@ -19,28 +19,30 @@
 //! Using the [`DmaController::free`] method will
 //! deinitialize the DMAC and return the underlying PAC object.
 
+use atsamd_hal_macros::{hal_cfg, hal_macro_helper};
+
 use modular_bitfield::prelude::*;
 use seq_macro::seq;
 
-#[cfg(feature = "thumbv6")]
+#[hal_cfg(any("dmac-d11", "dmac-d21"))]
 pub use crate::pac::dmac::chctrlb::{
-    LVL_A as PriorityLevel, TRIGACT_A as TriggerAction, TRIGSRC_A as TriggerSource,
+    Lvlselect as PriorityLevel, Trigactselect as TriggerAction, Trigsrcselect as TriggerSource,
 };
 
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("dmac-d5x")]
 pub use crate::pac::dmac::channel::{
     chctrla::{
-        BURSTLEN_A as BurstLength, THRESHOLD_A as FifoThreshold, TRIGACT_A as TriggerAction,
-        TRIGSRC_A as TriggerSource,
+        Burstlenselect as BurstLength, Thresholdselect as FifoThreshold,
+        Trigactselect as TriggerAction, Trigsrcselect as TriggerSource,
     },
-    chprilvl::PRILVL_A as PriorityLevel,
+    chprilvl::Prilvlselect as PriorityLevel,
 };
 
 use super::{
     channel::{new_chan, Channel, Uninitialized},
     DESCRIPTOR_SECTION, WRITEBACK,
 };
-use crate::pac::{DMAC, PM};
+use crate::pac::{Dmac, Pm};
 
 /// Trait representing a DMA channel ID
 pub trait ChId {
@@ -75,7 +77,13 @@ with_num_channels!(define_channels_struct);
 
 /// Initialized DMA Controller
 pub struct DmaController {
-    dmac: DMAC,
+    dmac: Dmac,
+}
+
+impl Default for PriorityLevelMask {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 /// Mask representing which priority levels should be enabled/disabled
@@ -98,6 +106,12 @@ pub struct PriorityLevelMask {
     level3: bool,
     #[skip]
     _reserved: B4,
+}
+
+impl Default for RoundRobinMask {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 /// Mask representing which priority levels should be configured as round-robin
@@ -132,30 +146,34 @@ impl DmaController {
     /// priority levels are enabled unless subsequently disabled using the
     /// `level_x_enabled` methods.
     #[inline]
-    pub fn init(mut dmac: DMAC, _pm: &mut PM) -> Self {
+    #[hal_macro_helper]
+    pub fn init(mut dmac: Dmac, _pm: &mut Pm) -> Self {
         // ----- Initialize clocking ----- //
-        #[cfg(feature = "thumbv6")]
+        #[hal_cfg(any("dmac-d11", "dmac-d21"))]
         {
             // Enable clocking
-            _pm.ahbmask.modify(|_, w| w.dmac_().set_bit());
-            _pm.apbbmask.modify(|_, w| w.dmac_().set_bit());
+            _pm.ahbmask().modify(|_, w| w.dmac_().set_bit());
+            _pm.apbbmask().modify(|_, w| w.dmac_().set_bit());
         }
 
         Self::swreset(&mut dmac);
 
-        // SAFETY this is safe because we write a whole u32 to 32-bit registers,
+        // SAFETY:
+        //
+        // This is safe because we write a whole u32 to 32-bit registers,
         // and the descriptor array addesses will never change since they are static.
         // We just need to ensure the writeback and descriptor_section addresses
         // are valid.
+        #[allow(static_mut_refs)]
         unsafe {
-            dmac.baseaddr
-                .write(|w| w.baseaddr().bits(DESCRIPTOR_SECTION.as_ptr() as u32));
-            dmac.wrbaddr
-                .write(|w| w.wrbaddr().bits(WRITEBACK.as_ptr() as u32));
+            dmac.baseaddr()
+                .write(|w| w.baseaddr().bits(DESCRIPTOR_SECTION.as_mut_ptr() as u32));
+            dmac.wrbaddr()
+                .write(|w| w.wrbaddr().bits(WRITEBACK.as_mut_ptr() as u32));
         }
 
         // ----- Select priority levels ----- //
-        dmac.ctrl.modify(|_, w| {
+        dmac.ctrl().modify(|_, w| {
             w.lvlen3().set_bit();
             w.lvlen2().set_bit();
             w.lvlen1().set_bit();
@@ -163,7 +181,7 @@ impl DmaController {
         });
 
         // Enable DMA controller
-        dmac.ctrl.modify(|_, w| w.dmaenable().set_bit());
+        dmac.ctrl().modify(|_, w| w.dmaenable().set_bit());
 
         Self { dmac }
     }
@@ -176,7 +194,7 @@ impl DmaController {
         // to do the bit-level setting ourselves.
         let mask: u16 = mask.into();
         unsafe {
-            self.dmac.ctrl.modify(|r, w| w.bits(r.bits() | mask));
+            self.dmac.ctrl().modify(|r, w| w.bits(r.bits() | mask));
         }
     }
 
@@ -188,7 +206,7 @@ impl DmaController {
         // to do the bit-level clearing ourselves.
         let mask: u16 = mask.into();
         unsafe {
-            self.dmac.ctrl.modify(|r, w| w.bits(r.bits() & !mask));
+            self.dmac.ctrl().modify(|r, w| w.bits(r.bits() & !mask));
         }
     }
 
@@ -201,7 +219,7 @@ impl DmaController {
         // to do the bit-level setting ourselves.
         let mask: u32 = mask.into();
         unsafe {
-            self.dmac.prictrl0.modify(|r, w| w.bits(r.bits() | mask));
+            self.dmac.prictrl0().modify(|r, w| w.bits(r.bits() | mask));
         }
     }
 
@@ -214,7 +232,7 @@ impl DmaController {
         // to do the bit-level clearing ourselves.
         let mask: u32 = mask.into();
         unsafe {
-            self.dmac.prictrl0.modify(|r, w| w.bits(r.bits() & !mask));
+            self.dmac.prictrl0().modify(|r, w| w.bits(r.bits() & !mask));
         }
     }
 
@@ -225,16 +243,17 @@ impl DmaController {
     /// moved back into the [`Channels`] struct before being able to pass it
     /// into [`free`](DmaController::free).
     #[inline]
-    pub fn free(mut self, _channels: Channels, _pm: &mut PM) -> DMAC {
-        self.dmac.ctrl.modify(|_, w| w.dmaenable().clear_bit());
+    #[hal_macro_helper]
+    pub fn free(mut self, _channels: Channels, _pm: &mut Pm) -> Dmac {
+        self.dmac.ctrl().modify(|_, w| w.dmaenable().clear_bit());
 
         Self::swreset(&mut self.dmac);
 
-        #[cfg(feature = "thumbv6")]
+        #[hal_cfg(any("dmac-d11", "dmac-d21"))]
         {
             // Disable the DMAC clocking
-            _pm.apbbmask.modify(|_, w| w.dmac_().clear_bit());
-            _pm.ahbmask.modify(|_, w| w.dmac_().clear_bit());
+            _pm.apbbmask().modify(|_, w| w.dmac_().clear_bit());
+            _pm.ahbmask().modify(|_, w| w.dmac_().clear_bit());
         }
 
         // Release the DMAC
@@ -243,9 +262,9 @@ impl DmaController {
 
     /// Issue a software reset to the DMAC and wait for reset to complete
     #[inline]
-    fn swreset(dmac: &mut DMAC) {
-        dmac.ctrl.modify(|_, w| w.swrst().set_bit());
-        while dmac.ctrl.read().swrst().bit_is_set() {}
+    fn swreset(dmac: &mut Dmac) {
+        dmac.ctrl().modify(|_, w| w.swrst().set_bit());
+        while dmac.ctrl().read().swrst().bit_is_set() {}
     }
 }
 

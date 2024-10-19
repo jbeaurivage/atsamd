@@ -1,234 +1,75 @@
 #[doc = "Register `EPSTATUSCLR%s` writer"]
-pub struct W(crate::W<EPSTATUSCLR_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<EPSTATUSCLR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<EPSTATUSCLR_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<EPSTATUSCLR_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<EpstatusclrSpec>;
 #[doc = "Field `DTGLOUT` writer - Data Toggle OUT Clear"]
-pub struct DTGLOUT_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DTGLOUT_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u8 & 0x01);
-        self.w
-    }
-}
+pub type DtgloutW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `DTGLIN` writer - Data Toggle IN Clear"]
-pub struct DTGLIN_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DTGLIN_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u8 & 0x01) << 1);
-        self.w
-    }
-}
+pub type DtglinW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CURBK` writer - Curren Bank Clear"]
-pub struct CURBK_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CURBK_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 2)) | ((value as u8 & 0x01) << 2);
-        self.w
-    }
-}
+pub type CurbkW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `STALLRQ0` writer - Stall 0 Request Clear"]
-pub struct STALLRQ0_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> STALLRQ0_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 4)) | ((value as u8 & 0x01) << 4);
-        self.w
-    }
-}
+pub type Stallrq0W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `STALLRQ1` writer - Stall 1 Request Clear"]
-pub struct STALLRQ1_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> STALLRQ1_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 5)) | ((value as u8 & 0x01) << 5);
-        self.w
-    }
-}
+pub type Stallrq1W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `BK0RDY` writer - Bank 0 Ready Clear"]
-pub struct BK0RDY_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> BK0RDY_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 6)) | ((value as u8 & 0x01) << 6);
-        self.w
-    }
-}
+pub type Bk0rdyW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `BK1RDY` writer - Bank 1 Ready Clear"]
-pub struct BK1RDY_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> BK1RDY_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 7)) | ((value as u8 & 0x01) << 7);
-        self.w
-    }
-}
+pub type Bk1rdyW<'a, REG> = crate::BitWriter<'a, REG>;
 impl W {
     #[doc = "Bit 0 - Data Toggle OUT Clear"]
     #[inline(always)]
-    pub fn dtglout(&mut self) -> DTGLOUT_W {
-        DTGLOUT_W { w: self }
+    #[must_use]
+    pub fn dtglout(&mut self) -> DtgloutW<EpstatusclrSpec> {
+        DtgloutW::new(self, 0)
     }
     #[doc = "Bit 1 - Data Toggle IN Clear"]
     #[inline(always)]
-    pub fn dtglin(&mut self) -> DTGLIN_W {
-        DTGLIN_W { w: self }
+    #[must_use]
+    pub fn dtglin(&mut self) -> DtglinW<EpstatusclrSpec> {
+        DtglinW::new(self, 1)
     }
     #[doc = "Bit 2 - Curren Bank Clear"]
     #[inline(always)]
-    pub fn curbk(&mut self) -> CURBK_W {
-        CURBK_W { w: self }
+    #[must_use]
+    pub fn curbk(&mut self) -> CurbkW<EpstatusclrSpec> {
+        CurbkW::new(self, 2)
     }
     #[doc = "Bit 4 - Stall 0 Request Clear"]
     #[inline(always)]
-    pub fn stallrq0(&mut self) -> STALLRQ0_W {
-        STALLRQ0_W { w: self }
+    #[must_use]
+    pub fn stallrq0(&mut self) -> Stallrq0W<EpstatusclrSpec> {
+        Stallrq0W::new(self, 4)
     }
     #[doc = "Bit 5 - Stall 1 Request Clear"]
     #[inline(always)]
-    pub fn stallrq1(&mut self) -> STALLRQ1_W {
-        STALLRQ1_W { w: self }
+    #[must_use]
+    pub fn stallrq1(&mut self) -> Stallrq1W<EpstatusclrSpec> {
+        Stallrq1W::new(self, 5)
     }
     #[doc = "Bit 6 - Bank 0 Ready Clear"]
     #[inline(always)]
-    pub fn bk0rdy(&mut self) -> BK0RDY_W {
-        BK0RDY_W { w: self }
+    #[must_use]
+    pub fn bk0rdy(&mut self) -> Bk0rdyW<EpstatusclrSpec> {
+        Bk0rdyW::new(self, 6)
     }
     #[doc = "Bit 7 - Bank 1 Ready Clear"]
     #[inline(always)]
-    pub fn bk1rdy(&mut self) -> BK1RDY_W {
-        BK1RDY_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u8) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn bk1rdy(&mut self) -> Bk1rdyW<EpstatusclrSpec> {
+        Bk1rdyW::new(self, 7)
     }
 }
-#[doc = "DEVICE End Point Pipe Status Clear\n\nThis register you can [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [epstatusclr](index.html) module"]
-pub struct EPSTATUSCLR_SPEC;
-impl crate::RegisterSpec for EPSTATUSCLR_SPEC {
+#[doc = "DEVICE End Point Pipe Status Clear\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`epstatusclr::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct EpstatusclrSpec;
+impl crate::RegisterSpec for EpstatusclrSpec {
     type Ux = u8;
 }
-#[doc = "`write(|w| ..)` method takes [epstatusclr::W](W) writer structure"]
-impl crate::Writable for EPSTATUSCLR_SPEC {
-    type Writer = W;
+#[doc = "`write(|w| ..)` method takes [`epstatusclr::W`](W) writer structure"]
+impl crate::Writable for EpstatusclrSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
 }
 #[doc = "`reset()` method sets EPSTATUSCLR%s to value 0"]
-impl crate::Resettable for EPSTATUSCLR_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for EpstatusclrSpec {
+    const RESET_VALUE: u8 = 0;
 }

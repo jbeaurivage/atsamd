@@ -57,13 +57,12 @@
 //! operation, the trait functions will return
 //! [`InvalidPinType`](Error::InvalidPinType).
 
-use core::convert::TryFrom;
+#![allow(clippy::bool_comparison)]
 
+use atsamd_hal_macros::{hal_cfg, hal_macro_helper};
+
+use crate::ehal::digital::{ErrorKind, ErrorType, InputPin, OutputPin, StatefulOutputPin};
 use paste::paste;
-
-use crate::ehal::digital::v2::OutputPin;
-#[cfg(feature = "unproven")]
-use crate::ehal::digital::v2::{InputPin, StatefulOutputPin, ToggleableOutputPin};
 
 use super::pin::*;
 use super::reg::RegisterInterface;
@@ -104,6 +103,7 @@ pub enum DynOutput {
 }
 
 /// Value-level `enum` for alternate peripheral function configurations
+#[hal_macro_helper]
 #[derive(PartialEq, Eq, Clone, Copy)]
 pub enum DynAlternate {
     B,
@@ -112,19 +112,19 @@ pub enum DynAlternate {
     E,
     F,
     G,
-    #[cfg(any(feature = "samd21", feature = "thumbv7"))]
+    #[hal_cfg(any("port-d21", "port-d5x"))]
     H,
-    #[cfg(feature = "thumbv7")]
+    #[hal_cfg("port-d5x")]
     I,
-    #[cfg(feature = "thumbv7")]
+    #[hal_cfg("port-d5x")]
     J,
-    #[cfg(feature = "thumbv7")]
+    #[hal_cfg("port-d5x")]
     K,
-    #[cfg(feature = "thumbv7")]
+    #[hal_cfg("port-d5x")]
     L,
-    #[cfg(feature = "thumbv7")]
+    #[hal_cfg("port-d5x")]
     M,
-    #[cfg(feature = "thumbv7")]
+    #[hal_cfg("port-d5x")]
     N,
 }
 
@@ -184,9 +184,9 @@ macro_rules! dyn_alternate {
 }
 
 dyn_alternate!(B, C, D, E, F, G);
-#[cfg(any(feature = "samd21", feature = "thumbv7"))]
+#[hal_cfg(any("port-d21", "port-d5x"))]
 dyn_alternate!(H);
-#[cfg(feature = "thumbv7")]
+#[hal_cfg("port-d5x")]
 dyn_alternate!(I, J, K, L, M, N);
 
 //==============================================================================
@@ -195,13 +195,14 @@ dyn_alternate!(I, J, K, L, M, N);
 
 /// Value-level `enum` for pin groups
 #[derive(PartialEq, Clone, Copy)]
+#[hal_macro_helper]
 pub enum DynGroup {
     A,
-    #[cfg(any(feature = "samd21", feature = "thumbv7"))]
+    #[hal_cfg("pin-group-b")]
     B,
-    #[cfg(feature = "pins-100")]
+    #[hal_cfg("pin-group-c")]
     C,
-    #[cfg(feature = "pins-128")]
+    #[hal_cfg("pin-group-d")]
     D,
 }
 
@@ -254,9 +255,17 @@ impl DynRegisters {
 ///
 /// [`DynPin`]s are not tracked and verified at compile-time, so run-time
 /// operations are fallible. This `enum` represents the corresponding errors.
+#[derive(Debug)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Error {
     /// The pin did not have the correct ID or mode for the requested operation
     InvalidPinType,
+}
+
+impl crate::ehal::digital::Error for Error {
+    fn kind(&self) -> crate::ehal::digital::ErrorKind {
+        ErrorKind::Other
+    }
 }
 
 //==============================================================================
@@ -504,10 +513,50 @@ where
 }
 
 //==============================================================================
-// Embedded HAL traits
+// Embedded HAL v1 traits
 //==============================================================================
+impl ErrorType for DynPin {
+    type Error = Error;
+}
 
 impl OutputPin for DynPin {
+    #[inline]
+    fn set_high(&mut self) -> Result<(), Self::Error> {
+        self._set_high()
+    }
+    #[inline]
+    fn set_low(&mut self) -> Result<(), Self::Error> {
+        self._set_low()
+    }
+}
+
+impl InputPin for DynPin {
+    #[inline]
+    fn is_high(&mut self) -> Result<bool, Self::Error> {
+        self._is_high()
+    }
+    #[inline]
+    fn is_low(&mut self) -> Result<bool, Self::Error> {
+        self._is_low()
+    }
+}
+
+impl StatefulOutputPin for DynPin {
+    #[inline]
+    fn is_set_high(&mut self) -> Result<bool, Self::Error> {
+        self._is_set_high()
+    }
+    #[inline]
+    fn is_set_low(&mut self) -> Result<bool, Self::Error> {
+        self._is_set_low()
+    }
+}
+
+//==============================================================================
+// Embedded HAL v0.2 traits
+//==============================================================================
+
+impl crate::ehal_02::digital::v2::OutputPin for DynPin {
     type Error = Error;
     #[inline]
     fn set_high(&mut self) -> Result<(), Self::Error> {
@@ -519,8 +568,7 @@ impl OutputPin for DynPin {
     }
 }
 
-#[cfg(feature = "unproven")]
-impl InputPin for DynPin {
+impl crate::ehal_02::digital::v2::InputPin for DynPin {
     type Error = Error;
     #[inline]
     fn is_high(&self) -> Result<bool, Self::Error> {
@@ -532,8 +580,7 @@ impl InputPin for DynPin {
     }
 }
 
-#[cfg(feature = "unproven")]
-impl ToggleableOutputPin for DynPin {
+impl crate::ehal_02::digital::v2::ToggleableOutputPin for DynPin {
     type Error = Error;
     #[inline]
     fn toggle(&mut self) -> Result<(), Self::Error> {
@@ -541,8 +588,7 @@ impl ToggleableOutputPin for DynPin {
     }
 }
 
-#[cfg(feature = "unproven")]
-impl StatefulOutputPin for DynPin {
+impl crate::ehal_02::digital::v2::StatefulOutputPin for DynPin {
     #[inline]
     fn is_set_high(&self) -> Result<bool, Self::Error> {
         self._is_set_high()

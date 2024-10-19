@@ -1,160 +1,55 @@
 #[doc = "Register `INTFLAG` reader"]
-pub struct R(crate::R<INTFLAG_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<INTFLAG_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<INTFLAG_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<INTFLAG_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<IntflagSpec>;
 #[doc = "Register `INTFLAG` writer"]
-pub struct W(crate::W<INTFLAG_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<INTFLAG_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<INTFLAG_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<INTFLAG_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<IntflagSpec>;
 #[doc = "Field `ENCCMP` reader - Encryption Complete"]
-pub struct ENCCMP_R(crate::FieldReader<bool, bool>);
-impl ENCCMP_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ENCCMP_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for ENCCMP_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type EnccmpR = crate::BitReader;
 #[doc = "Field `ENCCMP` writer - Encryption Complete"]
-pub struct ENCCMP_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ENCCMP_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u8 & 0x01);
-        self.w
-    }
-}
+pub type EnccmpW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `GFMCMP` reader - GF Multiplication Complete"]
-pub struct GFMCMP_R(crate::FieldReader<bool, bool>);
-impl GFMCMP_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        GFMCMP_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for GFMCMP_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type GfmcmpR = crate::BitReader;
 #[doc = "Field `GFMCMP` writer - GF Multiplication Complete"]
-pub struct GFMCMP_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> GFMCMP_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u8 & 0x01) << 1);
-        self.w
-    }
-}
+pub type GfmcmpW<'a, REG> = crate::BitWriter<'a, REG>;
 impl R {
     #[doc = "Bit 0 - Encryption Complete"]
     #[inline(always)]
-    pub fn enccmp(&self) -> ENCCMP_R {
-        ENCCMP_R::new((self.bits & 0x01) != 0)
+    pub fn enccmp(&self) -> EnccmpR {
+        EnccmpR::new((self.bits & 1) != 0)
     }
     #[doc = "Bit 1 - GF Multiplication Complete"]
     #[inline(always)]
-    pub fn gfmcmp(&self) -> GFMCMP_R {
-        GFMCMP_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn gfmcmp(&self) -> GfmcmpR {
+        GfmcmpR::new(((self.bits >> 1) & 1) != 0)
     }
 }
 impl W {
     #[doc = "Bit 0 - Encryption Complete"]
     #[inline(always)]
-    pub fn enccmp(&mut self) -> ENCCMP_W {
-        ENCCMP_W { w: self }
+    #[must_use]
+    pub fn enccmp(&mut self) -> EnccmpW<IntflagSpec> {
+        EnccmpW::new(self, 0)
     }
     #[doc = "Bit 1 - GF Multiplication Complete"]
     #[inline(always)]
-    pub fn gfmcmp(&mut self) -> GFMCMP_W {
-        GFMCMP_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u8) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn gfmcmp(&mut self) -> GfmcmpW<IntflagSpec> {
+        GfmcmpW::new(self, 1)
     }
 }
-#[doc = "Interrupt Flag Status\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [intflag](index.html) module"]
-pub struct INTFLAG_SPEC;
-impl crate::RegisterSpec for INTFLAG_SPEC {
+#[doc = "Interrupt Flag Status\n\nYou can [`read`](crate::Reg::read) this register and get [`intflag::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`intflag::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct IntflagSpec;
+impl crate::RegisterSpec for IntflagSpec {
     type Ux = u8;
 }
-#[doc = "`read()` method returns [intflag::R](R) reader structure"]
-impl crate::Readable for INTFLAG_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [intflag::W](W) writer structure"]
-impl crate::Writable for INTFLAG_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`intflag::R`](R) reader structure"]
+impl crate::Readable for IntflagSpec {}
+#[doc = "`write(|w| ..)` method takes [`intflag::W`](W) writer structure"]
+impl crate::Writable for IntflagSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
 }
 #[doc = "`reset()` method sets INTFLAG to value 0"]
-impl crate::Resettable for INTFLAG_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for IntflagSpec {
+    const RESET_VALUE: u8 = 0;
 }

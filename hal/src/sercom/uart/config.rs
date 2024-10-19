@@ -1,12 +1,14 @@
 //! UART [`Config`] definition and implementation\
 
+use atsamd_hal_macros::hal_cfg;
+
 use super::{
     BaudMode, BitOrder, Capability, CharSize, CharSizeEnum, DataReg, DynCharSize, EightBit,
     FixedCharSize, Parity, Registers, StopBits, Uart, ValidConfig, ValidPads,
 };
 use crate::{
     pac,
-    sercom::*,
+    sercom::Sercom,
     time::Hertz,
     typelevel::{Is, Sealed},
 };
@@ -48,15 +50,15 @@ where
     freq: Hertz,
 }
 
-/// Clock type needed to create a new [`Config`]. [`PM`](pac::PM) for thumbv6m
+/// Clock type needed to create a new [`Config`]. [`Pm`](pac::Pm) for thumbv6m
 /// targets.
-#[cfg(feature = "thumbv6")]
-pub type Clock = pac::PM;
+#[hal_cfg(any("sercom0-d11", "sercom0-d21"))]
+pub type Clock = pac::Pm;
 
-/// Clock type needed to create a new [`Config`]. [`MCLK`](pac::MCLK) for
+/// Clock type needed to create a new [`Config`]. [`Mclk`](pac::Mclk) for
 /// thumbv7em targets.
-#[cfg(feature = "thumbv7")]
-pub type Clock = pac::MCLK;
+#[hal_cfg("sercom0-d5x")]
+pub type Clock = pac::Mclk;
 
 impl<P: ValidPads> Config<P> {
     /// Create a new [`Config`] in the default configuration
@@ -88,7 +90,7 @@ impl<P: ValidPads> Config<P> {
 
         // Enable internal clock mode
         registers.configure_mode();
-        registers.configure_pads(P::RXPO as u8, P::TXPO as u8);
+        registers.configure_pads(P::RXPO, P::TXPO);
         registers.set_char_size(EightBit::SIZE);
 
         Self {
@@ -268,7 +270,7 @@ where
     ///
     /// Note that 3x oversampling is not supported.
     #[inline]
-    pub fn baud<B: Into<Hertz>>(mut self, baud: B, mode: BaudMode) -> Self {
+    pub fn baud(mut self, baud: Hertz, mode: BaudMode) -> Self {
         self.set_baud(baud, mode);
         self
     }
@@ -282,7 +284,7 @@ where
     ///
     /// Note that 3x oversampling is not supported.
     #[inline]
-    pub fn set_baud<B: Into<Hertz>>(&mut self, baud: B, mode: BaudMode) {
+    pub fn set_baud(&mut self, baud: Hertz, mode: BaudMode) {
         self.registers.set_baud(self.freq, baud, mode);
     }
 

@@ -1,277 +1,206 @@
 #[doc = "Register `STDBYCFG` reader"]
-pub struct R(crate::R<STDBYCFG_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<STDBYCFG_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<STDBYCFG_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<STDBYCFG_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<StdbycfgSpec>;
 #[doc = "Register `STDBYCFG` writer"]
-pub struct W(crate::W<STDBYCFG_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<STDBYCFG_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<STDBYCFG_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<STDBYCFG_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<StdbycfgSpec>;
 #[doc = "Ram Configuration\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum RAMCFG_A {
+pub enum Ramcfgselect {
     #[doc = "0: All the system RAM is retained"]
-    RET = 0,
+    Ret = 0,
     #[doc = "1: Only the first 32Kbytes of the system RAM is retained"]
-    PARTIAL = 1,
+    Partial = 1,
     #[doc = "2: All the system RAM is turned OFF"]
-    OFF = 2,
+    Off = 2,
 }
-impl From<RAMCFG_A> for u8 {
+impl From<Ramcfgselect> for u8 {
     #[inline(always)]
-    fn from(variant: RAMCFG_A) -> Self {
+    fn from(variant: Ramcfgselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Ramcfgselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Ramcfgselect {}
 #[doc = "Field `RAMCFG` reader - Ram Configuration"]
-pub struct RAMCFG_R(crate::FieldReader<u8, RAMCFG_A>);
-impl RAMCFG_R {
+pub type RamcfgR = crate::FieldReader<Ramcfgselect>;
+impl RamcfgR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        RAMCFG_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<RAMCFG_A> {
+    pub const fn variant(&self) -> Option<Ramcfgselect> {
         match self.bits {
-            0 => Some(RAMCFG_A::RET),
-            1 => Some(RAMCFG_A::PARTIAL),
-            2 => Some(RAMCFG_A::OFF),
+            0 => Some(Ramcfgselect::Ret),
+            1 => Some(Ramcfgselect::Partial),
+            2 => Some(Ramcfgselect::Off),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `RET`"]
-    #[inline(always)]
-    pub fn is_ret(&self) -> bool {
-        **self == RAMCFG_A::RET
-    }
-    #[doc = "Checks if the value of the field is `PARTIAL`"]
-    #[inline(always)]
-    pub fn is_partial(&self) -> bool {
-        **self == RAMCFG_A::PARTIAL
-    }
-    #[doc = "Checks if the value of the field is `OFF`"]
-    #[inline(always)]
-    pub fn is_off(&self) -> bool {
-        **self == RAMCFG_A::OFF
-    }
-}
-impl core::ops::Deref for RAMCFG_R {
-    type Target = crate::FieldReader<u8, RAMCFG_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `RAMCFG` writer - Ram Configuration"]
-pub struct RAMCFG_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> RAMCFG_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: RAMCFG_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
     #[doc = "All the system RAM is retained"]
     #[inline(always)]
-    pub fn ret(self) -> &'a mut W {
-        self.variant(RAMCFG_A::RET)
+    pub fn is_ret(&self) -> bool {
+        *self == Ramcfgselect::Ret
     }
     #[doc = "Only the first 32Kbytes of the system RAM is retained"]
     #[inline(always)]
-    pub fn partial(self) -> &'a mut W {
-        self.variant(RAMCFG_A::PARTIAL)
+    pub fn is_partial(&self) -> bool {
+        *self == Ramcfgselect::Partial
     }
     #[doc = "All the system RAM is turned OFF"]
     #[inline(always)]
-    pub fn off(self) -> &'a mut W {
-        self.variant(RAMCFG_A::OFF)
+    pub fn is_off(&self) -> bool {
+        *self == Ramcfgselect::Off
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `RAMCFG` writer - Ram Configuration"]
+pub type RamcfgW<'a, REG> = crate::FieldWriter<'a, REG, 2, Ramcfgselect>;
+impl<'a, REG> RamcfgW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "All the system RAM is retained"]
     #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x03) | (value as u8 & 0x03);
-        self.w
+    pub fn ret(self) -> &'a mut crate::W<REG> {
+        self.variant(Ramcfgselect::Ret)
+    }
+    #[doc = "Only the first 32Kbytes of the system RAM is retained"]
+    #[inline(always)]
+    pub fn partial(self) -> &'a mut crate::W<REG> {
+        self.variant(Ramcfgselect::Partial)
+    }
+    #[doc = "All the system RAM is turned OFF"]
+    #[inline(always)]
+    pub fn off(self) -> &'a mut crate::W<REG> {
+        self.variant(Ramcfgselect::Off)
     }
 }
 #[doc = "Fast Wakeup\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum FASTWKUP_A {
+pub enum Fastwkupselect {
     #[doc = "0: Fast Wakeup is disabled"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Fast Wakeup is enabled on NVM"]
-    NVM = 1,
+    Nvm = 1,
     #[doc = "2: Fast Wakeup is enabled on the main voltage regulator (MAINVREG)"]
-    MAINVREG = 2,
+    Mainvreg = 2,
     #[doc = "3: Fast Wakeup is enabled on both NVM and MAINVREG"]
-    BOTH = 3,
+    Both = 3,
 }
-impl From<FASTWKUP_A> for u8 {
+impl From<Fastwkupselect> for u8 {
     #[inline(always)]
-    fn from(variant: FASTWKUP_A) -> Self {
+    fn from(variant: Fastwkupselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Fastwkupselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Fastwkupselect {}
 #[doc = "Field `FASTWKUP` reader - Fast Wakeup"]
-pub struct FASTWKUP_R(crate::FieldReader<u8, FASTWKUP_A>);
-impl FASTWKUP_R {
+pub type FastwkupR = crate::FieldReader<Fastwkupselect>;
+impl FastwkupR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        FASTWKUP_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> FASTWKUP_A {
+    pub const fn variant(&self) -> Fastwkupselect {
         match self.bits {
-            0 => FASTWKUP_A::NO,
-            1 => FASTWKUP_A::NVM,
-            2 => FASTWKUP_A::MAINVREG,
-            3 => FASTWKUP_A::BOTH,
+            0 => Fastwkupselect::No,
+            1 => Fastwkupselect::Nvm,
+            2 => Fastwkupselect::Mainvreg,
+            3 => Fastwkupselect::Both,
             _ => unreachable!(),
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == FASTWKUP_A::NO
-    }
-    #[doc = "Checks if the value of the field is `NVM`"]
-    #[inline(always)]
-    pub fn is_nvm(&self) -> bool {
-        **self == FASTWKUP_A::NVM
-    }
-    #[doc = "Checks if the value of the field is `MAINVREG`"]
-    #[inline(always)]
-    pub fn is_mainvreg(&self) -> bool {
-        **self == FASTWKUP_A::MAINVREG
-    }
-    #[doc = "Checks if the value of the field is `BOTH`"]
-    #[inline(always)]
-    pub fn is_both(&self) -> bool {
-        **self == FASTWKUP_A::BOTH
-    }
-}
-impl core::ops::Deref for FASTWKUP_R {
-    type Target = crate::FieldReader<u8, FASTWKUP_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `FASTWKUP` writer - Fast Wakeup"]
-pub struct FASTWKUP_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> FASTWKUP_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: FASTWKUP_A) -> &'a mut W {
-        self.bits(variant.into())
-    }
     #[doc = "Fast Wakeup is disabled"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(FASTWKUP_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Fastwkupselect::No
     }
     #[doc = "Fast Wakeup is enabled on NVM"]
     #[inline(always)]
-    pub fn nvm(self) -> &'a mut W {
-        self.variant(FASTWKUP_A::NVM)
+    pub fn is_nvm(&self) -> bool {
+        *self == Fastwkupselect::Nvm
     }
     #[doc = "Fast Wakeup is enabled on the main voltage regulator (MAINVREG)"]
     #[inline(always)]
-    pub fn mainvreg(self) -> &'a mut W {
-        self.variant(FASTWKUP_A::MAINVREG)
+    pub fn is_mainvreg(&self) -> bool {
+        *self == Fastwkupselect::Mainvreg
     }
     #[doc = "Fast Wakeup is enabled on both NVM and MAINVREG"]
     #[inline(always)]
-    pub fn both(self) -> &'a mut W {
-        self.variant(FASTWKUP_A::BOTH)
+    pub fn is_both(&self) -> bool {
+        *self == Fastwkupselect::Both
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `FASTWKUP` writer - Fast Wakeup"]
+pub type FastwkupW<'a, REG> = crate::FieldWriter<'a, REG, 2, Fastwkupselect, crate::Safe>;
+impl<'a, REG> FastwkupW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "Fast Wakeup is disabled"]
     #[inline(always)]
-    pub fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x03 << 4)) | ((value as u8 & 0x03) << 4);
-        self.w
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Fastwkupselect::No)
+    }
+    #[doc = "Fast Wakeup is enabled on NVM"]
+    #[inline(always)]
+    pub fn nvm(self) -> &'a mut crate::W<REG> {
+        self.variant(Fastwkupselect::Nvm)
+    }
+    #[doc = "Fast Wakeup is enabled on the main voltage regulator (MAINVREG)"]
+    #[inline(always)]
+    pub fn mainvreg(self) -> &'a mut crate::W<REG> {
+        self.variant(Fastwkupselect::Mainvreg)
+    }
+    #[doc = "Fast Wakeup is enabled on both NVM and MAINVREG"]
+    #[inline(always)]
+    pub fn both(self) -> &'a mut crate::W<REG> {
+        self.variant(Fastwkupselect::Both)
     }
 }
 impl R {
     #[doc = "Bits 0:1 - Ram Configuration"]
     #[inline(always)]
-    pub fn ramcfg(&self) -> RAMCFG_R {
-        RAMCFG_R::new((self.bits & 0x03) as u8)
+    pub fn ramcfg(&self) -> RamcfgR {
+        RamcfgR::new(self.bits & 3)
     }
     #[doc = "Bits 4:5 - Fast Wakeup"]
     #[inline(always)]
-    pub fn fastwkup(&self) -> FASTWKUP_R {
-        FASTWKUP_R::new(((self.bits >> 4) & 0x03) as u8)
+    pub fn fastwkup(&self) -> FastwkupR {
+        FastwkupR::new((self.bits >> 4) & 3)
     }
 }
 impl W {
     #[doc = "Bits 0:1 - Ram Configuration"]
     #[inline(always)]
-    pub fn ramcfg(&mut self) -> RAMCFG_W {
-        RAMCFG_W { w: self }
+    #[must_use]
+    pub fn ramcfg(&mut self) -> RamcfgW<StdbycfgSpec> {
+        RamcfgW::new(self, 0)
     }
     #[doc = "Bits 4:5 - Fast Wakeup"]
     #[inline(always)]
-    pub fn fastwkup(&mut self) -> FASTWKUP_W {
-        FASTWKUP_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u8) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn fastwkup(&mut self) -> FastwkupW<StdbycfgSpec> {
+        FastwkupW::new(self, 4)
     }
 }
-#[doc = "Standby Configuration\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [stdbycfg](index.html) module"]
-pub struct STDBYCFG_SPEC;
-impl crate::RegisterSpec for STDBYCFG_SPEC {
+#[doc = "Standby Configuration\n\nYou can [`read`](crate::Reg::read) this register and get [`stdbycfg::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`stdbycfg::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct StdbycfgSpec;
+impl crate::RegisterSpec for StdbycfgSpec {
     type Ux = u8;
 }
-#[doc = "`read()` method returns [stdbycfg::R](R) reader structure"]
-impl crate::Readable for STDBYCFG_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [stdbycfg::W](W) writer structure"]
-impl crate::Writable for STDBYCFG_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`stdbycfg::R`](R) reader structure"]
+impl crate::Readable for StdbycfgSpec {}
+#[doc = "`write(|w| ..)` method takes [`stdbycfg::W`](W) writer structure"]
+impl crate::Writable for StdbycfgSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
 }
 #[doc = "`reset()` method sets STDBYCFG to value 0"]
-impl crate::Resettable for STDBYCFG_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for StdbycfgSpec {
+    const RESET_VALUE: u8 = 0;
 }

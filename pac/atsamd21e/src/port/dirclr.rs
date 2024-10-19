@@ -1,103 +1,40 @@
 #[doc = "Register `DIRCLR%s` reader"]
-pub struct R(crate::R<DIRCLR_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<DIRCLR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<DIRCLR_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<DIRCLR_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<DirclrSpec>;
 #[doc = "Register `DIRCLR%s` writer"]
-pub struct W(crate::W<DIRCLR_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<DIRCLR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<DIRCLR_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<DIRCLR_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<DirclrSpec>;
 #[doc = "Field `DIRCLR` reader - Port Data Direction Clear"]
-pub struct DIRCLR_R(crate::FieldReader<u32, u32>);
-impl DIRCLR_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u32) -> Self {
-        DIRCLR_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for DIRCLR_R {
-    type Target = crate::FieldReader<u32, u32>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type DirclrR = crate::FieldReader<u32>;
 #[doc = "Field `DIRCLR` writer - Port Data Direction Clear"]
-pub struct DIRCLR_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DIRCLR_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u32) -> &'a mut W {
-        self.w.bits = value as u32;
-        self.w
-    }
-}
+pub type DirclrW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
 impl R {
     #[doc = "Bits 0:31 - Port Data Direction Clear"]
     #[inline(always)]
-    pub fn dirclr(&self) -> DIRCLR_R {
-        DIRCLR_R::new(self.bits as u32)
+    pub fn dirclr(&self) -> DirclrR {
+        DirclrR::new(self.bits)
     }
 }
 impl W {
     #[doc = "Bits 0:31 - Port Data Direction Clear"]
     #[inline(always)]
-    pub fn dirclr(&mut self) -> DIRCLR_W {
-        DIRCLR_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn dirclr(&mut self) -> DirclrW<DirclrSpec> {
+        DirclrW::new(self, 0)
     }
 }
-#[doc = "Data Direction Clear\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [dirclr](index.html) module"]
-pub struct DIRCLR_SPEC;
-impl crate::RegisterSpec for DIRCLR_SPEC {
+#[doc = "Data Direction Clear\n\nYou can [`read`](crate::Reg::read) this register and get [`dirclr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`dirclr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct DirclrSpec;
+impl crate::RegisterSpec for DirclrSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [dirclr::R](R) reader structure"]
-impl crate::Readable for DIRCLR_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [dirclr::W](W) writer structure"]
-impl crate::Writable for DIRCLR_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`dirclr::R`](R) reader structure"]
+impl crate::Readable for DirclrSpec {}
+#[doc = "`write(|w| ..)` method takes [`dirclr::W`](W) writer structure"]
+impl crate::Writable for DirclrSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets DIRCLR%s to value 0"]
-impl crate::Resettable for DIRCLR_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for DirclrSpec {
+    const RESET_VALUE: u32 = 0;
 }

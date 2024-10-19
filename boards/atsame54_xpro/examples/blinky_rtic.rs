@@ -5,10 +5,9 @@ use atsame54_xpro as bsp;
 use bsp::hal;
 use bsp::hal::clock::v2 as clock;
 use dwt_systick_monotonic::DwtSystick;
-use dwt_systick_monotonic::ExtU32 as _;
+use dwt_systick_monotonic::{fugit::RateExtU32, ExtU32};
 // TODO: Any reason this cannot be in a HAL's prelude?
-use hal::ehal::digital::v2::StatefulOutputPin as _;
-use hal::prelude::*;
+use hal::ehal::digital::StatefulOutputPin;
 use panic_rtt_target as _;
 use rtt_target::{rprintln, rtt_init_print};
 
@@ -32,20 +31,20 @@ mod app {
         rtt_init_print!();
 
         let (_buses, clocks, tokens) = clock::clock_system_at_reset(
-            ctx.device.OSCCTRL,
-            ctx.device.OSC32KCTRL,
-            ctx.device.GCLK,
-            ctx.device.MCLK,
-            &mut ctx.device.NVMCTRL,
+            ctx.device.oscctrl,
+            ctx.device.osc32kctrl,
+            ctx.device.gclk,
+            ctx.device.mclk,
+            &mut ctx.device.nvmctrl,
         );
 
-        let pins = bsp::Pins::new(ctx.device.PORT);
+        let pins = bsp::Pins::new(ctx.device.port);
         let xosc = clock::xosc::Xosc::from_crystal(
             tokens.xosc1,
             bsp::pin_alias!(pins.xosc1_x_in),
             bsp::pin_alias!(pins.xosc1_x_out),
             // Xosc1 on Same54Xpro is 12 MHz
-            12.mhz(),
+            12_u32.MHz(),
         )
         .enable();
 
@@ -55,7 +54,7 @@ mod app {
             &mut ctx.core.DCB,
             ctx.core.DWT,
             ctx.core.SYST,
-            gclk0.freq().0,
+            gclk0.freq().to_Hz(),
         );
 
         let led = bsp::pin_alias!(pins.led).into();

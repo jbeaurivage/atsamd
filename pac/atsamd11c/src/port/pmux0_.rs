@@ -1,43 +1,11 @@
 #[doc = "Register `PMUX0_%s` reader"]
-pub struct R(crate::R<PMUX0__SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<PMUX0__SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<PMUX0__SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<PMUX0__SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<Pmux0_Spec>;
 #[doc = "Register `PMUX0_%s` writer"]
-pub struct W(crate::W<PMUX0__SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<PMUX0__SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<PMUX0__SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<PMUX0__SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<Pmux0_Spec>;
 #[doc = "Peripheral Multiplexing Even\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum PMUXE_A {
+pub enum Pmuxeselect {
     #[doc = "0: Peripheral function A selected"]
     A = 0,
     #[doc = "1: Peripheral function B selected"]
@@ -55,143 +23,127 @@ pub enum PMUXE_A {
     #[doc = "7: Peripheral function H selected"]
     H = 7,
 }
-impl From<PMUXE_A> for u8 {
+impl From<Pmuxeselect> for u8 {
     #[inline(always)]
-    fn from(variant: PMUXE_A) -> Self {
+    fn from(variant: Pmuxeselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Pmuxeselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Pmuxeselect {}
 #[doc = "Field `PMUXE` reader - Peripheral Multiplexing Even"]
-pub struct PMUXE_R(crate::FieldReader<u8, PMUXE_A>);
-impl PMUXE_R {
+pub type PmuxeR = crate::FieldReader<Pmuxeselect>;
+impl PmuxeR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        PMUXE_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<PMUXE_A> {
+    pub const fn variant(&self) -> Option<Pmuxeselect> {
         match self.bits {
-            0 => Some(PMUXE_A::A),
-            1 => Some(PMUXE_A::B),
-            2 => Some(PMUXE_A::C),
-            3 => Some(PMUXE_A::D),
-            4 => Some(PMUXE_A::E),
-            5 => Some(PMUXE_A::F),
-            6 => Some(PMUXE_A::G),
-            7 => Some(PMUXE_A::H),
+            0 => Some(Pmuxeselect::A),
+            1 => Some(Pmuxeselect::B),
+            2 => Some(Pmuxeselect::C),
+            3 => Some(Pmuxeselect::D),
+            4 => Some(Pmuxeselect::E),
+            5 => Some(Pmuxeselect::F),
+            6 => Some(Pmuxeselect::G),
+            7 => Some(Pmuxeselect::H),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `A`"]
+    #[doc = "Peripheral function A selected"]
     #[inline(always)]
     pub fn is_a(&self) -> bool {
-        **self == PMUXE_A::A
+        *self == Pmuxeselect::A
     }
-    #[doc = "Checks if the value of the field is `B`"]
+    #[doc = "Peripheral function B selected"]
     #[inline(always)]
     pub fn is_b(&self) -> bool {
-        **self == PMUXE_A::B
+        *self == Pmuxeselect::B
     }
-    #[doc = "Checks if the value of the field is `C`"]
+    #[doc = "Peripheral function C selected"]
     #[inline(always)]
     pub fn is_c(&self) -> bool {
-        **self == PMUXE_A::C
+        *self == Pmuxeselect::C
     }
-    #[doc = "Checks if the value of the field is `D`"]
+    #[doc = "Peripheral function D selected"]
     #[inline(always)]
     pub fn is_d(&self) -> bool {
-        **self == PMUXE_A::D
+        *self == Pmuxeselect::D
     }
-    #[doc = "Checks if the value of the field is `E`"]
+    #[doc = "Peripheral function E selected"]
     #[inline(always)]
     pub fn is_e(&self) -> bool {
-        **self == PMUXE_A::E
+        *self == Pmuxeselect::E
     }
-    #[doc = "Checks if the value of the field is `F`"]
+    #[doc = "Peripheral function F selected"]
     #[inline(always)]
     pub fn is_f(&self) -> bool {
-        **self == PMUXE_A::F
+        *self == Pmuxeselect::F
     }
-    #[doc = "Checks if the value of the field is `G`"]
+    #[doc = "Peripheral function G selected"]
     #[inline(always)]
     pub fn is_g(&self) -> bool {
-        **self == PMUXE_A::G
+        *self == Pmuxeselect::G
     }
-    #[doc = "Checks if the value of the field is `H`"]
+    #[doc = "Peripheral function H selected"]
     #[inline(always)]
     pub fn is_h(&self) -> bool {
-        **self == PMUXE_A::H
-    }
-}
-impl core::ops::Deref for PMUXE_R {
-    type Target = crate::FieldReader<u8, PMUXE_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Pmuxeselect::H
     }
 }
 #[doc = "Field `PMUXE` writer - Peripheral Multiplexing Even"]
-pub struct PMUXE_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> PMUXE_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: PMUXE_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
+pub type PmuxeW<'a, REG> = crate::FieldWriter<'a, REG, 4, Pmuxeselect>;
+impl<'a, REG> PmuxeW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
     #[doc = "Peripheral function A selected"]
     #[inline(always)]
-    pub fn a(self) -> &'a mut W {
-        self.variant(PMUXE_A::A)
+    pub fn a(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxeselect::A)
     }
     #[doc = "Peripheral function B selected"]
     #[inline(always)]
-    pub fn b(self) -> &'a mut W {
-        self.variant(PMUXE_A::B)
+    pub fn b(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxeselect::B)
     }
     #[doc = "Peripheral function C selected"]
     #[inline(always)]
-    pub fn c(self) -> &'a mut W {
-        self.variant(PMUXE_A::C)
+    pub fn c(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxeselect::C)
     }
     #[doc = "Peripheral function D selected"]
     #[inline(always)]
-    pub fn d(self) -> &'a mut W {
-        self.variant(PMUXE_A::D)
+    pub fn d(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxeselect::D)
     }
     #[doc = "Peripheral function E selected"]
     #[inline(always)]
-    pub fn e(self) -> &'a mut W {
-        self.variant(PMUXE_A::E)
+    pub fn e(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxeselect::E)
     }
     #[doc = "Peripheral function F selected"]
     #[inline(always)]
-    pub fn f(self) -> &'a mut W {
-        self.variant(PMUXE_A::F)
+    pub fn f(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxeselect::F)
     }
     #[doc = "Peripheral function G selected"]
     #[inline(always)]
-    pub fn g(self) -> &'a mut W {
-        self.variant(PMUXE_A::G)
+    pub fn g(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxeselect::G)
     }
     #[doc = "Peripheral function H selected"]
     #[inline(always)]
-    pub fn h(self) -> &'a mut W {
-        self.variant(PMUXE_A::H)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x0f) | (value as u8 & 0x0f);
-        self.w
+    pub fn h(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxeselect::H)
     }
 }
 #[doc = "Peripheral Multiplexing Odd\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum PMUXO_A {
+pub enum Pmuxoselect {
     #[doc = "0: Peripheral function A selected"]
     A = 0,
     #[doc = "1: Peripheral function B selected"]
@@ -209,186 +161,163 @@ pub enum PMUXO_A {
     #[doc = "7: Peripheral function H selected"]
     H = 7,
 }
-impl From<PMUXO_A> for u8 {
+impl From<Pmuxoselect> for u8 {
     #[inline(always)]
-    fn from(variant: PMUXO_A) -> Self {
+    fn from(variant: Pmuxoselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Pmuxoselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Pmuxoselect {}
 #[doc = "Field `PMUXO` reader - Peripheral Multiplexing Odd"]
-pub struct PMUXO_R(crate::FieldReader<u8, PMUXO_A>);
-impl PMUXO_R {
+pub type PmuxoR = crate::FieldReader<Pmuxoselect>;
+impl PmuxoR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        PMUXO_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<PMUXO_A> {
+    pub const fn variant(&self) -> Option<Pmuxoselect> {
         match self.bits {
-            0 => Some(PMUXO_A::A),
-            1 => Some(PMUXO_A::B),
-            2 => Some(PMUXO_A::C),
-            3 => Some(PMUXO_A::D),
-            4 => Some(PMUXO_A::E),
-            5 => Some(PMUXO_A::F),
-            6 => Some(PMUXO_A::G),
-            7 => Some(PMUXO_A::H),
+            0 => Some(Pmuxoselect::A),
+            1 => Some(Pmuxoselect::B),
+            2 => Some(Pmuxoselect::C),
+            3 => Some(Pmuxoselect::D),
+            4 => Some(Pmuxoselect::E),
+            5 => Some(Pmuxoselect::F),
+            6 => Some(Pmuxoselect::G),
+            7 => Some(Pmuxoselect::H),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `A`"]
-    #[inline(always)]
-    pub fn is_a(&self) -> bool {
-        **self == PMUXO_A::A
-    }
-    #[doc = "Checks if the value of the field is `B`"]
-    #[inline(always)]
-    pub fn is_b(&self) -> bool {
-        **self == PMUXO_A::B
-    }
-    #[doc = "Checks if the value of the field is `C`"]
-    #[inline(always)]
-    pub fn is_c(&self) -> bool {
-        **self == PMUXO_A::C
-    }
-    #[doc = "Checks if the value of the field is `D`"]
-    #[inline(always)]
-    pub fn is_d(&self) -> bool {
-        **self == PMUXO_A::D
-    }
-    #[doc = "Checks if the value of the field is `E`"]
-    #[inline(always)]
-    pub fn is_e(&self) -> bool {
-        **self == PMUXO_A::E
-    }
-    #[doc = "Checks if the value of the field is `F`"]
-    #[inline(always)]
-    pub fn is_f(&self) -> bool {
-        **self == PMUXO_A::F
-    }
-    #[doc = "Checks if the value of the field is `G`"]
-    #[inline(always)]
-    pub fn is_g(&self) -> bool {
-        **self == PMUXO_A::G
-    }
-    #[doc = "Checks if the value of the field is `H`"]
-    #[inline(always)]
-    pub fn is_h(&self) -> bool {
-        **self == PMUXO_A::H
-    }
-}
-impl core::ops::Deref for PMUXO_R {
-    type Target = crate::FieldReader<u8, PMUXO_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `PMUXO` writer - Peripheral Multiplexing Odd"]
-pub struct PMUXO_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> PMUXO_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: PMUXO_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
     #[doc = "Peripheral function A selected"]
     #[inline(always)]
-    pub fn a(self) -> &'a mut W {
-        self.variant(PMUXO_A::A)
+    pub fn is_a(&self) -> bool {
+        *self == Pmuxoselect::A
     }
     #[doc = "Peripheral function B selected"]
     #[inline(always)]
-    pub fn b(self) -> &'a mut W {
-        self.variant(PMUXO_A::B)
+    pub fn is_b(&self) -> bool {
+        *self == Pmuxoselect::B
     }
     #[doc = "Peripheral function C selected"]
     #[inline(always)]
-    pub fn c(self) -> &'a mut W {
-        self.variant(PMUXO_A::C)
+    pub fn is_c(&self) -> bool {
+        *self == Pmuxoselect::C
     }
     #[doc = "Peripheral function D selected"]
     #[inline(always)]
-    pub fn d(self) -> &'a mut W {
-        self.variant(PMUXO_A::D)
+    pub fn is_d(&self) -> bool {
+        *self == Pmuxoselect::D
     }
     #[doc = "Peripheral function E selected"]
     #[inline(always)]
-    pub fn e(self) -> &'a mut W {
-        self.variant(PMUXO_A::E)
+    pub fn is_e(&self) -> bool {
+        *self == Pmuxoselect::E
     }
     #[doc = "Peripheral function F selected"]
     #[inline(always)]
-    pub fn f(self) -> &'a mut W {
-        self.variant(PMUXO_A::F)
+    pub fn is_f(&self) -> bool {
+        *self == Pmuxoselect::F
     }
     #[doc = "Peripheral function G selected"]
     #[inline(always)]
-    pub fn g(self) -> &'a mut W {
-        self.variant(PMUXO_A::G)
+    pub fn is_g(&self) -> bool {
+        *self == Pmuxoselect::G
     }
     #[doc = "Peripheral function H selected"]
     #[inline(always)]
-    pub fn h(self) -> &'a mut W {
-        self.variant(PMUXO_A::H)
+    pub fn is_h(&self) -> bool {
+        *self == Pmuxoselect::H
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `PMUXO` writer - Peripheral Multiplexing Odd"]
+pub type PmuxoW<'a, REG> = crate::FieldWriter<'a, REG, 4, Pmuxoselect>;
+impl<'a, REG> PmuxoW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "Peripheral function A selected"]
     #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x0f << 4)) | ((value as u8 & 0x0f) << 4);
-        self.w
+    pub fn a(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxoselect::A)
+    }
+    #[doc = "Peripheral function B selected"]
+    #[inline(always)]
+    pub fn b(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxoselect::B)
+    }
+    #[doc = "Peripheral function C selected"]
+    #[inline(always)]
+    pub fn c(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxoselect::C)
+    }
+    #[doc = "Peripheral function D selected"]
+    #[inline(always)]
+    pub fn d(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxoselect::D)
+    }
+    #[doc = "Peripheral function E selected"]
+    #[inline(always)]
+    pub fn e(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxoselect::E)
+    }
+    #[doc = "Peripheral function F selected"]
+    #[inline(always)]
+    pub fn f(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxoselect::F)
+    }
+    #[doc = "Peripheral function G selected"]
+    #[inline(always)]
+    pub fn g(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxoselect::G)
+    }
+    #[doc = "Peripheral function H selected"]
+    #[inline(always)]
+    pub fn h(self) -> &'a mut crate::W<REG> {
+        self.variant(Pmuxoselect::H)
     }
 }
 impl R {
     #[doc = "Bits 0:3 - Peripheral Multiplexing Even"]
     #[inline(always)]
-    pub fn pmuxe(&self) -> PMUXE_R {
-        PMUXE_R::new((self.bits & 0x0f) as u8)
+    pub fn pmuxe(&self) -> PmuxeR {
+        PmuxeR::new(self.bits & 0x0f)
     }
     #[doc = "Bits 4:7 - Peripheral Multiplexing Odd"]
     #[inline(always)]
-    pub fn pmuxo(&self) -> PMUXO_R {
-        PMUXO_R::new(((self.bits >> 4) & 0x0f) as u8)
+    pub fn pmuxo(&self) -> PmuxoR {
+        PmuxoR::new((self.bits >> 4) & 0x0f)
     }
 }
 impl W {
     #[doc = "Bits 0:3 - Peripheral Multiplexing Even"]
     #[inline(always)]
-    pub fn pmuxe(&mut self) -> PMUXE_W {
-        PMUXE_W { w: self }
+    #[must_use]
+    pub fn pmuxe(&mut self) -> PmuxeW<Pmux0_Spec> {
+        PmuxeW::new(self, 0)
     }
     #[doc = "Bits 4:7 - Peripheral Multiplexing Odd"]
     #[inline(always)]
-    pub fn pmuxo(&mut self) -> PMUXO_W {
-        PMUXO_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u8) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn pmuxo(&mut self) -> PmuxoW<Pmux0_Spec> {
+        PmuxoW::new(self, 4)
     }
 }
-#[doc = "Peripheral Multiplexing n - Group 0\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [pmux0_](index.html) module"]
-pub struct PMUX0__SPEC;
-impl crate::RegisterSpec for PMUX0__SPEC {
+#[doc = "Peripheral Multiplexing n - Group 0\n\nYou can [`read`](crate::Reg::read) this register and get [`pmux0_::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pmux0_::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct Pmux0_Spec;
+impl crate::RegisterSpec for Pmux0_Spec {
     type Ux = u8;
 }
-#[doc = "`read()` method returns [pmux0_::R](R) reader structure"]
-impl crate::Readable for PMUX0__SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [pmux0_::W](W) writer structure"]
-impl crate::Writable for PMUX0__SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`pmux0_::R`](R) reader structure"]
+impl crate::Readable for Pmux0_Spec {}
+#[doc = "`write(|w| ..)` method takes [`pmux0_::W`](W) writer structure"]
+impl crate::Writable for Pmux0_Spec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
 }
 #[doc = "`reset()` method sets PMUX0_%s to value 0"]
-impl crate::Resettable for PMUX0__SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for Pmux0_Spec {
+    const RESET_VALUE: u8 = 0;
 }

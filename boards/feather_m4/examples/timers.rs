@@ -13,8 +13,11 @@ use panic_semihosting as _;
 
 use bsp::entry;
 use hal::clock::GenericClockController;
+use hal::ehal::digital::OutputPin;
+use hal::nb;
 use hal::pac::Peripherals;
-use hal::prelude::*;
+use hal::time::Hertz;
+use hal::timer_traits::InterruptDrivenTimer;
 
 use hal::timer::TimerCounter;
 
@@ -22,14 +25,14 @@ use hal::timer::TimerCounter;
 fn main() -> ! {
     let mut peripherals = Peripherals::take().unwrap();
     let mut clocks = GenericClockController::with_external_32kosc(
-        peripherals.GCLK,
-        &mut peripherals.MCLK,
-        &mut peripherals.OSC32KCTRL,
-        &mut peripherals.OSCCTRL,
-        &mut peripherals.NVMCTRL,
+        peripherals.gclk,
+        &mut peripherals.mclk,
+        &mut peripherals.osc32kctrl,
+        &mut peripherals.oscctrl,
+        &mut peripherals.nvmctrl,
     );
     // Using the red LED as the feedback for this simple timer example.
-    let pins = bsp::Pins::new(peripherals.PORT);
+    let pins = bsp::Pins::new(peripherals.port);
     let mut red_led = pins.d13.into_push_pull_output();
 
     // gclk0 represents a configured clock using the 120MHz oscillator.
@@ -37,9 +40,9 @@ fn main() -> ! {
     // Configure a clock for TC2 and TC3 peripherals
     let timer_clock = clocks.tc2_tc3(&gclk0).unwrap();
     //Instantiate a timer object for the TC2 peripheral
-    let mut timer = TimerCounter::tc2_(&timer_clock, peripherals.TC2, &mut peripherals.MCLK);
+    let mut timer = TimerCounter::tc2_(&timer_clock, peripherals.tc2, &mut peripherals.mclk);
     // Start the timer such that it runs at 50Hz
-    timer.start(50u32.hz());
+    timer.start(Hertz::Hz(50u32).into_duration());
 
     // Toggle the red LED at the frequency set by the timer above.
     loop {

@@ -1,699 +1,523 @@
 #[doc = "Register `PSR` reader"]
-pub struct R(crate::R<PSR_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<PSR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<PSR_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<PSR_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<PsrSpec>;
 #[doc = "Command Inhibit (CMD)\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CMDINHC_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Cmdinhcselect {
     #[doc = "0: Can issue command using only CMD line"]
-    CAN = 0,
+    Can = 0,
     #[doc = "1: Cannot issue command"]
-    CANNOT = 1,
+    Cannot = 1,
 }
-impl From<CMDINHC_A> for bool {
+impl From<Cmdinhcselect> for bool {
     #[inline(always)]
-    fn from(variant: CMDINHC_A) -> Self {
+    fn from(variant: Cmdinhcselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `CMDINHC` reader - Command Inhibit (CMD)"]
-pub struct CMDINHC_R(crate::FieldReader<bool, CMDINHC_A>);
-impl CMDINHC_R {
+pub type CmdinhcR = crate::BitReader<Cmdinhcselect>;
+impl CmdinhcR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CMDINHC_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> CMDINHC_A {
+    pub const fn variant(&self) -> Cmdinhcselect {
         match self.bits {
-            false => CMDINHC_A::CAN,
-            true => CMDINHC_A::CANNOT,
+            false => Cmdinhcselect::Can,
+            true => Cmdinhcselect::Cannot,
         }
     }
-    #[doc = "Checks if the value of the field is `CAN`"]
+    #[doc = "Can issue command using only CMD line"]
     #[inline(always)]
     pub fn is_can(&self) -> bool {
-        **self == CMDINHC_A::CAN
+        *self == Cmdinhcselect::Can
     }
-    #[doc = "Checks if the value of the field is `CANNOT`"]
+    #[doc = "Cannot issue command"]
     #[inline(always)]
     pub fn is_cannot(&self) -> bool {
-        **self == CMDINHC_A::CANNOT
-    }
-}
-impl core::ops::Deref for CMDINHC_R {
-    type Target = crate::FieldReader<bool, CMDINHC_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Cmdinhcselect::Cannot
     }
 }
 #[doc = "Command Inhibit (DAT)\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CMDINHD_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Cmdinhdselect {
     #[doc = "0: Can issue command which uses the DAT line"]
-    CAN = 0,
+    Can = 0,
     #[doc = "1: Cannot issue command which uses the DAT line"]
-    CANNOT = 1,
+    Cannot = 1,
 }
-impl From<CMDINHD_A> for bool {
+impl From<Cmdinhdselect> for bool {
     #[inline(always)]
-    fn from(variant: CMDINHD_A) -> Self {
+    fn from(variant: Cmdinhdselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `CMDINHD` reader - Command Inhibit (DAT)"]
-pub struct CMDINHD_R(crate::FieldReader<bool, CMDINHD_A>);
-impl CMDINHD_R {
+pub type CmdinhdR = crate::BitReader<Cmdinhdselect>;
+impl CmdinhdR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CMDINHD_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> CMDINHD_A {
+    pub const fn variant(&self) -> Cmdinhdselect {
         match self.bits {
-            false => CMDINHD_A::CAN,
-            true => CMDINHD_A::CANNOT,
+            false => Cmdinhdselect::Can,
+            true => Cmdinhdselect::Cannot,
         }
     }
-    #[doc = "Checks if the value of the field is `CAN`"]
+    #[doc = "Can issue command which uses the DAT line"]
     #[inline(always)]
     pub fn is_can(&self) -> bool {
-        **self == CMDINHD_A::CAN
+        *self == Cmdinhdselect::Can
     }
-    #[doc = "Checks if the value of the field is `CANNOT`"]
+    #[doc = "Cannot issue command which uses the DAT line"]
     #[inline(always)]
     pub fn is_cannot(&self) -> bool {
-        **self == CMDINHD_A::CANNOT
-    }
-}
-impl core::ops::Deref for CMDINHD_R {
-    type Target = crate::FieldReader<bool, CMDINHD_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Cmdinhdselect::Cannot
     }
 }
 #[doc = "DAT Line Active\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum DLACT_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Dlactselect {
     #[doc = "0: DAT Line Inactive"]
-    INACTIVE = 0,
+    Inactive = 0,
     #[doc = "1: DAT Line Active"]
-    ACTIVE = 1,
+    Active = 1,
 }
-impl From<DLACT_A> for bool {
+impl From<Dlactselect> for bool {
     #[inline(always)]
-    fn from(variant: DLACT_A) -> Self {
+    fn from(variant: Dlactselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `DLACT` reader - DAT Line Active"]
-pub struct DLACT_R(crate::FieldReader<bool, DLACT_A>);
-impl DLACT_R {
+pub type DlactR = crate::BitReader<Dlactselect>;
+impl DlactR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        DLACT_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> DLACT_A {
+    pub const fn variant(&self) -> Dlactselect {
         match self.bits {
-            false => DLACT_A::INACTIVE,
-            true => DLACT_A::ACTIVE,
+            false => Dlactselect::Inactive,
+            true => Dlactselect::Active,
         }
     }
-    #[doc = "Checks if the value of the field is `INACTIVE`"]
+    #[doc = "DAT Line Inactive"]
     #[inline(always)]
     pub fn is_inactive(&self) -> bool {
-        **self == DLACT_A::INACTIVE
+        *self == Dlactselect::Inactive
     }
-    #[doc = "Checks if the value of the field is `ACTIVE`"]
+    #[doc = "DAT Line Active"]
     #[inline(always)]
     pub fn is_active(&self) -> bool {
-        **self == DLACT_A::ACTIVE
-    }
-}
-impl core::ops::Deref for DLACT_R {
-    type Target = crate::FieldReader<bool, DLACT_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Dlactselect::Active
     }
 }
 #[doc = "Re-Tuning Request\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum RTREQ_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Rtreqselect {
     #[doc = "0: Fixed or well-tuned sampling clock"]
-    OK = 0,
+    Ok = 0,
     #[doc = "1: Sampling clock needs re-tuning"]
-    REQUIRED = 1,
+    Required = 1,
 }
-impl From<RTREQ_A> for bool {
+impl From<Rtreqselect> for bool {
     #[inline(always)]
-    fn from(variant: RTREQ_A) -> Self {
+    fn from(variant: Rtreqselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `RTREQ` reader - Re-Tuning Request"]
-pub struct RTREQ_R(crate::FieldReader<bool, RTREQ_A>);
-impl RTREQ_R {
+pub type RtreqR = crate::BitReader<Rtreqselect>;
+impl RtreqR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        RTREQ_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> RTREQ_A {
+    pub const fn variant(&self) -> Rtreqselect {
         match self.bits {
-            false => RTREQ_A::OK,
-            true => RTREQ_A::REQUIRED,
+            false => Rtreqselect::Ok,
+            true => Rtreqselect::Required,
         }
     }
-    #[doc = "Checks if the value of the field is `OK`"]
+    #[doc = "Fixed or well-tuned sampling clock"]
     #[inline(always)]
     pub fn is_ok(&self) -> bool {
-        **self == RTREQ_A::OK
+        *self == Rtreqselect::Ok
     }
-    #[doc = "Checks if the value of the field is `REQUIRED`"]
+    #[doc = "Sampling clock needs re-tuning"]
     #[inline(always)]
     pub fn is_required(&self) -> bool {
-        **self == RTREQ_A::REQUIRED
-    }
-}
-impl core::ops::Deref for RTREQ_R {
-    type Target = crate::FieldReader<bool, RTREQ_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Rtreqselect::Required
     }
 }
 #[doc = "Write Transfer Active\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum WTACT_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Wtactselect {
     #[doc = "0: No valid data"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Transferring data"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<WTACT_A> for bool {
+impl From<Wtactselect> for bool {
     #[inline(always)]
-    fn from(variant: WTACT_A) -> Self {
+    fn from(variant: Wtactselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `WTACT` reader - Write Transfer Active"]
-pub struct WTACT_R(crate::FieldReader<bool, WTACT_A>);
-impl WTACT_R {
+pub type WtactR = crate::BitReader<Wtactselect>;
+impl WtactR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        WTACT_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> WTACT_A {
+    pub const fn variant(&self) -> Wtactselect {
         match self.bits {
-            false => WTACT_A::NO,
-            true => WTACT_A::YES,
+            false => Wtactselect::No,
+            true => Wtactselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "No valid data"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == WTACT_A::NO
+        *self == Wtactselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "Transferring data"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == WTACT_A::YES
-    }
-}
-impl core::ops::Deref for WTACT_R {
-    type Target = crate::FieldReader<bool, WTACT_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Wtactselect::Yes
     }
 }
 #[doc = "Read Transfer Active\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum RTACT_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Rtactselect {
     #[doc = "0: No valid data"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Transferring data"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<RTACT_A> for bool {
+impl From<Rtactselect> for bool {
     #[inline(always)]
-    fn from(variant: RTACT_A) -> Self {
+    fn from(variant: Rtactselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `RTACT` reader - Read Transfer Active"]
-pub struct RTACT_R(crate::FieldReader<bool, RTACT_A>);
-impl RTACT_R {
+pub type RtactR = crate::BitReader<Rtactselect>;
+impl RtactR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        RTACT_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> RTACT_A {
+    pub const fn variant(&self) -> Rtactselect {
         match self.bits {
-            false => RTACT_A::NO,
-            true => RTACT_A::YES,
+            false => Rtactselect::No,
+            true => Rtactselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "No valid data"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == RTACT_A::NO
+        *self == Rtactselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "Transferring data"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == RTACT_A::YES
-    }
-}
-impl core::ops::Deref for RTACT_R {
-    type Target = crate::FieldReader<bool, RTACT_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Rtactselect::Yes
     }
 }
 #[doc = "Buffer Write Enable\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum BUFWREN_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Bufwrenselect {
     #[doc = "0: Write disable"]
-    DISABLE = 0,
+    Disable = 0,
     #[doc = "1: Write enable"]
-    ENABLE = 1,
+    Enable = 1,
 }
-impl From<BUFWREN_A> for bool {
+impl From<Bufwrenselect> for bool {
     #[inline(always)]
-    fn from(variant: BUFWREN_A) -> Self {
+    fn from(variant: Bufwrenselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `BUFWREN` reader - Buffer Write Enable"]
-pub struct BUFWREN_R(crate::FieldReader<bool, BUFWREN_A>);
-impl BUFWREN_R {
+pub type BufwrenR = crate::BitReader<Bufwrenselect>;
+impl BufwrenR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        BUFWREN_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> BUFWREN_A {
+    pub const fn variant(&self) -> Bufwrenselect {
         match self.bits {
-            false => BUFWREN_A::DISABLE,
-            true => BUFWREN_A::ENABLE,
+            false => Bufwrenselect::Disable,
+            true => Bufwrenselect::Enable,
         }
     }
-    #[doc = "Checks if the value of the field is `DISABLE`"]
+    #[doc = "Write disable"]
     #[inline(always)]
     pub fn is_disable(&self) -> bool {
-        **self == BUFWREN_A::DISABLE
+        *self == Bufwrenselect::Disable
     }
-    #[doc = "Checks if the value of the field is `ENABLE`"]
+    #[doc = "Write enable"]
     #[inline(always)]
     pub fn is_enable(&self) -> bool {
-        **self == BUFWREN_A::ENABLE
-    }
-}
-impl core::ops::Deref for BUFWREN_R {
-    type Target = crate::FieldReader<bool, BUFWREN_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Bufwrenselect::Enable
     }
 }
 #[doc = "Buffer Read Enable\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum BUFRDEN_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Bufrdenselect {
     #[doc = "0: Read disable"]
-    DISABLE = 0,
+    Disable = 0,
     #[doc = "1: Read enable"]
-    ENABLE = 1,
+    Enable = 1,
 }
-impl From<BUFRDEN_A> for bool {
+impl From<Bufrdenselect> for bool {
     #[inline(always)]
-    fn from(variant: BUFRDEN_A) -> Self {
+    fn from(variant: Bufrdenselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `BUFRDEN` reader - Buffer Read Enable"]
-pub struct BUFRDEN_R(crate::FieldReader<bool, BUFRDEN_A>);
-impl BUFRDEN_R {
+pub type BufrdenR = crate::BitReader<Bufrdenselect>;
+impl BufrdenR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        BUFRDEN_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> BUFRDEN_A {
+    pub const fn variant(&self) -> Bufrdenselect {
         match self.bits {
-            false => BUFRDEN_A::DISABLE,
-            true => BUFRDEN_A::ENABLE,
+            false => Bufrdenselect::Disable,
+            true => Bufrdenselect::Enable,
         }
     }
-    #[doc = "Checks if the value of the field is `DISABLE`"]
+    #[doc = "Read disable"]
     #[inline(always)]
     pub fn is_disable(&self) -> bool {
-        **self == BUFRDEN_A::DISABLE
+        *self == Bufrdenselect::Disable
     }
-    #[doc = "Checks if the value of the field is `ENABLE`"]
+    #[doc = "Read enable"]
     #[inline(always)]
     pub fn is_enable(&self) -> bool {
-        **self == BUFRDEN_A::ENABLE
-    }
-}
-impl core::ops::Deref for BUFRDEN_R {
-    type Target = crate::FieldReader<bool, BUFRDEN_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Bufrdenselect::Enable
     }
 }
 #[doc = "Card Inserted\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CARDINS_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Cardinsselect {
     #[doc = "0: Reset or Debouncing or No Card"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Card inserted"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<CARDINS_A> for bool {
+impl From<Cardinsselect> for bool {
     #[inline(always)]
-    fn from(variant: CARDINS_A) -> Self {
+    fn from(variant: Cardinsselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `CARDINS` reader - Card Inserted"]
-pub struct CARDINS_R(crate::FieldReader<bool, CARDINS_A>);
-impl CARDINS_R {
+pub type CardinsR = crate::BitReader<Cardinsselect>;
+impl CardinsR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CARDINS_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> CARDINS_A {
+    pub const fn variant(&self) -> Cardinsselect {
         match self.bits {
-            false => CARDINS_A::NO,
-            true => CARDINS_A::YES,
+            false => Cardinsselect::No,
+            true => Cardinsselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "Reset or Debouncing or No Card"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == CARDINS_A::NO
+        *self == Cardinsselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "Card inserted"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == CARDINS_A::YES
-    }
-}
-impl core::ops::Deref for CARDINS_R {
-    type Target = crate::FieldReader<bool, CARDINS_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Cardinsselect::Yes
     }
 }
 #[doc = "Card State Stable\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CARDSS_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Cardssselect {
     #[doc = "0: Reset or Debouncing"]
-    NO = 0,
+    No = 0,
     #[doc = "1: No Card or Insered"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<CARDSS_A> for bool {
+impl From<Cardssselect> for bool {
     #[inline(always)]
-    fn from(variant: CARDSS_A) -> Self {
+    fn from(variant: Cardssselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `CARDSS` reader - Card State Stable"]
-pub struct CARDSS_R(crate::FieldReader<bool, CARDSS_A>);
-impl CARDSS_R {
+pub type CardssR = crate::BitReader<Cardssselect>;
+impl CardssR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CARDSS_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> CARDSS_A {
+    pub const fn variant(&self) -> Cardssselect {
         match self.bits {
-            false => CARDSS_A::NO,
-            true => CARDSS_A::YES,
+            false => Cardssselect::No,
+            true => Cardssselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "Reset or Debouncing"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == CARDSS_A::NO
+        *self == Cardssselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "No Card or Insered"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == CARDSS_A::YES
-    }
-}
-impl core::ops::Deref for CARDSS_R {
-    type Target = crate::FieldReader<bool, CARDSS_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Cardssselect::Yes
     }
 }
 #[doc = "Card Detect Pin Level\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CARDDPL_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Carddplselect {
     #[doc = "0: No card present (SDCD#=1)"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Card present (SDCD#=0)"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<CARDDPL_A> for bool {
+impl From<Carddplselect> for bool {
     #[inline(always)]
-    fn from(variant: CARDDPL_A) -> Self {
+    fn from(variant: Carddplselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `CARDDPL` reader - Card Detect Pin Level"]
-pub struct CARDDPL_R(crate::FieldReader<bool, CARDDPL_A>);
-impl CARDDPL_R {
+pub type CarddplR = crate::BitReader<Carddplselect>;
+impl CarddplR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CARDDPL_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> CARDDPL_A {
+    pub const fn variant(&self) -> Carddplselect {
         match self.bits {
-            false => CARDDPL_A::NO,
-            true => CARDDPL_A::YES,
+            false => Carddplselect::No,
+            true => Carddplselect::Yes,
         }
     }
-    #[doc = "Checks if the value of the field is `NO`"]
+    #[doc = "No card present (SDCD#=1)"]
     #[inline(always)]
     pub fn is_no(&self) -> bool {
-        **self == CARDDPL_A::NO
+        *self == Carddplselect::No
     }
-    #[doc = "Checks if the value of the field is `YES`"]
+    #[doc = "Card present (SDCD#=0)"]
     #[inline(always)]
     pub fn is_yes(&self) -> bool {
-        **self == CARDDPL_A::YES
-    }
-}
-impl core::ops::Deref for CARDDPL_R {
-    type Target = crate::FieldReader<bool, CARDDPL_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Carddplselect::Yes
     }
 }
 #[doc = "Write Protect Pin Level\n\nValue on reset: 1"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum WRPPL_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Wrpplselect {
     #[doc = "0: Write protected (SDWP#=0)"]
-    PROTECTED = 0,
+    Protected = 0,
     #[doc = "1: Write enabled (SDWP#=1)"]
-    ENABLED = 1,
+    Enabled = 1,
 }
-impl From<WRPPL_A> for bool {
+impl From<Wrpplselect> for bool {
     #[inline(always)]
-    fn from(variant: WRPPL_A) -> Self {
+    fn from(variant: Wrpplselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `WRPPL` reader - Write Protect Pin Level"]
-pub struct WRPPL_R(crate::FieldReader<bool, WRPPL_A>);
-impl WRPPL_R {
+pub type WrpplR = crate::BitReader<Wrpplselect>;
+impl WrpplR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        WRPPL_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> WRPPL_A {
+    pub const fn variant(&self) -> Wrpplselect {
         match self.bits {
-            false => WRPPL_A::PROTECTED,
-            true => WRPPL_A::ENABLED,
+            false => Wrpplselect::Protected,
+            true => Wrpplselect::Enabled,
         }
     }
-    #[doc = "Checks if the value of the field is `PROTECTED`"]
+    #[doc = "Write protected (SDWP#=0)"]
     #[inline(always)]
     pub fn is_protected(&self) -> bool {
-        **self == WRPPL_A::PROTECTED
+        *self == Wrpplselect::Protected
     }
-    #[doc = "Checks if the value of the field is `ENABLED`"]
+    #[doc = "Write enabled (SDWP#=1)"]
     #[inline(always)]
     pub fn is_enabled(&self) -> bool {
-        **self == WRPPL_A::ENABLED
-    }
-}
-impl core::ops::Deref for WRPPL_R {
-    type Target = crate::FieldReader<bool, WRPPL_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Wrpplselect::Enabled
     }
 }
 #[doc = "Field `DATLL` reader - DAT\\[3:0\\]
 Line Level"]
-pub struct DATLL_R(crate::FieldReader<u8, u8>);
-impl DATLL_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        DATLL_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for DATLL_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type DatllR = crate::FieldReader;
 #[doc = "Field `CMDLL` reader - CMD Line Level"]
-pub struct CMDLL_R(crate::FieldReader<bool, bool>);
-impl CMDLL_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CMDLL_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for CMDLL_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type CmdllR = crate::BitReader;
 impl R {
     #[doc = "Bit 0 - Command Inhibit (CMD)"]
     #[inline(always)]
-    pub fn cmdinhc(&self) -> CMDINHC_R {
-        CMDINHC_R::new((self.bits & 0x01) != 0)
+    pub fn cmdinhc(&self) -> CmdinhcR {
+        CmdinhcR::new((self.bits & 1) != 0)
     }
     #[doc = "Bit 1 - Command Inhibit (DAT)"]
     #[inline(always)]
-    pub fn cmdinhd(&self) -> CMDINHD_R {
-        CMDINHD_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn cmdinhd(&self) -> CmdinhdR {
+        CmdinhdR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bit 2 - DAT Line Active"]
     #[inline(always)]
-    pub fn dlact(&self) -> DLACT_R {
-        DLACT_R::new(((self.bits >> 2) & 0x01) != 0)
+    pub fn dlact(&self) -> DlactR {
+        DlactR::new(((self.bits >> 2) & 1) != 0)
     }
     #[doc = "Bit 3 - Re-Tuning Request"]
     #[inline(always)]
-    pub fn rtreq(&self) -> RTREQ_R {
-        RTREQ_R::new(((self.bits >> 3) & 0x01) != 0)
+    pub fn rtreq(&self) -> RtreqR {
+        RtreqR::new(((self.bits >> 3) & 1) != 0)
     }
     #[doc = "Bit 8 - Write Transfer Active"]
     #[inline(always)]
-    pub fn wtact(&self) -> WTACT_R {
-        WTACT_R::new(((self.bits >> 8) & 0x01) != 0)
+    pub fn wtact(&self) -> WtactR {
+        WtactR::new(((self.bits >> 8) & 1) != 0)
     }
     #[doc = "Bit 9 - Read Transfer Active"]
     #[inline(always)]
-    pub fn rtact(&self) -> RTACT_R {
-        RTACT_R::new(((self.bits >> 9) & 0x01) != 0)
+    pub fn rtact(&self) -> RtactR {
+        RtactR::new(((self.bits >> 9) & 1) != 0)
     }
     #[doc = "Bit 10 - Buffer Write Enable"]
     #[inline(always)]
-    pub fn bufwren(&self) -> BUFWREN_R {
-        BUFWREN_R::new(((self.bits >> 10) & 0x01) != 0)
+    pub fn bufwren(&self) -> BufwrenR {
+        BufwrenR::new(((self.bits >> 10) & 1) != 0)
     }
     #[doc = "Bit 11 - Buffer Read Enable"]
     #[inline(always)]
-    pub fn bufrden(&self) -> BUFRDEN_R {
-        BUFRDEN_R::new(((self.bits >> 11) & 0x01) != 0)
+    pub fn bufrden(&self) -> BufrdenR {
+        BufrdenR::new(((self.bits >> 11) & 1) != 0)
     }
     #[doc = "Bit 16 - Card Inserted"]
     #[inline(always)]
-    pub fn cardins(&self) -> CARDINS_R {
-        CARDINS_R::new(((self.bits >> 16) & 0x01) != 0)
+    pub fn cardins(&self) -> CardinsR {
+        CardinsR::new(((self.bits >> 16) & 1) != 0)
     }
     #[doc = "Bit 17 - Card State Stable"]
     #[inline(always)]
-    pub fn cardss(&self) -> CARDSS_R {
-        CARDSS_R::new(((self.bits >> 17) & 0x01) != 0)
+    pub fn cardss(&self) -> CardssR {
+        CardssR::new(((self.bits >> 17) & 1) != 0)
     }
     #[doc = "Bit 18 - Card Detect Pin Level"]
     #[inline(always)]
-    pub fn carddpl(&self) -> CARDDPL_R {
-        CARDDPL_R::new(((self.bits >> 18) & 0x01) != 0)
+    pub fn carddpl(&self) -> CarddplR {
+        CarddplR::new(((self.bits >> 18) & 1) != 0)
     }
     #[doc = "Bit 19 - Write Protect Pin Level"]
     #[inline(always)]
-    pub fn wrppl(&self) -> WRPPL_R {
-        WRPPL_R::new(((self.bits >> 19) & 0x01) != 0)
+    pub fn wrppl(&self) -> WrpplR {
+        WrpplR::new(((self.bits >> 19) & 1) != 0)
     }
     #[doc = "Bits 20:23 - DAT\\[3:0\\]
 Line Level"]
     #[inline(always)]
-    pub fn datll(&self) -> DATLL_R {
-        DATLL_R::new(((self.bits >> 20) & 0x0f) as u8)
+    pub fn datll(&self) -> DatllR {
+        DatllR::new(((self.bits >> 20) & 0x0f) as u8)
     }
     #[doc = "Bit 24 - CMD Line Level"]
     #[inline(always)]
-    pub fn cmdll(&self) -> CMDLL_R {
-        CMDLL_R::new(((self.bits >> 24) & 0x01) != 0)
+    pub fn cmdll(&self) -> CmdllR {
+        CmdllR::new(((self.bits >> 24) & 1) != 0)
     }
 }
-#[doc = "Present State\n\nThis register you can [`read`](crate::generic::Reg::read). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [psr](index.html) module"]
-pub struct PSR_SPEC;
-impl crate::RegisterSpec for PSR_SPEC {
+#[doc = "Present State\n\nYou can [`read`](crate::Reg::read) this register and get [`psr::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct PsrSpec;
+impl crate::RegisterSpec for PsrSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [psr::R](R) reader structure"]
-impl crate::Readable for PSR_SPEC {
-    type Reader = R;
-}
+#[doc = "`read()` method returns [`psr::R`](R) reader structure"]
+impl crate::Readable for PsrSpec {}
 #[doc = "`reset()` method sets PSR to value 0x00f8_0000"]
-impl crate::Resettable for PSR_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0x00f8_0000
-    }
+impl crate::Resettable for PsrSpec {
+    const RESET_VALUE: u32 = 0x00f8_0000;
 }

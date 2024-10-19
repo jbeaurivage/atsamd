@@ -1,140 +1,55 @@
 #[doc = "Register `CC%s_DITH6` reader"]
-pub struct R(crate::R<CC_DITH6_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<CC_DITH6_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<CC_DITH6_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<CC_DITH6_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<CcDith6Spec>;
 #[doc = "Register `CC%s_DITH6` writer"]
-pub struct W(crate::W<CC_DITH6_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<CC_DITH6_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<CC_DITH6_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<CC_DITH6_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<CcDith6Spec>;
 #[doc = "Field `DITHERCY` reader - Dithering Cycle Number"]
-pub struct DITHERCY_R(crate::FieldReader<u8, u8>);
-impl DITHERCY_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        DITHERCY_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for DITHERCY_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type DithercyR = crate::FieldReader;
 #[doc = "Field `DITHERCY` writer - Dithering Cycle Number"]
-pub struct DITHERCY_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DITHERCY_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x3f) | (value as u32 & 0x3f);
-        self.w
-    }
-}
+pub type DithercyW<'a, REG> = crate::FieldWriter<'a, REG, 6>;
 #[doc = "Field `CC` reader - Channel Compare/Capture Value"]
-pub struct CC_R(crate::FieldReader<u32, u32>);
-impl CC_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u32) -> Self {
-        CC_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for CC_R {
-    type Target = crate::FieldReader<u32, u32>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type CcR = crate::FieldReader<u32>;
 #[doc = "Field `CC` writer - Channel Compare/Capture Value"]
-pub struct CC_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CC_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u32) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x0003_ffff << 6)) | ((value as u32 & 0x0003_ffff) << 6);
-        self.w
-    }
-}
+pub type CcW<'a, REG> = crate::FieldWriter<'a, REG, 18, u32>;
 impl R {
     #[doc = "Bits 0:5 - Dithering Cycle Number"]
     #[inline(always)]
-    pub fn dithercy(&self) -> DITHERCY_R {
-        DITHERCY_R::new((self.bits & 0x3f) as u8)
+    pub fn dithercy(&self) -> DithercyR {
+        DithercyR::new((self.bits & 0x3f) as u8)
     }
     #[doc = "Bits 6:23 - Channel Compare/Capture Value"]
     #[inline(always)]
-    pub fn cc(&self) -> CC_R {
-        CC_R::new(((self.bits >> 6) & 0x0003_ffff) as u32)
+    pub fn cc(&self) -> CcR {
+        CcR::new((self.bits >> 6) & 0x0003_ffff)
     }
 }
 impl W {
     #[doc = "Bits 0:5 - Dithering Cycle Number"]
     #[inline(always)]
-    pub fn dithercy(&mut self) -> DITHERCY_W {
-        DITHERCY_W { w: self }
+    #[must_use]
+    pub fn dithercy(&mut self) -> DithercyW<CcDith6Spec> {
+        DithercyW::new(self, 0)
     }
     #[doc = "Bits 6:23 - Channel Compare/Capture Value"]
     #[inline(always)]
-    pub fn cc(&mut self) -> CC_W {
-        CC_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn cc(&mut self) -> CcW<CcDith6Spec> {
+        CcW::new(self, 6)
     }
 }
-#[doc = "Compare and Capture\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [cc_dith6](index.html) module"]
-pub struct CC_DITH6_SPEC;
-impl crate::RegisterSpec for CC_DITH6_SPEC {
+#[doc = "Compare and Capture\n\nYou can [`read`](crate::Reg::read) this register and get [`cc_dith6::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`cc_dith6::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct CcDith6Spec;
+impl crate::RegisterSpec for CcDith6Spec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [cc_dith6::R](R) reader structure"]
-impl crate::Readable for CC_DITH6_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [cc_dith6::W](W) writer structure"]
-impl crate::Writable for CC_DITH6_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`cc_dith6::R`](R) reader structure"]
+impl crate::Readable for CcDith6Spec {}
+#[doc = "`write(|w| ..)` method takes [`cc_dith6::W`](W) writer structure"]
+impl crate::Writable for CcDith6Spec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets CC%s_DITH6 to value 0"]
-impl crate::Resettable for CC_DITH6_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for CcDith6Spec {
+    const RESET_VALUE: u32 = 0;
 }

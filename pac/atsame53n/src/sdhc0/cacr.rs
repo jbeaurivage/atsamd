@@ -1,150 +1,98 @@
 #[doc = "Register `CACR` reader"]
-pub struct R(crate::R<CACR_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<CACR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<CACR_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<CACR_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<CacrSpec>;
 #[doc = "Register `CACR` writer"]
-pub struct W(crate::W<CACR_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<CACR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<CACR_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<CACR_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<CacrSpec>;
 #[doc = "Field `CAPWREN` reader - Capabilities Registers Write Enable (Required to write the correct frequencies in the Capabilities Registers)"]
-pub struct CAPWREN_R(crate::FieldReader<bool, bool>);
-impl CAPWREN_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CAPWREN_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for CAPWREN_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type CapwrenR = crate::BitReader;
 #[doc = "Field `CAPWREN` writer - Capabilities Registers Write Enable (Required to write the correct frequencies in the Capabilities Registers)"]
-pub struct CAPWREN_W<'a> {
-    w: &'a mut W,
+pub type CapwrenW<'a, REG> = crate::BitWriter<'a, REG>;
+#[doc = "Key (0x46)\n\nValue on reset: 0"]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(u8)]
+pub enum Keyselect {
+    #[doc = "70: Key"]
+    Key = 70,
 }
-impl<'a> CAPWREN_W<'a> {
-    #[doc = r"Sets the field bit"]
+impl From<Keyselect> for u8 {
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u32 & 0x01);
-        self.w
+    fn from(variant: Keyselect) -> Self {
+        variant as _
     }
 }
+impl crate::FieldSpec for Keyselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Keyselect {}
 #[doc = "Field `KEY` reader - Key (0x46)"]
-pub struct KEY_R(crate::FieldReader<u8, u8>);
-impl KEY_R {
+pub type KeyR = crate::FieldReader<Keyselect>;
+impl KeyR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        KEY_R(crate::FieldReader::new(bits))
+    pub const fn variant(&self) -> Option<Keyselect> {
+        match self.bits {
+            70 => Some(Keyselect::Key),
+            _ => None,
+        }
     }
-}
-impl core::ops::Deref for KEY_R {
-    type Target = crate::FieldReader<u8, u8>;
+    #[doc = "Key"]
     #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+    pub fn is_key(&self) -> bool {
+        *self == Keyselect::Key
     }
 }
 #[doc = "Field `KEY` writer - Key (0x46)"]
-pub struct KEY_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> KEY_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
+pub type KeyW<'a, REG> = crate::FieldWriter<'a, REG, 8, Keyselect>;
+impl<'a, REG> KeyW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "Key"]
     #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0xff << 8)) | ((value as u32 & 0xff) << 8);
-        self.w
+    pub fn key(self) -> &'a mut crate::W<REG> {
+        self.variant(Keyselect::Key)
     }
 }
 impl R {
     #[doc = "Bit 0 - Capabilities Registers Write Enable (Required to write the correct frequencies in the Capabilities Registers)"]
     #[inline(always)]
-    pub fn capwren(&self) -> CAPWREN_R {
-        CAPWREN_R::new((self.bits & 0x01) != 0)
+    pub fn capwren(&self) -> CapwrenR {
+        CapwrenR::new((self.bits & 1) != 0)
     }
     #[doc = "Bits 8:15 - Key (0x46)"]
     #[inline(always)]
-    pub fn key(&self) -> KEY_R {
-        KEY_R::new(((self.bits >> 8) & 0xff) as u8)
+    pub fn key(&self) -> KeyR {
+        KeyR::new(((self.bits >> 8) & 0xff) as u8)
     }
 }
 impl W {
     #[doc = "Bit 0 - Capabilities Registers Write Enable (Required to write the correct frequencies in the Capabilities Registers)"]
     #[inline(always)]
-    pub fn capwren(&mut self) -> CAPWREN_W {
-        CAPWREN_W { w: self }
+    #[must_use]
+    pub fn capwren(&mut self) -> CapwrenW<CacrSpec> {
+        CapwrenW::new(self, 0)
     }
     #[doc = "Bits 8:15 - Key (0x46)"]
     #[inline(always)]
-    pub fn key(&mut self) -> KEY_W {
-        KEY_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn key(&mut self) -> KeyW<CacrSpec> {
+        KeyW::new(self, 8)
     }
 }
-#[doc = "Capabilities Control\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [cacr](index.html) module"]
-pub struct CACR_SPEC;
-impl crate::RegisterSpec for CACR_SPEC {
+#[doc = "Capabilities Control\n\nYou can [`read`](crate::Reg::read) this register and get [`cacr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`cacr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct CacrSpec;
+impl crate::RegisterSpec for CacrSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [cacr::R](R) reader structure"]
-impl crate::Readable for CACR_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [cacr::W](W) writer structure"]
-impl crate::Writable for CACR_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`cacr::R`](R) reader structure"]
+impl crate::Readable for CacrSpec {}
+#[doc = "`write(|w| ..)` method takes [`cacr::W`](W) writer structure"]
+impl crate::Writable for CacrSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets CACR to value 0"]
-impl crate::Resettable for CACR_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for CacrSpec {
+    const RESET_VALUE: u32 = 0;
 }

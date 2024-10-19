@@ -1,909 +1,275 @@
 #[doc = "Register `SWEVT` writer"]
-pub struct W(crate::W<SWEVT_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<SWEVT_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<SWEVT_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<SWEVT_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<SwevtSpec>;
 #[doc = "Field `CHANNEL0` writer - Channel 0 Software Selection"]
-pub struct CHANNEL0_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL0_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u32 & 0x01);
-        self.w
-    }
-}
+pub type Channel0W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL1` writer - Channel 1 Software Selection"]
-pub struct CHANNEL1_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL1_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u32 & 0x01) << 1);
-        self.w
-    }
-}
+pub type Channel1W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL2` writer - Channel 2 Software Selection"]
-pub struct CHANNEL2_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL2_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 2)) | ((value as u32 & 0x01) << 2);
-        self.w
-    }
-}
+pub type Channel2W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL3` writer - Channel 3 Software Selection"]
-pub struct CHANNEL3_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL3_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 3)) | ((value as u32 & 0x01) << 3);
-        self.w
-    }
-}
+pub type Channel3W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL4` writer - Channel 4 Software Selection"]
-pub struct CHANNEL4_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL4_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 4)) | ((value as u32 & 0x01) << 4);
-        self.w
-    }
-}
+pub type Channel4W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL5` writer - Channel 5 Software Selection"]
-pub struct CHANNEL5_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL5_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 5)) | ((value as u32 & 0x01) << 5);
-        self.w
-    }
-}
+pub type Channel5W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL6` writer - Channel 6 Software Selection"]
-pub struct CHANNEL6_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL6_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 6)) | ((value as u32 & 0x01) << 6);
-        self.w
-    }
-}
+pub type Channel6W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL7` writer - Channel 7 Software Selection"]
-pub struct CHANNEL7_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL7_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 7)) | ((value as u32 & 0x01) << 7);
-        self.w
-    }
-}
+pub type Channel7W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL8` writer - Channel 8 Software Selection"]
-pub struct CHANNEL8_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL8_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 8)) | ((value as u32 & 0x01) << 8);
-        self.w
-    }
-}
+pub type Channel8W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL9` writer - Channel 9 Software Selection"]
-pub struct CHANNEL9_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL9_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 9)) | ((value as u32 & 0x01) << 9);
-        self.w
-    }
-}
+pub type Channel9W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL10` writer - Channel 10 Software Selection"]
-pub struct CHANNEL10_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL10_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 10)) | ((value as u32 & 0x01) << 10);
-        self.w
-    }
-}
+pub type Channel10W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL11` writer - Channel 11 Software Selection"]
-pub struct CHANNEL11_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL11_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 11)) | ((value as u32 & 0x01) << 11);
-        self.w
-    }
-}
+pub type Channel11W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL12` writer - Channel 12 Software Selection"]
-pub struct CHANNEL12_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL12_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 12)) | ((value as u32 & 0x01) << 12);
-        self.w
-    }
-}
+pub type Channel12W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL13` writer - Channel 13 Software Selection"]
-pub struct CHANNEL13_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL13_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 13)) | ((value as u32 & 0x01) << 13);
-        self.w
-    }
-}
+pub type Channel13W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL14` writer - Channel 14 Software Selection"]
-pub struct CHANNEL14_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL14_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 14)) | ((value as u32 & 0x01) << 14);
-        self.w
-    }
-}
+pub type Channel14W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL15` writer - Channel 15 Software Selection"]
-pub struct CHANNEL15_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL15_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 15)) | ((value as u32 & 0x01) << 15);
-        self.w
-    }
-}
+pub type Channel15W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL16` writer - Channel 16 Software Selection"]
-pub struct CHANNEL16_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL16_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 16)) | ((value as u32 & 0x01) << 16);
-        self.w
-    }
-}
+pub type Channel16W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL17` writer - Channel 17 Software Selection"]
-pub struct CHANNEL17_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL17_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 17)) | ((value as u32 & 0x01) << 17);
-        self.w
-    }
-}
+pub type Channel17W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL18` writer - Channel 18 Software Selection"]
-pub struct CHANNEL18_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL18_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 18)) | ((value as u32 & 0x01) << 18);
-        self.w
-    }
-}
+pub type Channel18W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL19` writer - Channel 19 Software Selection"]
-pub struct CHANNEL19_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL19_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 19)) | ((value as u32 & 0x01) << 19);
-        self.w
-    }
-}
+pub type Channel19W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL20` writer - Channel 20 Software Selection"]
-pub struct CHANNEL20_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL20_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 20)) | ((value as u32 & 0x01) << 20);
-        self.w
-    }
-}
+pub type Channel20W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL21` writer - Channel 21 Software Selection"]
-pub struct CHANNEL21_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL21_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 21)) | ((value as u32 & 0x01) << 21);
-        self.w
-    }
-}
+pub type Channel21W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL22` writer - Channel 22 Software Selection"]
-pub struct CHANNEL22_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL22_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 22)) | ((value as u32 & 0x01) << 22);
-        self.w
-    }
-}
+pub type Channel22W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL23` writer - Channel 23 Software Selection"]
-pub struct CHANNEL23_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL23_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 23)) | ((value as u32 & 0x01) << 23);
-        self.w
-    }
-}
+pub type Channel23W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL24` writer - Channel 24 Software Selection"]
-pub struct CHANNEL24_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL24_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 24)) | ((value as u32 & 0x01) << 24);
-        self.w
-    }
-}
+pub type Channel24W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL25` writer - Channel 25 Software Selection"]
-pub struct CHANNEL25_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL25_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 25)) | ((value as u32 & 0x01) << 25);
-        self.w
-    }
-}
+pub type Channel25W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL26` writer - Channel 26 Software Selection"]
-pub struct CHANNEL26_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL26_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 26)) | ((value as u32 & 0x01) << 26);
-        self.w
-    }
-}
+pub type Channel26W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL27` writer - Channel 27 Software Selection"]
-pub struct CHANNEL27_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL27_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 27)) | ((value as u32 & 0x01) << 27);
-        self.w
-    }
-}
+pub type Channel27W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL28` writer - Channel 28 Software Selection"]
-pub struct CHANNEL28_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL28_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 28)) | ((value as u32 & 0x01) << 28);
-        self.w
-    }
-}
+pub type Channel28W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL29` writer - Channel 29 Software Selection"]
-pub struct CHANNEL29_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL29_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 29)) | ((value as u32 & 0x01) << 29);
-        self.w
-    }
-}
+pub type Channel29W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL30` writer - Channel 30 Software Selection"]
-pub struct CHANNEL30_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL30_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 30)) | ((value as u32 & 0x01) << 30);
-        self.w
-    }
-}
+pub type Channel30W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `CHANNEL31` writer - Channel 31 Software Selection"]
-pub struct CHANNEL31_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CHANNEL31_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 31)) | ((value as u32 & 0x01) << 31);
-        self.w
-    }
-}
+pub type Channel31W<'a, REG> = crate::BitWriter<'a, REG>;
 impl W {
     #[doc = "Bit 0 - Channel 0 Software Selection"]
     #[inline(always)]
-    pub fn channel0(&mut self) -> CHANNEL0_W {
-        CHANNEL0_W { w: self }
+    #[must_use]
+    pub fn channel0(&mut self) -> Channel0W<SwevtSpec> {
+        Channel0W::new(self, 0)
     }
     #[doc = "Bit 1 - Channel 1 Software Selection"]
     #[inline(always)]
-    pub fn channel1(&mut self) -> CHANNEL1_W {
-        CHANNEL1_W { w: self }
+    #[must_use]
+    pub fn channel1(&mut self) -> Channel1W<SwevtSpec> {
+        Channel1W::new(self, 1)
     }
     #[doc = "Bit 2 - Channel 2 Software Selection"]
     #[inline(always)]
-    pub fn channel2(&mut self) -> CHANNEL2_W {
-        CHANNEL2_W { w: self }
+    #[must_use]
+    pub fn channel2(&mut self) -> Channel2W<SwevtSpec> {
+        Channel2W::new(self, 2)
     }
     #[doc = "Bit 3 - Channel 3 Software Selection"]
     #[inline(always)]
-    pub fn channel3(&mut self) -> CHANNEL3_W {
-        CHANNEL3_W { w: self }
+    #[must_use]
+    pub fn channel3(&mut self) -> Channel3W<SwevtSpec> {
+        Channel3W::new(self, 3)
     }
     #[doc = "Bit 4 - Channel 4 Software Selection"]
     #[inline(always)]
-    pub fn channel4(&mut self) -> CHANNEL4_W {
-        CHANNEL4_W { w: self }
+    #[must_use]
+    pub fn channel4(&mut self) -> Channel4W<SwevtSpec> {
+        Channel4W::new(self, 4)
     }
     #[doc = "Bit 5 - Channel 5 Software Selection"]
     #[inline(always)]
-    pub fn channel5(&mut self) -> CHANNEL5_W {
-        CHANNEL5_W { w: self }
+    #[must_use]
+    pub fn channel5(&mut self) -> Channel5W<SwevtSpec> {
+        Channel5W::new(self, 5)
     }
     #[doc = "Bit 6 - Channel 6 Software Selection"]
     #[inline(always)]
-    pub fn channel6(&mut self) -> CHANNEL6_W {
-        CHANNEL6_W { w: self }
+    #[must_use]
+    pub fn channel6(&mut self) -> Channel6W<SwevtSpec> {
+        Channel6W::new(self, 6)
     }
     #[doc = "Bit 7 - Channel 7 Software Selection"]
     #[inline(always)]
-    pub fn channel7(&mut self) -> CHANNEL7_W {
-        CHANNEL7_W { w: self }
+    #[must_use]
+    pub fn channel7(&mut self) -> Channel7W<SwevtSpec> {
+        Channel7W::new(self, 7)
     }
     #[doc = "Bit 8 - Channel 8 Software Selection"]
     #[inline(always)]
-    pub fn channel8(&mut self) -> CHANNEL8_W {
-        CHANNEL8_W { w: self }
+    #[must_use]
+    pub fn channel8(&mut self) -> Channel8W<SwevtSpec> {
+        Channel8W::new(self, 8)
     }
     #[doc = "Bit 9 - Channel 9 Software Selection"]
     #[inline(always)]
-    pub fn channel9(&mut self) -> CHANNEL9_W {
-        CHANNEL9_W { w: self }
+    #[must_use]
+    pub fn channel9(&mut self) -> Channel9W<SwevtSpec> {
+        Channel9W::new(self, 9)
     }
     #[doc = "Bit 10 - Channel 10 Software Selection"]
     #[inline(always)]
-    pub fn channel10(&mut self) -> CHANNEL10_W {
-        CHANNEL10_W { w: self }
+    #[must_use]
+    pub fn channel10(&mut self) -> Channel10W<SwevtSpec> {
+        Channel10W::new(self, 10)
     }
     #[doc = "Bit 11 - Channel 11 Software Selection"]
     #[inline(always)]
-    pub fn channel11(&mut self) -> CHANNEL11_W {
-        CHANNEL11_W { w: self }
+    #[must_use]
+    pub fn channel11(&mut self) -> Channel11W<SwevtSpec> {
+        Channel11W::new(self, 11)
     }
     #[doc = "Bit 12 - Channel 12 Software Selection"]
     #[inline(always)]
-    pub fn channel12(&mut self) -> CHANNEL12_W {
-        CHANNEL12_W { w: self }
+    #[must_use]
+    pub fn channel12(&mut self) -> Channel12W<SwevtSpec> {
+        Channel12W::new(self, 12)
     }
     #[doc = "Bit 13 - Channel 13 Software Selection"]
     #[inline(always)]
-    pub fn channel13(&mut self) -> CHANNEL13_W {
-        CHANNEL13_W { w: self }
+    #[must_use]
+    pub fn channel13(&mut self) -> Channel13W<SwevtSpec> {
+        Channel13W::new(self, 13)
     }
     #[doc = "Bit 14 - Channel 14 Software Selection"]
     #[inline(always)]
-    pub fn channel14(&mut self) -> CHANNEL14_W {
-        CHANNEL14_W { w: self }
+    #[must_use]
+    pub fn channel14(&mut self) -> Channel14W<SwevtSpec> {
+        Channel14W::new(self, 14)
     }
     #[doc = "Bit 15 - Channel 15 Software Selection"]
     #[inline(always)]
-    pub fn channel15(&mut self) -> CHANNEL15_W {
-        CHANNEL15_W { w: self }
+    #[must_use]
+    pub fn channel15(&mut self) -> Channel15W<SwevtSpec> {
+        Channel15W::new(self, 15)
     }
     #[doc = "Bit 16 - Channel 16 Software Selection"]
     #[inline(always)]
-    pub fn channel16(&mut self) -> CHANNEL16_W {
-        CHANNEL16_W { w: self }
+    #[must_use]
+    pub fn channel16(&mut self) -> Channel16W<SwevtSpec> {
+        Channel16W::new(self, 16)
     }
     #[doc = "Bit 17 - Channel 17 Software Selection"]
     #[inline(always)]
-    pub fn channel17(&mut self) -> CHANNEL17_W {
-        CHANNEL17_W { w: self }
+    #[must_use]
+    pub fn channel17(&mut self) -> Channel17W<SwevtSpec> {
+        Channel17W::new(self, 17)
     }
     #[doc = "Bit 18 - Channel 18 Software Selection"]
     #[inline(always)]
-    pub fn channel18(&mut self) -> CHANNEL18_W {
-        CHANNEL18_W { w: self }
+    #[must_use]
+    pub fn channel18(&mut self) -> Channel18W<SwevtSpec> {
+        Channel18W::new(self, 18)
     }
     #[doc = "Bit 19 - Channel 19 Software Selection"]
     #[inline(always)]
-    pub fn channel19(&mut self) -> CHANNEL19_W {
-        CHANNEL19_W { w: self }
+    #[must_use]
+    pub fn channel19(&mut self) -> Channel19W<SwevtSpec> {
+        Channel19W::new(self, 19)
     }
     #[doc = "Bit 20 - Channel 20 Software Selection"]
     #[inline(always)]
-    pub fn channel20(&mut self) -> CHANNEL20_W {
-        CHANNEL20_W { w: self }
+    #[must_use]
+    pub fn channel20(&mut self) -> Channel20W<SwevtSpec> {
+        Channel20W::new(self, 20)
     }
     #[doc = "Bit 21 - Channel 21 Software Selection"]
     #[inline(always)]
-    pub fn channel21(&mut self) -> CHANNEL21_W {
-        CHANNEL21_W { w: self }
+    #[must_use]
+    pub fn channel21(&mut self) -> Channel21W<SwevtSpec> {
+        Channel21W::new(self, 21)
     }
     #[doc = "Bit 22 - Channel 22 Software Selection"]
     #[inline(always)]
-    pub fn channel22(&mut self) -> CHANNEL22_W {
-        CHANNEL22_W { w: self }
+    #[must_use]
+    pub fn channel22(&mut self) -> Channel22W<SwevtSpec> {
+        Channel22W::new(self, 22)
     }
     #[doc = "Bit 23 - Channel 23 Software Selection"]
     #[inline(always)]
-    pub fn channel23(&mut self) -> CHANNEL23_W {
-        CHANNEL23_W { w: self }
+    #[must_use]
+    pub fn channel23(&mut self) -> Channel23W<SwevtSpec> {
+        Channel23W::new(self, 23)
     }
     #[doc = "Bit 24 - Channel 24 Software Selection"]
     #[inline(always)]
-    pub fn channel24(&mut self) -> CHANNEL24_W {
-        CHANNEL24_W { w: self }
+    #[must_use]
+    pub fn channel24(&mut self) -> Channel24W<SwevtSpec> {
+        Channel24W::new(self, 24)
     }
     #[doc = "Bit 25 - Channel 25 Software Selection"]
     #[inline(always)]
-    pub fn channel25(&mut self) -> CHANNEL25_W {
-        CHANNEL25_W { w: self }
+    #[must_use]
+    pub fn channel25(&mut self) -> Channel25W<SwevtSpec> {
+        Channel25W::new(self, 25)
     }
     #[doc = "Bit 26 - Channel 26 Software Selection"]
     #[inline(always)]
-    pub fn channel26(&mut self) -> CHANNEL26_W {
-        CHANNEL26_W { w: self }
+    #[must_use]
+    pub fn channel26(&mut self) -> Channel26W<SwevtSpec> {
+        Channel26W::new(self, 26)
     }
     #[doc = "Bit 27 - Channel 27 Software Selection"]
     #[inline(always)]
-    pub fn channel27(&mut self) -> CHANNEL27_W {
-        CHANNEL27_W { w: self }
+    #[must_use]
+    pub fn channel27(&mut self) -> Channel27W<SwevtSpec> {
+        Channel27W::new(self, 27)
     }
     #[doc = "Bit 28 - Channel 28 Software Selection"]
     #[inline(always)]
-    pub fn channel28(&mut self) -> CHANNEL28_W {
-        CHANNEL28_W { w: self }
+    #[must_use]
+    pub fn channel28(&mut self) -> Channel28W<SwevtSpec> {
+        Channel28W::new(self, 28)
     }
     #[doc = "Bit 29 - Channel 29 Software Selection"]
     #[inline(always)]
-    pub fn channel29(&mut self) -> CHANNEL29_W {
-        CHANNEL29_W { w: self }
+    #[must_use]
+    pub fn channel29(&mut self) -> Channel29W<SwevtSpec> {
+        Channel29W::new(self, 29)
     }
     #[doc = "Bit 30 - Channel 30 Software Selection"]
     #[inline(always)]
-    pub fn channel30(&mut self) -> CHANNEL30_W {
-        CHANNEL30_W { w: self }
+    #[must_use]
+    pub fn channel30(&mut self) -> Channel30W<SwevtSpec> {
+        Channel30W::new(self, 30)
     }
     #[doc = "Bit 31 - Channel 31 Software Selection"]
     #[inline(always)]
-    pub fn channel31(&mut self) -> CHANNEL31_W {
-        CHANNEL31_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn channel31(&mut self) -> Channel31W<SwevtSpec> {
+        Channel31W::new(self, 31)
     }
 }
-#[doc = "Software Event\n\nThis register you can [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [swevt](index.html) module"]
-pub struct SWEVT_SPEC;
-impl crate::RegisterSpec for SWEVT_SPEC {
+#[doc = "Software Event\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`swevt::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct SwevtSpec;
+impl crate::RegisterSpec for SwevtSpec {
     type Ux = u32;
 }
-#[doc = "`write(|w| ..)` method takes [swevt::W](W) writer structure"]
-impl crate::Writable for SWEVT_SPEC {
-    type Writer = W;
+#[doc = "`write(|w| ..)` method takes [`swevt::W`](W) writer structure"]
+impl crate::Writable for SwevtSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets SWEVT to value 0"]
-impl crate::Resettable for SWEVT_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for SwevtSpec {
+    const RESET_VALUE: u32 = 0;
 }

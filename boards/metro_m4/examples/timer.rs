@@ -12,9 +12,12 @@ use panic_semihosting as _;
 
 use bsp::entry;
 use hal::clock::GenericClockController;
+use hal::ehal::digital::OutputPin;
+use hal::nb;
 use hal::pac::Peripherals;
-use hal::prelude::*;
+use hal::time::Hertz;
 use hal::timer::TimerCounter;
+use hal::timer_traits::InterruptDrivenTimer;
 
 use nb::block;
 
@@ -22,19 +25,19 @@ use nb::block;
 fn main() -> ! {
     let mut peripherals = Peripherals::take().unwrap();
     let mut clocks = GenericClockController::with_external_32kosc(
-        peripherals.GCLK,
-        &mut peripherals.MCLK,
-        &mut peripherals.OSC32KCTRL,
-        &mut peripherals.OSCCTRL,
-        &mut peripherals.NVMCTRL,
+        peripherals.gclk,
+        &mut peripherals.mclk,
+        &mut peripherals.osc32kctrl,
+        &mut peripherals.oscctrl,
+        &mut peripherals.nvmctrl,
     );
-    let pins = bsp::Pins::new(peripherals.PORT);
+    let pins = bsp::Pins::new(peripherals.port);
 
     let gclk0 = clocks.gclk0();
     let tc2_3 = clocks.tc2_tc3(&gclk0).unwrap();
-    let mut timer = TimerCounter::tc3_(&tc2_3, peripherals.TC3, &mut peripherals.MCLK);
+    let mut timer = TimerCounter::tc3_(&tc2_3, peripherals.tc3, &mut peripherals.mclk);
     // start a 5Hz timer
-    timer.start(5.hz());
+    timer.start(Hertz::Hz(5).into_duration());
     let mut red_led = pins.d13.into_push_pull_output();
 
     // toggle the led at the frequency set by the timer

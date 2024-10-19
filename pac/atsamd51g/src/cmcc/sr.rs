@@ -1,53 +1,22 @@
 #[doc = "Register `SR` reader"]
-pub struct R(crate::R<SR_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<SR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<SR_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<SR_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<SrSpec>;
 #[doc = "Field `CSTS` reader - Cache Controller Status"]
-pub struct CSTS_R(crate::FieldReader<bool, bool>);
-impl CSTS_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CSTS_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for CSTS_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type CstsR = crate::BitReader;
 impl R {
     #[doc = "Bit 0 - Cache Controller Status"]
     #[inline(always)]
-    pub fn csts(&self) -> CSTS_R {
-        CSTS_R::new((self.bits & 0x01) != 0)
+    pub fn csts(&self) -> CstsR {
+        CstsR::new((self.bits & 1) != 0)
     }
 }
-#[doc = "Cache Status Register\n\nThis register you can [`read`](crate::generic::Reg::read). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [sr](index.html) module"]
-pub struct SR_SPEC;
-impl crate::RegisterSpec for SR_SPEC {
+#[doc = "Cache Status Register\n\nYou can [`read`](crate::Reg::read) this register and get [`sr::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct SrSpec;
+impl crate::RegisterSpec for SrSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [sr::R](R) reader structure"]
-impl crate::Readable for SR_SPEC {
-    type Reader = R;
-}
+#[doc = "`read()` method returns [`sr::R`](R) reader structure"]
+impl crate::Readable for SrSpec {}
 #[doc = "`reset()` method sets SR to value 0"]
-impl crate::Resettable for SR_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for SrSpec {
+    const RESET_VALUE: u32 = 0;
 }

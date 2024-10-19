@@ -1,84 +1,91 @@
-#[doc = r"Register block"]
 #[repr(C)]
+#[doc = "Register block"]
 pub struct RegisterBlock {
     _reserved0: [u8; 0x80],
-    #[doc = "0x80 - Priority A for Slave"]
-    pub pras0: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0x84 - Priority B for Slave"]
-    pub prbs0: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0x88 - Priority A for Slave"]
-    pub pras1: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0x8c - Priority B for Slave"]
-    pub prbs1: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0x90 - Priority A for Slave"]
-    pub pras2: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0x94 - Priority B for Slave"]
-    pub prbs2: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0x98 - Priority A for Slave"]
-    pub pras3: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0x9c - Priority B for Slave"]
-    pub prbs3: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xa0 - Priority A for Slave"]
-    pub pras4: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xa4 - Priority B for Slave"]
-    pub prbs4: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xa8 - Priority A for Slave"]
-    pub pras5: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xac - Priority B for Slave"]
-    pub prbs5: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xb0 - Priority A for Slave"]
-    pub pras6: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xb4 - Priority B for Slave"]
-    pub prbs6: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xb8 - Priority A for Slave"]
-    pub pras7: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xbc - Priority B for Slave"]
-    pub prbs7: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xc0 - Priority A for Slave"]
-    pub pras8: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xc4 - Priority B for Slave"]
-    pub prbs8: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xc8 - Priority A for Slave"]
-    pub pras9: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xcc - Priority B for Slave"]
-    pub prbs9: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xd0 - Priority A for Slave"]
-    pub pras10: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xd4 - Priority B for Slave"]
-    pub prbs10: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xd8 - Priority A for Slave"]
-    pub pras11: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xdc - Priority B for Slave"]
-    pub prbs11: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xe0 - Priority A for Slave"]
-    pub pras12: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xe4 - Priority B for Slave"]
-    pub prbs12: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xe8 - Priority A for Slave"]
-    pub pras13: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xec - Priority B for Slave"]
-    pub prbs13: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xf0 - Priority A for Slave"]
-    pub pras14: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xf4 - Priority B for Slave"]
-    pub prbs14: crate::Reg<prbs::PRBS_SPEC>,
-    #[doc = "0xf8 - Priority A for Slave"]
-    pub pras15: crate::Reg<pras::PRAS_SPEC>,
-    #[doc = "0xfc - Priority B for Slave"]
-    pub prbs15: crate::Reg<prbs::PRBS_SPEC>,
-    _reserved32: [u8; 0x10],
-    #[doc = "0x110..0x150 - Special Function"]
-    pub sfr: [crate::Reg<sfr::SFR_SPEC>; 16],
+    pras: (),
+    _reserved1: [u8; 0x04],
+    prbs: (),
+    _reserved2: [u8; 0x8c],
+    sfr: [Sfr; 16],
 }
-#[doc = "PRAS register accessor: an alias for `Reg<PRAS_SPEC>`"]
-pub type PRAS = crate::Reg<pras::PRAS_SPEC>;
+impl RegisterBlock {
+    #[doc = "0x80..0xc0 - Priority A for Slave"]
+    #[inline(always)]
+    pub const fn pras(&self, n: usize) -> &Pras {
+        #[allow(clippy::no_effect)]
+        [(); 16][n];
+        unsafe {
+            &*(self as *const Self)
+                .cast::<u8>()
+                .add(128)
+                .add(8 * n)
+                .cast()
+        }
+    }
+    #[doc = "Iterator for array of:"]
+    #[doc = "0x80..0xc0 - Priority A for Slave"]
+    #[inline(always)]
+    pub fn pras_iter(&self) -> impl Iterator<Item = &Pras> {
+        (0..16).map(move |n| unsafe {
+            &*(self as *const Self)
+                .cast::<u8>()
+                .add(128)
+                .add(8 * n)
+                .cast()
+        })
+    }
+    #[doc = "0x84..0xc4 - Priority B for Slave"]
+    #[inline(always)]
+    pub const fn prbs(&self, n: usize) -> &Prbs {
+        #[allow(clippy::no_effect)]
+        [(); 16][n];
+        unsafe {
+            &*(self as *const Self)
+                .cast::<u8>()
+                .add(132)
+                .add(8 * n)
+                .cast()
+        }
+    }
+    #[doc = "Iterator for array of:"]
+    #[doc = "0x84..0xc4 - Priority B for Slave"]
+    #[inline(always)]
+    pub fn prbs_iter(&self) -> impl Iterator<Item = &Prbs> {
+        (0..16).map(move |n| unsafe {
+            &*(self as *const Self)
+                .cast::<u8>()
+                .add(132)
+                .add(8 * n)
+                .cast()
+        })
+    }
+    #[doc = "0x110..0x150 - Special Function"]
+    #[inline(always)]
+    pub const fn sfr(&self, n: usize) -> &Sfr {
+        &self.sfr[n]
+    }
+    #[doc = "Iterator for array of:"]
+    #[doc = "0x110..0x150 - Special Function"]
+    #[inline(always)]
+    pub fn sfr_iter(&self) -> impl Iterator<Item = &Sfr> {
+        self.sfr.iter()
+    }
+}
+#[doc = "PRAS (rw) register accessor: Priority A for Slave\n\nYou can [`read`](crate::Reg::read) this register and get [`pras::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pras::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pras`]
+module"]
+#[doc(alias = "PRAS")]
+pub type Pras = crate::Reg<pras::PrasSpec>;
 #[doc = "Priority A for Slave"]
 pub mod pras;
-#[doc = "PRBS register accessor: an alias for `Reg<PRBS_SPEC>`"]
-pub type PRBS = crate::Reg<prbs::PRBS_SPEC>;
+#[doc = "PRBS (rw) register accessor: Priority B for Slave\n\nYou can [`read`](crate::Reg::read) this register and get [`prbs::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`prbs::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@prbs`]
+module"]
+#[doc(alias = "PRBS")]
+pub type Prbs = crate::Reg<prbs::PrbsSpec>;
 #[doc = "Priority B for Slave"]
 pub mod prbs;
-#[doc = "SFR register accessor: an alias for `Reg<SFR_SPEC>`"]
-pub type SFR = crate::Reg<sfr::SFR_SPEC>;
+#[doc = "SFR (rw) register accessor: Special Function\n\nYou can [`read`](crate::Reg::read) this register and get [`sfr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`sfr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@sfr`]
+module"]
+#[doc(alias = "SFR")]
+pub type Sfr = crate::Reg<sfr::SfrSpec>;
 #[doc = "Special Function"]
 pub mod sfr;

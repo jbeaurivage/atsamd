@@ -1,73 +1,29 @@
 #[doc = "Register `WPSR` reader"]
-pub struct R(crate::R<WPSR_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<WPSR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<WPSR_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<WPSR_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<WpsrSpec>;
 #[doc = "Field `WPVS` reader - Write Protection Violation Source"]
-pub struct WPVS_R(crate::FieldReader<bool, bool>);
-impl WPVS_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        WPVS_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for WPVS_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type WpvsR = crate::BitReader;
 #[doc = "Field `WPVSRC` reader - Write Protection Violation Status"]
-pub struct WPVSRC_R(crate::FieldReader<u16, u16>);
-impl WPVSRC_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u16) -> Self {
-        WPVSRC_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for WPVSRC_R {
-    type Target = crate::FieldReader<u16, u16>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type WpvsrcR = crate::FieldReader<u16>;
 impl R {
     #[doc = "Bit 0 - Write Protection Violation Source"]
     #[inline(always)]
-    pub fn wpvs(&self) -> WPVS_R {
-        WPVS_R::new((self.bits & 0x01) != 0)
+    pub fn wpvs(&self) -> WpvsR {
+        WpvsR::new((self.bits & 1) != 0)
     }
     #[doc = "Bits 8:23 - Write Protection Violation Status"]
     #[inline(always)]
-    pub fn wpvsrc(&self) -> WPVSRC_R {
-        WPVSRC_R::new(((self.bits >> 8) & 0xffff) as u16)
+    pub fn wpvsrc(&self) -> WpvsrcR {
+        WpvsrcR::new(((self.bits >> 8) & 0xffff) as u16)
     }
 }
-#[doc = "Write Protection Status Register\n\nThis register you can [`read`](crate::generic::Reg::read). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [wpsr](index.html) module"]
-pub struct WPSR_SPEC;
-impl crate::RegisterSpec for WPSR_SPEC {
+#[doc = "Write Protection Status Register\n\nYou can [`read`](crate::Reg::read) this register and get [`wpsr::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct WpsrSpec;
+impl crate::RegisterSpec for WpsrSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [wpsr::R](R) reader structure"]
-impl crate::Readable for WPSR_SPEC {
-    type Reader = R;
-}
+#[doc = "`read()` method returns [`wpsr::R`](R) reader structure"]
+impl crate::Readable for WpsrSpec {}
 #[doc = "`reset()` method sets WPSR to value 0"]
-impl crate::Resettable for WPSR_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for WpsrSpec {
+    const RESET_VALUE: u32 = 0;
 }

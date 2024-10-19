@@ -27,22 +27,22 @@ fn main() -> ! {
     let mut peripherals = Peripherals::take().unwrap();
     let mut core = CorePeripherals::take().unwrap();
     let mut clocks = GenericClockController::with_external_32kosc(
-        peripherals.GCLK,
-        &mut peripherals.MCLK,
-        &mut peripherals.OSC32KCTRL,
-        &mut peripherals.OSCCTRL,
-        &mut peripherals.NVMCTRL,
+        peripherals.gclk,
+        &mut peripherals.mclk,
+        &mut peripherals.osc32kctrl,
+        &mut peripherals.oscctrl,
+        &mut peripherals.nvmctrl,
     );
-    let pins = bsp::Pins::new(peripherals.PORT);
+    let pins = bsp::Pins::new(peripherals.port);
     let mut red_led: bsp::RedLed = pins.d13.into();
 
     let bus_allocator = unsafe {
         USB_ALLOCATOR = Some(bsp::usb_allocator(
             pins.usb_dm,
             pins.usb_dp,
-            peripherals.USB,
+            peripherals.usb,
             &mut clocks,
-            &mut peripherals.MCLK,
+            &mut peripherals.mclk,
         ));
         USB_ALLOCATOR.as_ref().unwrap()
     };
@@ -51,9 +51,11 @@ fn main() -> ! {
         USB_SERIAL = Some(SerialPort::new(bus_allocator));
         USB_BUS = Some(
             UsbDeviceBuilder::new(bus_allocator, UsbVidPid(0x16c0, 0x27dd))
-                .manufacturer("Fake company")
-                .product("Serial port")
-                .serial_number("TEST")
+                .strings(&[StringDescriptors::new(LangID::EN)
+                    .manufacturer("Fake company")
+                    .product("Serial port")
+                    .serial_number("TEST")])
+                .expect("Failed to set strings")
                 .device_class(USB_CLASS_CDC)
                 .build(),
         );
@@ -70,7 +72,9 @@ fn main() -> ! {
 
     loop {
         cycle_delay(5 * 1024 * 1024);
-        red_led.toggle().unwrap();
+        red_led.set_high().unwrap();
+        cycle_delay(5 * 1024 * 1024);
+        red_led.set_low().unwrap();
     }
 }
 

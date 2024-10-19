@@ -1,151 +1,56 @@
 #[doc = "Register `TIDM[%s]` reader"]
-pub struct R(crate::R<TIDM_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<TIDM_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<TIDM_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<TIDM_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<TidmSpec>;
 #[doc = "Register `TIDM[%s]` writer"]
-pub struct W(crate::W<TIDM_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<TIDM_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<TIDM_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<TIDM_SPEC>) -> Self {
-        W(writer)
-    }
-}
-#[doc = "Field `TID` reader - Type ID Match 1"]
-pub struct TID_R(crate::FieldReader<u16, u16>);
-impl TID_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u16) -> Self {
-        TID_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for TID_R {
-    type Target = crate::FieldReader<u16, u16>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `TID` writer - Type ID Match 1"]
-pub struct TID_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> TID_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u16) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0xffff) | (value as u32 & 0xffff);
-        self.w
-    }
-}
+pub type W = crate::W<TidmSpec>;
+#[doc = "Field `TID` reader - Type ID Match n"]
+pub type TidR = crate::FieldReader<u16>;
+#[doc = "Field `TID` writer - Type ID Match n"]
+pub type TidW<'a, REG> = crate::FieldWriter<'a, REG, 16, u16>;
 #[doc = "Field `ENID` reader - Enable Copying of TID Matched Frames"]
-pub struct ENID_R(crate::FieldReader<bool, bool>);
-impl ENID_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ENID_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for ENID_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type EnidR = crate::BitReader;
 #[doc = "Field `ENID` writer - Enable Copying of TID Matched Frames"]
-pub struct ENID_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ENID_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 31)) | ((value as u32 & 0x01) << 31);
-        self.w
-    }
-}
+pub type EnidW<'a, REG> = crate::BitWriter<'a, REG>;
 impl R {
-    #[doc = "Bits 0:15 - Type ID Match 1"]
+    #[doc = "Bits 0:15 - Type ID Match n"]
     #[inline(always)]
-    pub fn tid(&self) -> TID_R {
-        TID_R::new((self.bits & 0xffff) as u16)
+    pub fn tid(&self) -> TidR {
+        TidR::new((self.bits & 0xffff) as u16)
     }
     #[doc = "Bit 31 - Enable Copying of TID Matched Frames"]
     #[inline(always)]
-    pub fn enid(&self) -> ENID_R {
-        ENID_R::new(((self.bits >> 31) & 0x01) != 0)
+    pub fn enid(&self) -> EnidR {
+        EnidR::new(((self.bits >> 31) & 1) != 0)
     }
 }
 impl W {
-    #[doc = "Bits 0:15 - Type ID Match 1"]
+    #[doc = "Bits 0:15 - Type ID Match n"]
     #[inline(always)]
-    pub fn tid(&mut self) -> TID_W {
-        TID_W { w: self }
+    #[must_use]
+    pub fn tid(&mut self) -> TidW<TidmSpec> {
+        TidW::new(self, 0)
     }
     #[doc = "Bit 31 - Enable Copying of TID Matched Frames"]
     #[inline(always)]
-    pub fn enid(&mut self) -> ENID_W {
-        ENID_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn enid(&mut self) -> EnidW<TidmSpec> {
+        EnidW::new(self, 31)
     }
 }
-#[doc = "Type ID Match Register\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [tidm](index.html) module"]
-pub struct TIDM_SPEC;
-impl crate::RegisterSpec for TIDM_SPEC {
+#[doc = "Type ID Match n Register\n\nYou can [`read`](crate::Reg::read) this register and get [`tidm::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tidm::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct TidmSpec;
+impl crate::RegisterSpec for TidmSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [tidm::R](R) reader structure"]
-impl crate::Readable for TIDM_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [tidm::W](W) writer structure"]
-impl crate::Writable for TIDM_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`tidm::R`](R) reader structure"]
+impl crate::Readable for TidmSpec {}
+#[doc = "`write(|w| ..)` method takes [`tidm::W`](W) writer structure"]
+impl crate::Writable for TidmSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets TIDM[%s]
 to value 0"]
-impl crate::Resettable for TIDM_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for TidmSpec {
+    const RESET_VALUE: u32 = 0;
 }

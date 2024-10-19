@@ -1,207 +1,217 @@
 #[doc = "Register `CTRL` reader"]
-pub struct R(crate::R<CTRL_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<CTRL_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<CTRL_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<CTRL_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<CtrlSpec>;
 #[doc = "Register `CTRL` writer"]
-pub struct W(crate::W<CTRL_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<CTRL_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
+pub type W = crate::W<CtrlSpec>;
+#[doc = "Software Reset\n\nValue on reset: 0"]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Swrstselect {
+    #[doc = "0: The peripheral is not reset"]
+    Disable = 0,
+    #[doc = "1: The peripheral is reset"]
+    Enable = 1,
 }
-impl core::ops::DerefMut for W {
+impl From<Swrstselect> for bool {
     #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<CTRL_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<CTRL_SPEC>) -> Self {
-        W(writer)
+    fn from(variant: Swrstselect) -> Self {
+        variant as u8 != 0
     }
 }
 #[doc = "Field `SWRST` reader - Software Reset"]
-pub struct SWRST_R(crate::FieldReader<bool, bool>);
-impl SWRST_R {
+pub type SwrstR = crate::BitReader<Swrstselect>;
+impl SwrstR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SWRST_R(crate::FieldReader::new(bits))
+    pub const fn variant(&self) -> Swrstselect {
+        match self.bits {
+            false => Swrstselect::Disable,
+            true => Swrstselect::Enable,
+        }
     }
-}
-impl core::ops::Deref for SWRST_R {
-    type Target = crate::FieldReader<bool, bool>;
+    #[doc = "The peripheral is not reset"]
     #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+    pub fn is_disable(&self) -> bool {
+        *self == Swrstselect::Disable
+    }
+    #[doc = "The peripheral is reset"]
+    #[inline(always)]
+    pub fn is_enable(&self) -> bool {
+        *self == Swrstselect::Enable
     }
 }
 #[doc = "Field `SWRST` writer - Software Reset"]
-pub struct SWRST_W<'a> {
-    w: &'a mut W,
+pub type SwrstW<'a, REG> = crate::BitWriter<'a, REG, Swrstselect>;
+impl<'a, REG> SwrstW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "The peripheral is not reset"]
+    #[inline(always)]
+    pub fn disable(self) -> &'a mut crate::W<REG> {
+        self.variant(Swrstselect::Disable)
+    }
+    #[doc = "The peripheral is reset"]
+    #[inline(always)]
+    pub fn enable(self) -> &'a mut crate::W<REG> {
+        self.variant(Swrstselect::Enable)
+    }
 }
-impl<'a> SWRST_W<'a> {
-    #[doc = r"Sets the field bit"]
+#[doc = "Enable\n\nValue on reset: 0"]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Enableselect {
+    #[doc = "0: The peripheral is disabled"]
+    Disable = 0,
+    #[doc = "1: The peripheral is enabled"]
+    Enable = 1,
+}
+impl From<Enableselect> for bool {
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u8 & 0x01);
-        self.w
+    fn from(variant: Enableselect) -> Self {
+        variant as u8 != 0
     }
 }
 #[doc = "Field `ENABLE` reader - Enable"]
-pub struct ENABLE_R(crate::FieldReader<bool, bool>);
-impl ENABLE_R {
+pub type EnableR = crate::BitReader<Enableselect>;
+impl EnableR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ENABLE_R(crate::FieldReader::new(bits))
+    pub const fn variant(&self) -> Enableselect {
+        match self.bits {
+            false => Enableselect::Disable,
+            true => Enableselect::Enable,
+        }
     }
-}
-impl core::ops::Deref for ENABLE_R {
-    type Target = crate::FieldReader<bool, bool>;
+    #[doc = "The peripheral is disabled"]
     #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+    pub fn is_disable(&self) -> bool {
+        *self == Enableselect::Disable
+    }
+    #[doc = "The peripheral is enabled"]
+    #[inline(always)]
+    pub fn is_enable(&self) -> bool {
+        *self == Enableselect::Enable
     }
 }
 #[doc = "Field `ENABLE` writer - Enable"]
-pub struct ENABLE_W<'a> {
-    w: &'a mut W,
+pub type EnableW<'a, REG> = crate::BitWriter<'a, REG, Enableselect>;
+impl<'a, REG> EnableW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "The peripheral is disabled"]
+    #[inline(always)]
+    pub fn disable(self) -> &'a mut crate::W<REG> {
+        self.variant(Enableselect::Disable)
+    }
+    #[doc = "The peripheral is enabled"]
+    #[inline(always)]
+    pub fn enable(self) -> &'a mut crate::W<REG> {
+        self.variant(Enableselect::Enable)
+    }
 }
-impl<'a> ENABLE_W<'a> {
-    #[doc = r"Sets the field bit"]
+#[doc = "Run in Standby\n\nValue on reset: 0"]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Runstdbyselect {
+    #[doc = "0: Generic clock is not required in standby sleep mode"]
+    Disable = 0,
+    #[doc = "1: Generic clock is required in standby sleep mode"]
+    Enable = 1,
+}
+impl From<Runstdbyselect> for bool {
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u8 & 0x01) << 1);
-        self.w
+    fn from(variant: Runstdbyselect) -> Self {
+        variant as u8 != 0
     }
 }
 #[doc = "Field `RUNSTDBY` reader - Run in Standby"]
-pub struct RUNSTDBY_R(crate::FieldReader<bool, bool>);
-impl RUNSTDBY_R {
+pub type RunstdbyR = crate::BitReader<Runstdbyselect>;
+impl RunstdbyR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        RUNSTDBY_R(crate::FieldReader::new(bits))
+    pub const fn variant(&self) -> Runstdbyselect {
+        match self.bits {
+            false => Runstdbyselect::Disable,
+            true => Runstdbyselect::Enable,
+        }
     }
-}
-impl core::ops::Deref for RUNSTDBY_R {
-    type Target = crate::FieldReader<bool, bool>;
+    #[doc = "Generic clock is not required in standby sleep mode"]
     #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+    pub fn is_disable(&self) -> bool {
+        *self == Runstdbyselect::Disable
+    }
+    #[doc = "Generic clock is required in standby sleep mode"]
+    #[inline(always)]
+    pub fn is_enable(&self) -> bool {
+        *self == Runstdbyselect::Enable
     }
 }
 #[doc = "Field `RUNSTDBY` writer - Run in Standby"]
-pub struct RUNSTDBY_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> RUNSTDBY_W<'a> {
-    #[doc = r"Sets the field bit"]
+pub type RunstdbyW<'a, REG> = crate::BitWriter<'a, REG, Runstdbyselect>;
+impl<'a, REG> RunstdbyW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "Generic clock is not required in standby sleep mode"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn disable(self) -> &'a mut crate::W<REG> {
+        self.variant(Runstdbyselect::Disable)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Generic clock is required in standby sleep mode"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 6)) | ((value as u8 & 0x01) << 6);
-        self.w
+    pub fn enable(self) -> &'a mut crate::W<REG> {
+        self.variant(Runstdbyselect::Enable)
     }
 }
 impl R {
     #[doc = "Bit 0 - Software Reset"]
     #[inline(always)]
-    pub fn swrst(&self) -> SWRST_R {
-        SWRST_R::new((self.bits & 0x01) != 0)
+    pub fn swrst(&self) -> SwrstR {
+        SwrstR::new((self.bits & 1) != 0)
     }
     #[doc = "Bit 1 - Enable"]
     #[inline(always)]
-    pub fn enable(&self) -> ENABLE_R {
-        ENABLE_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn enable(&self) -> EnableR {
+        EnableR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bit 6 - Run in Standby"]
     #[inline(always)]
-    pub fn runstdby(&self) -> RUNSTDBY_R {
-        RUNSTDBY_R::new(((self.bits >> 6) & 0x01) != 0)
+    pub fn runstdby(&self) -> RunstdbyR {
+        RunstdbyR::new(((self.bits >> 6) & 1) != 0)
     }
 }
 impl W {
     #[doc = "Bit 0 - Software Reset"]
     #[inline(always)]
-    pub fn swrst(&mut self) -> SWRST_W {
-        SWRST_W { w: self }
+    #[must_use]
+    pub fn swrst(&mut self) -> SwrstW<CtrlSpec> {
+        SwrstW::new(self, 0)
     }
     #[doc = "Bit 1 - Enable"]
     #[inline(always)]
-    pub fn enable(&mut self) -> ENABLE_W {
-        ENABLE_W { w: self }
+    #[must_use]
+    pub fn enable(&mut self) -> EnableW<CtrlSpec> {
+        EnableW::new(self, 1)
     }
     #[doc = "Bit 6 - Run in Standby"]
     #[inline(always)]
-    pub fn runstdby(&mut self) -> RUNSTDBY_W {
-        RUNSTDBY_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u8) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn runstdby(&mut self) -> RunstdbyW<CtrlSpec> {
+        RunstdbyW::new(self, 6)
     }
 }
-#[doc = "Control\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [ctrl](index.html) module"]
-pub struct CTRL_SPEC;
-impl crate::RegisterSpec for CTRL_SPEC {
+#[doc = "Control\n\nYou can [`read`](crate::Reg::read) this register and get [`ctrl::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ctrl::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct CtrlSpec;
+impl crate::RegisterSpec for CtrlSpec {
     type Ux = u8;
 }
-#[doc = "`read()` method returns [ctrl::R](R) reader structure"]
-impl crate::Readable for CTRL_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [ctrl::W](W) writer structure"]
-impl crate::Writable for CTRL_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`ctrl::R`](R) reader structure"]
+impl crate::Readable for CtrlSpec {}
+#[doc = "`write(|w| ..)` method takes [`ctrl::W`](W) writer structure"]
+impl crate::Writable for CtrlSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
 }
 #[doc = "`reset()` method sets CTRL to value 0"]
-impl crate::Resettable for CTRL_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for CtrlSpec {
+    const RESET_VALUE: u8 = 0;
 }

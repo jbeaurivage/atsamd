@@ -18,9 +18,9 @@ use hal::time::Hertz;
 use hal::usb::{usb_device::bus::UsbBusAllocator, UsbBus};
 
 hal::bsp_peripherals!(
-    SERCOM0 { UartSercom }
-    SERCOM3 { I2cSercom }
-    SERCOM4 { SpiSercom }
+    Sercom0 { UartSercom }
+    Sercom3 { I2cSercom }
+    Sercom4 { SpiSercom }
 );
 
 /// Definitions related to pins and pin aliases
@@ -169,12 +169,12 @@ pub mod pins {
             }
         }
 
-        #[cfg(all(feature = "rfm", not(feature = "express")))]
+        #[cfg(all(feature = "rfm", not(feature = "express"), not(feature = "winc")))]
         PA06 {
             /// SPI chip select for the RFM module
             name: rfm_cs
         }
-        #[cfg(all(feature = "rfm", not(feature = "express"), not(feature = "adalogger")))]
+        #[cfg(all(feature = "rfm", not(feature = "express"), not(feature = "adalogger"), not(feature = "winc")))]
         PA08 {
             /// Reset for the RFM module
             name: rfm_reset
@@ -185,7 +185,7 @@ pub mod pins {
             name: rfm_irq
         }
 
-        #[cfg(all(feature = "express", not(feature = "rfm")))]
+        #[cfg(all(feature = "express", not(feature = "rfm"), not(feature = "winc")))]
         PA06 {
             /// Neopixel data
             name: neopixel
@@ -196,12 +196,12 @@ pub mod pins {
             /// SPI clock for the external flash
             name: flash_sclk
         }
-        #[cfg(all(feature = "express", not(feature = "rfm"), not(feature = "adalogger")))]
+        #[cfg(all(feature = "express", not(feature = "rfm"), not(feature = "adalogger"), not(feature = "winc")))]
         PA08 {
             /// SPI MOSI for the external flash
             name: flash_mosi
         }
-        #[cfg(feature = "express")]
+        #[cfg(all(feature = "express", not(feature= "winc")))]
         PA14 {
             /// SPI MISO for the external flash
             name: flash_miso
@@ -212,7 +212,7 @@ pub mod pins {
             name: flash_cs
         }
 
-        #[cfg(all(feature = "adalogger", not(feature = "rfm"), not(feature = "express")))]
+        #[cfg(all(feature = "adalogger", not(feature = "rfm"), not(feature = "express"), not(feature = "winc")))]
         PA08 {
             /// SD card SPI chip select
             name: sd_cs
@@ -220,7 +220,7 @@ pub mod pins {
                 PushPullOutput: SdCs
             }
         },
-        #[cfg(all(feature = "adalogger", not(feature = "rfm"), not(feature = "express")))]
+        #[cfg(all(feature = "adalogger", not(feature = "rfm"), not(feature = "express") , not(feature = "winc")))]
         PA21 {
             /// SD card detect
             name: sd_cd
@@ -228,6 +228,43 @@ pub mod pins {
                 PullUpInput: SdCd
             }
         },
+
+        #[cfg(all(feature = "winc", not(feature = "rfm"), not(feature = "express"), not(feature = "adalogger")))]
+        PA08 {
+            /// Reset for the WINC1500 module
+            name: winc_rst
+            aliases: {
+                PushPullOutput: WincRst
+            }
+        },
+
+        #[cfg(all(feature = "winc", not(feature= "express")))]
+        PA14 {
+            /// Enable for the WINC1500 module
+            name: winc_ena
+            aliases: {
+                PushPullOutput: WincEna
+            }
+        }
+
+        #[cfg(all(feature = "winc", not(feature = "adalogger")))]
+        PA21 {
+            /// Interrupt for the WINC1500 module
+            name: winc_irq
+            aliases: {
+                PullUpInterrupt: WincIrq
+            }
+        },
+
+        #[cfg(all(feature = "winc", not(feature = "rfm"), not(feature = "express")))]
+        PA06 {
+            /// SPI chip select for the WINC1500 module
+            name: winc_cs
+            aliases: {
+                PushPullOutput: WincCs
+            }
+        },
+
     );
 }
 pub use pins::*;
@@ -247,9 +284,9 @@ pub type Spi = spi::Spi<spi::Config<SpiPads>, spi::Duplex>;
 /// SPI Master in SPI Mode 0.
 pub fn spi_master(
     clocks: &mut GenericClockController,
-    baud: impl Into<Hertz>,
+    baud: Hertz,
     sercom: SpiSercom,
-    pm: &mut pac::PM,
+    pm: &mut pac::Pm,
     sclk: impl Into<Sclk>,
     mosi: impl Into<Mosi>,
     miso: impl Into<Miso>,
@@ -283,7 +320,7 @@ pub fn i2c_master(
     clocks: &mut GenericClockController,
     baud: impl Into<Hertz>,
     sercom: I2cSercom,
-    pm: &mut pac::PM,
+    pm: &mut pac::Pm,
     sda: impl Into<Sda>,
     scl: impl Into<Scl>,
 ) -> I2c {
@@ -307,7 +344,7 @@ pub fn uart(
     clocks: &mut GenericClockController,
     baud: impl Into<Hertz>,
     sercom: UartSercom,
-    pm: &mut pac::PM,
+    pm: &mut pac::Pm,
     uart_rx: impl Into<UartRx>,
     uart_tx: impl Into<UartTx>,
 ) -> Uart {
@@ -323,9 +360,9 @@ pub fn uart(
 #[cfg(feature = "usb")]
 /// Convenience function for setting up USB
 pub fn usb_allocator(
-    usb: pac::USB,
+    usb: pac::Usb,
     clocks: &mut GenericClockController,
-    pm: &mut pac::PM,
+    pm: &mut pac::Pm,
     dm: impl Into<UsbDm>,
     dp: impl Into<UsbDp>,
 ) -> UsbBusAllocator<UsbBus> {

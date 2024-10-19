@@ -12,10 +12,10 @@ use panic_halt as _;
 use panic_semihosting as _;
 
 use bsp::entry;
-use ehal::digital::v2::ToggleableOutputPin;
+use ehal::digital::StatefulOutputPin;
 use hal::clock::GenericClockController;
 use hal::dsu::Dsu;
-use hal::nvm::{retrieve_bank_size, Bank, EraseGranularity, Nvm, BLOCKSIZE};
+use hal::nvm::{retrieve_bank_size, Bank, Nvm, WriteGranularity, BLOCKSIZE};
 use hal::pac::{interrupt, CorePeripherals, Peripherals};
 use hal::usb::UsbBus;
 
@@ -33,24 +33,24 @@ fn main() -> ! {
     let mut peripherals = Peripherals::take().unwrap();
     let mut core = CorePeripherals::take().unwrap();
     let mut clocks = GenericClockController::with_external_32kosc(
-        peripherals.GCLK,
-        &mut peripherals.MCLK,
-        &mut peripherals.OSC32KCTRL,
-        &mut peripherals.OSCCTRL,
-        &mut peripherals.NVMCTRL,
+        peripherals.gclk,
+        &mut peripherals.mclk,
+        &mut peripherals.osc32kctrl,
+        &mut peripherals.oscctrl,
+        &mut peripherals.nvmctrl,
     );
-    let pins = bsp::Pins::new(peripherals.PORT);
+    let pins = bsp::Pins::new(peripherals.port);
     let mut red_led = pins.d13.into_push_pull_output();
-    let mut nvm = Nvm::new(peripherals.NVMCTRL);
-    let mut dsu = Dsu::new(peripherals.DSU, &peripherals.PAC).unwrap();
+    let mut nvm = Nvm::new(peripherals.nvmctrl);
+    let mut dsu = Dsu::new(peripherals.dsu, &peripherals.pac).unwrap();
 
     let bus_allocator = unsafe {
         USB_ALLOCATOR = Some(bsp::usb_allocator(
             pins.usb_dm,
             pins.usb_dp,
-            peripherals.USB,
+            peripherals.usb,
             &mut clocks,
-            &mut peripherals.MCLK,
+            &mut peripherals.mclk,
         ));
         USB_ALLOCATOR.as_ref().unwrap()
     };
@@ -59,9 +59,11 @@ fn main() -> ! {
         USB_SERIAL = Some(SerialPort::new(bus_allocator));
         USB_BUS = Some(
             UsbDeviceBuilder::new(bus_allocator, UsbVidPid(0x16c0, 0x27dd))
-                .manufacturer("Fake company")
-                .product("Serial port")
-                .serial_number("TEST")
+                .strings(&[StringDescriptors::new(LangID::EN)
+                    .manufacturer("Fake company")
+                    .product("Serial port")
+                    .serial_number("TEST")])
+                .expect("Failed to set strings")
                 .device_class(USB_CLASS_CDC)
                 .build(),
         );
@@ -105,17 +107,14 @@ fn main() -> ! {
         if crc32_checksum_active_bank != crc32_checksum_inactive_bank {
             serial_writeln!("Checksums differ: overwrite inactive bank with active one");
             serial_writeln!("Erase inactive bank");
-            nvm.erase(
-                inactive_bank_address,
-                bank_size_in_blocks,
-                EraseGranularity::Block,
-            )
-            .unwrap();
+            nvm.erase_flash(inactive_bank_address as *mut _, bank_size_in_blocks)
+                .unwrap();
             serial_writeln!("Overwrite inactive bank with active bank");
-            nvm.write(
-                inactive_bank_address,
-                active_bank_address,
+            nvm.write_flash(
+                inactive_bank_address as *mut _,
+                active_bank_address as *const _,
                 bank_size_in_words,
+                WriteGranularity::Page,
             )
             .unwrap();
             serial_writeln!("Swapping banks & reset!");

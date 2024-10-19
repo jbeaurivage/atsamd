@@ -1,103 +1,40 @@
 #[doc = "Register `NSC` reader"]
-pub struct R(crate::R<NSC_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<NSC_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<NSC_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<NSC_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<NscSpec>;
 #[doc = "Register `NSC` writer"]
-pub struct W(crate::W<NSC_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<NSC_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<NSC_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<NSC_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<NscSpec>;
 #[doc = "Field `NANOSEC` reader - 1588 Timer Nanosecond comparison value"]
-pub struct NANOSEC_R(crate::FieldReader<u32, u32>);
-impl NANOSEC_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u32) -> Self {
-        NANOSEC_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for NANOSEC_R {
-    type Target = crate::FieldReader<u32, u32>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type NanosecR = crate::FieldReader<u32>;
 #[doc = "Field `NANOSEC` writer - 1588 Timer Nanosecond comparison value"]
-pub struct NANOSEC_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> NANOSEC_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u32) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x001f_ffff) | (value as u32 & 0x001f_ffff);
-        self.w
-    }
-}
+pub type NanosecW<'a, REG> = crate::FieldWriter<'a, REG, 21, u32>;
 impl R {
     #[doc = "Bits 0:20 - 1588 Timer Nanosecond comparison value"]
     #[inline(always)]
-    pub fn nanosec(&self) -> NANOSEC_R {
-        NANOSEC_R::new((self.bits & 0x001f_ffff) as u32)
+    pub fn nanosec(&self) -> NanosecR {
+        NanosecR::new(self.bits & 0x001f_ffff)
     }
 }
 impl W {
     #[doc = "Bits 0:20 - 1588 Timer Nanosecond comparison value"]
     #[inline(always)]
-    pub fn nanosec(&mut self) -> NANOSEC_W {
-        NANOSEC_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn nanosec(&mut self) -> NanosecW<NscSpec> {
+        NanosecW::new(self, 0)
     }
 }
-#[doc = "Tsu timer comparison nanoseconds Register\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [nsc](index.html) module"]
-pub struct NSC_SPEC;
-impl crate::RegisterSpec for NSC_SPEC {
+#[doc = "Tsu timer comparison nanoseconds Register\n\nYou can [`read`](crate::Reg::read) this register and get [`nsc::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`nsc::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct NscSpec;
+impl crate::RegisterSpec for NscSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [nsc::R](R) reader structure"]
-impl crate::Readable for NSC_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [nsc::W](W) writer structure"]
-impl crate::Writable for NSC_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`nsc::R`](R) reader structure"]
+impl crate::Readable for NscSpec {}
+#[doc = "`write(|w| ..)` method takes [`nsc::W`](W) writer structure"]
+impl crate::Writable for NscSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets NSC to value 0"]
-impl crate::Resettable for NSC_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for NscSpec {
+    const RESET_VALUE: u32 = 0;
 }

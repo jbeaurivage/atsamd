@@ -1,112 +1,21 @@
 #[doc = "Register `STATUS` reader"]
-pub struct R(crate::R<STATUS_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<STATUS_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<STATUS_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<STATUS_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<StatusSpec>;
 #[doc = "Field `READY` reader - Ready to accept a command"]
-pub struct READY_R(crate::FieldReader<bool, bool>);
-impl READY_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        READY_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for READY_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type ReadyR = crate::BitReader;
 #[doc = "Field `PRM` reader - Power Reduction Mode"]
-pub struct PRM_R(crate::FieldReader<bool, bool>);
-impl PRM_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        PRM_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for PRM_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type PrmR = crate::BitReader;
 #[doc = "Field `LOAD` reader - NVM Page Buffer Active Loading"]
-pub struct LOAD_R(crate::FieldReader<bool, bool>);
-impl LOAD_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        LOAD_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for LOAD_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type LoadR = crate::BitReader;
 #[doc = "Field `SUSP` reader - NVM Write Or Erase Operation Is Suspended"]
-pub struct SUSP_R(crate::FieldReader<bool, bool>);
-impl SUSP_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        SUSP_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for SUSP_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type SuspR = crate::BitReader;
 #[doc = "Field `AFIRST` reader - BANKA First"]
-pub struct AFIRST_R(crate::FieldReader<bool, bool>);
-impl AFIRST_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        AFIRST_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for AFIRST_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type AfirstR = crate::BitReader;
 #[doc = "Field `BPDIS` reader - Boot Loader Protection Disable"]
-pub struct BPDIS_R(crate::FieldReader<bool, bool>);
-impl BPDIS_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        BPDIS_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for BPDIS_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type BpdisR = crate::BitReader;
 #[doc = "Boot Loader Protection Size\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum BOOTPROT_A {
+pub enum Bootprotselect {
     #[doc = "15: 0 kbytes"]
     _0 = 15,
     #[doc = "14: 8 kbytes"]
@@ -140,180 +49,168 @@ pub enum BOOTPROT_A {
     #[doc = "0: 120 kbytes"]
     _120 = 0,
 }
-impl From<BOOTPROT_A> for u8 {
+impl From<Bootprotselect> for u8 {
     #[inline(always)]
-    fn from(variant: BOOTPROT_A) -> Self {
+    fn from(variant: Bootprotselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Bootprotselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Bootprotselect {}
 #[doc = "Field `BOOTPROT` reader - Boot Loader Protection Size"]
-pub struct BOOTPROT_R(crate::FieldReader<u8, BOOTPROT_A>);
-impl BOOTPROT_R {
+pub type BootprotR = crate::FieldReader<Bootprotselect>;
+impl BootprotR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        BOOTPROT_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> BOOTPROT_A {
+    pub const fn variant(&self) -> Bootprotselect {
         match self.bits {
-            15 => BOOTPROT_A::_0,
-            14 => BOOTPROT_A::_8,
-            13 => BOOTPROT_A::_16,
-            12 => BOOTPROT_A::_24,
-            11 => BOOTPROT_A::_32,
-            10 => BOOTPROT_A::_40,
-            9 => BOOTPROT_A::_48,
-            8 => BOOTPROT_A::_56,
-            7 => BOOTPROT_A::_64,
-            6 => BOOTPROT_A::_72,
-            5 => BOOTPROT_A::_80,
-            4 => BOOTPROT_A::_88,
-            3 => BOOTPROT_A::_96,
-            2 => BOOTPROT_A::_104,
-            1 => BOOTPROT_A::_112,
-            0 => BOOTPROT_A::_120,
+            15 => Bootprotselect::_0,
+            14 => Bootprotselect::_8,
+            13 => Bootprotselect::_16,
+            12 => Bootprotselect::_24,
+            11 => Bootprotselect::_32,
+            10 => Bootprotselect::_40,
+            9 => Bootprotselect::_48,
+            8 => Bootprotselect::_56,
+            7 => Bootprotselect::_64,
+            6 => Bootprotselect::_72,
+            5 => Bootprotselect::_80,
+            4 => Bootprotselect::_88,
+            3 => Bootprotselect::_96,
+            2 => Bootprotselect::_104,
+            1 => Bootprotselect::_112,
+            0 => Bootprotselect::_120,
             _ => unreachable!(),
         }
     }
-    #[doc = "Checks if the value of the field is `_0`"]
+    #[doc = "0 kbytes"]
     #[inline(always)]
     pub fn is_0(&self) -> bool {
-        **self == BOOTPROT_A::_0
+        *self == Bootprotselect::_0
     }
-    #[doc = "Checks if the value of the field is `_8`"]
+    #[doc = "8 kbytes"]
     #[inline(always)]
     pub fn is_8(&self) -> bool {
-        **self == BOOTPROT_A::_8
+        *self == Bootprotselect::_8
     }
-    #[doc = "Checks if the value of the field is `_16`"]
+    #[doc = "16 kbytes"]
     #[inline(always)]
     pub fn is_16(&self) -> bool {
-        **self == BOOTPROT_A::_16
+        *self == Bootprotselect::_16
     }
-    #[doc = "Checks if the value of the field is `_24`"]
+    #[doc = "24 kbytes"]
     #[inline(always)]
     pub fn is_24(&self) -> bool {
-        **self == BOOTPROT_A::_24
+        *self == Bootprotselect::_24
     }
-    #[doc = "Checks if the value of the field is `_32`"]
+    #[doc = "32 kbytes"]
     #[inline(always)]
     pub fn is_32(&self) -> bool {
-        **self == BOOTPROT_A::_32
+        *self == Bootprotselect::_32
     }
-    #[doc = "Checks if the value of the field is `_40`"]
+    #[doc = "40 kbytes"]
     #[inline(always)]
     pub fn is_40(&self) -> bool {
-        **self == BOOTPROT_A::_40
+        *self == Bootprotselect::_40
     }
-    #[doc = "Checks if the value of the field is `_48`"]
+    #[doc = "48 kbytes"]
     #[inline(always)]
     pub fn is_48(&self) -> bool {
-        **self == BOOTPROT_A::_48
+        *self == Bootprotselect::_48
     }
-    #[doc = "Checks if the value of the field is `_56`"]
+    #[doc = "56 kbytes"]
     #[inline(always)]
     pub fn is_56(&self) -> bool {
-        **self == BOOTPROT_A::_56
+        *self == Bootprotselect::_56
     }
-    #[doc = "Checks if the value of the field is `_64`"]
+    #[doc = "64 kbytes"]
     #[inline(always)]
     pub fn is_64(&self) -> bool {
-        **self == BOOTPROT_A::_64
+        *self == Bootprotselect::_64
     }
-    #[doc = "Checks if the value of the field is `_72`"]
+    #[doc = "72 kbytes"]
     #[inline(always)]
     pub fn is_72(&self) -> bool {
-        **self == BOOTPROT_A::_72
+        *self == Bootprotselect::_72
     }
-    #[doc = "Checks if the value of the field is `_80`"]
+    #[doc = "80 kbytes"]
     #[inline(always)]
     pub fn is_80(&self) -> bool {
-        **self == BOOTPROT_A::_80
+        *self == Bootprotselect::_80
     }
-    #[doc = "Checks if the value of the field is `_88`"]
+    #[doc = "88 kbytes"]
     #[inline(always)]
     pub fn is_88(&self) -> bool {
-        **self == BOOTPROT_A::_88
+        *self == Bootprotselect::_88
     }
-    #[doc = "Checks if the value of the field is `_96`"]
+    #[doc = "96 kbytes"]
     #[inline(always)]
     pub fn is_96(&self) -> bool {
-        **self == BOOTPROT_A::_96
+        *self == Bootprotselect::_96
     }
-    #[doc = "Checks if the value of the field is `_104`"]
+    #[doc = "104 kbytes"]
     #[inline(always)]
     pub fn is_104(&self) -> bool {
-        **self == BOOTPROT_A::_104
+        *self == Bootprotselect::_104
     }
-    #[doc = "Checks if the value of the field is `_112`"]
+    #[doc = "112 kbytes"]
     #[inline(always)]
     pub fn is_112(&self) -> bool {
-        **self == BOOTPROT_A::_112
+        *self == Bootprotselect::_112
     }
-    #[doc = "Checks if the value of the field is `_120`"]
+    #[doc = "120 kbytes"]
     #[inline(always)]
     pub fn is_120(&self) -> bool {
-        **self == BOOTPROT_A::_120
-    }
-}
-impl core::ops::Deref for BOOTPROT_R {
-    type Target = crate::FieldReader<u8, BOOTPROT_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Bootprotselect::_120
     }
 }
 impl R {
     #[doc = "Bit 0 - Ready to accept a command"]
     #[inline(always)]
-    pub fn ready(&self) -> READY_R {
-        READY_R::new((self.bits & 0x01) != 0)
+    pub fn ready(&self) -> ReadyR {
+        ReadyR::new((self.bits & 1) != 0)
     }
     #[doc = "Bit 1 - Power Reduction Mode"]
     #[inline(always)]
-    pub fn prm(&self) -> PRM_R {
-        PRM_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn prm(&self) -> PrmR {
+        PrmR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bit 2 - NVM Page Buffer Active Loading"]
     #[inline(always)]
-    pub fn load(&self) -> LOAD_R {
-        LOAD_R::new(((self.bits >> 2) & 0x01) != 0)
+    pub fn load(&self) -> LoadR {
+        LoadR::new(((self.bits >> 2) & 1) != 0)
     }
     #[doc = "Bit 3 - NVM Write Or Erase Operation Is Suspended"]
     #[inline(always)]
-    pub fn susp(&self) -> SUSP_R {
-        SUSP_R::new(((self.bits >> 3) & 0x01) != 0)
+    pub fn susp(&self) -> SuspR {
+        SuspR::new(((self.bits >> 3) & 1) != 0)
     }
     #[doc = "Bit 4 - BANKA First"]
     #[inline(always)]
-    pub fn afirst(&self) -> AFIRST_R {
-        AFIRST_R::new(((self.bits >> 4) & 0x01) != 0)
+    pub fn afirst(&self) -> AfirstR {
+        AfirstR::new(((self.bits >> 4) & 1) != 0)
     }
     #[doc = "Bit 5 - Boot Loader Protection Disable"]
     #[inline(always)]
-    pub fn bpdis(&self) -> BPDIS_R {
-        BPDIS_R::new(((self.bits >> 5) & 0x01) != 0)
+    pub fn bpdis(&self) -> BpdisR {
+        BpdisR::new(((self.bits >> 5) & 1) != 0)
     }
     #[doc = "Bits 8:11 - Boot Loader Protection Size"]
     #[inline(always)]
-    pub fn bootprot(&self) -> BOOTPROT_R {
-        BOOTPROT_R::new(((self.bits >> 8) & 0x0f) as u8)
+    pub fn bootprot(&self) -> BootprotR {
+        BootprotR::new(((self.bits >> 8) & 0x0f) as u8)
     }
 }
-#[doc = "Status\n\nThis register you can [`read`](crate::generic::Reg::read). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [status](index.html) module"]
-pub struct STATUS_SPEC;
-impl crate::RegisterSpec for STATUS_SPEC {
+#[doc = "Status\n\nYou can [`read`](crate::Reg::read) this register and get [`status::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct StatusSpec;
+impl crate::RegisterSpec for StatusSpec {
     type Ux = u16;
 }
-#[doc = "`read()` method returns [status::R](R) reader structure"]
-impl crate::Readable for STATUS_SPEC {
-    type Reader = R;
-}
+#[doc = "`read()` method returns [`status::R`](R) reader structure"]
+impl crate::Readable for StatusSpec {}
 #[doc = "`reset()` method sets STATUS to value 0"]
-impl crate::Resettable for STATUS_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for StatusSpec {
+    const RESET_VALUE: u16 = 0;
 }

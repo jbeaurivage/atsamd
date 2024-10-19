@@ -1,1100 +1,729 @@
 #[doc = "Register `EISTR_EMMC_MODE` reader"]
-pub struct R(crate::R<EISTR_EMMC_MODE_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<EISTR_EMMC_MODE_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<EISTR_EMMC_MODE_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<EISTR_EMMC_MODE_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<EistrEmmcModeSpec>;
 #[doc = "Register `EISTR_EMMC_MODE` writer"]
-pub struct W(crate::W<EISTR_EMMC_MODE_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<EISTR_EMMC_MODE_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<EISTR_EMMC_MODE_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<EISTR_EMMC_MODE_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<EistrEmmcModeSpec>;
 #[doc = "Command Timeout Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CMDTEO_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Cmdteoselect {
     #[doc = "0: No Error"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Timeout"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<CMDTEO_A> for bool {
+impl From<Cmdteoselect> for bool {
     #[inline(always)]
-    fn from(variant: CMDTEO_A) -> Self {
+    fn from(variant: Cmdteoselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `CMDTEO` reader - Command Timeout Error"]
-pub struct CMDTEO_R(crate::FieldReader<bool, CMDTEO_A>);
-impl CMDTEO_R {
+pub type CmdteoR = crate::BitReader<Cmdteoselect>;
+impl CmdteoR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CMDTEO_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> CMDTEO_A {
+    pub const fn variant(&self) -> Cmdteoselect {
         match self.bits {
-            false => CMDTEO_A::NO,
-            true => CMDTEO_A::YES,
+            false => Cmdteoselect::No,
+            true => Cmdteoselect::Yes,
         }
-    }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == CMDTEO_A::NO
-    }
-    #[doc = "Checks if the value of the field is `YES`"]
-    #[inline(always)]
-    pub fn is_yes(&self) -> bool {
-        **self == CMDTEO_A::YES
-    }
-}
-impl core::ops::Deref for CMDTEO_R {
-    type Target = crate::FieldReader<bool, CMDTEO_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `CMDTEO` writer - Command Timeout Error"]
-pub struct CMDTEO_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CMDTEO_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: CMDTEO_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "No Error"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(CMDTEO_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Cmdteoselect::No
     }
     #[doc = "Timeout"]
     #[inline(always)]
-    pub fn yes(self) -> &'a mut W {
-        self.variant(CMDTEO_A::YES)
+    pub fn is_yes(&self) -> bool {
+        *self == Cmdteoselect::Yes
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `CMDTEO` writer - Command Timeout Error"]
+pub type CmdteoW<'a, REG> = crate::BitWriter<'a, REG, Cmdteoselect>;
+impl<'a, REG> CmdteoW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "No Error"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Cmdteoselect::No)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Timeout"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u16 & 0x01);
-        self.w
+    pub fn yes(self) -> &'a mut crate::W<REG> {
+        self.variant(Cmdteoselect::Yes)
     }
 }
 #[doc = "Command CRC Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CMDCRC_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Cmdcrcselect {
     #[doc = "0: No Error"]
-    NO = 0,
+    No = 0,
     #[doc = "1: CRC Error Generated"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<CMDCRC_A> for bool {
+impl From<Cmdcrcselect> for bool {
     #[inline(always)]
-    fn from(variant: CMDCRC_A) -> Self {
+    fn from(variant: Cmdcrcselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `CMDCRC` reader - Command CRC Error"]
-pub struct CMDCRC_R(crate::FieldReader<bool, CMDCRC_A>);
-impl CMDCRC_R {
+pub type CmdcrcR = crate::BitReader<Cmdcrcselect>;
+impl CmdcrcR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CMDCRC_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> CMDCRC_A {
+    pub const fn variant(&self) -> Cmdcrcselect {
         match self.bits {
-            false => CMDCRC_A::NO,
-            true => CMDCRC_A::YES,
+            false => Cmdcrcselect::No,
+            true => Cmdcrcselect::Yes,
         }
-    }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == CMDCRC_A::NO
-    }
-    #[doc = "Checks if the value of the field is `YES`"]
-    #[inline(always)]
-    pub fn is_yes(&self) -> bool {
-        **self == CMDCRC_A::YES
-    }
-}
-impl core::ops::Deref for CMDCRC_R {
-    type Target = crate::FieldReader<bool, CMDCRC_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `CMDCRC` writer - Command CRC Error"]
-pub struct CMDCRC_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CMDCRC_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: CMDCRC_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "No Error"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(CMDCRC_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Cmdcrcselect::No
     }
     #[doc = "CRC Error Generated"]
     #[inline(always)]
-    pub fn yes(self) -> &'a mut W {
-        self.variant(CMDCRC_A::YES)
+    pub fn is_yes(&self) -> bool {
+        *self == Cmdcrcselect::Yes
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `CMDCRC` writer - Command CRC Error"]
+pub type CmdcrcW<'a, REG> = crate::BitWriter<'a, REG, Cmdcrcselect>;
+impl<'a, REG> CmdcrcW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "No Error"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Cmdcrcselect::No)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "CRC Error Generated"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u16 & 0x01) << 1);
-        self.w
+    pub fn yes(self) -> &'a mut crate::W<REG> {
+        self.variant(Cmdcrcselect::Yes)
     }
 }
 #[doc = "Command End Bit Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CMDEND_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Cmdendselect {
     #[doc = "0: No error"]
-    NO = 0,
+    No = 0,
     #[doc = "1: End Bit Error Generated"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<CMDEND_A> for bool {
+impl From<Cmdendselect> for bool {
     #[inline(always)]
-    fn from(variant: CMDEND_A) -> Self {
+    fn from(variant: Cmdendselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `CMDEND` reader - Command End Bit Error"]
-pub struct CMDEND_R(crate::FieldReader<bool, CMDEND_A>);
-impl CMDEND_R {
+pub type CmdendR = crate::BitReader<Cmdendselect>;
+impl CmdendR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CMDEND_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> CMDEND_A {
+    pub const fn variant(&self) -> Cmdendselect {
         match self.bits {
-            false => CMDEND_A::NO,
-            true => CMDEND_A::YES,
+            false => Cmdendselect::No,
+            true => Cmdendselect::Yes,
         }
-    }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == CMDEND_A::NO
-    }
-    #[doc = "Checks if the value of the field is `YES`"]
-    #[inline(always)]
-    pub fn is_yes(&self) -> bool {
-        **self == CMDEND_A::YES
-    }
-}
-impl core::ops::Deref for CMDEND_R {
-    type Target = crate::FieldReader<bool, CMDEND_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `CMDEND` writer - Command End Bit Error"]
-pub struct CMDEND_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CMDEND_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: CMDEND_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "No error"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(CMDEND_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Cmdendselect::No
     }
     #[doc = "End Bit Error Generated"]
     #[inline(always)]
-    pub fn yes(self) -> &'a mut W {
-        self.variant(CMDEND_A::YES)
+    pub fn is_yes(&self) -> bool {
+        *self == Cmdendselect::Yes
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `CMDEND` writer - Command End Bit Error"]
+pub type CmdendW<'a, REG> = crate::BitWriter<'a, REG, Cmdendselect>;
+impl<'a, REG> CmdendW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "No error"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Cmdendselect::No)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "End Bit Error Generated"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 2)) | ((value as u16 & 0x01) << 2);
-        self.w
+    pub fn yes(self) -> &'a mut crate::W<REG> {
+        self.variant(Cmdendselect::Yes)
     }
 }
 #[doc = "Command Index Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CMDIDX_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Cmdidxselect {
     #[doc = "0: No Error"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Error"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<CMDIDX_A> for bool {
+impl From<Cmdidxselect> for bool {
     #[inline(always)]
-    fn from(variant: CMDIDX_A) -> Self {
+    fn from(variant: Cmdidxselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `CMDIDX` reader - Command Index Error"]
-pub struct CMDIDX_R(crate::FieldReader<bool, CMDIDX_A>);
-impl CMDIDX_R {
+pub type CmdidxR = crate::BitReader<Cmdidxselect>;
+impl CmdidxR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CMDIDX_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> CMDIDX_A {
+    pub const fn variant(&self) -> Cmdidxselect {
         match self.bits {
-            false => CMDIDX_A::NO,
-            true => CMDIDX_A::YES,
+            false => Cmdidxselect::No,
+            true => Cmdidxselect::Yes,
         }
-    }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == CMDIDX_A::NO
-    }
-    #[doc = "Checks if the value of the field is `YES`"]
-    #[inline(always)]
-    pub fn is_yes(&self) -> bool {
-        **self == CMDIDX_A::YES
-    }
-}
-impl core::ops::Deref for CMDIDX_R {
-    type Target = crate::FieldReader<bool, CMDIDX_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `CMDIDX` writer - Command Index Error"]
-pub struct CMDIDX_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CMDIDX_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: CMDIDX_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "No Error"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(CMDIDX_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Cmdidxselect::No
     }
     #[doc = "Error"]
     #[inline(always)]
-    pub fn yes(self) -> &'a mut W {
-        self.variant(CMDIDX_A::YES)
+    pub fn is_yes(&self) -> bool {
+        *self == Cmdidxselect::Yes
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `CMDIDX` writer - Command Index Error"]
+pub type CmdidxW<'a, REG> = crate::BitWriter<'a, REG, Cmdidxselect>;
+impl<'a, REG> CmdidxW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "No Error"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Cmdidxselect::No)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Error"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 3)) | ((value as u16 & 0x01) << 3);
-        self.w
+    pub fn yes(self) -> &'a mut crate::W<REG> {
+        self.variant(Cmdidxselect::Yes)
     }
 }
 #[doc = "Data Timeout Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum DATTEO_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Datteoselect {
     #[doc = "0: No Error"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Timeout"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<DATTEO_A> for bool {
+impl From<Datteoselect> for bool {
     #[inline(always)]
-    fn from(variant: DATTEO_A) -> Self {
+    fn from(variant: Datteoselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `DATTEO` reader - Data Timeout Error"]
-pub struct DATTEO_R(crate::FieldReader<bool, DATTEO_A>);
-impl DATTEO_R {
+pub type DatteoR = crate::BitReader<Datteoselect>;
+impl DatteoR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        DATTEO_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> DATTEO_A {
+    pub const fn variant(&self) -> Datteoselect {
         match self.bits {
-            false => DATTEO_A::NO,
-            true => DATTEO_A::YES,
+            false => Datteoselect::No,
+            true => Datteoselect::Yes,
         }
-    }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == DATTEO_A::NO
-    }
-    #[doc = "Checks if the value of the field is `YES`"]
-    #[inline(always)]
-    pub fn is_yes(&self) -> bool {
-        **self == DATTEO_A::YES
-    }
-}
-impl core::ops::Deref for DATTEO_R {
-    type Target = crate::FieldReader<bool, DATTEO_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `DATTEO` writer - Data Timeout Error"]
-pub struct DATTEO_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DATTEO_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: DATTEO_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "No Error"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(DATTEO_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Datteoselect::No
     }
     #[doc = "Timeout"]
     #[inline(always)]
-    pub fn yes(self) -> &'a mut W {
-        self.variant(DATTEO_A::YES)
+    pub fn is_yes(&self) -> bool {
+        *self == Datteoselect::Yes
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `DATTEO` writer - Data Timeout Error"]
+pub type DatteoW<'a, REG> = crate::BitWriter<'a, REG, Datteoselect>;
+impl<'a, REG> DatteoW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "No Error"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Datteoselect::No)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Timeout"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 4)) | ((value as u16 & 0x01) << 4);
-        self.w
+    pub fn yes(self) -> &'a mut crate::W<REG> {
+        self.variant(Datteoselect::Yes)
     }
 }
 #[doc = "Data CRC Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum DATCRC_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Datcrcselect {
     #[doc = "0: No Error"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Error"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<DATCRC_A> for bool {
+impl From<Datcrcselect> for bool {
     #[inline(always)]
-    fn from(variant: DATCRC_A) -> Self {
+    fn from(variant: Datcrcselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `DATCRC` reader - Data CRC Error"]
-pub struct DATCRC_R(crate::FieldReader<bool, DATCRC_A>);
-impl DATCRC_R {
+pub type DatcrcR = crate::BitReader<Datcrcselect>;
+impl DatcrcR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        DATCRC_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> DATCRC_A {
+    pub const fn variant(&self) -> Datcrcselect {
         match self.bits {
-            false => DATCRC_A::NO,
-            true => DATCRC_A::YES,
+            false => Datcrcselect::No,
+            true => Datcrcselect::Yes,
         }
-    }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == DATCRC_A::NO
-    }
-    #[doc = "Checks if the value of the field is `YES`"]
-    #[inline(always)]
-    pub fn is_yes(&self) -> bool {
-        **self == DATCRC_A::YES
-    }
-}
-impl core::ops::Deref for DATCRC_R {
-    type Target = crate::FieldReader<bool, DATCRC_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `DATCRC` writer - Data CRC Error"]
-pub struct DATCRC_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DATCRC_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: DATCRC_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "No Error"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(DATCRC_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Datcrcselect::No
     }
     #[doc = "Error"]
     #[inline(always)]
-    pub fn yes(self) -> &'a mut W {
-        self.variant(DATCRC_A::YES)
+    pub fn is_yes(&self) -> bool {
+        *self == Datcrcselect::Yes
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `DATCRC` writer - Data CRC Error"]
+pub type DatcrcW<'a, REG> = crate::BitWriter<'a, REG, Datcrcselect>;
+impl<'a, REG> DatcrcW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "No Error"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Datcrcselect::No)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Error"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 5)) | ((value as u16 & 0x01) << 5);
-        self.w
+    pub fn yes(self) -> &'a mut crate::W<REG> {
+        self.variant(Datcrcselect::Yes)
     }
 }
 #[doc = "Data End Bit Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum DATEND_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Datendselect {
     #[doc = "0: No Error"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Error"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<DATEND_A> for bool {
+impl From<Datendselect> for bool {
     #[inline(always)]
-    fn from(variant: DATEND_A) -> Self {
+    fn from(variant: Datendselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `DATEND` reader - Data End Bit Error"]
-pub struct DATEND_R(crate::FieldReader<bool, DATEND_A>);
-impl DATEND_R {
+pub type DatendR = crate::BitReader<Datendselect>;
+impl DatendR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        DATEND_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> DATEND_A {
+    pub const fn variant(&self) -> Datendselect {
         match self.bits {
-            false => DATEND_A::NO,
-            true => DATEND_A::YES,
+            false => Datendselect::No,
+            true => Datendselect::Yes,
         }
-    }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == DATEND_A::NO
-    }
-    #[doc = "Checks if the value of the field is `YES`"]
-    #[inline(always)]
-    pub fn is_yes(&self) -> bool {
-        **self == DATEND_A::YES
-    }
-}
-impl core::ops::Deref for DATEND_R {
-    type Target = crate::FieldReader<bool, DATEND_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `DATEND` writer - Data End Bit Error"]
-pub struct DATEND_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DATEND_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: DATEND_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "No Error"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(DATEND_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Datendselect::No
     }
     #[doc = "Error"]
     #[inline(always)]
-    pub fn yes(self) -> &'a mut W {
-        self.variant(DATEND_A::YES)
+    pub fn is_yes(&self) -> bool {
+        *self == Datendselect::Yes
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `DATEND` writer - Data End Bit Error"]
+pub type DatendW<'a, REG> = crate::BitWriter<'a, REG, Datendselect>;
+impl<'a, REG> DatendW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "No Error"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Datendselect::No)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Error"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 6)) | ((value as u16 & 0x01) << 6);
-        self.w
+    pub fn yes(self) -> &'a mut crate::W<REG> {
+        self.variant(Datendselect::Yes)
     }
 }
 #[doc = "Current Limit Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum CURLIM_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Curlimselect {
     #[doc = "0: No Error"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Power Fail"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<CURLIM_A> for bool {
+impl From<Curlimselect> for bool {
     #[inline(always)]
-    fn from(variant: CURLIM_A) -> Self {
+    fn from(variant: Curlimselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `CURLIM` reader - Current Limit Error"]
-pub struct CURLIM_R(crate::FieldReader<bool, CURLIM_A>);
-impl CURLIM_R {
+pub type CurlimR = crate::BitReader<Curlimselect>;
+impl CurlimR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        CURLIM_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> CURLIM_A {
+    pub const fn variant(&self) -> Curlimselect {
         match self.bits {
-            false => CURLIM_A::NO,
-            true => CURLIM_A::YES,
+            false => Curlimselect::No,
+            true => Curlimselect::Yes,
         }
-    }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == CURLIM_A::NO
-    }
-    #[doc = "Checks if the value of the field is `YES`"]
-    #[inline(always)]
-    pub fn is_yes(&self) -> bool {
-        **self == CURLIM_A::YES
-    }
-}
-impl core::ops::Deref for CURLIM_R {
-    type Target = crate::FieldReader<bool, CURLIM_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `CURLIM` writer - Current Limit Error"]
-pub struct CURLIM_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CURLIM_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: CURLIM_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "No Error"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(CURLIM_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Curlimselect::No
     }
     #[doc = "Power Fail"]
     #[inline(always)]
-    pub fn yes(self) -> &'a mut W {
-        self.variant(CURLIM_A::YES)
+    pub fn is_yes(&self) -> bool {
+        *self == Curlimselect::Yes
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `CURLIM` writer - Current Limit Error"]
+pub type CurlimW<'a, REG> = crate::BitWriter<'a, REG, Curlimselect>;
+impl<'a, REG> CurlimW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "No Error"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Curlimselect::No)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Power Fail"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 7)) | ((value as u16 & 0x01) << 7);
-        self.w
+    pub fn yes(self) -> &'a mut crate::W<REG> {
+        self.variant(Curlimselect::Yes)
     }
 }
 #[doc = "Auto CMD Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum ACMD_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Acmdselect {
     #[doc = "0: No Error"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Error"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<ACMD_A> for bool {
+impl From<Acmdselect> for bool {
     #[inline(always)]
-    fn from(variant: ACMD_A) -> Self {
+    fn from(variant: Acmdselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `ACMD` reader - Auto CMD Error"]
-pub struct ACMD_R(crate::FieldReader<bool, ACMD_A>);
-impl ACMD_R {
+pub type AcmdR = crate::BitReader<Acmdselect>;
+impl AcmdR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ACMD_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> ACMD_A {
+    pub const fn variant(&self) -> Acmdselect {
         match self.bits {
-            false => ACMD_A::NO,
-            true => ACMD_A::YES,
+            false => Acmdselect::No,
+            true => Acmdselect::Yes,
         }
-    }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == ACMD_A::NO
-    }
-    #[doc = "Checks if the value of the field is `YES`"]
-    #[inline(always)]
-    pub fn is_yes(&self) -> bool {
-        **self == ACMD_A::YES
-    }
-}
-impl core::ops::Deref for ACMD_R {
-    type Target = crate::FieldReader<bool, ACMD_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `ACMD` writer - Auto CMD Error"]
-pub struct ACMD_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ACMD_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: ACMD_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "No Error"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(ACMD_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Acmdselect::No
     }
     #[doc = "Error"]
     #[inline(always)]
-    pub fn yes(self) -> &'a mut W {
-        self.variant(ACMD_A::YES)
+    pub fn is_yes(&self) -> bool {
+        *self == Acmdselect::Yes
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `ACMD` writer - Auto CMD Error"]
+pub type AcmdW<'a, REG> = crate::BitWriter<'a, REG, Acmdselect>;
+impl<'a, REG> AcmdW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "No Error"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Acmdselect::No)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Error"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 8)) | ((value as u16 & 0x01) << 8);
-        self.w
+    pub fn yes(self) -> &'a mut crate::W<REG> {
+        self.variant(Acmdselect::Yes)
     }
 }
 #[doc = "ADMA Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum ADMA_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Admaselect {
     #[doc = "0: No Error"]
-    NO = 0,
+    No = 0,
     #[doc = "1: Error"]
-    YES = 1,
+    Yes = 1,
 }
-impl From<ADMA_A> for bool {
+impl From<Admaselect> for bool {
     #[inline(always)]
-    fn from(variant: ADMA_A) -> Self {
+    fn from(variant: Admaselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `ADMA` reader - ADMA Error"]
-pub struct ADMA_R(crate::FieldReader<bool, ADMA_A>);
-impl ADMA_R {
+pub type AdmaR = crate::BitReader<Admaselect>;
+impl AdmaR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ADMA_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> ADMA_A {
+    pub const fn variant(&self) -> Admaselect {
         match self.bits {
-            false => ADMA_A::NO,
-            true => ADMA_A::YES,
+            false => Admaselect::No,
+            true => Admaselect::Yes,
         }
-    }
-    #[doc = "Checks if the value of the field is `NO`"]
-    #[inline(always)]
-    pub fn is_no(&self) -> bool {
-        **self == ADMA_A::NO
-    }
-    #[doc = "Checks if the value of the field is `YES`"]
-    #[inline(always)]
-    pub fn is_yes(&self) -> bool {
-        **self == ADMA_A::YES
-    }
-}
-impl core::ops::Deref for ADMA_R {
-    type Target = crate::FieldReader<bool, ADMA_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `ADMA` writer - ADMA Error"]
-pub struct ADMA_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ADMA_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: ADMA_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "No Error"]
     #[inline(always)]
-    pub fn no(self) -> &'a mut W {
-        self.variant(ADMA_A::NO)
+    pub fn is_no(&self) -> bool {
+        *self == Admaselect::No
     }
     #[doc = "Error"]
     #[inline(always)]
-    pub fn yes(self) -> &'a mut W {
-        self.variant(ADMA_A::YES)
+    pub fn is_yes(&self) -> bool {
+        *self == Admaselect::Yes
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `ADMA` writer - ADMA Error"]
+pub type AdmaW<'a, REG> = crate::BitWriter<'a, REG, Admaselect>;
+impl<'a, REG> AdmaW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "No Error"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn no(self) -> &'a mut crate::W<REG> {
+        self.variant(Admaselect::No)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "Error"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 9)) | ((value as u16 & 0x01) << 9);
-        self.w
+    pub fn yes(self) -> &'a mut crate::W<REG> {
+        self.variant(Admaselect::Yes)
     }
 }
 #[doc = "Boot Acknowledge Error\n\nValue on reset: 0"]
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum BOOTAE_A {
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Bootaeselect {
     #[doc = "0: FIFO contains at least one byte"]
-    _0 = 0,
+    Fifonotempty = 0,
     #[doc = "1: FIFO is empty"]
-    _1 = 1,
+    Fifoempty = 1,
 }
-impl From<BOOTAE_A> for bool {
+impl From<Bootaeselect> for bool {
     #[inline(always)]
-    fn from(variant: BOOTAE_A) -> Self {
+    fn from(variant: Bootaeselect) -> Self {
         variant as u8 != 0
     }
 }
 #[doc = "Field `BOOTAE` reader - Boot Acknowledge Error"]
-pub struct BOOTAE_R(crate::FieldReader<bool, BOOTAE_A>);
-impl BOOTAE_R {
+pub type BootaeR = crate::BitReader<Bootaeselect>;
+impl BootaeR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        BOOTAE_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> BOOTAE_A {
+    pub const fn variant(&self) -> Bootaeselect {
         match self.bits {
-            false => BOOTAE_A::_0,
-            true => BOOTAE_A::_1,
+            false => Bootaeselect::Fifonotempty,
+            true => Bootaeselect::Fifoempty,
         }
-    }
-    #[doc = "Checks if the value of the field is `_0`"]
-    #[inline(always)]
-    pub fn is_0(&self) -> bool {
-        **self == BOOTAE_A::_0
-    }
-    #[doc = "Checks if the value of the field is `_1`"]
-    #[inline(always)]
-    pub fn is_1(&self) -> bool {
-        **self == BOOTAE_A::_1
-    }
-}
-impl core::ops::Deref for BOOTAE_R {
-    type Target = crate::FieldReader<bool, BOOTAE_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `BOOTAE` writer - Boot Acknowledge Error"]
-pub struct BOOTAE_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> BOOTAE_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: BOOTAE_A) -> &'a mut W {
-        self.bit(variant.into())
     }
     #[doc = "FIFO contains at least one byte"]
     #[inline(always)]
-    pub fn _0(self) -> &'a mut W {
-        self.variant(BOOTAE_A::_0)
+    pub fn is_fifonotempty(&self) -> bool {
+        *self == Bootaeselect::Fifonotempty
     }
     #[doc = "FIFO is empty"]
     #[inline(always)]
-    pub fn _1(self) -> &'a mut W {
-        self.variant(BOOTAE_A::_1)
+    pub fn is_fifoempty(&self) -> bool {
+        *self == Bootaeselect::Fifoempty
     }
-    #[doc = r"Sets the field bit"]
+}
+#[doc = "Field `BOOTAE` writer - Boot Acknowledge Error"]
+pub type BootaeW<'a, REG> = crate::BitWriter<'a, REG, Bootaeselect>;
+impl<'a, REG> BootaeW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+{
+    #[doc = "FIFO contains at least one byte"]
     #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
+    pub fn fifonotempty(self) -> &'a mut crate::W<REG> {
+        self.variant(Bootaeselect::Fifonotempty)
     }
-    #[doc = r"Clears the field bit"]
+    #[doc = "FIFO is empty"]
     #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 12)) | ((value as u16 & 0x01) << 12);
-        self.w
+    pub fn fifoempty(self) -> &'a mut crate::W<REG> {
+        self.variant(Bootaeselect::Fifoempty)
     }
 }
 impl R {
     #[doc = "Bit 0 - Command Timeout Error"]
     #[inline(always)]
-    pub fn cmdteo(&self) -> CMDTEO_R {
-        CMDTEO_R::new((self.bits & 0x01) != 0)
+    pub fn cmdteo(&self) -> CmdteoR {
+        CmdteoR::new((self.bits & 1) != 0)
     }
     #[doc = "Bit 1 - Command CRC Error"]
     #[inline(always)]
-    pub fn cmdcrc(&self) -> CMDCRC_R {
-        CMDCRC_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn cmdcrc(&self) -> CmdcrcR {
+        CmdcrcR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bit 2 - Command End Bit Error"]
     #[inline(always)]
-    pub fn cmdend(&self) -> CMDEND_R {
-        CMDEND_R::new(((self.bits >> 2) & 0x01) != 0)
+    pub fn cmdend(&self) -> CmdendR {
+        CmdendR::new(((self.bits >> 2) & 1) != 0)
     }
     #[doc = "Bit 3 - Command Index Error"]
     #[inline(always)]
-    pub fn cmdidx(&self) -> CMDIDX_R {
-        CMDIDX_R::new(((self.bits >> 3) & 0x01) != 0)
+    pub fn cmdidx(&self) -> CmdidxR {
+        CmdidxR::new(((self.bits >> 3) & 1) != 0)
     }
     #[doc = "Bit 4 - Data Timeout Error"]
     #[inline(always)]
-    pub fn datteo(&self) -> DATTEO_R {
-        DATTEO_R::new(((self.bits >> 4) & 0x01) != 0)
+    pub fn datteo(&self) -> DatteoR {
+        DatteoR::new(((self.bits >> 4) & 1) != 0)
     }
     #[doc = "Bit 5 - Data CRC Error"]
     #[inline(always)]
-    pub fn datcrc(&self) -> DATCRC_R {
-        DATCRC_R::new(((self.bits >> 5) & 0x01) != 0)
+    pub fn datcrc(&self) -> DatcrcR {
+        DatcrcR::new(((self.bits >> 5) & 1) != 0)
     }
     #[doc = "Bit 6 - Data End Bit Error"]
     #[inline(always)]
-    pub fn datend(&self) -> DATEND_R {
-        DATEND_R::new(((self.bits >> 6) & 0x01) != 0)
+    pub fn datend(&self) -> DatendR {
+        DatendR::new(((self.bits >> 6) & 1) != 0)
     }
     #[doc = "Bit 7 - Current Limit Error"]
     #[inline(always)]
-    pub fn curlim(&self) -> CURLIM_R {
-        CURLIM_R::new(((self.bits >> 7) & 0x01) != 0)
+    pub fn curlim(&self) -> CurlimR {
+        CurlimR::new(((self.bits >> 7) & 1) != 0)
     }
     #[doc = "Bit 8 - Auto CMD Error"]
     #[inline(always)]
-    pub fn acmd(&self) -> ACMD_R {
-        ACMD_R::new(((self.bits >> 8) & 0x01) != 0)
+    pub fn acmd(&self) -> AcmdR {
+        AcmdR::new(((self.bits >> 8) & 1) != 0)
     }
     #[doc = "Bit 9 - ADMA Error"]
     #[inline(always)]
-    pub fn adma(&self) -> ADMA_R {
-        ADMA_R::new(((self.bits >> 9) & 0x01) != 0)
+    pub fn adma(&self) -> AdmaR {
+        AdmaR::new(((self.bits >> 9) & 1) != 0)
     }
     #[doc = "Bit 12 - Boot Acknowledge Error"]
     #[inline(always)]
-    pub fn bootae(&self) -> BOOTAE_R {
-        BOOTAE_R::new(((self.bits >> 12) & 0x01) != 0)
+    pub fn bootae(&self) -> BootaeR {
+        BootaeR::new(((self.bits >> 12) & 1) != 0)
     }
 }
 impl W {
     #[doc = "Bit 0 - Command Timeout Error"]
     #[inline(always)]
-    pub fn cmdteo(&mut self) -> CMDTEO_W {
-        CMDTEO_W { w: self }
+    #[must_use]
+    pub fn cmdteo(&mut self) -> CmdteoW<EistrEmmcModeSpec> {
+        CmdteoW::new(self, 0)
     }
     #[doc = "Bit 1 - Command CRC Error"]
     #[inline(always)]
-    pub fn cmdcrc(&mut self) -> CMDCRC_W {
-        CMDCRC_W { w: self }
+    #[must_use]
+    pub fn cmdcrc(&mut self) -> CmdcrcW<EistrEmmcModeSpec> {
+        CmdcrcW::new(self, 1)
     }
     #[doc = "Bit 2 - Command End Bit Error"]
     #[inline(always)]
-    pub fn cmdend(&mut self) -> CMDEND_W {
-        CMDEND_W { w: self }
+    #[must_use]
+    pub fn cmdend(&mut self) -> CmdendW<EistrEmmcModeSpec> {
+        CmdendW::new(self, 2)
     }
     #[doc = "Bit 3 - Command Index Error"]
     #[inline(always)]
-    pub fn cmdidx(&mut self) -> CMDIDX_W {
-        CMDIDX_W { w: self }
+    #[must_use]
+    pub fn cmdidx(&mut self) -> CmdidxW<EistrEmmcModeSpec> {
+        CmdidxW::new(self, 3)
     }
     #[doc = "Bit 4 - Data Timeout Error"]
     #[inline(always)]
-    pub fn datteo(&mut self) -> DATTEO_W {
-        DATTEO_W { w: self }
+    #[must_use]
+    pub fn datteo(&mut self) -> DatteoW<EistrEmmcModeSpec> {
+        DatteoW::new(self, 4)
     }
     #[doc = "Bit 5 - Data CRC Error"]
     #[inline(always)]
-    pub fn datcrc(&mut self) -> DATCRC_W {
-        DATCRC_W { w: self }
+    #[must_use]
+    pub fn datcrc(&mut self) -> DatcrcW<EistrEmmcModeSpec> {
+        DatcrcW::new(self, 5)
     }
     #[doc = "Bit 6 - Data End Bit Error"]
     #[inline(always)]
-    pub fn datend(&mut self) -> DATEND_W {
-        DATEND_W { w: self }
+    #[must_use]
+    pub fn datend(&mut self) -> DatendW<EistrEmmcModeSpec> {
+        DatendW::new(self, 6)
     }
     #[doc = "Bit 7 - Current Limit Error"]
     #[inline(always)]
-    pub fn curlim(&mut self) -> CURLIM_W {
-        CURLIM_W { w: self }
+    #[must_use]
+    pub fn curlim(&mut self) -> CurlimW<EistrEmmcModeSpec> {
+        CurlimW::new(self, 7)
     }
     #[doc = "Bit 8 - Auto CMD Error"]
     #[inline(always)]
-    pub fn acmd(&mut self) -> ACMD_W {
-        ACMD_W { w: self }
+    #[must_use]
+    pub fn acmd(&mut self) -> AcmdW<EistrEmmcModeSpec> {
+        AcmdW::new(self, 8)
     }
     #[doc = "Bit 9 - ADMA Error"]
     #[inline(always)]
-    pub fn adma(&mut self) -> ADMA_W {
-        ADMA_W { w: self }
+    #[must_use]
+    pub fn adma(&mut self) -> AdmaW<EistrEmmcModeSpec> {
+        AdmaW::new(self, 9)
     }
     #[doc = "Bit 12 - Boot Acknowledge Error"]
     #[inline(always)]
-    pub fn bootae(&mut self) -> BOOTAE_W {
-        BOOTAE_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u16) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn bootae(&mut self) -> BootaeW<EistrEmmcModeSpec> {
+        BootaeW::new(self, 12)
     }
 }
-#[doc = "Error Interrupt Status\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [eistr_emmc_mode](index.html) module"]
-pub struct EISTR_EMMC_MODE_SPEC;
-impl crate::RegisterSpec for EISTR_EMMC_MODE_SPEC {
+#[doc = "Error Interrupt Status\n\nYou can [`read`](crate::Reg::read) this register and get [`eistr_emmc_mode::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eistr_emmc_mode::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct EistrEmmcModeSpec;
+impl crate::RegisterSpec for EistrEmmcModeSpec {
     type Ux = u16;
 }
-#[doc = "`read()` method returns [eistr_emmc_mode::R](R) reader structure"]
-impl crate::Readable for EISTR_EMMC_MODE_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [eistr_emmc_mode::W](W) writer structure"]
-impl crate::Writable for EISTR_EMMC_MODE_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`eistr_emmc_mode::R`](R) reader structure"]
+impl crate::Readable for EistrEmmcModeSpec {}
+#[doc = "`write(|w| ..)` method takes [`eistr_emmc_mode::W`](W) writer structure"]
+impl crate::Writable for EistrEmmcModeSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u16 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u16 = 0;
 }
 #[doc = "`reset()` method sets EISTR_EMMC_MODE to value 0"]
-impl crate::Resettable for EISTR_EMMC_MODE_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for EistrEmmcModeSpec {
+    const RESET_VALUE: u16 = 0;
 }

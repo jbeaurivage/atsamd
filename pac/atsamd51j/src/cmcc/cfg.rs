@@ -1,311 +1,139 @@
 #[doc = "Register `CFG` reader"]
-pub struct R(crate::R<CFG_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<CFG_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<CFG_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<CFG_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<CfgSpec>;
 #[doc = "Register `CFG` writer"]
-pub struct W(crate::W<CFG_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<CFG_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<CFG_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<CFG_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<CfgSpec>;
 #[doc = "Field `ICDIS` reader - Instruction Cache Disable"]
-pub struct ICDIS_R(crate::FieldReader<bool, bool>);
-impl ICDIS_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ICDIS_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for ICDIS_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type IcdisR = crate::BitReader;
 #[doc = "Field `ICDIS` writer - Instruction Cache Disable"]
-pub struct ICDIS_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ICDIS_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u32 & 0x01) << 1);
-        self.w
-    }
-}
+pub type IcdisW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `DCDIS` reader - Data Cache Disable"]
-pub struct DCDIS_R(crate::FieldReader<bool, bool>);
-impl DCDIS_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        DCDIS_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for DCDIS_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type DcdisR = crate::BitReader;
 #[doc = "Field `DCDIS` writer - Data Cache Disable"]
-pub struct DCDIS_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DCDIS_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 2)) | ((value as u32 & 0x01) << 2);
-        self.w
-    }
-}
+pub type DcdisW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Cache size configured by software\n\nValue on reset: 2"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum CSIZESW_A {
+pub enum Csizeswselect {
     #[doc = "0: The Cache Size is configured to 1KB"]
-    CONF_CSIZE_1KB = 0,
+    ConfCsize1kb = 0,
     #[doc = "1: The Cache Size is configured to 2KB"]
-    CONF_CSIZE_2KB = 1,
+    ConfCsize2kb = 1,
     #[doc = "2: The Cache Size is configured to 4KB"]
-    CONF_CSIZE_4KB = 2,
-    #[doc = "3: The Cache Size is configured to 8KB"]
-    CONF_CSIZE_8KB = 3,
-    #[doc = "4: The Cache Size is configured to 16KB"]
-    CONF_CSIZE_16KB = 4,
-    #[doc = "5: The Cache Size is configured to 32KB"]
-    CONF_CSIZE_32KB = 5,
-    #[doc = "6: The Cache Size is configured to 64KB"]
-    CONF_CSIZE_64KB = 6,
+    ConfCsize4kb = 2,
 }
-impl From<CSIZESW_A> for u8 {
+impl From<Csizeswselect> for u8 {
     #[inline(always)]
-    fn from(variant: CSIZESW_A) -> Self {
+    fn from(variant: Csizeswselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Csizeswselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Csizeswselect {}
 #[doc = "Field `CSIZESW` reader - Cache size configured by software"]
-pub struct CSIZESW_R(crate::FieldReader<u8, CSIZESW_A>);
-impl CSIZESW_R {
+pub type CsizeswR = crate::FieldReader<Csizeswselect>;
+impl CsizeswR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        CSIZESW_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<CSIZESW_A> {
+    pub const fn variant(&self) -> Option<Csizeswselect> {
         match self.bits {
-            0 => Some(CSIZESW_A::CONF_CSIZE_1KB),
-            1 => Some(CSIZESW_A::CONF_CSIZE_2KB),
-            2 => Some(CSIZESW_A::CONF_CSIZE_4KB),
-            3 => Some(CSIZESW_A::CONF_CSIZE_8KB),
-            4 => Some(CSIZESW_A::CONF_CSIZE_16KB),
-            5 => Some(CSIZESW_A::CONF_CSIZE_32KB),
-            6 => Some(CSIZESW_A::CONF_CSIZE_64KB),
+            0 => Some(Csizeswselect::ConfCsize1kb),
+            1 => Some(Csizeswselect::ConfCsize2kb),
+            2 => Some(Csizeswselect::ConfCsize4kb),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `CONF_CSIZE_1KB`"]
-    #[inline(always)]
-    pub fn is_conf_csize_1kb(&self) -> bool {
-        **self == CSIZESW_A::CONF_CSIZE_1KB
-    }
-    #[doc = "Checks if the value of the field is `CONF_CSIZE_2KB`"]
-    #[inline(always)]
-    pub fn is_conf_csize_2kb(&self) -> bool {
-        **self == CSIZESW_A::CONF_CSIZE_2KB
-    }
-    #[doc = "Checks if the value of the field is `CONF_CSIZE_4KB`"]
-    #[inline(always)]
-    pub fn is_conf_csize_4kb(&self) -> bool {
-        **self == CSIZESW_A::CONF_CSIZE_4KB
-    }
-    #[doc = "Checks if the value of the field is `CONF_CSIZE_8KB`"]
-    #[inline(always)]
-    pub fn is_conf_csize_8kb(&self) -> bool {
-        **self == CSIZESW_A::CONF_CSIZE_8KB
-    }
-    #[doc = "Checks if the value of the field is `CONF_CSIZE_16KB`"]
-    #[inline(always)]
-    pub fn is_conf_csize_16kb(&self) -> bool {
-        **self == CSIZESW_A::CONF_CSIZE_16KB
-    }
-    #[doc = "Checks if the value of the field is `CONF_CSIZE_32KB`"]
-    #[inline(always)]
-    pub fn is_conf_csize_32kb(&self) -> bool {
-        **self == CSIZESW_A::CONF_CSIZE_32KB
-    }
-    #[doc = "Checks if the value of the field is `CONF_CSIZE_64KB`"]
-    #[inline(always)]
-    pub fn is_conf_csize_64kb(&self) -> bool {
-        **self == CSIZESW_A::CONF_CSIZE_64KB
-    }
-}
-impl core::ops::Deref for CSIZESW_R {
-    type Target = crate::FieldReader<u8, CSIZESW_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `CSIZESW` writer - Cache size configured by software"]
-pub struct CSIZESW_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> CSIZESW_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: CSIZESW_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
     #[doc = "The Cache Size is configured to 1KB"]
     #[inline(always)]
-    pub fn conf_csize_1kb(self) -> &'a mut W {
-        self.variant(CSIZESW_A::CONF_CSIZE_1KB)
+    pub fn is_conf_csize_1kb(&self) -> bool {
+        *self == Csizeswselect::ConfCsize1kb
     }
     #[doc = "The Cache Size is configured to 2KB"]
     #[inline(always)]
-    pub fn conf_csize_2kb(self) -> &'a mut W {
-        self.variant(CSIZESW_A::CONF_CSIZE_2KB)
+    pub fn is_conf_csize_2kb(&self) -> bool {
+        *self == Csizeswselect::ConfCsize2kb
     }
     #[doc = "The Cache Size is configured to 4KB"]
     #[inline(always)]
-    pub fn conf_csize_4kb(self) -> &'a mut W {
-        self.variant(CSIZESW_A::CONF_CSIZE_4KB)
+    pub fn is_conf_csize_4kb(&self) -> bool {
+        *self == Csizeswselect::ConfCsize4kb
     }
-    #[doc = "The Cache Size is configured to 8KB"]
+}
+#[doc = "Field `CSIZESW` writer - Cache size configured by software"]
+pub type CsizeswW<'a, REG> = crate::FieldWriter<'a, REG, 3, Csizeswselect>;
+impl<'a, REG> CsizeswW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "The Cache Size is configured to 1KB"]
     #[inline(always)]
-    pub fn conf_csize_8kb(self) -> &'a mut W {
-        self.variant(CSIZESW_A::CONF_CSIZE_8KB)
+    pub fn conf_csize_1kb(self) -> &'a mut crate::W<REG> {
+        self.variant(Csizeswselect::ConfCsize1kb)
     }
-    #[doc = "The Cache Size is configured to 16KB"]
+    #[doc = "The Cache Size is configured to 2KB"]
     #[inline(always)]
-    pub fn conf_csize_16kb(self) -> &'a mut W {
-        self.variant(CSIZESW_A::CONF_CSIZE_16KB)
+    pub fn conf_csize_2kb(self) -> &'a mut crate::W<REG> {
+        self.variant(Csizeswselect::ConfCsize2kb)
     }
-    #[doc = "The Cache Size is configured to 32KB"]
+    #[doc = "The Cache Size is configured to 4KB"]
     #[inline(always)]
-    pub fn conf_csize_32kb(self) -> &'a mut W {
-        self.variant(CSIZESW_A::CONF_CSIZE_32KB)
-    }
-    #[doc = "The Cache Size is configured to 64KB"]
-    #[inline(always)]
-    pub fn conf_csize_64kb(self) -> &'a mut W {
-        self.variant(CSIZESW_A::CONF_CSIZE_64KB)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x07 << 4)) | ((value as u32 & 0x07) << 4);
-        self.w
+    pub fn conf_csize_4kb(self) -> &'a mut crate::W<REG> {
+        self.variant(Csizeswselect::ConfCsize4kb)
     }
 }
 impl R {
     #[doc = "Bit 1 - Instruction Cache Disable"]
     #[inline(always)]
-    pub fn icdis(&self) -> ICDIS_R {
-        ICDIS_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn icdis(&self) -> IcdisR {
+        IcdisR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bit 2 - Data Cache Disable"]
     #[inline(always)]
-    pub fn dcdis(&self) -> DCDIS_R {
-        DCDIS_R::new(((self.bits >> 2) & 0x01) != 0)
+    pub fn dcdis(&self) -> DcdisR {
+        DcdisR::new(((self.bits >> 2) & 1) != 0)
     }
     #[doc = "Bits 4:6 - Cache size configured by software"]
     #[inline(always)]
-    pub fn csizesw(&self) -> CSIZESW_R {
-        CSIZESW_R::new(((self.bits >> 4) & 0x07) as u8)
+    pub fn csizesw(&self) -> CsizeswR {
+        CsizeswR::new(((self.bits >> 4) & 7) as u8)
     }
 }
 impl W {
     #[doc = "Bit 1 - Instruction Cache Disable"]
     #[inline(always)]
-    pub fn icdis(&mut self) -> ICDIS_W {
-        ICDIS_W { w: self }
+    #[must_use]
+    pub fn icdis(&mut self) -> IcdisW<CfgSpec> {
+        IcdisW::new(self, 1)
     }
     #[doc = "Bit 2 - Data Cache Disable"]
     #[inline(always)]
-    pub fn dcdis(&mut self) -> DCDIS_W {
-        DCDIS_W { w: self }
+    #[must_use]
+    pub fn dcdis(&mut self) -> DcdisW<CfgSpec> {
+        DcdisW::new(self, 2)
     }
     #[doc = "Bits 4:6 - Cache size configured by software"]
     #[inline(always)]
-    pub fn csizesw(&mut self) -> CSIZESW_W {
-        CSIZESW_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn csizesw(&mut self) -> CsizeswW<CfgSpec> {
+        CsizeswW::new(self, 4)
     }
 }
-#[doc = "Cache Configuration Register\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
-pub struct CFG_SPEC;
-impl crate::RegisterSpec for CFG_SPEC {
+#[doc = "Cache Configuration Register\n\nYou can [`read`](crate::Reg::read) this register and get [`cfg::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`cfg::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct CfgSpec;
+impl crate::RegisterSpec for CfgSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [cfg::R](R) reader structure"]
-impl crate::Readable for CFG_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [cfg::W](W) writer structure"]
-impl crate::Writable for CFG_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`cfg::R`](R) reader structure"]
+impl crate::Readable for CfgSpec {}
+#[doc = "`write(|w| ..)` method takes [`cfg::W`](W) writer structure"]
+impl crate::Writable for CfgSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets CFG to value 0x20"]
-impl crate::Resettable for CFG_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0x20
-    }
+impl crate::Resettable for CfgSpec {
+    const RESET_VALUE: u32 = 0x20;
 }

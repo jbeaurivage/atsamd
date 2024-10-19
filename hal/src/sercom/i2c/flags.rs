@@ -11,6 +11,7 @@ bitflags! {
     ///
     /// The available interrupt flags are `MB`, `SB`, and `ERROR`. The binary format of the underlying bits exactly matches the
     /// INTFLAG bits.
+    #[derive(Clone, Copy)]
     pub struct Flags: u8 {
         /// Master on bus interrupt
         const MB = 0x01;
@@ -28,6 +29,12 @@ pub enum BusState {
     Idle = 0x01,
     Owner = 0x02,
     Busy = 0x03,
+}
+
+impl Default for Status {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 /// Status flags for I2C transactions
@@ -57,6 +64,16 @@ pub struct Status {
 }
 
 impl Status {
+    /// Check whether [`Self`] originates from an error.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if `STATUS` contains:
+    ///
+    /// * `BUSERR` - Bus Error
+    /// * `ARBLOST` - Arbitration lost
+    /// * `LENERR` - Length error
+    /// * `RXNACK` - Receive not acknowledged
     pub fn check_bus_error(self) -> Result<(), Error> {
         if self.buserr() {
             Err(Error::BusError)
@@ -73,7 +90,8 @@ impl Status {
 }
 
 /// Errors available for I2C transactions
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub enum Error {
     BusError,
     ArbitrationLost,

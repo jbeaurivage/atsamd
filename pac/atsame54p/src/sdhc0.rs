@@ -1,443 +1,633 @@
-#[doc = r"Register block"]
 #[repr(C)]
+#[doc = "Register block"]
 pub struct RegisterBlock {
     _reserved_0_ssar: [u8; 0x04],
-    #[doc = "0x04 - Block Size"]
-    pub bsr: crate::Reg<bsr::BSR_SPEC>,
-    #[doc = "0x06 - Block Count"]
-    pub bcr: crate::Reg<bcr::BCR_SPEC>,
-    #[doc = "0x08 - Argument 1"]
-    pub arg1r: crate::Reg<arg1r::ARG1R_SPEC>,
-    #[doc = "0x0c - Transfer Mode"]
-    pub tmr: crate::Reg<tmr::TMR_SPEC>,
-    #[doc = "0x0e - Command"]
-    pub cr: crate::Reg<cr::CR_SPEC>,
-    #[doc = "0x10..0x20 - Response"]
-    pub rr: [crate::Reg<rr::RR_SPEC>; 4],
-    #[doc = "0x20 - Buffer Data Port"]
-    pub bdpr: crate::Reg<bdpr::BDPR_SPEC>,
-    #[doc = "0x24 - Present State"]
-    pub psr: crate::Reg<psr::PSR_SPEC>,
+    bsr: Bsr,
+    bcr: Bcr,
+    arg1r: Arg1r,
+    tmr: Tmr,
+    cr: Cr,
+    rr: [Rr; 4],
+    bdpr: Bdpr,
+    psr: Psr,
     _reserved_9_hc1: [u8; 0x01],
-    #[doc = "0x29 - Power Control"]
-    pub pcr: crate::Reg<pcr::PCR_SPEC>,
+    pcr: Pcr,
     _reserved_11_bgcr: [u8; 0x01],
-    #[doc = "0x2b - Wakeup Control"]
-    pub wcr: crate::Reg<wcr::WCR_SPEC>,
-    #[doc = "0x2c - Clock Control"]
-    pub ccr: crate::Reg<ccr::CCR_SPEC>,
-    #[doc = "0x2e - Timeout Control"]
-    pub tcr: crate::Reg<tcr::TCR_SPEC>,
-    #[doc = "0x2f - Software Reset"]
-    pub srr: crate::Reg<srr::SRR_SPEC>,
+    wcr: Wcr,
+    ccr: Ccr,
+    tcr: Tcr,
+    srr: Srr,
     _reserved_16_nistr: [u8; 0x02],
     _reserved_17_eistr: [u8; 0x02],
     _reserved_18_nister: [u8; 0x02],
     _reserved_19_eister: [u8; 0x02],
     _reserved_20_nisier: [u8; 0x02],
     _reserved_21_eisier: [u8; 0x02],
-    #[doc = "0x3c - Auto CMD Error Status"]
-    pub acesr: crate::Reg<acesr::ACESR_SPEC>,
+    acesr: Acesr,
     _reserved_23_hc2: [u8; 0x02],
-    #[doc = "0x40 - Capabilities 0"]
-    pub ca0r: crate::Reg<ca0r::CA0R_SPEC>,
-    #[doc = "0x44 - Capabilities 1"]
-    pub ca1r: crate::Reg<ca1r::CA1R_SPEC>,
-    #[doc = "0x48 - Maximum Current Capabilities"]
-    pub mccar: crate::Reg<mccar::MCCAR_SPEC>,
+    ca0r: Ca0r,
+    ca1r: Ca1r,
+    mccar: Mccar,
     _reserved27: [u8; 0x04],
-    #[doc = "0x50 - Force Event for Auto CMD Error Status"]
-    pub feraces: crate::Reg<feraces::FERACES_SPEC>,
-    #[doc = "0x52 - Force Event for Error Interrupt Status"]
-    pub fereis: crate::Reg<fereis::FEREIS_SPEC>,
-    #[doc = "0x54 - ADMA Error Status"]
-    pub aesr: crate::Reg<aesr::AESR_SPEC>,
+    feraces: Feraces,
+    fereis: Fereis,
+    aesr: Aesr,
     _reserved30: [u8; 0x03],
-    #[doc = "0x58 - ADMA System Address n"]
-    pub asar: [crate::Reg<asar::ASAR_SPEC>; 1],
+    asar: [Asar; 1],
     _reserved31: [u8; 0x04],
-    #[doc = "0x60..0x70 - Preset Value n"]
-    pub pvr: [crate::Reg<pvr::PVR_SPEC>; 8],
+    pvr: [Pvr; 8],
     _reserved32: [u8; 0x8c],
-    #[doc = "0xfc - Slot Interrupt Status"]
-    pub sisr: crate::Reg<sisr::SISR_SPEC>,
-    #[doc = "0xfe - Host Controller Version"]
-    pub hcvr: crate::Reg<hcvr::HCVR_SPEC>,
-    _reserved34: [u8; 0x0104],
-    #[doc = "0x204 - MMC Control 1"]
-    pub mc1r: crate::Reg<mc1r::MC1R_SPEC>,
-    #[doc = "0x205 - MMC Control 2"]
-    pub mc2r: crate::Reg<mc2r::MC2R_SPEC>,
-    _reserved36: [u8; 0x02],
-    #[doc = "0x208 - AHB Control"]
-    pub acr: crate::Reg<acr::ACR_SPEC>,
-    #[doc = "0x20c - Clock Control 2"]
-    pub cc2r: crate::Reg<cc2r::CC2R_SPEC>,
-    _reserved38: [u8; 0x20],
-    #[doc = "0x230 - Capabilities Control"]
-    pub cacr: crate::Reg<cacr::CACR_SPEC>,
-    #[doc = "0x234 - Debug"]
-    pub dbgr: crate::Reg<dbgr::DBGR_SPEC>,
+    sisr: Sisr,
+    hcvr: Hcvr,
+    _reserved34: [u8; 0x0100],
+    apsr: Apsr,
+    mc1r: Mc1r,
+    mc2r: Mc2r,
+    _reserved37: [u8; 0x02],
+    acr: Acr,
+    cc2r: Cc2r,
+    _reserved39: [u8; 0x20],
+    cacr: Cacr,
+    dbgr: Dbgr,
 }
 impl RegisterBlock {
     #[doc = "0x00 - SDMA System Address / Argument 2"]
     #[inline(always)]
-    pub fn ssar_cmd23_mode(&self) -> &crate::Reg<ssar_cmd23_mode::SSAR_CMD23_MODE_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(0usize)
-                as *const crate::Reg<ssar_cmd23_mode::SSAR_CMD23_MODE_SPEC>)
-        }
+    pub const fn ssar_cmd23_mode(&self) -> &SsarCmd23Mode {
+        unsafe { &*(self as *const Self).cast::<u8>().add(0).cast() }
     }
     #[doc = "0x00 - SDMA System Address / Argument 2"]
     #[inline(always)]
-    pub fn ssar(&self) -> &crate::Reg<ssar::SSAR_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(0usize)
-                as *const crate::Reg<ssar::SSAR_SPEC>)
-        }
+    pub const fn ssar(&self) -> &Ssar {
+        unsafe { &*(self as *const Self).cast::<u8>().add(0).cast() }
+    }
+    #[doc = "0x04 - Block Size"]
+    #[inline(always)]
+    pub const fn bsr(&self) -> &Bsr {
+        &self.bsr
+    }
+    #[doc = "0x06 - Block Count"]
+    #[inline(always)]
+    pub const fn bcr(&self) -> &Bcr {
+        &self.bcr
+    }
+    #[doc = "0x08 - Argument 1"]
+    #[inline(always)]
+    pub const fn arg1r(&self) -> &Arg1r {
+        &self.arg1r
+    }
+    #[doc = "0x0c - Transfer Mode"]
+    #[inline(always)]
+    pub const fn tmr(&self) -> &Tmr {
+        &self.tmr
+    }
+    #[doc = "0x0e - Command"]
+    #[inline(always)]
+    pub const fn cr(&self) -> &Cr {
+        &self.cr
+    }
+    #[doc = "0x10..0x20 - Response"]
+    #[inline(always)]
+    pub const fn rr(&self, n: usize) -> &Rr {
+        &self.rr[n]
+    }
+    #[doc = "Iterator for array of:"]
+    #[doc = "0x10..0x20 - Response"]
+    #[inline(always)]
+    pub fn rr_iter(&self) -> impl Iterator<Item = &Rr> {
+        self.rr.iter()
+    }
+    #[doc = "0x20 - Buffer Data Port"]
+    #[inline(always)]
+    pub const fn bdpr(&self) -> &Bdpr {
+        &self.bdpr
+    }
+    #[doc = "0x24 - Present State"]
+    #[inline(always)]
+    pub const fn psr(&self) -> &Psr {
+        &self.psr
     }
     #[doc = "0x28 - Host Control 1"]
     #[inline(always)]
-    pub fn hc1r_emmc_mode(&self) -> &crate::Reg<hc1r_emmc_mode::HC1R_EMMC_MODE_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(40usize)
-                as *const crate::Reg<hc1r_emmc_mode::HC1R_EMMC_MODE_SPEC>)
-        }
+    pub const fn hc1r_emmc_mode(&self) -> &Hc1rEmmcMode {
+        unsafe { &*(self as *const Self).cast::<u8>().add(40).cast() }
     }
     #[doc = "0x28 - Host Control 1"]
     #[inline(always)]
-    pub fn hc1r(&self) -> &crate::Reg<hc1r::HC1R_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(40usize)
-                as *const crate::Reg<hc1r::HC1R_SPEC>)
-        }
+    pub const fn hc1r(&self) -> &Hc1r {
+        unsafe { &*(self as *const Self).cast::<u8>().add(40).cast() }
+    }
+    #[doc = "0x29 - Power Control"]
+    #[inline(always)]
+    pub const fn pcr(&self) -> &Pcr {
+        &self.pcr
     }
     #[doc = "0x2a - Block Gap Control"]
     #[inline(always)]
-    pub fn bgcr_emmc_mode(&self) -> &crate::Reg<bgcr_emmc_mode::BGCR_EMMC_MODE_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(42usize)
-                as *const crate::Reg<bgcr_emmc_mode::BGCR_EMMC_MODE_SPEC>)
-        }
+    pub const fn bgcr_emmc_mode(&self) -> &BgcrEmmcMode {
+        unsafe { &*(self as *const Self).cast::<u8>().add(42).cast() }
     }
     #[doc = "0x2a - Block Gap Control"]
     #[inline(always)]
-    pub fn bgcr(&self) -> &crate::Reg<bgcr::BGCR_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(42usize)
-                as *const crate::Reg<bgcr::BGCR_SPEC>)
-        }
+    pub const fn bgcr(&self) -> &Bgcr {
+        unsafe { &*(self as *const Self).cast::<u8>().add(42).cast() }
+    }
+    #[doc = "0x2b - Wakeup Control"]
+    #[inline(always)]
+    pub const fn wcr(&self) -> &Wcr {
+        &self.wcr
+    }
+    #[doc = "0x2c - Clock Control"]
+    #[inline(always)]
+    pub const fn ccr(&self) -> &Ccr {
+        &self.ccr
+    }
+    #[doc = "0x2e - Timeout Control"]
+    #[inline(always)]
+    pub const fn tcr(&self) -> &Tcr {
+        &self.tcr
+    }
+    #[doc = "0x2f - Software Reset"]
+    #[inline(always)]
+    pub const fn srr(&self) -> &Srr {
+        &self.srr
     }
     #[doc = "0x30 - Normal Interrupt Status"]
     #[inline(always)]
-    pub fn nistr_emmc_mode(&self) -> &crate::Reg<nistr_emmc_mode::NISTR_EMMC_MODE_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(48usize)
-                as *const crate::Reg<nistr_emmc_mode::NISTR_EMMC_MODE_SPEC>)
-        }
+    pub const fn nistr_emmc_mode(&self) -> &NistrEmmcMode {
+        unsafe { &*(self as *const Self).cast::<u8>().add(48).cast() }
     }
     #[doc = "0x30 - Normal Interrupt Status"]
     #[inline(always)]
-    pub fn nistr(&self) -> &crate::Reg<nistr::NISTR_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(48usize)
-                as *const crate::Reg<nistr::NISTR_SPEC>)
-        }
+    pub const fn nistr(&self) -> &Nistr {
+        unsafe { &*(self as *const Self).cast::<u8>().add(48).cast() }
     }
     #[doc = "0x32 - Error Interrupt Status"]
     #[inline(always)]
-    pub fn eistr_emmc_mode(&self) -> &crate::Reg<eistr_emmc_mode::EISTR_EMMC_MODE_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(50usize)
-                as *const crate::Reg<eistr_emmc_mode::EISTR_EMMC_MODE_SPEC>)
-        }
+    pub const fn eistr_emmc_mode(&self) -> &EistrEmmcMode {
+        unsafe { &*(self as *const Self).cast::<u8>().add(50).cast() }
     }
     #[doc = "0x32 - Error Interrupt Status"]
     #[inline(always)]
-    pub fn eistr(&self) -> &crate::Reg<eistr::EISTR_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(50usize)
-                as *const crate::Reg<eistr::EISTR_SPEC>)
-        }
+    pub const fn eistr(&self) -> &Eistr {
+        unsafe { &*(self as *const Self).cast::<u8>().add(50).cast() }
     }
     #[doc = "0x34 - Normal Interrupt Status Enable"]
     #[inline(always)]
-    pub fn nister_emmc_mode(&self) -> &crate::Reg<nister_emmc_mode::NISTER_EMMC_MODE_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(52usize)
-                as *const crate::Reg<nister_emmc_mode::NISTER_EMMC_MODE_SPEC>)
-        }
+    pub const fn nister_emmc_mode(&self) -> &NisterEmmcMode {
+        unsafe { &*(self as *const Self).cast::<u8>().add(52).cast() }
     }
     #[doc = "0x34 - Normal Interrupt Status Enable"]
     #[inline(always)]
-    pub fn nister(&self) -> &crate::Reg<nister::NISTER_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(52usize)
-                as *const crate::Reg<nister::NISTER_SPEC>)
-        }
+    pub const fn nister(&self) -> &Nister {
+        unsafe { &*(self as *const Self).cast::<u8>().add(52).cast() }
     }
     #[doc = "0x36 - Error Interrupt Status Enable"]
     #[inline(always)]
-    pub fn eister_emmc_mode(&self) -> &crate::Reg<eister_emmc_mode::EISTER_EMMC_MODE_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(54usize)
-                as *const crate::Reg<eister_emmc_mode::EISTER_EMMC_MODE_SPEC>)
-        }
+    pub const fn eister_emmc_mode(&self) -> &EisterEmmcMode {
+        unsafe { &*(self as *const Self).cast::<u8>().add(54).cast() }
     }
     #[doc = "0x36 - Error Interrupt Status Enable"]
     #[inline(always)]
-    pub fn eister(&self) -> &crate::Reg<eister::EISTER_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(54usize)
-                as *const crate::Reg<eister::EISTER_SPEC>)
-        }
+    pub const fn eister(&self) -> &Eister {
+        unsafe { &*(self as *const Self).cast::<u8>().add(54).cast() }
     }
     #[doc = "0x38 - Normal Interrupt Signal Enable"]
     #[inline(always)]
-    pub fn nisier_emmc_mode(&self) -> &crate::Reg<nisier_emmc_mode::NISIER_EMMC_MODE_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(56usize)
-                as *const crate::Reg<nisier_emmc_mode::NISIER_EMMC_MODE_SPEC>)
-        }
+    pub const fn nisier_emmc_mode(&self) -> &NisierEmmcMode {
+        unsafe { &*(self as *const Self).cast::<u8>().add(56).cast() }
     }
     #[doc = "0x38 - Normal Interrupt Signal Enable"]
     #[inline(always)]
-    pub fn nisier(&self) -> &crate::Reg<nisier::NISIER_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(56usize)
-                as *const crate::Reg<nisier::NISIER_SPEC>)
-        }
+    pub const fn nisier(&self) -> &Nisier {
+        unsafe { &*(self as *const Self).cast::<u8>().add(56).cast() }
     }
     #[doc = "0x3a - Error Interrupt Signal Enable"]
     #[inline(always)]
-    pub fn eisier_emmc_mode(&self) -> &crate::Reg<eisier_emmc_mode::EISIER_EMMC_MODE_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(58usize)
-                as *const crate::Reg<eisier_emmc_mode::EISIER_EMMC_MODE_SPEC>)
-        }
+    pub const fn eisier_emmc_mode(&self) -> &EisierEmmcMode {
+        unsafe { &*(self as *const Self).cast::<u8>().add(58).cast() }
     }
     #[doc = "0x3a - Error Interrupt Signal Enable"]
     #[inline(always)]
-    pub fn eisier(&self) -> &crate::Reg<eisier::EISIER_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(58usize)
-                as *const crate::Reg<eisier::EISIER_SPEC>)
-        }
+    pub const fn eisier(&self) -> &Eisier {
+        unsafe { &*(self as *const Self).cast::<u8>().add(58).cast() }
+    }
+    #[doc = "0x3c - Auto CMD Error Status"]
+    #[inline(always)]
+    pub const fn acesr(&self) -> &Acesr {
+        &self.acesr
     }
     #[doc = "0x3e - Host Control 2"]
     #[inline(always)]
-    pub fn hc2r_emmc_mode(&self) -> &crate::Reg<hc2r_emmc_mode::HC2R_EMMC_MODE_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(62usize)
-                as *const crate::Reg<hc2r_emmc_mode::HC2R_EMMC_MODE_SPEC>)
-        }
+    pub const fn hc2r_emmc_mode(&self) -> &Hc2rEmmcMode {
+        unsafe { &*(self as *const Self).cast::<u8>().add(62).cast() }
     }
     #[doc = "0x3e - Host Control 2"]
     #[inline(always)]
-    pub fn hc2r(&self) -> &crate::Reg<hc2r::HC2R_SPEC> {
-        unsafe {
-            &*(((self as *const Self) as *const u8).add(62usize)
-                as *const crate::Reg<hc2r::HC2R_SPEC>)
-        }
+    pub const fn hc2r(&self) -> &Hc2r {
+        unsafe { &*(self as *const Self).cast::<u8>().add(62).cast() }
+    }
+    #[doc = "0x40 - Capabilities 0"]
+    #[inline(always)]
+    pub const fn ca0r(&self) -> &Ca0r {
+        &self.ca0r
+    }
+    #[doc = "0x44 - Capabilities 1"]
+    #[inline(always)]
+    pub const fn ca1r(&self) -> &Ca1r {
+        &self.ca1r
+    }
+    #[doc = "0x48 - Maximum Current Capabilities"]
+    #[inline(always)]
+    pub const fn mccar(&self) -> &Mccar {
+        &self.mccar
+    }
+    #[doc = "0x50 - Force Event for Auto CMD Error Status"]
+    #[inline(always)]
+    pub const fn feraces(&self) -> &Feraces {
+        &self.feraces
+    }
+    #[doc = "0x52 - Force Event for Error Interrupt Status"]
+    #[inline(always)]
+    pub const fn fereis(&self) -> &Fereis {
+        &self.fereis
+    }
+    #[doc = "0x54 - ADMA Error Status"]
+    #[inline(always)]
+    pub const fn aesr(&self) -> &Aesr {
+        &self.aesr
+    }
+    #[doc = "0x58 - ADMA System Address"]
+    #[inline(always)]
+    pub const fn asar(&self, n: usize) -> &Asar {
+        &self.asar[n]
+    }
+    #[doc = "Iterator for array of:"]
+    #[doc = "0x58 - ADMA System Address"]
+    #[inline(always)]
+    pub fn asar_iter(&self) -> impl Iterator<Item = &Asar> {
+        self.asar.iter()
+    }
+    #[doc = "0x60..0x70 - Preset Value n"]
+    #[inline(always)]
+    pub const fn pvr(&self, n: usize) -> &Pvr {
+        &self.pvr[n]
+    }
+    #[doc = "Iterator for array of:"]
+    #[doc = "0x60..0x70 - Preset Value n"]
+    #[inline(always)]
+    pub fn pvr_iter(&self) -> impl Iterator<Item = &Pvr> {
+        self.pvr.iter()
+    }
+    #[doc = "0xfc - Slot Interrupt Status"]
+    #[inline(always)]
+    pub const fn sisr(&self) -> &Sisr {
+        &self.sisr
+    }
+    #[doc = "0xfe - Host Controller Version"]
+    #[inline(always)]
+    pub const fn hcvr(&self) -> &Hcvr {
+        &self.hcvr
+    }
+    #[doc = "0x200 - Additional Present State Register"]
+    #[inline(always)]
+    pub const fn apsr(&self) -> &Apsr {
+        &self.apsr
+    }
+    #[doc = "0x204 - MMC Control 1"]
+    #[inline(always)]
+    pub const fn mc1r(&self) -> &Mc1r {
+        &self.mc1r
+    }
+    #[doc = "0x205 - MMC Control 2"]
+    #[inline(always)]
+    pub const fn mc2r(&self) -> &Mc2r {
+        &self.mc2r
+    }
+    #[doc = "0x208 - AHB Control"]
+    #[inline(always)]
+    pub const fn acr(&self) -> &Acr {
+        &self.acr
+    }
+    #[doc = "0x20c - Clock Control 2"]
+    #[inline(always)]
+    pub const fn cc2r(&self) -> &Cc2r {
+        &self.cc2r
+    }
+    #[doc = "0x230 - Capabilities Control"]
+    #[inline(always)]
+    pub const fn cacr(&self) -> &Cacr {
+        &self.cacr
+    }
+    #[doc = "0x234 - Debug"]
+    #[inline(always)]
+    pub const fn dbgr(&self) -> &Dbgr {
+        &self.dbgr
     }
 }
-#[doc = "SSAR register accessor: an alias for `Reg<SSAR_SPEC>`"]
-pub type SSAR = crate::Reg<ssar::SSAR_SPEC>;
+#[doc = "SSAR (rw) register accessor: SDMA System Address / Argument 2\n\nYou can [`read`](crate::Reg::read) this register and get [`ssar::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ssar::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ssar`]
+module"]
+#[doc(alias = "SSAR")]
+pub type Ssar = crate::Reg<ssar::SsarSpec>;
 #[doc = "SDMA System Address / Argument 2"]
 pub mod ssar;
-#[doc = "SSAR_CMD23_MODE register accessor: an alias for `Reg<SSAR_CMD23_MODE_SPEC>`"]
-pub type SSAR_CMD23_MODE = crate::Reg<ssar_cmd23_mode::SSAR_CMD23_MODE_SPEC>;
+#[doc = "SSAR_CMD23_MODE (rw) register accessor: SDMA System Address / Argument 2\n\nYou can [`read`](crate::Reg::read) this register and get [`ssar_cmd23_mode::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ssar_cmd23_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ssar_cmd23_mode`]
+module"]
+#[doc(alias = "SSAR_CMD23_MODE")]
+pub type SsarCmd23Mode = crate::Reg<ssar_cmd23_mode::SsarCmd23ModeSpec>;
 #[doc = "SDMA System Address / Argument 2"]
 pub mod ssar_cmd23_mode;
-#[doc = "BSR register accessor: an alias for `Reg<BSR_SPEC>`"]
-pub type BSR = crate::Reg<bsr::BSR_SPEC>;
+#[doc = "BSR (rw) register accessor: Block Size\n\nYou can [`read`](crate::Reg::read) this register and get [`bsr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`bsr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@bsr`]
+module"]
+#[doc(alias = "BSR")]
+pub type Bsr = crate::Reg<bsr::BsrSpec>;
 #[doc = "Block Size"]
 pub mod bsr;
-#[doc = "BCR register accessor: an alias for `Reg<BCR_SPEC>`"]
-pub type BCR = crate::Reg<bcr::BCR_SPEC>;
+#[doc = "BCR (rw) register accessor: Block Count\n\nYou can [`read`](crate::Reg::read) this register and get [`bcr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`bcr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@bcr`]
+module"]
+#[doc(alias = "BCR")]
+pub type Bcr = crate::Reg<bcr::BcrSpec>;
 #[doc = "Block Count"]
 pub mod bcr;
-#[doc = "ARG1R register accessor: an alias for `Reg<ARG1R_SPEC>`"]
-pub type ARG1R = crate::Reg<arg1r::ARG1R_SPEC>;
+#[doc = "ARG1R (rw) register accessor: Argument 1\n\nYou can [`read`](crate::Reg::read) this register and get [`arg1r::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`arg1r::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@arg1r`]
+module"]
+#[doc(alias = "ARG1R")]
+pub type Arg1r = crate::Reg<arg1r::Arg1rSpec>;
 #[doc = "Argument 1"]
 pub mod arg1r;
-#[doc = "TMR register accessor: an alias for `Reg<TMR_SPEC>`"]
-pub type TMR = crate::Reg<tmr::TMR_SPEC>;
+#[doc = "TMR (rw) register accessor: Transfer Mode\n\nYou can [`read`](crate::Reg::read) this register and get [`tmr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tmr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tmr`]
+module"]
+#[doc(alias = "TMR")]
+pub type Tmr = crate::Reg<tmr::TmrSpec>;
 #[doc = "Transfer Mode"]
 pub mod tmr;
-#[doc = "CR register accessor: an alias for `Reg<CR_SPEC>`"]
-pub type CR = crate::Reg<cr::CR_SPEC>;
+#[doc = "CR (rw) register accessor: Command\n\nYou can [`read`](crate::Reg::read) this register and get [`cr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`cr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@cr`]
+module"]
+#[doc(alias = "CR")]
+pub type Cr = crate::Reg<cr::CrSpec>;
 #[doc = "Command"]
 pub mod cr;
-#[doc = "RR register accessor: an alias for `Reg<RR_SPEC>`"]
-pub type RR = crate::Reg<rr::RR_SPEC>;
+#[doc = "RR (r) register accessor: Response\n\nYou can [`read`](crate::Reg::read) this register and get [`rr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@rr`]
+module"]
+#[doc(alias = "RR")]
+pub type Rr = crate::Reg<rr::RrSpec>;
 #[doc = "Response"]
 pub mod rr;
-#[doc = "BDPR register accessor: an alias for `Reg<BDPR_SPEC>`"]
-pub type BDPR = crate::Reg<bdpr::BDPR_SPEC>;
+#[doc = "BDPR (rw) register accessor: Buffer Data Port\n\nYou can [`read`](crate::Reg::read) this register and get [`bdpr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`bdpr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@bdpr`]
+module"]
+#[doc(alias = "BDPR")]
+pub type Bdpr = crate::Reg<bdpr::BdprSpec>;
 #[doc = "Buffer Data Port"]
 pub mod bdpr;
-#[doc = "PSR register accessor: an alias for `Reg<PSR_SPEC>`"]
-pub type PSR = crate::Reg<psr::PSR_SPEC>;
+#[doc = "PSR (r) register accessor: Present State\n\nYou can [`read`](crate::Reg::read) this register and get [`psr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@psr`]
+module"]
+#[doc(alias = "PSR")]
+pub type Psr = crate::Reg<psr::PsrSpec>;
 #[doc = "Present State"]
 pub mod psr;
-#[doc = "HC1R register accessor: an alias for `Reg<HC1R_SPEC>`"]
-pub type HC1R = crate::Reg<hc1r::HC1R_SPEC>;
+#[doc = "HC1R (rw) register accessor: Host Control 1\n\nYou can [`read`](crate::Reg::read) this register and get [`hc1r::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`hc1r::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@hc1r`]
+module"]
+#[doc(alias = "HC1R")]
+pub type Hc1r = crate::Reg<hc1r::Hc1rSpec>;
 #[doc = "Host Control 1"]
 pub mod hc1r;
-#[doc = "HC1R_EMMC_MODE register accessor: an alias for `Reg<HC1R_EMMC_MODE_SPEC>`"]
-pub type HC1R_EMMC_MODE = crate::Reg<hc1r_emmc_mode::HC1R_EMMC_MODE_SPEC>;
+#[doc = "HC1R_EMMC_MODE (rw) register accessor: Host Control 1\n\nYou can [`read`](crate::Reg::read) this register and get [`hc1r_emmc_mode::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`hc1r_emmc_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@hc1r_emmc_mode`]
+module"]
+#[doc(alias = "HC1R_EMMC_MODE")]
+pub type Hc1rEmmcMode = crate::Reg<hc1r_emmc_mode::Hc1rEmmcModeSpec>;
 #[doc = "Host Control 1"]
 pub mod hc1r_emmc_mode;
-#[doc = "PCR register accessor: an alias for `Reg<PCR_SPEC>`"]
-pub type PCR = crate::Reg<pcr::PCR_SPEC>;
+#[doc = "PCR (rw) register accessor: Power Control\n\nYou can [`read`](crate::Reg::read) this register and get [`pcr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pcr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pcr`]
+module"]
+#[doc(alias = "PCR")]
+pub type Pcr = crate::Reg<pcr::PcrSpec>;
 #[doc = "Power Control"]
 pub mod pcr;
-#[doc = "BGCR register accessor: an alias for `Reg<BGCR_SPEC>`"]
-pub type BGCR = crate::Reg<bgcr::BGCR_SPEC>;
+#[doc = "BGCR (rw) register accessor: Block Gap Control\n\nYou can [`read`](crate::Reg::read) this register and get [`bgcr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`bgcr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@bgcr`]
+module"]
+#[doc(alias = "BGCR")]
+pub type Bgcr = crate::Reg<bgcr::BgcrSpec>;
 #[doc = "Block Gap Control"]
 pub mod bgcr;
-#[doc = "BGCR_EMMC_MODE register accessor: an alias for `Reg<BGCR_EMMC_MODE_SPEC>`"]
-pub type BGCR_EMMC_MODE = crate::Reg<bgcr_emmc_mode::BGCR_EMMC_MODE_SPEC>;
+#[doc = "BGCR_EMMC_MODE (rw) register accessor: Block Gap Control\n\nYou can [`read`](crate::Reg::read) this register and get [`bgcr_emmc_mode::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`bgcr_emmc_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@bgcr_emmc_mode`]
+module"]
+#[doc(alias = "BGCR_EMMC_MODE")]
+pub type BgcrEmmcMode = crate::Reg<bgcr_emmc_mode::BgcrEmmcModeSpec>;
 #[doc = "Block Gap Control"]
 pub mod bgcr_emmc_mode;
-#[doc = "WCR register accessor: an alias for `Reg<WCR_SPEC>`"]
-pub type WCR = crate::Reg<wcr::WCR_SPEC>;
+#[doc = "WCR (rw) register accessor: Wakeup Control\n\nYou can [`read`](crate::Reg::read) this register and get [`wcr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`wcr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@wcr`]
+module"]
+#[doc(alias = "WCR")]
+pub type Wcr = crate::Reg<wcr::WcrSpec>;
 #[doc = "Wakeup Control"]
 pub mod wcr;
-#[doc = "CCR register accessor: an alias for `Reg<CCR_SPEC>`"]
-pub type CCR = crate::Reg<ccr::CCR_SPEC>;
+#[doc = "CCR (rw) register accessor: Clock Control\n\nYou can [`read`](crate::Reg::read) this register and get [`ccr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`ccr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ccr`]
+module"]
+#[doc(alias = "CCR")]
+pub type Ccr = crate::Reg<ccr::CcrSpec>;
 #[doc = "Clock Control"]
 pub mod ccr;
-#[doc = "TCR register accessor: an alias for `Reg<TCR_SPEC>`"]
-pub type TCR = crate::Reg<tcr::TCR_SPEC>;
+#[doc = "TCR (rw) register accessor: Timeout Control\n\nYou can [`read`](crate::Reg::read) this register and get [`tcr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`tcr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@tcr`]
+module"]
+#[doc(alias = "TCR")]
+pub type Tcr = crate::Reg<tcr::TcrSpec>;
 #[doc = "Timeout Control"]
 pub mod tcr;
-#[doc = "SRR register accessor: an alias for `Reg<SRR_SPEC>`"]
-pub type SRR = crate::Reg<srr::SRR_SPEC>;
+#[doc = "SRR (rw) register accessor: Software Reset\n\nYou can [`read`](crate::Reg::read) this register and get [`srr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`srr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@srr`]
+module"]
+#[doc(alias = "SRR")]
+pub type Srr = crate::Reg<srr::SrrSpec>;
 #[doc = "Software Reset"]
 pub mod srr;
-#[doc = "NISTR register accessor: an alias for `Reg<NISTR_SPEC>`"]
-pub type NISTR = crate::Reg<nistr::NISTR_SPEC>;
+#[doc = "NISTR (rw) register accessor: Normal Interrupt Status\n\nYou can [`read`](crate::Reg::read) this register and get [`nistr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`nistr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@nistr`]
+module"]
+#[doc(alias = "NISTR")]
+pub type Nistr = crate::Reg<nistr::NistrSpec>;
 #[doc = "Normal Interrupt Status"]
 pub mod nistr;
-#[doc = "NISTR_EMMC_MODE register accessor: an alias for `Reg<NISTR_EMMC_MODE_SPEC>`"]
-pub type NISTR_EMMC_MODE = crate::Reg<nistr_emmc_mode::NISTR_EMMC_MODE_SPEC>;
+#[doc = "NISTR_EMMC_MODE (rw) register accessor: Normal Interrupt Status\n\nYou can [`read`](crate::Reg::read) this register and get [`nistr_emmc_mode::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`nistr_emmc_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@nistr_emmc_mode`]
+module"]
+#[doc(alias = "NISTR_EMMC_MODE")]
+pub type NistrEmmcMode = crate::Reg<nistr_emmc_mode::NistrEmmcModeSpec>;
 #[doc = "Normal Interrupt Status"]
 pub mod nistr_emmc_mode;
-#[doc = "EISTR register accessor: an alias for `Reg<EISTR_SPEC>`"]
-pub type EISTR = crate::Reg<eistr::EISTR_SPEC>;
+#[doc = "EISTR (rw) register accessor: Error Interrupt Status\n\nYou can [`read`](crate::Reg::read) this register and get [`eistr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eistr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eistr`]
+module"]
+#[doc(alias = "EISTR")]
+pub type Eistr = crate::Reg<eistr::EistrSpec>;
 #[doc = "Error Interrupt Status"]
 pub mod eistr;
-#[doc = "EISTR_EMMC_MODE register accessor: an alias for `Reg<EISTR_EMMC_MODE_SPEC>`"]
-pub type EISTR_EMMC_MODE = crate::Reg<eistr_emmc_mode::EISTR_EMMC_MODE_SPEC>;
+#[doc = "EISTR_EMMC_MODE (rw) register accessor: Error Interrupt Status\n\nYou can [`read`](crate::Reg::read) this register and get [`eistr_emmc_mode::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eistr_emmc_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eistr_emmc_mode`]
+module"]
+#[doc(alias = "EISTR_EMMC_MODE")]
+pub type EistrEmmcMode = crate::Reg<eistr_emmc_mode::EistrEmmcModeSpec>;
 #[doc = "Error Interrupt Status"]
 pub mod eistr_emmc_mode;
-#[doc = "NISTER register accessor: an alias for `Reg<NISTER_SPEC>`"]
-pub type NISTER = crate::Reg<nister::NISTER_SPEC>;
+#[doc = "NISTER (rw) register accessor: Normal Interrupt Status Enable\n\nYou can [`read`](crate::Reg::read) this register and get [`nister::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`nister::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@nister`]
+module"]
+#[doc(alias = "NISTER")]
+pub type Nister = crate::Reg<nister::NisterSpec>;
 #[doc = "Normal Interrupt Status Enable"]
 pub mod nister;
-#[doc = "NISTER_EMMC_MODE register accessor: an alias for `Reg<NISTER_EMMC_MODE_SPEC>`"]
-pub type NISTER_EMMC_MODE = crate::Reg<nister_emmc_mode::NISTER_EMMC_MODE_SPEC>;
+#[doc = "NISTER_EMMC_MODE (rw) register accessor: Normal Interrupt Status Enable\n\nYou can [`read`](crate::Reg::read) this register and get [`nister_emmc_mode::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`nister_emmc_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@nister_emmc_mode`]
+module"]
+#[doc(alias = "NISTER_EMMC_MODE")]
+pub type NisterEmmcMode = crate::Reg<nister_emmc_mode::NisterEmmcModeSpec>;
 #[doc = "Normal Interrupt Status Enable"]
 pub mod nister_emmc_mode;
-#[doc = "EISTER register accessor: an alias for `Reg<EISTER_SPEC>`"]
-pub type EISTER = crate::Reg<eister::EISTER_SPEC>;
+#[doc = "EISTER (rw) register accessor: Error Interrupt Status Enable\n\nYou can [`read`](crate::Reg::read) this register and get [`eister::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eister::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eister`]
+module"]
+#[doc(alias = "EISTER")]
+pub type Eister = crate::Reg<eister::EisterSpec>;
 #[doc = "Error Interrupt Status Enable"]
 pub mod eister;
-#[doc = "EISTER_EMMC_MODE register accessor: an alias for `Reg<EISTER_EMMC_MODE_SPEC>`"]
-pub type EISTER_EMMC_MODE = crate::Reg<eister_emmc_mode::EISTER_EMMC_MODE_SPEC>;
+#[doc = "EISTER_EMMC_MODE (rw) register accessor: Error Interrupt Status Enable\n\nYou can [`read`](crate::Reg::read) this register and get [`eister_emmc_mode::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eister_emmc_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eister_emmc_mode`]
+module"]
+#[doc(alias = "EISTER_EMMC_MODE")]
+pub type EisterEmmcMode = crate::Reg<eister_emmc_mode::EisterEmmcModeSpec>;
 #[doc = "Error Interrupt Status Enable"]
 pub mod eister_emmc_mode;
-#[doc = "NISIER register accessor: an alias for `Reg<NISIER_SPEC>`"]
-pub type NISIER = crate::Reg<nisier::NISIER_SPEC>;
+#[doc = "NISIER (rw) register accessor: Normal Interrupt Signal Enable\n\nYou can [`read`](crate::Reg::read) this register and get [`nisier::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`nisier::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@nisier`]
+module"]
+#[doc(alias = "NISIER")]
+pub type Nisier = crate::Reg<nisier::NisierSpec>;
 #[doc = "Normal Interrupt Signal Enable"]
 pub mod nisier;
-#[doc = "NISIER_EMMC_MODE register accessor: an alias for `Reg<NISIER_EMMC_MODE_SPEC>`"]
-pub type NISIER_EMMC_MODE = crate::Reg<nisier_emmc_mode::NISIER_EMMC_MODE_SPEC>;
+#[doc = "NISIER_EMMC_MODE (rw) register accessor: Normal Interrupt Signal Enable\n\nYou can [`read`](crate::Reg::read) this register and get [`nisier_emmc_mode::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`nisier_emmc_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@nisier_emmc_mode`]
+module"]
+#[doc(alias = "NISIER_EMMC_MODE")]
+pub type NisierEmmcMode = crate::Reg<nisier_emmc_mode::NisierEmmcModeSpec>;
 #[doc = "Normal Interrupt Signal Enable"]
 pub mod nisier_emmc_mode;
-#[doc = "EISIER register accessor: an alias for `Reg<EISIER_SPEC>`"]
-pub type EISIER = crate::Reg<eisier::EISIER_SPEC>;
+#[doc = "EISIER (rw) register accessor: Error Interrupt Signal Enable\n\nYou can [`read`](crate::Reg::read) this register and get [`eisier::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eisier::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eisier`]
+module"]
+#[doc(alias = "EISIER")]
+pub type Eisier = crate::Reg<eisier::EisierSpec>;
 #[doc = "Error Interrupt Signal Enable"]
 pub mod eisier;
-#[doc = "EISIER_EMMC_MODE register accessor: an alias for `Reg<EISIER_EMMC_MODE_SPEC>`"]
-pub type EISIER_EMMC_MODE = crate::Reg<eisier_emmc_mode::EISIER_EMMC_MODE_SPEC>;
+#[doc = "EISIER_EMMC_MODE (rw) register accessor: Error Interrupt Signal Enable\n\nYou can [`read`](crate::Reg::read) this register and get [`eisier_emmc_mode::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`eisier_emmc_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@eisier_emmc_mode`]
+module"]
+#[doc(alias = "EISIER_EMMC_MODE")]
+pub type EisierEmmcMode = crate::Reg<eisier_emmc_mode::EisierEmmcModeSpec>;
 #[doc = "Error Interrupt Signal Enable"]
 pub mod eisier_emmc_mode;
-#[doc = "ACESR register accessor: an alias for `Reg<ACESR_SPEC>`"]
-pub type ACESR = crate::Reg<acesr::ACESR_SPEC>;
+#[doc = "ACESR (r) register accessor: Auto CMD Error Status\n\nYou can [`read`](crate::Reg::read) this register and get [`acesr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@acesr`]
+module"]
+#[doc(alias = "ACESR")]
+pub type Acesr = crate::Reg<acesr::AcesrSpec>;
 #[doc = "Auto CMD Error Status"]
 pub mod acesr;
-#[doc = "HC2R register accessor: an alias for `Reg<HC2R_SPEC>`"]
-pub type HC2R = crate::Reg<hc2r::HC2R_SPEC>;
+#[doc = "HC2R (rw) register accessor: Host Control 2\n\nYou can [`read`](crate::Reg::read) this register and get [`hc2r::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`hc2r::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@hc2r`]
+module"]
+#[doc(alias = "HC2R")]
+pub type Hc2r = crate::Reg<hc2r::Hc2rSpec>;
 #[doc = "Host Control 2"]
 pub mod hc2r;
-#[doc = "HC2R_EMMC_MODE register accessor: an alias for `Reg<HC2R_EMMC_MODE_SPEC>`"]
-pub type HC2R_EMMC_MODE = crate::Reg<hc2r_emmc_mode::HC2R_EMMC_MODE_SPEC>;
+#[doc = "HC2R_EMMC_MODE (rw) register accessor: Host Control 2\n\nYou can [`read`](crate::Reg::read) this register and get [`hc2r_emmc_mode::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`hc2r_emmc_mode::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@hc2r_emmc_mode`]
+module"]
+#[doc(alias = "HC2R_EMMC_MODE")]
+pub type Hc2rEmmcMode = crate::Reg<hc2r_emmc_mode::Hc2rEmmcModeSpec>;
 #[doc = "Host Control 2"]
 pub mod hc2r_emmc_mode;
-#[doc = "CA0R register accessor: an alias for `Reg<CA0R_SPEC>`"]
-pub type CA0R = crate::Reg<ca0r::CA0R_SPEC>;
+#[doc = "CA0R (r) register accessor: Capabilities 0\n\nYou can [`read`](crate::Reg::read) this register and get [`ca0r::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ca0r`]
+module"]
+#[doc(alias = "CA0R")]
+pub type Ca0r = crate::Reg<ca0r::Ca0rSpec>;
 #[doc = "Capabilities 0"]
 pub mod ca0r;
-#[doc = "CA1R register accessor: an alias for `Reg<CA1R_SPEC>`"]
-pub type CA1R = crate::Reg<ca1r::CA1R_SPEC>;
+#[doc = "CA1R (r) register accessor: Capabilities 1\n\nYou can [`read`](crate::Reg::read) this register and get [`ca1r::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@ca1r`]
+module"]
+#[doc(alias = "CA1R")]
+pub type Ca1r = crate::Reg<ca1r::Ca1rSpec>;
 #[doc = "Capabilities 1"]
 pub mod ca1r;
-#[doc = "MCCAR register accessor: an alias for `Reg<MCCAR_SPEC>`"]
-pub type MCCAR = crate::Reg<mccar::MCCAR_SPEC>;
+#[doc = "MCCAR (r) register accessor: Maximum Current Capabilities\n\nYou can [`read`](crate::Reg::read) this register and get [`mccar::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@mccar`]
+module"]
+#[doc(alias = "MCCAR")]
+pub type Mccar = crate::Reg<mccar::MccarSpec>;
 #[doc = "Maximum Current Capabilities"]
 pub mod mccar;
-#[doc = "FERACES register accessor: an alias for `Reg<FERACES_SPEC>`"]
-pub type FERACES = crate::Reg<feraces::FERACES_SPEC>;
+#[doc = "FERACES (w) register accessor: Force Event for Auto CMD Error Status\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`feraces::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@feraces`]
+module"]
+#[doc(alias = "FERACES")]
+pub type Feraces = crate::Reg<feraces::FeracesSpec>;
 #[doc = "Force Event for Auto CMD Error Status"]
 pub mod feraces;
-#[doc = "FEREIS register accessor: an alias for `Reg<FEREIS_SPEC>`"]
-pub type FEREIS = crate::Reg<fereis::FEREIS_SPEC>;
+#[doc = "FEREIS (w) register accessor: Force Event for Error Interrupt Status\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`fereis::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@fereis`]
+module"]
+#[doc(alias = "FEREIS")]
+pub type Fereis = crate::Reg<fereis::FereisSpec>;
 #[doc = "Force Event for Error Interrupt Status"]
 pub mod fereis;
-#[doc = "AESR register accessor: an alias for `Reg<AESR_SPEC>`"]
-pub type AESR = crate::Reg<aesr::AESR_SPEC>;
+#[doc = "AESR (r) register accessor: ADMA Error Status\n\nYou can [`read`](crate::Reg::read) this register and get [`aesr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@aesr`]
+module"]
+#[doc(alias = "AESR")]
+pub type Aesr = crate::Reg<aesr::AesrSpec>;
 #[doc = "ADMA Error Status"]
 pub mod aesr;
-#[doc = "ASAR register accessor: an alias for `Reg<ASAR_SPEC>`"]
-pub type ASAR = crate::Reg<asar::ASAR_SPEC>;
-#[doc = "ADMA System Address n"]
+#[doc = "ASAR (rw) register accessor: ADMA System Address\n\nYou can [`read`](crate::Reg::read) this register and get [`asar::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`asar::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@asar`]
+module"]
+#[doc(alias = "ASAR")]
+pub type Asar = crate::Reg<asar::AsarSpec>;
+#[doc = "ADMA System Address"]
 pub mod asar;
-#[doc = "PVR register accessor: an alias for `Reg<PVR_SPEC>`"]
-pub type PVR = crate::Reg<pvr::PVR_SPEC>;
+#[doc = "PVR (rw) register accessor: Preset Value n\n\nYou can [`read`](crate::Reg::read) this register and get [`pvr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`pvr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@pvr`]
+module"]
+#[doc(alias = "PVR")]
+pub type Pvr = crate::Reg<pvr::PvrSpec>;
 #[doc = "Preset Value n"]
 pub mod pvr;
-#[doc = "SISR register accessor: an alias for `Reg<SISR_SPEC>`"]
-pub type SISR = crate::Reg<sisr::SISR_SPEC>;
+#[doc = "SISR (r) register accessor: Slot Interrupt Status\n\nYou can [`read`](crate::Reg::read) this register and get [`sisr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@sisr`]
+module"]
+#[doc(alias = "SISR")]
+pub type Sisr = crate::Reg<sisr::SisrSpec>;
 #[doc = "Slot Interrupt Status"]
 pub mod sisr;
-#[doc = "HCVR register accessor: an alias for `Reg<HCVR_SPEC>`"]
-pub type HCVR = crate::Reg<hcvr::HCVR_SPEC>;
+#[doc = "HCVR (r) register accessor: Host Controller Version\n\nYou can [`read`](crate::Reg::read) this register and get [`hcvr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@hcvr`]
+module"]
+#[doc(alias = "HCVR")]
+pub type Hcvr = crate::Reg<hcvr::HcvrSpec>;
 #[doc = "Host Controller Version"]
 pub mod hcvr;
-#[doc = "MC1R register accessor: an alias for `Reg<MC1R_SPEC>`"]
-pub type MC1R = crate::Reg<mc1r::MC1R_SPEC>;
+#[doc = "APSR (r) register accessor: Additional Present State Register\n\nYou can [`read`](crate::Reg::read) this register and get [`apsr::R`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@apsr`]
+module"]
+#[doc(alias = "APSR")]
+pub type Apsr = crate::Reg<apsr::ApsrSpec>;
+#[doc = "Additional Present State Register"]
+pub mod apsr;
+#[doc = "MC1R (rw) register accessor: MMC Control 1\n\nYou can [`read`](crate::Reg::read) this register and get [`mc1r::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`mc1r::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@mc1r`]
+module"]
+#[doc(alias = "MC1R")]
+pub type Mc1r = crate::Reg<mc1r::Mc1rSpec>;
 #[doc = "MMC Control 1"]
 pub mod mc1r;
-#[doc = "MC2R register accessor: an alias for `Reg<MC2R_SPEC>`"]
-pub type MC2R = crate::Reg<mc2r::MC2R_SPEC>;
+#[doc = "MC2R (w) register accessor: MMC Control 2\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`mc2r::W`]. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@mc2r`]
+module"]
+#[doc(alias = "MC2R")]
+pub type Mc2r = crate::Reg<mc2r::Mc2rSpec>;
 #[doc = "MMC Control 2"]
 pub mod mc2r;
-#[doc = "ACR register accessor: an alias for `Reg<ACR_SPEC>`"]
-pub type ACR = crate::Reg<acr::ACR_SPEC>;
+#[doc = "ACR (rw) register accessor: AHB Control\n\nYou can [`read`](crate::Reg::read) this register and get [`acr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`acr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@acr`]
+module"]
+#[doc(alias = "ACR")]
+pub type Acr = crate::Reg<acr::AcrSpec>;
 #[doc = "AHB Control"]
 pub mod acr;
-#[doc = "CC2R register accessor: an alias for `Reg<CC2R_SPEC>`"]
-pub type CC2R = crate::Reg<cc2r::CC2R_SPEC>;
+#[doc = "CC2R (rw) register accessor: Clock Control 2\n\nYou can [`read`](crate::Reg::read) this register and get [`cc2r::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`cc2r::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@cc2r`]
+module"]
+#[doc(alias = "CC2R")]
+pub type Cc2r = crate::Reg<cc2r::Cc2rSpec>;
 #[doc = "Clock Control 2"]
 pub mod cc2r;
-#[doc = "CACR register accessor: an alias for `Reg<CACR_SPEC>`"]
-pub type CACR = crate::Reg<cacr::CACR_SPEC>;
+#[doc = "CACR (rw) register accessor: Capabilities Control\n\nYou can [`read`](crate::Reg::read) this register and get [`cacr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`cacr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@cacr`]
+module"]
+#[doc(alias = "CACR")]
+pub type Cacr = crate::Reg<cacr::CacrSpec>;
 #[doc = "Capabilities Control"]
 pub mod cacr;
-#[doc = "DBGR register accessor: an alias for `Reg<DBGR_SPEC>`"]
-pub type DBGR = crate::Reg<dbgr::DBGR_SPEC>;
+#[doc = "DBGR (rw) register accessor: Debug\n\nYou can [`read`](crate::Reg::read) this register and get [`dbgr::R`]. You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`dbgr::W`]. You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [`mod@dbgr`]
+module"]
+#[doc(alias = "DBGR")]
+pub type Dbgr = crate::Reg<dbgr::DbgrSpec>;
 #[doc = "Debug"]
 pub mod dbgr;

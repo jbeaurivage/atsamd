@@ -1,335 +1,169 @@
 #[doc = "Register `TYPE` reader"]
-pub struct R(crate::R<TYPE_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<TYPE_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<TYPE_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<TYPE_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<TypeSpec>;
 #[doc = "Field `GCLK` reader - dynamic Clock Gating supported"]
-pub struct GCLK_R(crate::FieldReader<bool, bool>);
-impl GCLK_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        GCLK_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for GCLK_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type GclkR = crate::BitReader;
 #[doc = "Field `RRP` reader - Round Robin Policy supported"]
-pub struct RRP_R(crate::FieldReader<bool, bool>);
-impl RRP_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        RRP_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for RRP_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type RrpR = crate::BitReader;
 #[doc = "Number of Way\n\nValue on reset: 2"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum WAYNUM_A {
-    #[doc = "0: Direct Mapped Cache"]
-    DMAPPED = 0,
-    #[doc = "1: 2-WAY set associative"]
-    ARCH2WAY = 1,
+pub enum Waynumselect {
     #[doc = "2: 4-WAY set associative"]
-    ARCH4WAY = 2,
+    Arch4way = 2,
 }
-impl From<WAYNUM_A> for u8 {
+impl From<Waynumselect> for u8 {
     #[inline(always)]
-    fn from(variant: WAYNUM_A) -> Self {
+    fn from(variant: Waynumselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Waynumselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Waynumselect {}
 #[doc = "Field `WAYNUM` reader - Number of Way"]
-pub struct WAYNUM_R(crate::FieldReader<u8, WAYNUM_A>);
-impl WAYNUM_R {
+pub type WaynumR = crate::FieldReader<Waynumselect>;
+impl WaynumR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        WAYNUM_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<WAYNUM_A> {
+    pub const fn variant(&self) -> Option<Waynumselect> {
         match self.bits {
-            0 => Some(WAYNUM_A::DMAPPED),
-            1 => Some(WAYNUM_A::ARCH2WAY),
-            2 => Some(WAYNUM_A::ARCH4WAY),
+            2 => Some(Waynumselect::Arch4way),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `DMAPPED`"]
-    #[inline(always)]
-    pub fn is_dmapped(&self) -> bool {
-        **self == WAYNUM_A::DMAPPED
-    }
-    #[doc = "Checks if the value of the field is `ARCH2WAY`"]
-    #[inline(always)]
-    pub fn is_arch2way(&self) -> bool {
-        **self == WAYNUM_A::ARCH2WAY
-    }
-    #[doc = "Checks if the value of the field is `ARCH4WAY`"]
+    #[doc = "4-WAY set associative"]
     #[inline(always)]
     pub fn is_arch4way(&self) -> bool {
-        **self == WAYNUM_A::ARCH4WAY
-    }
-}
-impl core::ops::Deref for WAYNUM_R {
-    type Target = crate::FieldReader<u8, WAYNUM_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Waynumselect::Arch4way
     }
 }
 #[doc = "Field `LCKDOWN` reader - Lock Down supported"]
-pub struct LCKDOWN_R(crate::FieldReader<bool, bool>);
-impl LCKDOWN_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        LCKDOWN_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for LCKDOWN_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type LckdownR = crate::BitReader;
 #[doc = "Cache Size\n\nValue on reset: 2"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum CSIZE_A {
+pub enum Csizeselect {
     #[doc = "0: Cache Size is 1 KB"]
-    CSIZE_1KB = 0,
+    Csize1kb = 0,
     #[doc = "1: Cache Size is 2 KB"]
-    CSIZE_2KB = 1,
+    Csize2kb = 1,
     #[doc = "2: Cache Size is 4 KB"]
-    CSIZE_4KB = 2,
-    #[doc = "3: Cache Size is 8 KB"]
-    CSIZE_8KB = 3,
-    #[doc = "4: Cache Size is 16 KB"]
-    CSIZE_16KB = 4,
-    #[doc = "5: Cache Size is 32 KB"]
-    CSIZE_32KB = 5,
-    #[doc = "6: Cache Size is 64 KB"]
-    CSIZE_64KB = 6,
+    Csize4kb = 2,
 }
-impl From<CSIZE_A> for u8 {
+impl From<Csizeselect> for u8 {
     #[inline(always)]
-    fn from(variant: CSIZE_A) -> Self {
+    fn from(variant: Csizeselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Csizeselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Csizeselect {}
 #[doc = "Field `CSIZE` reader - Cache Size"]
-pub struct CSIZE_R(crate::FieldReader<u8, CSIZE_A>);
-impl CSIZE_R {
+pub type CsizeR = crate::FieldReader<Csizeselect>;
+impl CsizeR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        CSIZE_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<CSIZE_A> {
+    pub const fn variant(&self) -> Option<Csizeselect> {
         match self.bits {
-            0 => Some(CSIZE_A::CSIZE_1KB),
-            1 => Some(CSIZE_A::CSIZE_2KB),
-            2 => Some(CSIZE_A::CSIZE_4KB),
-            3 => Some(CSIZE_A::CSIZE_8KB),
-            4 => Some(CSIZE_A::CSIZE_16KB),
-            5 => Some(CSIZE_A::CSIZE_32KB),
-            6 => Some(CSIZE_A::CSIZE_64KB),
+            0 => Some(Csizeselect::Csize1kb),
+            1 => Some(Csizeselect::Csize2kb),
+            2 => Some(Csizeselect::Csize4kb),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `CSIZE_1KB`"]
+    #[doc = "Cache Size is 1 KB"]
     #[inline(always)]
     pub fn is_csize_1kb(&self) -> bool {
-        **self == CSIZE_A::CSIZE_1KB
+        *self == Csizeselect::Csize1kb
     }
-    #[doc = "Checks if the value of the field is `CSIZE_2KB`"]
+    #[doc = "Cache Size is 2 KB"]
     #[inline(always)]
     pub fn is_csize_2kb(&self) -> bool {
-        **self == CSIZE_A::CSIZE_2KB
+        *self == Csizeselect::Csize2kb
     }
-    #[doc = "Checks if the value of the field is `CSIZE_4KB`"]
+    #[doc = "Cache Size is 4 KB"]
     #[inline(always)]
     pub fn is_csize_4kb(&self) -> bool {
-        **self == CSIZE_A::CSIZE_4KB
-    }
-    #[doc = "Checks if the value of the field is `CSIZE_8KB`"]
-    #[inline(always)]
-    pub fn is_csize_8kb(&self) -> bool {
-        **self == CSIZE_A::CSIZE_8KB
-    }
-    #[doc = "Checks if the value of the field is `CSIZE_16KB`"]
-    #[inline(always)]
-    pub fn is_csize_16kb(&self) -> bool {
-        **self == CSIZE_A::CSIZE_16KB
-    }
-    #[doc = "Checks if the value of the field is `CSIZE_32KB`"]
-    #[inline(always)]
-    pub fn is_csize_32kb(&self) -> bool {
-        **self == CSIZE_A::CSIZE_32KB
-    }
-    #[doc = "Checks if the value of the field is `CSIZE_64KB`"]
-    #[inline(always)]
-    pub fn is_csize_64kb(&self) -> bool {
-        **self == CSIZE_A::CSIZE_64KB
-    }
-}
-impl core::ops::Deref for CSIZE_R {
-    type Target = crate::FieldReader<u8, CSIZE_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Csizeselect::Csize4kb
     }
 }
 #[doc = "Cache Line Size\n\nValue on reset: 2"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum CLSIZE_A {
-    #[doc = "0: Cache Line Size is 4 bytes"]
-    CLSIZE_4B = 0,
-    #[doc = "1: Cache Line Size is 8 bytes"]
-    CLSIZE_8B = 1,
+pub enum Clsizeselect {
     #[doc = "2: Cache Line Size is 16 bytes"]
-    CLSIZE_16B = 2,
-    #[doc = "3: Cache Line Size is 32 bytes"]
-    CLSIZE_32B = 3,
-    #[doc = "4: Cache Line Size is 64 bytes"]
-    CLSIZE_64B = 4,
-    #[doc = "5: Cache Line Size is 128 bytes"]
-    CLSIZE_128B = 5,
+    Clsize16b = 2,
 }
-impl From<CLSIZE_A> for u8 {
+impl From<Clsizeselect> for u8 {
     #[inline(always)]
-    fn from(variant: CLSIZE_A) -> Self {
+    fn from(variant: Clsizeselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Clsizeselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Clsizeselect {}
 #[doc = "Field `CLSIZE` reader - Cache Line Size"]
-pub struct CLSIZE_R(crate::FieldReader<u8, CLSIZE_A>);
-impl CLSIZE_R {
+pub type ClsizeR = crate::FieldReader<Clsizeselect>;
+impl ClsizeR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        CLSIZE_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<CLSIZE_A> {
+    pub const fn variant(&self) -> Option<Clsizeselect> {
         match self.bits {
-            0 => Some(CLSIZE_A::CLSIZE_4B),
-            1 => Some(CLSIZE_A::CLSIZE_8B),
-            2 => Some(CLSIZE_A::CLSIZE_16B),
-            3 => Some(CLSIZE_A::CLSIZE_32B),
-            4 => Some(CLSIZE_A::CLSIZE_64B),
-            5 => Some(CLSIZE_A::CLSIZE_128B),
+            2 => Some(Clsizeselect::Clsize16b),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `CLSIZE_4B`"]
-    #[inline(always)]
-    pub fn is_clsize_4b(&self) -> bool {
-        **self == CLSIZE_A::CLSIZE_4B
-    }
-    #[doc = "Checks if the value of the field is `CLSIZE_8B`"]
-    #[inline(always)]
-    pub fn is_clsize_8b(&self) -> bool {
-        **self == CLSIZE_A::CLSIZE_8B
-    }
-    #[doc = "Checks if the value of the field is `CLSIZE_16B`"]
+    #[doc = "Cache Line Size is 16 bytes"]
     #[inline(always)]
     pub fn is_clsize_16b(&self) -> bool {
-        **self == CLSIZE_A::CLSIZE_16B
-    }
-    #[doc = "Checks if the value of the field is `CLSIZE_32B`"]
-    #[inline(always)]
-    pub fn is_clsize_32b(&self) -> bool {
-        **self == CLSIZE_A::CLSIZE_32B
-    }
-    #[doc = "Checks if the value of the field is `CLSIZE_64B`"]
-    #[inline(always)]
-    pub fn is_clsize_64b(&self) -> bool {
-        **self == CLSIZE_A::CLSIZE_64B
-    }
-    #[doc = "Checks if the value of the field is `CLSIZE_128B`"]
-    #[inline(always)]
-    pub fn is_clsize_128b(&self) -> bool {
-        **self == CLSIZE_A::CLSIZE_128B
-    }
-}
-impl core::ops::Deref for CLSIZE_R {
-    type Target = crate::FieldReader<u8, CLSIZE_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
+        *self == Clsizeselect::Clsize16b
     }
 }
 impl R {
     #[doc = "Bit 1 - dynamic Clock Gating supported"]
     #[inline(always)]
-    pub fn gclk(&self) -> GCLK_R {
-        GCLK_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn gclk(&self) -> GclkR {
+        GclkR::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bit 4 - Round Robin Policy supported"]
     #[inline(always)]
-    pub fn rrp(&self) -> RRP_R {
-        RRP_R::new(((self.bits >> 4) & 0x01) != 0)
+    pub fn rrp(&self) -> RrpR {
+        RrpR::new(((self.bits >> 4) & 1) != 0)
     }
     #[doc = "Bits 5:6 - Number of Way"]
     #[inline(always)]
-    pub fn waynum(&self) -> WAYNUM_R {
-        WAYNUM_R::new(((self.bits >> 5) & 0x03) as u8)
+    pub fn waynum(&self) -> WaynumR {
+        WaynumR::new(((self.bits >> 5) & 3) as u8)
     }
     #[doc = "Bit 7 - Lock Down supported"]
     #[inline(always)]
-    pub fn lckdown(&self) -> LCKDOWN_R {
-        LCKDOWN_R::new(((self.bits >> 7) & 0x01) != 0)
+    pub fn lckdown(&self) -> LckdownR {
+        LckdownR::new(((self.bits >> 7) & 1) != 0)
     }
     #[doc = "Bits 8:10 - Cache Size"]
     #[inline(always)]
-    pub fn csize(&self) -> CSIZE_R {
-        CSIZE_R::new(((self.bits >> 8) & 0x07) as u8)
+    pub fn csize(&self) -> CsizeR {
+        CsizeR::new(((self.bits >> 8) & 7) as u8)
     }
     #[doc = "Bits 11:13 - Cache Line Size"]
     #[inline(always)]
-    pub fn clsize(&self) -> CLSIZE_R {
-        CLSIZE_R::new(((self.bits >> 11) & 0x07) as u8)
+    pub fn clsize(&self) -> ClsizeR {
+        ClsizeR::new(((self.bits >> 11) & 7) as u8)
     }
 }
-#[doc = "Cache Type Register\n\nThis register you can [`read`](crate::generic::Reg::read). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [type_](index.html) module"]
-pub struct TYPE_SPEC;
-impl crate::RegisterSpec for TYPE_SPEC {
+#[doc = "Cache Type Register\n\nYou can [`read`](crate::Reg::read) this register and get [`type_::R`](R). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct TypeSpec;
+impl crate::RegisterSpec for TypeSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [type_::R](R) reader structure"]
-impl crate::Readable for TYPE_SPEC {
-    type Reader = R;
-}
+#[doc = "`read()` method returns [`type_::R`](R) reader structure"]
+impl crate::Readable for TypeSpec {}
 #[doc = "`reset()` method sets TYPE to value 0x12d2"]
-impl crate::Resettable for TYPE_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0x12d2
-    }
+impl crate::Resettable for TypeSpec {
+    const RESET_VALUE: u32 = 0x12d2;
 }

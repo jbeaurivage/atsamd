@@ -1,62 +1,27 @@
 #[doc = "Register `SCRAMBKEY` writer"]
-pub struct W(crate::W<SCRAMBKEY_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<SCRAMBKEY_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<SCRAMBKEY_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<SCRAMBKEY_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<ScrambkeySpec>;
 #[doc = "Field `KEY` writer - Scrambling User Key"]
-pub struct KEY_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> KEY_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u32) -> &'a mut W {
-        self.w.bits = value as u32;
-        self.w
-    }
-}
+pub type KeyW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
 impl W {
     #[doc = "Bits 0:31 - Scrambling User Key"]
     #[inline(always)]
-    pub fn key(&mut self) -> KEY_W {
-        KEY_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn key(&mut self) -> KeyW<ScrambkeySpec> {
+        KeyW::new(self, 0)
     }
 }
-#[doc = "Scrambling Key\n\nThis register you can [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [scrambkey](index.html) module"]
-pub struct SCRAMBKEY_SPEC;
-impl crate::RegisterSpec for SCRAMBKEY_SPEC {
+#[doc = "Scrambling Key\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`scrambkey::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct ScrambkeySpec;
+impl crate::RegisterSpec for ScrambkeySpec {
     type Ux = u32;
 }
-#[doc = "`write(|w| ..)` method takes [scrambkey::W](W) writer structure"]
-impl crate::Writable for SCRAMBKEY_SPEC {
-    type Writer = W;
+#[doc = "`write(|w| ..)` method takes [`scrambkey::W`](W) writer structure"]
+impl crate::Writable for ScrambkeySpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets SCRAMBKEY to value 0"]
-impl crate::Resettable for SCRAMBKEY_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for ScrambkeySpec {
+    const RESET_VALUE: u32 = 0;
 }

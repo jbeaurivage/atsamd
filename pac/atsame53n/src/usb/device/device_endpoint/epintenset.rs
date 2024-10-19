@@ -1,395 +1,130 @@
 #[doc = "Register `EPINTENSET` reader"]
-pub struct R(crate::R<EPINTENSET_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<EPINTENSET_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<EPINTENSET_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<EPINTENSET_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<EpintensetSpec>;
 #[doc = "Register `EPINTENSET` writer"]
-pub struct W(crate::W<EPINTENSET_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<EPINTENSET_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<EPINTENSET_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<EPINTENSET_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<EpintensetSpec>;
 #[doc = "Field `TRCPT0` reader - Transfer Complete 0 Interrupt Enable"]
-pub struct TRCPT0_R(crate::FieldReader<bool, bool>);
-impl TRCPT0_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        TRCPT0_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for TRCPT0_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Trcpt0R = crate::BitReader;
 #[doc = "Field `TRCPT0` writer - Transfer Complete 0 Interrupt Enable"]
-pub struct TRCPT0_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> TRCPT0_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u8 & 0x01);
-        self.w
-    }
-}
+pub type Trcpt0W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `TRCPT1` reader - Transfer Complete 1 Interrupt Enable"]
-pub struct TRCPT1_R(crate::FieldReader<bool, bool>);
-impl TRCPT1_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        TRCPT1_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for TRCPT1_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Trcpt1R = crate::BitReader;
 #[doc = "Field `TRCPT1` writer - Transfer Complete 1 Interrupt Enable"]
-pub struct TRCPT1_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> TRCPT1_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 1)) | ((value as u8 & 0x01) << 1);
-        self.w
-    }
-}
+pub type Trcpt1W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `TRFAIL0` reader - Error Flow 0 Interrupt Enable"]
-pub struct TRFAIL0_R(crate::FieldReader<bool, bool>);
-impl TRFAIL0_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        TRFAIL0_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for TRFAIL0_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Trfail0R = crate::BitReader;
 #[doc = "Field `TRFAIL0` writer - Error Flow 0 Interrupt Enable"]
-pub struct TRFAIL0_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> TRFAIL0_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 2)) | ((value as u8 & 0x01) << 2);
-        self.w
-    }
-}
+pub type Trfail0W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `TRFAIL1` reader - Error Flow 1 Interrupt Enable"]
-pub struct TRFAIL1_R(crate::FieldReader<bool, bool>);
-impl TRFAIL1_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        TRFAIL1_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for TRFAIL1_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Trfail1R = crate::BitReader;
 #[doc = "Field `TRFAIL1` writer - Error Flow 1 Interrupt Enable"]
-pub struct TRFAIL1_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> TRFAIL1_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 3)) | ((value as u8 & 0x01) << 3);
-        self.w
-    }
-}
+pub type Trfail1W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `RXSTP` reader - Received Setup Interrupt Enable"]
-pub struct RXSTP_R(crate::FieldReader<bool, bool>);
-impl RXSTP_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        RXSTP_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for RXSTP_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type RxstpR = crate::BitReader;
 #[doc = "Field `RXSTP` writer - Received Setup Interrupt Enable"]
-pub struct RXSTP_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> RXSTP_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 4)) | ((value as u8 & 0x01) << 4);
-        self.w
-    }
-}
+pub type RxstpW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `STALL0` reader - Stall 0 In/out Interrupt enable"]
-pub struct STALL0_R(crate::FieldReader<bool, bool>);
-impl STALL0_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        STALL0_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for STALL0_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Stall0R = crate::BitReader;
 #[doc = "Field `STALL0` writer - Stall 0 In/out Interrupt enable"]
-pub struct STALL0_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> STALL0_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 5)) | ((value as u8 & 0x01) << 5);
-        self.w
-    }
-}
+pub type Stall0W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `STALL1` reader - Stall 1 In/out Interrupt enable"]
-pub struct STALL1_R(crate::FieldReader<bool, bool>);
-impl STALL1_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        STALL1_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for STALL1_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Stall1R = crate::BitReader;
 #[doc = "Field `STALL1` writer - Stall 1 In/out Interrupt enable"]
-pub struct STALL1_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> STALL1_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 6)) | ((value as u8 & 0x01) << 6);
-        self.w
-    }
-}
+pub type Stall1W<'a, REG> = crate::BitWriter<'a, REG>;
 impl R {
     #[doc = "Bit 0 - Transfer Complete 0 Interrupt Enable"]
     #[inline(always)]
-    pub fn trcpt0(&self) -> TRCPT0_R {
-        TRCPT0_R::new((self.bits & 0x01) != 0)
+    pub fn trcpt0(&self) -> Trcpt0R {
+        Trcpt0R::new((self.bits & 1) != 0)
     }
     #[doc = "Bit 1 - Transfer Complete 1 Interrupt Enable"]
     #[inline(always)]
-    pub fn trcpt1(&self) -> TRCPT1_R {
-        TRCPT1_R::new(((self.bits >> 1) & 0x01) != 0)
+    pub fn trcpt1(&self) -> Trcpt1R {
+        Trcpt1R::new(((self.bits >> 1) & 1) != 0)
     }
     #[doc = "Bit 2 - Error Flow 0 Interrupt Enable"]
     #[inline(always)]
-    pub fn trfail0(&self) -> TRFAIL0_R {
-        TRFAIL0_R::new(((self.bits >> 2) & 0x01) != 0)
+    pub fn trfail0(&self) -> Trfail0R {
+        Trfail0R::new(((self.bits >> 2) & 1) != 0)
     }
     #[doc = "Bit 3 - Error Flow 1 Interrupt Enable"]
     #[inline(always)]
-    pub fn trfail1(&self) -> TRFAIL1_R {
-        TRFAIL1_R::new(((self.bits >> 3) & 0x01) != 0)
+    pub fn trfail1(&self) -> Trfail1R {
+        Trfail1R::new(((self.bits >> 3) & 1) != 0)
     }
     #[doc = "Bit 4 - Received Setup Interrupt Enable"]
     #[inline(always)]
-    pub fn rxstp(&self) -> RXSTP_R {
-        RXSTP_R::new(((self.bits >> 4) & 0x01) != 0)
+    pub fn rxstp(&self) -> RxstpR {
+        RxstpR::new(((self.bits >> 4) & 1) != 0)
     }
     #[doc = "Bit 5 - Stall 0 In/out Interrupt enable"]
     #[inline(always)]
-    pub fn stall0(&self) -> STALL0_R {
-        STALL0_R::new(((self.bits >> 5) & 0x01) != 0)
+    pub fn stall0(&self) -> Stall0R {
+        Stall0R::new(((self.bits >> 5) & 1) != 0)
     }
     #[doc = "Bit 6 - Stall 1 In/out Interrupt enable"]
     #[inline(always)]
-    pub fn stall1(&self) -> STALL1_R {
-        STALL1_R::new(((self.bits >> 6) & 0x01) != 0)
+    pub fn stall1(&self) -> Stall1R {
+        Stall1R::new(((self.bits >> 6) & 1) != 0)
     }
 }
 impl W {
     #[doc = "Bit 0 - Transfer Complete 0 Interrupt Enable"]
     #[inline(always)]
-    pub fn trcpt0(&mut self) -> TRCPT0_W {
-        TRCPT0_W { w: self }
+    #[must_use]
+    pub fn trcpt0(&mut self) -> Trcpt0W<EpintensetSpec> {
+        Trcpt0W::new(self, 0)
     }
     #[doc = "Bit 1 - Transfer Complete 1 Interrupt Enable"]
     #[inline(always)]
-    pub fn trcpt1(&mut self) -> TRCPT1_W {
-        TRCPT1_W { w: self }
+    #[must_use]
+    pub fn trcpt1(&mut self) -> Trcpt1W<EpintensetSpec> {
+        Trcpt1W::new(self, 1)
     }
     #[doc = "Bit 2 - Error Flow 0 Interrupt Enable"]
     #[inline(always)]
-    pub fn trfail0(&mut self) -> TRFAIL0_W {
-        TRFAIL0_W { w: self }
+    #[must_use]
+    pub fn trfail0(&mut self) -> Trfail0W<EpintensetSpec> {
+        Trfail0W::new(self, 2)
     }
     #[doc = "Bit 3 - Error Flow 1 Interrupt Enable"]
     #[inline(always)]
-    pub fn trfail1(&mut self) -> TRFAIL1_W {
-        TRFAIL1_W { w: self }
+    #[must_use]
+    pub fn trfail1(&mut self) -> Trfail1W<EpintensetSpec> {
+        Trfail1W::new(self, 3)
     }
     #[doc = "Bit 4 - Received Setup Interrupt Enable"]
     #[inline(always)]
-    pub fn rxstp(&mut self) -> RXSTP_W {
-        RXSTP_W { w: self }
+    #[must_use]
+    pub fn rxstp(&mut self) -> RxstpW<EpintensetSpec> {
+        RxstpW::new(self, 4)
     }
     #[doc = "Bit 5 - Stall 0 In/out Interrupt enable"]
     #[inline(always)]
-    pub fn stall0(&mut self) -> STALL0_W {
-        STALL0_W { w: self }
+    #[must_use]
+    pub fn stall0(&mut self) -> Stall0W<EpintensetSpec> {
+        Stall0W::new(self, 5)
     }
     #[doc = "Bit 6 - Stall 1 In/out Interrupt enable"]
     #[inline(always)]
-    pub fn stall1(&mut self) -> STALL1_W {
-        STALL1_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u8) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn stall1(&mut self) -> Stall1W<EpintensetSpec> {
+        Stall1W::new(self, 6)
     }
 }
-#[doc = "DEVICE_ENDPOINT End Point Interrupt Set Flag\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [epintenset](index.html) module"]
-pub struct EPINTENSET_SPEC;
-impl crate::RegisterSpec for EPINTENSET_SPEC {
+#[doc = "DEVICE_ENDPOINT End Point Interrupt Set Flag\n\nYou can [`read`](crate::Reg::read) this register and get [`epintenset::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`epintenset::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct EpintensetSpec;
+impl crate::RegisterSpec for EpintensetSpec {
     type Ux = u8;
 }
-#[doc = "`read()` method returns [epintenset::R](R) reader structure"]
-impl crate::Readable for EPINTENSET_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [epintenset::W](W) writer structure"]
-impl crate::Writable for EPINTENSET_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`epintenset::R`](R) reader structure"]
+impl crate::Readable for EpintensetSpec {}
+#[doc = "`write(|w| ..)` method takes [`epintenset::W`](W) writer structure"]
+impl crate::Writable for EpintensetSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
 }
 #[doc = "`reset()` method sets EPINTENSET to value 0"]
-impl crate::Resettable for EPINTENSET_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for EpintensetSpec {
+    const RESET_VALUE: u8 = 0;
 }

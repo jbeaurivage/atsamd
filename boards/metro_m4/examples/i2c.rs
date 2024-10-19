@@ -19,8 +19,8 @@ use pac::Peripherals;
 
 use hal::clock::GenericClockController;
 use hal::dmac::{DmaController, PriorityLevel};
-use hal::ehal::blocking::i2c::WriteRead;
-use hal::prelude::*;
+use hal::ehal::i2c::I2c;
+use hal::fugit::RateExtU32;
 use hal::sercom::i2c;
 
 const LENGTH: usize = 1;
@@ -30,24 +30,24 @@ const ADDRESS: u8 = 0x77;
 fn main() -> ! {
     let mut peripherals = Peripherals::take().unwrap();
     let mut clocks = GenericClockController::with_external_32kosc(
-        peripherals.GCLK,
-        &mut peripherals.MCLK,
-        &mut peripherals.OSC32KCTRL,
-        &mut peripherals.OSCCTRL,
-        &mut peripherals.NVMCTRL,
+        peripherals.gclk,
+        &mut peripherals.mclk,
+        &mut peripherals.osc32kctrl,
+        &mut peripherals.oscctrl,
+        &mut peripherals.nvmctrl,
     );
 
-    let mclk = peripherals.MCLK;
-    let dmac = peripherals.DMAC;
-    let pins = bsp::Pins::new(peripherals.PORT);
+    let mclk = peripherals.mclk;
+    let dmac = peripherals.dmac;
+    let pins = bsp::Pins::new(peripherals.port);
 
     // Take SDA and SCL
     let (sda, scl) = (pins.sda, pins.scl);
 
     // Setup DMA channels for later use
-    let mut dmac = DmaController::init(dmac, &mut peripherals.PM);
+    let mut dmac = DmaController::init(dmac, &mut peripherals.pm);
     let channels = dmac.split();
-    let chan0 = channels.0.init(PriorityLevel::LVL0);
+    let chan0 = channels.0.init(PriorityLevel::Lvl0);
 
     let buf_src: &'static mut [u8; LENGTH] =
         cortex_m::singleton!(: [u8; LENGTH] = [0x00; LENGTH]).unwrap();
@@ -59,7 +59,7 @@ fn main() -> ! {
     let pads = i2c::Pads::new(sda, scl);
     let i2c_sercom = periph_alias!(peripherals.i2c_sercom);
     let mut i2c = i2c::Config::new(&mclk, i2c_sercom, pads, sercom5_clock.freq())
-        .baud(100.khz())
+        .baud(100.kHz())
         .enable();
 
     let mut buffer = [0x00; 1];

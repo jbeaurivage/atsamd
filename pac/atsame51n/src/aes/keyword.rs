@@ -1,46 +1,28 @@
 #[doc = "Register `KEYWORD[%s]` writer"]
-pub struct W(crate::W<KEYWORD_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<KEYWORD_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<KEYWORD_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<KEYWORD_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<KeywordSpec>;
+#[doc = "Field `KEYWORD` writer - Key Word Value"]
+pub type KeywordW<'a, REG> = crate::FieldWriter<'a, REG, 32, u32>;
 impl W {
-    #[doc = "Writes raw bits to the register."]
+    #[doc = "Bits 0:31 - Key Word Value"]
     #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn keyword(&mut self) -> KeywordW<KeywordSpec> {
+        KeywordW::new(self, 0)
     }
 }
-#[doc = "Keyword n\n\nThis register you can [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [keyword](index.html) module"]
-pub struct KEYWORD_SPEC;
-impl crate::RegisterSpec for KEYWORD_SPEC {
+#[doc = "Keyword n\n\nYou can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`keyword::W`](W). See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct KeywordSpec;
+impl crate::RegisterSpec for KeywordSpec {
     type Ux = u32;
 }
-#[doc = "`write(|w| ..)` method takes [keyword::W](W) writer structure"]
-impl crate::Writable for KEYWORD_SPEC {
-    type Writer = W;
+#[doc = "`write(|w| ..)` method takes [`keyword::W`](W) writer structure"]
+impl crate::Writable for KeywordSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets KEYWORD[%s]
 to value 0"]
-impl crate::Resettable for KEYWORD_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0
-    }
+impl crate::Resettable for KeywordSpec {
+    const RESET_VALUE: u32 = 0;
 }

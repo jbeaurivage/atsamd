@@ -1,191 +1,135 @@
 #[doc = "Register `SLEEPCFG` reader"]
-pub struct R(crate::R<SLEEPCFG_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<SLEEPCFG_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<SLEEPCFG_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<SLEEPCFG_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<SleepcfgSpec>;
 #[doc = "Register `SLEEPCFG` writer"]
-pub struct W(crate::W<SLEEPCFG_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<SLEEPCFG_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<SLEEPCFG_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<SLEEPCFG_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<SleepcfgSpec>;
 #[doc = "Sleep Mode\n\nValue on reset: 2"]
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 #[repr(u8)]
-pub enum SLEEPMODE_A {
+pub enum Sleepmodeselect {
     #[doc = "2: CPU, AHBx, and APBx clocks are OFF"]
-    IDLE = 2,
+    Idle = 2,
     #[doc = "4: All Clocks are OFF"]
-    STANDBY = 4,
+    Standby = 4,
     #[doc = "5: Backup domain is ON as well as some PDRAMs"]
-    HIBERNATE = 5,
+    Hibernate = 5,
     #[doc = "6: Only Backup domain is powered ON"]
-    BACKUP = 6,
+    Backup = 6,
     #[doc = "7: All power domains are powered OFF"]
-    OFF = 7,
+    Off = 7,
 }
-impl From<SLEEPMODE_A> for u8 {
+impl From<Sleepmodeselect> for u8 {
     #[inline(always)]
-    fn from(variant: SLEEPMODE_A) -> Self {
+    fn from(variant: Sleepmodeselect) -> Self {
         variant as _
     }
 }
+impl crate::FieldSpec for Sleepmodeselect {
+    type Ux = u8;
+}
+impl crate::IsEnum for Sleepmodeselect {}
 #[doc = "Field `SLEEPMODE` reader - Sleep Mode"]
-pub struct SLEEPMODE_R(crate::FieldReader<u8, SLEEPMODE_A>);
-impl SLEEPMODE_R {
+pub type SleepmodeR = crate::FieldReader<Sleepmodeselect>;
+impl SleepmodeR {
+    #[doc = "Get enumerated values variant"]
     #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        SLEEPMODE_R(crate::FieldReader::new(bits))
-    }
-    #[doc = r"Get enumerated values variant"]
-    #[inline(always)]
-    pub fn variant(&self) -> Option<SLEEPMODE_A> {
+    pub const fn variant(&self) -> Option<Sleepmodeselect> {
         match self.bits {
-            2 => Some(SLEEPMODE_A::IDLE),
-            4 => Some(SLEEPMODE_A::STANDBY),
-            5 => Some(SLEEPMODE_A::HIBERNATE),
-            6 => Some(SLEEPMODE_A::BACKUP),
-            7 => Some(SLEEPMODE_A::OFF),
+            2 => Some(Sleepmodeselect::Idle),
+            4 => Some(Sleepmodeselect::Standby),
+            5 => Some(Sleepmodeselect::Hibernate),
+            6 => Some(Sleepmodeselect::Backup),
+            7 => Some(Sleepmodeselect::Off),
             _ => None,
         }
     }
-    #[doc = "Checks if the value of the field is `IDLE`"]
-    #[inline(always)]
-    pub fn is_idle(&self) -> bool {
-        **self == SLEEPMODE_A::IDLE
-    }
-    #[doc = "Checks if the value of the field is `STANDBY`"]
-    #[inline(always)]
-    pub fn is_standby(&self) -> bool {
-        **self == SLEEPMODE_A::STANDBY
-    }
-    #[doc = "Checks if the value of the field is `HIBERNATE`"]
-    #[inline(always)]
-    pub fn is_hibernate(&self) -> bool {
-        **self == SLEEPMODE_A::HIBERNATE
-    }
-    #[doc = "Checks if the value of the field is `BACKUP`"]
-    #[inline(always)]
-    pub fn is_backup(&self) -> bool {
-        **self == SLEEPMODE_A::BACKUP
-    }
-    #[doc = "Checks if the value of the field is `OFF`"]
-    #[inline(always)]
-    pub fn is_off(&self) -> bool {
-        **self == SLEEPMODE_A::OFF
-    }
-}
-impl core::ops::Deref for SLEEPMODE_R {
-    type Target = crate::FieldReader<u8, SLEEPMODE_A>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-#[doc = "Field `SLEEPMODE` writer - Sleep Mode"]
-pub struct SLEEPMODE_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> SLEEPMODE_W<'a> {
-    #[doc = r"Writes `variant` to the field"]
-    #[inline(always)]
-    pub fn variant(self, variant: SLEEPMODE_A) -> &'a mut W {
-        unsafe { self.bits(variant.into()) }
-    }
     #[doc = "CPU, AHBx, and APBx clocks are OFF"]
     #[inline(always)]
-    pub fn idle(self) -> &'a mut W {
-        self.variant(SLEEPMODE_A::IDLE)
+    pub fn is_idle(&self) -> bool {
+        *self == Sleepmodeselect::Idle
     }
     #[doc = "All Clocks are OFF"]
     #[inline(always)]
-    pub fn standby(self) -> &'a mut W {
-        self.variant(SLEEPMODE_A::STANDBY)
+    pub fn is_standby(&self) -> bool {
+        *self == Sleepmodeselect::Standby
     }
     #[doc = "Backup domain is ON as well as some PDRAMs"]
     #[inline(always)]
-    pub fn hibernate(self) -> &'a mut W {
-        self.variant(SLEEPMODE_A::HIBERNATE)
+    pub fn is_hibernate(&self) -> bool {
+        *self == Sleepmodeselect::Hibernate
     }
     #[doc = "Only Backup domain is powered ON"]
     #[inline(always)]
-    pub fn backup(self) -> &'a mut W {
-        self.variant(SLEEPMODE_A::BACKUP)
+    pub fn is_backup(&self) -> bool {
+        *self == Sleepmodeselect::Backup
     }
     #[doc = "All power domains are powered OFF"]
     #[inline(always)]
-    pub fn off(self) -> &'a mut W {
-        self.variant(SLEEPMODE_A::OFF)
+    pub fn is_off(&self) -> bool {
+        *self == Sleepmodeselect::Off
     }
-    #[doc = r"Writes raw bits to the field"]
+}
+#[doc = "Field `SLEEPMODE` writer - Sleep Mode"]
+pub type SleepmodeW<'a, REG> = crate::FieldWriter<'a, REG, 3, Sleepmodeselect>;
+impl<'a, REG> SleepmodeW<'a, REG>
+where
+    REG: crate::Writable + crate::RegisterSpec,
+    REG::Ux: From<u8>,
+{
+    #[doc = "CPU, AHBx, and APBx clocks are OFF"]
     #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x07) | (value as u8 & 0x07);
-        self.w
+    pub fn idle(self) -> &'a mut crate::W<REG> {
+        self.variant(Sleepmodeselect::Idle)
+    }
+    #[doc = "All Clocks are OFF"]
+    #[inline(always)]
+    pub fn standby(self) -> &'a mut crate::W<REG> {
+        self.variant(Sleepmodeselect::Standby)
+    }
+    #[doc = "Backup domain is ON as well as some PDRAMs"]
+    #[inline(always)]
+    pub fn hibernate(self) -> &'a mut crate::W<REG> {
+        self.variant(Sleepmodeselect::Hibernate)
+    }
+    #[doc = "Only Backup domain is powered ON"]
+    #[inline(always)]
+    pub fn backup(self) -> &'a mut crate::W<REG> {
+        self.variant(Sleepmodeselect::Backup)
+    }
+    #[doc = "All power domains are powered OFF"]
+    #[inline(always)]
+    pub fn off(self) -> &'a mut crate::W<REG> {
+        self.variant(Sleepmodeselect::Off)
     }
 }
 impl R {
     #[doc = "Bits 0:2 - Sleep Mode"]
     #[inline(always)]
-    pub fn sleepmode(&self) -> SLEEPMODE_R {
-        SLEEPMODE_R::new((self.bits & 0x07) as u8)
+    pub fn sleepmode(&self) -> SleepmodeR {
+        SleepmodeR::new(self.bits & 7)
     }
 }
 impl W {
     #[doc = "Bits 0:2 - Sleep Mode"]
     #[inline(always)]
-    pub fn sleepmode(&mut self) -> SLEEPMODE_W {
-        SLEEPMODE_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u8) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn sleepmode(&mut self) -> SleepmodeW<SleepcfgSpec> {
+        SleepmodeW::new(self, 0)
     }
 }
-#[doc = "Sleep Configuration\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [sleepcfg](index.html) module"]
-pub struct SLEEPCFG_SPEC;
-impl crate::RegisterSpec for SLEEPCFG_SPEC {
+#[doc = "Sleep Configuration\n\nYou can [`read`](crate::Reg::read) this register and get [`sleepcfg::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`sleepcfg::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct SleepcfgSpec;
+impl crate::RegisterSpec for SleepcfgSpec {
     type Ux = u8;
 }
-#[doc = "`read()` method returns [sleepcfg::R](R) reader structure"]
-impl crate::Readable for SLEEPCFG_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [sleepcfg::W](W) writer structure"]
-impl crate::Writable for SLEEPCFG_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`sleepcfg::R`](R) reader structure"]
+impl crate::Readable for SleepcfgSpec {}
+#[doc = "`write(|w| ..)` method takes [`sleepcfg::W`](W) writer structure"]
+impl crate::Writable for SleepcfgSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u8 = 0;
 }
 #[doc = "`reset()` method sets SLEEPCFG to value 0x02"]
-impl crate::Resettable for SLEEPCFG_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0x02
-    }
+impl crate::Resettable for SleepcfgSpec {
+    const RESET_VALUE: u8 = 0x02;
 }

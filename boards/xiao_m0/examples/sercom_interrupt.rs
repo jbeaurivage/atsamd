@@ -30,11 +30,12 @@ use cortex_m::{interrupt::Mutex, peripheral::NVIC};
 use bsp::hal::{
     clock::GenericClockController,
     delay::Delay,
-    ehal::blocking::delay::DelayMs,
-    gpio::v2::{Pin, PushPullOutput, PA17},
+    ehal::delay::DelayNs,
+    gpio::{Pin, PushPullOutput, PA17},
+    nb,
     pac::{self, interrupt, CorePeripherals, Peripherals},
     prelude::*,
-    sercom::v2::{
+    sercom::{
         uart::{self, BaudMode, Oversampling},
         Sercom0,
     },
@@ -86,7 +87,7 @@ fn main() -> ! {
     // custom sercom uart configuration
     let mut serial_sercom0 = uart0(
         &mut clocks,
-        Hertz(115200),
+        Hertz::Hz(115200),
         peripherals.SERCOM0,
         &mut peripherals.PM,
         pins.a5,
@@ -96,7 +97,7 @@ fn main() -> ! {
     // labeled "default" uart
     let mut serial_sercom4 = bsp::uart(
         &mut clocks,
-        Hertz(115200),
+        Hertz::Hz(115200),
         peripherals.SERCOM4,
         &mut peripherals.PM,
         pins.a7,
@@ -118,7 +119,7 @@ fn main() -> ! {
         NVIC::unmask(interrupt::SERCOM4);
     }
     loop {
-        delay.delay_ms(1000u16);
+        <Delay as DelayNs>::delay_ms(&mut delay, 1000);
         let _ = nb::block!(serial_sercom0.write(b'A'));
     }
 }

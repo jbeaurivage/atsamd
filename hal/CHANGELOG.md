@@ -1,5 +1,63 @@
-# Unreleased Changes
+# Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.18.0](https://github.com/atsamd-rs/atsamd/compare/atsamd-hal-0.17.0...atsamd-hal-0.18.0) - 2024-10-17
+
+### Dependencies
+
+- **[breaking]** Upgrade PAC generated code to latest SVD and `svd2rust-0.34.1` [#756](https://github.com/atsamd-rs/atsamd/pull/756):
+  - All peripheral types are now `PascalCase`
+  - All register field accessors are now methods instead of struct members
+  - Members of the `Peripherals` struct are now `snake_case`
+
+### Removed
+
+- SAMx5x: removed: `EnabledOscUlp32kBase::set_calibration` [#756](https://github.com/atsamd-rs/atsamd/pull/756)
+- **[breaking]**: SAMD51G: removed I2S support ([#735](https://github.com/atsamd-rs/atsamd/pull/735))
+
+### Fixed
+
+- Fix samd51j not having i2s support ([#735](https://github.com/atsamd-rs/atsamd/pull/735))
+- Fix EIC issue leading to lost interrupts on SAMD11 platforms ([#739](https://github.com/atsamd-rs/atsamd/pull/739))
+- Fix I2C transaction to be as continuous as possible according to `embedded-hal` specification ([#741](https://github.com/atsamd-rs/atsamd/pull/741))
+- Fix `embedded-hal` 0.2 CountDown timer implementation ([#749](https://github.com/atsamd-rs/atsamd/pull/749))
+- Fix blocking behaviour for `embedded-hal` 0.2 SPI writes ([#743](https://github.com/atsamd-rs/atsamd/pull/743))
+- Allow configuring USB clock with `GenericClockController` on atsamd11 ([#734](https://github.com/atsamd-rs/atsamd/pull/734))
+- Fix Clippy nightly build errors ([#755](https://github.com/atsamd-rs/atsamd/pull/755), [#737](https://github.com/atsamd-rs/atsamd/pull/737))
+- Fix build failures for SAMD11 USB ([#746](https://github.com/atsamd-rs/atsamd/pull/746))
+
+### Refactored
+
+- Upgrade bitflags and get rid of TryFrom<()> implementations ([#746](https://github.com/atsamd-rs/atsamd/pull/746))
+
+## v0.17.0
+
+- Remove `unproven` Cargo feature
+- Implement `embedded-hal` `1.0` for GPIO, SPI, I2C, UART, delay and PWM 
+- CI/CD pipeline now uses `cargo clippy` instead of `cargo build` and denies clippy warnings by default
+- Fix HAL clippy lints
+- Add compile error for combined `library` and `dma` features
+- Add `dma` feature to docs metadata
+- Update the PACs to svd2rust 0.30.2.
+- Fix warnings for thumbv7 targets
+- Update README.md - moves some content to wiki
+- Remove pin `pa28` from the `d21el` target (#717)
+- Fix a pwm configuration for the `tc4` on `D5x` targets (#720)
+- Update to usb-device 0.3.1 (#718)
+- Internal re-organization to support more devices (#728)
+
+## v0.16.0
+
+- Implement `Debug, Clone, Copy, Eq, PartialEq` for all HAL error types (#691).
+- Replace homebrew time library with `fugit` (#672)
+- Add `defmt` feature and derive `defmt::Format` for error types (#684, obsoletes #522).
+- Add `mcan` integration (#654)
 - Fix incorrect PAC provided for `same51g` target
 - Fix NVM User Row Mapping for `BOD12` Calibration Parameters
 - Fix `ExternalInterrupt` implementations for `eic`
@@ -9,13 +67,25 @@
 - Fix failing `bsp_pins!` invocation with no aliases (#605 fixes #599)
 - Add Advanced Encryption Standard (AES) peripheral support including RustCrypto compatible backend
 - Add embedded-hal `InputPin` trait to EIC pins
+- Change NVM API
+  - Add the ability to modify the user row
+  - Add security bit and chip-erase lock management
+  - Add escape hatch to access the underlying NVMCTRL PAC
+  - Add `Nvm::region_lock` method
+  - Change flash read/write/erase method signatures
+      - `Nvm::userpage` -> `Nvm::read_userpage`
+      - `Nvm::write` -> `Nvm::write_flash`
+      - `Nvm::write_from_slice` -> `Nvm::write_flash_from_slice`
+      - `Nvm::erase` -> `Nvm::erase_flash`
+  - Refactor `Nvm::command_sync` to be less error-prone
+- Add the missing ADC traits for the SAMD11D
 
-# v0.15.1
+## v0.15.1
 
 - Fix `sercom::uart` pad definitions to reject pads conflicting with XCK.
 - Add support for L-Variant of the SAMD21D
 
-# v0.15.0
+## v0.15.0
 
 - Rework USB API
 - Remove deprecated modules ([#480](https://github.com/atsamd-rs/atsamd/pull/480)) :
@@ -35,7 +105,7 @@
 - Add an `sercom::v2::i2c` API
 - Modified traits to support the Grand Central M4 Express.
 
-# v0.14.0
+## v0.14.0
 
 - Add implementation of InputPin for Interrupt pins
 - Add additional undocumented but valid IOSet for ATSAMD5x/ATSAME5x

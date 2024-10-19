@@ -1,563 +1,190 @@
 #[doc = "Register `CR` reader"]
-pub struct R(crate::R<CR_SPEC>);
-impl core::ops::Deref for R {
-    type Target = crate::R<CR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl From<crate::R<CR_SPEC>> for R {
-    #[inline(always)]
-    fn from(reader: crate::R<CR_SPEC>) -> Self {
-        R(reader)
-    }
-}
+pub type R = crate::R<CrSpec>;
 #[doc = "Register `CR` writer"]
-pub struct W(crate::W<CR_SPEC>);
-impl core::ops::Deref for W {
-    type Target = crate::W<CR_SPEC>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
-impl core::ops::DerefMut for W {
-    #[inline(always)]
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
-    }
-}
-impl From<crate::W<CR_SPEC>> for W {
-    #[inline(always)]
-    fn from(writer: crate::W<CR_SPEC>) -> Self {
-        W(writer)
-    }
-}
+pub type W = crate::W<CrSpec>;
 #[doc = "Field `ETMPD` reader - ETM Power Down"]
-pub struct ETMPD_R(crate::FieldReader<bool, bool>);
-impl ETMPD_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        ETMPD_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for ETMPD_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type EtmpdR = crate::BitReader;
 #[doc = "Field `ETMPD` writer - ETM Power Down"]
-pub struct ETMPD_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> ETMPD_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !0x01) | (value as u32 & 0x01);
-        self.w
-    }
-}
+pub type EtmpdW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `PORTSIZE` reader - Port Size bits 2:0"]
-pub struct PORTSIZE_R(crate::FieldReader<u8, u8>);
-impl PORTSIZE_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        PORTSIZE_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for PORTSIZE_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type PortsizeR = crate::FieldReader;
 #[doc = "Field `PORTSIZE` writer - Port Size bits 2:0"]
-pub struct PORTSIZE_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> PORTSIZE_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x07 << 4)) | ((value as u32 & 0x07) << 4);
-        self.w
-    }
-}
+pub type PortsizeW<'a, REG> = crate::FieldWriter<'a, REG, 3>;
 #[doc = "Field `STALL` reader - Stall Processor"]
-pub struct STALL_R(crate::FieldReader<bool, bool>);
-impl STALL_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        STALL_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for STALL_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type StallR = crate::BitReader;
 #[doc = "Field `STALL` writer - Stall Processor"]
-pub struct STALL_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> STALL_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 7)) | ((value as u32 & 0x01) << 7);
-        self.w
-    }
-}
+pub type StallW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `BROUT` reader - Branch Output"]
-pub struct BROUT_R(crate::FieldReader<bool, bool>);
-impl BROUT_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        BROUT_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for BROUT_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type BroutR = crate::BitReader;
 #[doc = "Field `BROUT` writer - Branch Output"]
-pub struct BROUT_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> BROUT_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 8)) | ((value as u32 & 0x01) << 8);
-        self.w
-    }
-}
+pub type BroutW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `DBGRQ` reader - Debug Request Control"]
-pub struct DBGRQ_R(crate::FieldReader<bool, bool>);
-impl DBGRQ_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        DBGRQ_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for DBGRQ_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type DbgrqR = crate::BitReader;
 #[doc = "Field `DBGRQ` writer - Debug Request Control"]
-pub struct DBGRQ_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> DBGRQ_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 9)) | ((value as u32 & 0x01) << 9);
-        self.w
-    }
-}
+pub type DbgrqW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `PROG` reader - ETM Programming"]
-pub struct PROG_R(crate::FieldReader<bool, bool>);
-impl PROG_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        PROG_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for PROG_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type ProgR = crate::BitReader;
 #[doc = "Field `PROG` writer - ETM Programming"]
-pub struct PROG_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> PROG_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 10)) | ((value as u32 & 0x01) << 10);
-        self.w
-    }
-}
+pub type ProgW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `PORTSEL` reader - ETM Port Select"]
-pub struct PORTSEL_R(crate::FieldReader<bool, bool>);
-impl PORTSEL_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        PORTSEL_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for PORTSEL_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type PortselR = crate::BitReader;
 #[doc = "Field `PORTSEL` writer - ETM Port Select"]
-pub struct PORTSEL_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> PORTSEL_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 11)) | ((value as u32 & 0x01) << 11);
-        self.w
-    }
-}
+pub type PortselW<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `PORTMODE2` reader - Port Mode bit 2"]
-pub struct PORTMODE2_R(crate::FieldReader<bool, bool>);
-impl PORTMODE2_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        PORTMODE2_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for PORTMODE2_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Portmode2R = crate::BitReader;
 #[doc = "Field `PORTMODE2` writer - Port Mode bit 2"]
-pub struct PORTMODE2_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> PORTMODE2_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 13)) | ((value as u32 & 0x01) << 13);
-        self.w
-    }
-}
+pub type Portmode2W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `PORTMODE` reader - Port Mode bits 1:0"]
-pub struct PORTMODE_R(crate::FieldReader<u8, u8>);
-impl PORTMODE_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: u8) -> Self {
-        PORTMODE_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for PORTMODE_R {
-    type Target = crate::FieldReader<u8, u8>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type PortmodeR = crate::FieldReader;
 #[doc = "Field `PORTMODE` writer - Port Mode bits 1:0"]
-pub struct PORTMODE_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> PORTMODE_W<'a> {
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub unsafe fn bits(self, value: u8) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x03 << 16)) | ((value as u32 & 0x03) << 16);
-        self.w
-    }
-}
+pub type PortmodeW<'a, REG> = crate::FieldWriter<'a, REG, 2>;
 #[doc = "Field `PORTSIZE3` reader - Port Size bit 3"]
-pub struct PORTSIZE3_R(crate::FieldReader<bool, bool>);
-impl PORTSIZE3_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        PORTSIZE3_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for PORTSIZE3_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type Portsize3R = crate::BitReader;
 #[doc = "Field `PORTSIZE3` writer - Port Size bit 3"]
-pub struct PORTSIZE3_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> PORTSIZE3_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 21)) | ((value as u32 & 0x01) << 21);
-        self.w
-    }
-}
+pub type Portsize3W<'a, REG> = crate::BitWriter<'a, REG>;
 #[doc = "Field `TSEN` reader - TimeStamp Enable"]
-pub struct TSEN_R(crate::FieldReader<bool, bool>);
-impl TSEN_R {
-    #[inline(always)]
-    pub(crate) fn new(bits: bool) -> Self {
-        TSEN_R(crate::FieldReader::new(bits))
-    }
-}
-impl core::ops::Deref for TSEN_R {
-    type Target = crate::FieldReader<bool, bool>;
-    #[inline(always)]
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
+pub type TsenR = crate::BitReader;
 #[doc = "Field `TSEN` writer - TimeStamp Enable"]
-pub struct TSEN_W<'a> {
-    w: &'a mut W,
-}
-impl<'a> TSEN_W<'a> {
-    #[doc = r"Sets the field bit"]
-    #[inline(always)]
-    pub fn set_bit(self) -> &'a mut W {
-        self.bit(true)
-    }
-    #[doc = r"Clears the field bit"]
-    #[inline(always)]
-    pub fn clear_bit(self) -> &'a mut W {
-        self.bit(false)
-    }
-    #[doc = r"Writes raw bits to the field"]
-    #[inline(always)]
-    pub fn bit(self, value: bool) -> &'a mut W {
-        self.w.bits = (self.w.bits & !(0x01 << 28)) | ((value as u32 & 0x01) << 28);
-        self.w
-    }
-}
+pub type TsenW<'a, REG> = crate::BitWriter<'a, REG>;
 impl R {
     #[doc = "Bit 0 - ETM Power Down"]
     #[inline(always)]
-    pub fn etmpd(&self) -> ETMPD_R {
-        ETMPD_R::new((self.bits & 0x01) != 0)
+    pub fn etmpd(&self) -> EtmpdR {
+        EtmpdR::new((self.bits & 1) != 0)
     }
     #[doc = "Bits 4:6 - Port Size bits 2:0"]
     #[inline(always)]
-    pub fn portsize(&self) -> PORTSIZE_R {
-        PORTSIZE_R::new(((self.bits >> 4) & 0x07) as u8)
+    pub fn portsize(&self) -> PortsizeR {
+        PortsizeR::new(((self.bits >> 4) & 7) as u8)
     }
     #[doc = "Bit 7 - Stall Processor"]
     #[inline(always)]
-    pub fn stall(&self) -> STALL_R {
-        STALL_R::new(((self.bits >> 7) & 0x01) != 0)
+    pub fn stall(&self) -> StallR {
+        StallR::new(((self.bits >> 7) & 1) != 0)
     }
     #[doc = "Bit 8 - Branch Output"]
     #[inline(always)]
-    pub fn brout(&self) -> BROUT_R {
-        BROUT_R::new(((self.bits >> 8) & 0x01) != 0)
+    pub fn brout(&self) -> BroutR {
+        BroutR::new(((self.bits >> 8) & 1) != 0)
     }
     #[doc = "Bit 9 - Debug Request Control"]
     #[inline(always)]
-    pub fn dbgrq(&self) -> DBGRQ_R {
-        DBGRQ_R::new(((self.bits >> 9) & 0x01) != 0)
+    pub fn dbgrq(&self) -> DbgrqR {
+        DbgrqR::new(((self.bits >> 9) & 1) != 0)
     }
     #[doc = "Bit 10 - ETM Programming"]
     #[inline(always)]
-    pub fn prog(&self) -> PROG_R {
-        PROG_R::new(((self.bits >> 10) & 0x01) != 0)
+    pub fn prog(&self) -> ProgR {
+        ProgR::new(((self.bits >> 10) & 1) != 0)
     }
     #[doc = "Bit 11 - ETM Port Select"]
     #[inline(always)]
-    pub fn portsel(&self) -> PORTSEL_R {
-        PORTSEL_R::new(((self.bits >> 11) & 0x01) != 0)
+    pub fn portsel(&self) -> PortselR {
+        PortselR::new(((self.bits >> 11) & 1) != 0)
     }
     #[doc = "Bit 13 - Port Mode bit 2"]
     #[inline(always)]
-    pub fn portmode2(&self) -> PORTMODE2_R {
-        PORTMODE2_R::new(((self.bits >> 13) & 0x01) != 0)
+    pub fn portmode2(&self) -> Portmode2R {
+        Portmode2R::new(((self.bits >> 13) & 1) != 0)
     }
     #[doc = "Bits 16:17 - Port Mode bits 1:0"]
     #[inline(always)]
-    pub fn portmode(&self) -> PORTMODE_R {
-        PORTMODE_R::new(((self.bits >> 16) & 0x03) as u8)
+    pub fn portmode(&self) -> PortmodeR {
+        PortmodeR::new(((self.bits >> 16) & 3) as u8)
     }
     #[doc = "Bit 21 - Port Size bit 3"]
     #[inline(always)]
-    pub fn portsize3(&self) -> PORTSIZE3_R {
-        PORTSIZE3_R::new(((self.bits >> 21) & 0x01) != 0)
+    pub fn portsize3(&self) -> Portsize3R {
+        Portsize3R::new(((self.bits >> 21) & 1) != 0)
     }
     #[doc = "Bit 28 - TimeStamp Enable"]
     #[inline(always)]
-    pub fn tsen(&self) -> TSEN_R {
-        TSEN_R::new(((self.bits >> 28) & 0x01) != 0)
+    pub fn tsen(&self) -> TsenR {
+        TsenR::new(((self.bits >> 28) & 1) != 0)
     }
 }
 impl W {
     #[doc = "Bit 0 - ETM Power Down"]
     #[inline(always)]
-    pub fn etmpd(&mut self) -> ETMPD_W {
-        ETMPD_W { w: self }
+    #[must_use]
+    pub fn etmpd(&mut self) -> EtmpdW<CrSpec> {
+        EtmpdW::new(self, 0)
     }
     #[doc = "Bits 4:6 - Port Size bits 2:0"]
     #[inline(always)]
-    pub fn portsize(&mut self) -> PORTSIZE_W {
-        PORTSIZE_W { w: self }
+    #[must_use]
+    pub fn portsize(&mut self) -> PortsizeW<CrSpec> {
+        PortsizeW::new(self, 4)
     }
     #[doc = "Bit 7 - Stall Processor"]
     #[inline(always)]
-    pub fn stall(&mut self) -> STALL_W {
-        STALL_W { w: self }
+    #[must_use]
+    pub fn stall(&mut self) -> StallW<CrSpec> {
+        StallW::new(self, 7)
     }
     #[doc = "Bit 8 - Branch Output"]
     #[inline(always)]
-    pub fn brout(&mut self) -> BROUT_W {
-        BROUT_W { w: self }
+    #[must_use]
+    pub fn brout(&mut self) -> BroutW<CrSpec> {
+        BroutW::new(self, 8)
     }
     #[doc = "Bit 9 - Debug Request Control"]
     #[inline(always)]
-    pub fn dbgrq(&mut self) -> DBGRQ_W {
-        DBGRQ_W { w: self }
+    #[must_use]
+    pub fn dbgrq(&mut self) -> DbgrqW<CrSpec> {
+        DbgrqW::new(self, 9)
     }
     #[doc = "Bit 10 - ETM Programming"]
     #[inline(always)]
-    pub fn prog(&mut self) -> PROG_W {
-        PROG_W { w: self }
+    #[must_use]
+    pub fn prog(&mut self) -> ProgW<CrSpec> {
+        ProgW::new(self, 10)
     }
     #[doc = "Bit 11 - ETM Port Select"]
     #[inline(always)]
-    pub fn portsel(&mut self) -> PORTSEL_W {
-        PORTSEL_W { w: self }
+    #[must_use]
+    pub fn portsel(&mut self) -> PortselW<CrSpec> {
+        PortselW::new(self, 11)
     }
     #[doc = "Bit 13 - Port Mode bit 2"]
     #[inline(always)]
-    pub fn portmode2(&mut self) -> PORTMODE2_W {
-        PORTMODE2_W { w: self }
+    #[must_use]
+    pub fn portmode2(&mut self) -> Portmode2W<CrSpec> {
+        Portmode2W::new(self, 13)
     }
     #[doc = "Bits 16:17 - Port Mode bits 1:0"]
     #[inline(always)]
-    pub fn portmode(&mut self) -> PORTMODE_W {
-        PORTMODE_W { w: self }
+    #[must_use]
+    pub fn portmode(&mut self) -> PortmodeW<CrSpec> {
+        PortmodeW::new(self, 16)
     }
     #[doc = "Bit 21 - Port Size bit 3"]
     #[inline(always)]
-    pub fn portsize3(&mut self) -> PORTSIZE3_W {
-        PORTSIZE3_W { w: self }
+    #[must_use]
+    pub fn portsize3(&mut self) -> Portsize3W<CrSpec> {
+        Portsize3W::new(self, 21)
     }
     #[doc = "Bit 28 - TimeStamp Enable"]
     #[inline(always)]
-    pub fn tsen(&mut self) -> TSEN_W {
-        TSEN_W { w: self }
-    }
-    #[doc = "Writes raw bits to the register."]
-    #[inline(always)]
-    pub unsafe fn bits(&mut self, bits: u32) -> &mut Self {
-        self.0.bits(bits);
-        self
+    #[must_use]
+    pub fn tsen(&mut self) -> TsenW<CrSpec> {
+        TsenW::new(self, 28)
     }
 }
-#[doc = "ETM Main Control Register\n\nThis register you can [`read`](crate::generic::Reg::read), [`write_with_zero`](crate::generic::Reg::write_with_zero), [`reset`](crate::generic::Reg::reset), [`write`](crate::generic::Reg::write), [`modify`](crate::generic::Reg::modify). See [API](https://docs.rs/svd2rust/#read--modify--write-api).\n\nFor information about available fields see [cr](index.html) module"]
-pub struct CR_SPEC;
-impl crate::RegisterSpec for CR_SPEC {
+#[doc = "ETM Main Control Register\n\nYou can [`read`](crate::Reg::read) this register and get [`cr::R`](R). You can [`reset`](crate::Reg::reset), [`write`](crate::Reg::write), [`write_with_zero`](crate::Reg::write_with_zero) this register using [`cr::W`](W). You can also [`modify`](crate::Reg::modify) this register. See [API](https://docs.rs/svd2rust/#read--modify--write-api)."]
+pub struct CrSpec;
+impl crate::RegisterSpec for CrSpec {
     type Ux = u32;
 }
-#[doc = "`read()` method returns [cr::R](R) reader structure"]
-impl crate::Readable for CR_SPEC {
-    type Reader = R;
-}
-#[doc = "`write(|w| ..)` method takes [cr::W](W) writer structure"]
-impl crate::Writable for CR_SPEC {
-    type Writer = W;
+#[doc = "`read()` method returns [`cr::R`](R) reader structure"]
+impl crate::Readable for CrSpec {}
+#[doc = "`write(|w| ..)` method takes [`cr::W`](W) writer structure"]
+impl crate::Writable for CrSpec {
+    type Safety = crate::Unsafe;
+    const ZERO_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
+    const ONE_TO_MODIFY_FIELDS_BITMAP: u32 = 0;
 }
 #[doc = "`reset()` method sets CR to value 0x0411"]
-impl crate::Resettable for CR_SPEC {
-    #[inline(always)]
-    fn reset_value() -> Self::Ux {
-        0x0411
-    }
+impl crate::Resettable for CrSpec {
+    const RESET_VALUE: u32 = 0x0411;
 }
