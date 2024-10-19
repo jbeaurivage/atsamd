@@ -413,15 +413,20 @@ macro_rules! impl_blocking_spi_transfer {
                     let mut to_send = cells.iter();
                     let mut to_recv = cells.iter();
                     while to_recv.len() > 0 {
-                        let flags = self.read_flags_errors()?;
-                        if to_send.len() > 0 && flags.contains(Flags::DRE) {
+                        if to_send.len() > 0 {
+                            while !self.read_flags_errors()?.contains(Flags::DRE) {
+                                core::hint::spin_loop();
+                            }
                             let word = match to_send.next() {
                                 Some(cell) => cell.get(),
                                 None => unreachable!(),
                             };
                             self.config.as_mut().regs.write_data(word as DataWidth);
                         }
-                        if to_recv.len() > to_send.len() && flags.contains(Flags::RXC) {
+                        if to_recv.len() > to_send.len() {
+                            while !self.read_flags_errors()?.contains(Flags::RXC) {
+                                core::hint::spin_loop();
+                            }
                             let word = self.config.as_mut().regs.read_data() as Word<$Length>;
                             match to_recv.next() {
                                 Some(cell) => cell.set(word),
