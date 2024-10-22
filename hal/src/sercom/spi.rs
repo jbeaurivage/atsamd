@@ -429,6 +429,8 @@ impl Status {
 pub enum Error {
     Overflow,
     LengthError,
+    #[cfg(feature = "dma")]
+    Dma(crate::dmac::Error),
 }
 
 //=============================================================================
@@ -990,6 +992,8 @@ where
         Spi {
             config: self,
             capability: P::Capability::default(),
+            rx_channel: NoneT,
+            tx_channel: NoneT,
         }
     }
 }
@@ -1150,13 +1154,15 @@ where
 ///
 /// See the [`impl_ehal`] documentation for details on the implementations of
 /// the embedded HAL traits, which vary based on [`Size`] and [`Capability`].
-pub struct Spi<C, A>
+pub struct Spi<C, A, RxDma = NoneT, TxDma = NoneT>
 where
     C: ValidConfig,
     A: Capability,
 {
     config: C,
     capability: A,
+    rx_channel: RxDma,
+    tx_channel: TxDma,
 }
 
 /// Get a shared reference to the underlying [`Config`] struct
@@ -1173,7 +1179,7 @@ where
     }
 }
 
-impl<C, A> Spi<C, A>
+impl<C, A, RxDma, TxDma> Spi<C, A, RxDma, TxDma>
 where
     C: ValidConfig,
     A: Capability,
@@ -1196,13 +1202,15 @@ where
     /// [`Length`].
     #[inline]
     #[hal_cfg("sercom0-d5x")]
-    pub fn length<L: Length>(self) -> Spi<Config<C::Pads, C::OpMode, L>, A>
+    pub fn length<L: Length>(self) -> Spi<Config<C::Pads, C::OpMode, L>, A, RxDma, TxDma>
     where
         Config<C::Pads, C::OpMode, L>: ValidConfig,
     {
         Spi {
             config: self.config.into().length(),
             capability: self.capability,
+            rx_channel: self.rx_channel,
+            tx_channel: self.tx_channel,
         }
     }
 
@@ -1311,6 +1319,25 @@ where
 
         self.read_flags_errors()?;
         Ok(())
+    }
+}
+
+impl<C> Spi<C, Duplex>
+where
+    C: ValidConfig,
+{
+    #[cfg(feature = "dma")]
+    pub fn with_dma_channels<R, T>(self, rx: R, tx: T) -> Spi<C, Duplex, R, T>
+    where
+        R: crate::dmac::AnyChannel<Status = crate::dmac::Ready>,
+        T: crate::dmac::AnyChannel<Status = crate::dmac::Ready>,
+    {
+        Spi {
+            capability: self.capability,
+            config: self.config,
+            rx_channel: rx,
+            tx_channel: tx,
+        }
     }
 }
 

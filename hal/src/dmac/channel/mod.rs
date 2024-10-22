@@ -33,15 +33,16 @@
 
 #![allow(unused_braces)]
 
+use core::marker::PhantomData;
+use core::sync::atomic;
+
 use atsamd_hal_macros::{hal_cfg, hal_macro_helper};
 
 use super::dma_controller::{ChId, PriorityLevel, TriggerAction, TriggerSource};
 use crate::typelevel::{Is, Sealed};
-use core::marker::PhantomData;
 use modular_bitfield::prelude::*;
 
 mod reg;
-
 use reg::RegisterBlock;
 
 #[hal_cfg("dmac-d5x")]
@@ -194,6 +195,14 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
     }
 
     #[inline]
+    pub(super) fn change_status<N: Status>(self) -> Channel<Id, N> {
+        Channel {
+            regs: self.regs,
+            _status: PhantomData,
+        }
+    }
+
+    #[inline]
     fn _reset_private(&mut self) {
         // Reset the channel to its startup state and wait for reset to complete
         self.regs.chctrla.modify(|_, w| w.swrst().set_bit());
@@ -203,6 +212,31 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
     #[inline]
     fn _trigger_private(&mut self) {
         self.regs.swtrigctrl.set_bit();
+    }
+
+    #[inline]
+    fn _enable_private(&mut self) {
+        self.regs.chctrla.modify(|_, w| w.enable().set_bit());
+    }
+
+    /// Stop transfer on channel whether or not the transfer has completed
+    #[inline]
+    pub(crate) fn stop(&mut self) {
+        self.regs.chctrla.modify(|_, w| w.enable().clear_bit());
+    }
+
+    /// Returns whether or not the transfer is complete.
+    #[inline]
+    pub(crate) fn xfer_complete(&mut self) -> bool {
+        !self.regs.chctrla.read().enable().bit_is_set()
+    }
+
+    /// Returns the transfer's success status.
+    #[allow(dead_code)]
+    #[inline]
+    pub(crate) fn xfer_success(&mut self) -> super::Result<()> {
+        let success = self.regs.chintflag.read().terr().bit_is_clear();
+        success.then_some(()).ok_or(super::Error::TransferError)
     }
 }
 
@@ -241,18 +275,32 @@ impl<Id: ChId> Channel<Id, Ready> {
             .modify(|_, w| w.burstlen().variant(burst_length));
     }
 
-    /// Start transfer on channel using the specified trigger source.
+    /// Start the transfer.
     ///
-    /// # Return
+    /// # Safety
     ///
-    /// A `Channel` with a `Busy` status.
+    /// This function is unsafe because it starts the transfer without changing
+    /// the channel status to [`Busy`]. A [`Ready`] channel which is actively
+    /// transferring should NEVER be leaked.
     #[inline]
     #[hal_macro_helper]
-    pub(crate) fn start(
-        mut self,
+    pub(super) unsafe fn _start_private(
+        &mut self,
         trig_src: TriggerSource,
         trig_act: TriggerAction,
-    ) -> Channel<Id, Busy> {
+    ) {
+        // Configure the trigger source and trigger action
+        self.configure_trigger(trig_src, trig_act);
+        self._enable_private();
+        // If trigger source is DISABLE, manually trigger transfer
+        if trig_src == TriggerSource::Disable {
+            self._trigger_private();
+        }
+    }
+
+    #[inline]
+    #[hal_macro_helper]
+    pub(super) fn configure_trigger(&mut self, trig_src: TriggerSource, trig_act: TriggerAction) {
         // Configure the trigger source and trigger action
         #[hal_cfg(any("dmac-d11", "dmac-d21"))]
         self.regs.chctrlb.modify(|_, w| {
@@ -265,19 +313,72 @@ impl<Id: ChId> Channel<Id, Ready> {
             w.trigsrc().variant(trig_src);
             w.trigact().variant(trig_act)
         });
+    }
+}
 
-        // Start channel
-        self.regs.chctrla.modify(|_, w| w.enable().set_bit());
+impl<Id: ChId> Channel<Id, Ready> {
+    /// Start transfer on channel using the specified trigger source.
+    ///
+    /// # Return
+    ///
+    /// A `Channel` with a `Busy` status.
+    #[inline]
+    pub(crate) fn start(
+        mut self,
+        trig_src: TriggerSource,
+        trig_act: TriggerAction,
+    ) -> Channel<Id, Busy> {
+        unsafe {
+            self._start_private(trig_src, trig_act);
+        }
+        self.change_status()
+    }
 
-        // If trigger source is DISABLE, manually trigger transfer
+    /// Begin a [`Transfer`], without changing the channel's type to [`Busy`].
+    ///
+    /// This function guarantees that it will never return [`Err`] if the transfer has been started.
+    ///
+    /// # Safety
+    ///
+    /// You must ensure that the transfer is completed or stopped before
+    /// returning the [`Channel`]. Doing otherwise breaks type safety, because a
+    /// [`Ready`] channel would still be in the middle of a transfer.
+    ///
+    /// Additionnally, this function doesn't take `'static` buffers. Again, you
+    /// must guarantee that the returned transfer has completed or has been
+    /// stopped before giving up control of the underlying [`Channel`].
+    #[inline]
+    pub(crate) unsafe fn transfer<S, D>(
+        &mut self,
+        mut source: S,
+        mut dest: D,
+        trig_src: TriggerSource,
+        trig_act: TriggerAction,
+    ) -> Result<(), super::Error>
+    where
+        S: super::Buffer,
+        D: super::Buffer<Beat = S::Beat>,
+    {
+        super::Transfer::<Self, super::transfer::BufferPair<S, D>>::check_buffer_pair(
+            &source, &dest,
+        )?;
+
+        super::Transfer::<Self, super::transfer::BufferPair<S, D>>::fill_descriptor(
+            &mut source,
+            &mut dest,
+            false,
+        );
+
+        self.configure_trigger(trig_src, trig_act);
+
+        atomic::fence(atomic::Ordering::Release);
+        self._enable_private();
+
         if trig_src == TriggerSource::Disable {
             self._trigger_private();
         }
 
-        Channel {
-            regs: self.regs,
-            _status: PhantomData,
-        }
+        Ok(())
     }
 }
 
@@ -287,12 +388,6 @@ impl<Id: ChId> Channel<Id, Busy> {
     #[inline]
     pub(crate) fn software_trigger(&mut self) {
         self._trigger_private();
-    }
-
-    /// Returns whether or not the transfer is complete.
-    #[inline]
-    pub(crate) fn xfer_complete(&mut self) -> bool {
-        !self.regs.chctrla.read().enable().bit_is_set()
     }
 
     /// Stop transfer on channel whether or not the transfer has completed

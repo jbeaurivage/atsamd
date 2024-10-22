@@ -270,6 +270,14 @@ pub enum Error {
 
     /// Operation is not valid in the current state of the object.
     InvalidState,
+    /// Chip reported an error during transfer
+    TransferError,
+}
+
+impl From<Error> for crate::sercom::spi::Error {
+    fn from(value: Error) -> Self {
+        crate::sercom::spi::Error::Dma(value)
+    }
 }
 
 /// Result for DMAC operations
