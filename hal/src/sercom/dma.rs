@@ -3,6 +3,8 @@
 //! See the [`mod@uart`], [`mod@i2c`] and [`mod@spi`] modules for the
 //! corresponding DMA transfer implementations.
 
+use core::ops::Range;
+
 use atsamd_hal_macros::hal_macro_helper;
 
 use crate::{
@@ -10,7 +12,7 @@ use crate::{
         self,
         channel::{AnyChannel, Busy, CallbackStatus, Channel, InterruptFlags, Ready},
         transfer::BufferPair,
-        Beat, Buffer, Transfer, TriggerAction,
+        Beat, Buffer, Error, Transfer, TriggerAction,
     },
     sercom::{
         i2c::{self, I2c},
@@ -80,6 +82,10 @@ impl<C: i2c::AnyConfig> I2c<C> {
     ///
     /// It is recommended that you check for errors after the transfer is
     /// complete by calling [`read_status`](I2c::read_status).
+    #[deprecated(
+        since = "0.18.1",
+        note = "Use I2c::with_dma` instead. You will have access to DMA-enabled `embedded-hal` implementations."
+    )]
     #[hal_macro_helper]
     pub fn receive_with_dma<Ch, B, W>(
         self,
@@ -130,6 +136,10 @@ impl<C: i2c::AnyConfig> I2c<C> {
     /// complete by calling [`read_status`](I2c::read_status).
     #[inline]
     #[hal_macro_helper]
+    #[deprecated(
+        since = "0.18.1",
+        note = "Use I2c::with_dma` instead. You will have access to DMA-enabled `embedded-hal` implementations."
+    )]
     pub fn send_with_dma<Ch, B, W>(
         self,
         address: u8,
@@ -212,6 +222,10 @@ where
     /// start receiving into the provided buffer.
     #[inline]
     #[hal_macro_helper]
+    #[deprecated(
+        since = "0.18.1",
+        note = "Use `Uart::with_rx_channel` instead. You will have access to DMA-enabled `embedded-hal` implementations"
+    )]
     pub fn receive_with_dma<Ch, B, W>(
         self,
         buf: B,
@@ -251,6 +265,10 @@ where
     /// start sending the provided buffer.
     #[inline]
     #[hal_macro_helper]
+    #[deprecated(
+        since = "0.18.1",
+        note = "Use `Uart::with_tx_channel` instead. You will have access to DMA-enabled `embedded-hal` implementations."
+    )]
     pub fn send_with_dma<Ch, B, W>(
         self,
         buf: B,
@@ -320,6 +338,10 @@ where
     /// start a send transaction.
     #[inline]
     #[hal_macro_helper]
+    #[deprecated(
+        since = "0.18.1",
+        note = "Use `Spi::with_dma` instead. You will have access to DMA-enabled `embedded-hal` implementations."
+    )]
     pub fn send_with_dma<Ch, B, W>(
         self,
         buf: B,
@@ -359,6 +381,10 @@ where
     /// start a receive transaction.
     #[inline]
     #[hal_macro_helper]
+    #[deprecated(
+        since = "0.18.1",
+        note = "Use `Spi::with_dma` instead. You will have access to DMA-enabled `embedded-hal` implementations."
+    )]
     pub fn receive_with_dma<Ch, B, W>(
         self,
         buf: B,
@@ -386,4 +412,182 @@ where
         xfer.with_waker(waker)
             .begin(C::Sercom::DMA_RX_TRIGGER, trigger_action)
     }
+}
+
+/// Wrapper type over an `&[T]` that can be used as a source buffer for DMA
+/// transfers. This is an implementation detail to make SERCOM-DMA
+/// transfers work. Should not be used outside of this crate.
+///
+/// # Safety
+///
+/// [`ImmutableSlice`]s should only ever be used as **source** buffers for DMA
+/// transfers, and never as destination buffers.
+#[doc(hidden)]
+pub(crate) struct ImmutableSlice<T: Beat>(Range<*mut T>);
+
+impl<T: Beat> ImmutableSlice<T> {
+    #[inline]
+    pub(in super::super) fn from_slice(slice: &[T]) -> Self {
+        let ptrs = slice.as_ptr_range();
+
+        let ptrs = Range {
+            start: ptrs.start.cast_mut(),
+            end: ptrs.end.cast_mut(),
+        };
+
+        ImmutableSlice(ptrs)
+    }
+}
+
+unsafe impl<T: Beat> Buffer for ImmutableSlice<T> {
+    type Beat = T;
+    #[inline]
+    fn dma_ptr(&mut self) -> *mut Self::Beat {
+        if self.incrementing() {
+            self.0.end
+        } else {
+            self.0.start
+        }
+    }
+
+    #[inline]
+    fn incrementing(&self) -> bool {
+        self.buffer_len() > 1
+    }
+
+    #[inline]
+    fn buffer_len(&self) -> usize {
+        self.0.end as usize - self.0.start as usize
+    }
+}
+
+/// Wrapper type over Sercom instances to get around lifetime issues when using
+/// one as a DMA source/destination buffer. This is an implementation detail to
+/// make SERCOM-DMA transfers work.
+#[doc(hidden)]
+#[derive(Clone)]
+pub(crate) struct SercomPtr<T: Beat>(pub(in super::super) *mut T);
+
+unsafe impl<T: Beat> Buffer for SercomPtr<T> {
+    type Beat = T;
+
+    #[inline]
+    fn dma_ptr(&mut self) -> *mut Self::Beat {
+        self.0
+    }
+
+    #[inline]
+    fn incrementing(&self) -> bool {
+        false
+    }
+
+    #[inline]
+    fn buffer_len(&self) -> usize {
+        1
+    }
+}
+
+fn prepare_interrupts<C: AnyChannel<Status = Ready>>(chan: &mut C) {
+    chan.as_mut()
+        .disable_interrupts(InterruptFlags::new().with_susp(true));
+    chan.as_mut()
+        .enable_interrupts(InterruptFlags::new().with_tcmpl(true).with_terr(true));
+}
+
+/// Perform a SERCOM DMA read with a provided `&mut [T]`
+///
+/// This function will never return [`Err`] is the transfer has been started.
+///
+/// # Safety
+///
+/// You **must** guarantee that the DMA transfer is either stopped or completed
+/// before giving back control of `channel` AND `words`.
+pub(super) unsafe fn read_dma<T: Beat, S: Sercom>(
+    channel: &mut impl AnyChannel<Status = Ready>,
+    sercom_ptr: SercomPtr<T>,
+    words: &mut [T],
+) -> Result<(), Error> {
+    read_dma_buffer::<_, _, S>(channel, sercom_ptr, words)
+}
+
+/// Perform a SERCOM DMA read with a provided [`Buffer`]
+///
+/// This function will never return [`Err`] is the transfer has been started.
+///
+/// # Safety
+///
+/// You **must** guarantee that the DMA transfer is either stopped or completed
+/// before giving back control of `channel` AND `buf`.
+#[hal_macro_helper]
+pub(super) unsafe fn read_dma_buffer<T, B, S>(
+    channel: &mut impl AnyChannel<Status = Ready>,
+    sercom_ptr: SercomPtr<T>,
+    buf: B,
+) -> Result<(), Error>
+where
+    T: Beat,
+    B: Buffer<Beat = T>,
+    S: Sercom,
+{
+    #[hal_cfg("dmac-d5x")]
+    let trigger_action = TriggerAction::Burst;
+
+    #[hal_cfg(any("dmac-d11", "dmac-d21"))]
+    let trigger_action = TriggerAction::Beat;
+
+    prepare_interrupts(channel);
+    channel
+        .as_mut()
+        .transfer(sercom_ptr, buf, S::DMA_RX_TRIGGER, trigger_action)
+}
+
+/// Perform a SERCOM DMA write with a provided `&[T]`.
+///
+/// This function will never return [`Err`] is the transfer has been started.
+///
+/// # Safety
+///
+/// You **must** guarantee that the DMA transfer is either stopped or completed
+/// before giving back control of `channel` AND `words`.
+pub(super) unsafe fn write_dma<T: Beat, S: Sercom>(
+    channel: &mut impl AnyChannel<Status = Ready>,
+    sercom_ptr: SercomPtr<T>,
+    words: &[T],
+) -> Result<(), Error> {
+    // SAFETY: For this call to be safe, we need hold on
+    // to words as long as the transfer hasn't completed.
+    let words = ImmutableSlice::from_slice(words);
+
+    write_dma_buffer::<_, _, S>(channel, sercom_ptr, words)
+}
+
+/// Perform a SERCOM DMA write with a provided [`Buffer`]
+///
+/// This function will never return [`Err`] is the transfer has been started.
+///
+/// # Safety
+///
+/// You **must** guarantee that the DMA transfer is either stopped or completed
+/// before giving back control of `channel` AND `buf`.
+#[hal_macro_helper]
+pub(super) unsafe fn write_dma_buffer<T, B, S>(
+    channel: &mut impl AnyChannel<Status = Ready>,
+    sercom_ptr: SercomPtr<T>,
+    buf: B,
+) -> Result<(), Error>
+where
+    T: Beat,
+    B: Buffer<Beat = T>,
+    S: Sercom,
+{
+    #[hal_cfg("dmac-d5x")]
+    let trigger_action = TriggerAction::Burst;
+
+    #[hal_cfg(any("dmac-d11", "dmac-d21"))]
+    let trigger_action = TriggerAction::Beat;
+
+    prepare_interrupts(channel);
+    channel
+        .as_mut()
+        .transfer(buf, sercom_ptr, S::DMA_TX_TRIGGER, trigger_action)
 }

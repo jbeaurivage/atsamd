@@ -354,7 +354,7 @@ where
     C: AnyChannel,
 {
     #[inline]
-    fn check_buffer_pair(source: &S, destination: &D) -> Result<()> {
+    pub(super) fn check_buffer_pair(source: &S, destination: &D) -> Result<()> {
         let src_len = source.buffer_len();
         let dst_len = destination.buffer_len();
 
@@ -366,7 +366,7 @@ where
     }
 
     #[inline]
-    unsafe fn fill_descriptor(source: &mut S, destination: &mut D, circular: bool) {
+    pub(super) unsafe fn fill_descriptor(source: &mut S, destination: &mut D, circular: bool) {
         let id = <C as AnyChannel>::Id::USIZE;
 
         // Enable support for circular transfers. If circular_xfer is true,
