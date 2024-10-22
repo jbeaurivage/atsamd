@@ -349,8 +349,8 @@ impl<Id: ChId> Channel<Id, Ready> {
     #[inline]
     pub(crate) unsafe fn transfer<S, D>(
         &mut self,
-        mut source: S,
-        mut dest: D,
+        source: &mut S,
+        dest: &mut D,
         trig_src: TriggerSource,
         trig_act: TriggerAction,
     ) -> Result<(), super::Error>
@@ -359,13 +359,11 @@ impl<Id: ChId> Channel<Id, Ready> {
         D: super::Buffer<Beat = S::Beat>,
     {
         super::Transfer::<Self, super::transfer::BufferPair<S, D>>::check_buffer_pair(
-            &source, &dest,
+            source, dest,
         )?;
 
         super::Transfer::<Self, super::transfer::BufferPair<S, D>>::fill_descriptor(
-            &mut source,
-            &mut dest,
-            false,
+            source, dest, false,
         );
 
         self.configure_trigger(trig_src, trig_act);
