@@ -127,10 +127,12 @@ where
 mod dma {
     use super::*;
     use crate::dmac::{channel::Ready, AnyChannel, Beat, Buffer};
-    use crate::sercom::dma::{read_dma, read_dma_buffer, write_dma, write_dma_buffer, SercomPtr};
+    use crate::sercom::dma::{
+        read_dma, read_dma_buffer, write_dma, write_dma_buffer, ImmutableSlice, SercomPtr,
+    };
 
-    struct SinkSourceBuffer<T: Beat> {
-        word: T,
+    struct SinkSourceBuffer<'a, T: Beat> {
+        word: &'a mut T,
         length: usize,
     }
 
@@ -143,12 +145,12 @@ mod dma {
     ///
     /// This [`Buffer`] implementation provides a source/sink for a single word,
     /// but with a variable length.
-    impl<T: Beat> SinkSourceBuffer<T> {
-        fn new(word: T, length: usize) -> Self {
+    impl<'a, T: Beat> SinkSourceBuffer<'a, T> {
+        fn new(word: &'a mut T, length: usize) -> Self {
             Self { word, length }
         }
     }
-    unsafe impl<T: Beat> Buffer for SinkSourceBuffer<T> {
+    unsafe impl<'a, T: Beat> Buffer for SinkSourceBuffer<'a, T> {
         type Beat = T;
         fn incrementing(&self) -> bool {
             false
@@ -157,7 +159,7 @@ mod dma {
             self.length
         }
         fn dma_ptr(&mut self) -> *mut Self::Beat {
-            &mut self.word as *mut _
+            self.word as *mut _
         }
     }
 
@@ -193,7 +195,9 @@ mod dma {
             let sercom_ptr = self.sercom_ptr();
             let rx = self.rx_channel.as_mut();
             let tx = self.tx_channel.as_mut();
-            let source = SinkSourceBuffer::new(0x00.as_(), words.len());
+
+            let mut source_word = 0x00.as_();
+            let mut source = SinkSourceBuffer::new(&mut source_word, words.len());
 
             // SAFETY: We make sure that any DMA transfer is complete or stopped before returning.
             // The order of operations is important; the RX transfer must be ready to receive before the TX transfer is initiated.
@@ -201,7 +205,7 @@ mod dma {
                 read_dma::<_, S>(rx, sercom_ptr.clone(), words)?;
 
                 // We can't use the ? operator here; we need to stop the read transfer before returning.
-                if let Err(e) = write_dma_buffer::<_, _, S>(tx, sercom_ptr, source) {
+                if let Err(e) = write_dma_buffer::<_, _, S>(tx, sercom_ptr, &mut source) {
                     rx.stop();
                     return Err(e.into());
                 }
@@ -224,17 +228,19 @@ mod dma {
 
         #[inline]
         fn write(&mut self, words: &[C::Word]) -> Result<(), Self::Error> {
-            // Use a random value as the sink buffer since we're just going to discard the
-            // read words
-            let sink = SinkSourceBuffer::new(0xFF.as_(), words.len());
             let sercom_ptr = self.sercom_ptr();
             let rx = self.rx_channel.as_mut();
             let tx = self.tx_channel.as_mut();
 
+            // Use a random value as the sink buffer since we're just going to discard the
+            // read words
+            let mut source_word = 0xFF.as_();
+            let mut sink = SinkSourceBuffer::new(&mut source_word, words.len());
+
             // SAFETY: We make sure that any DMA transfer is complete or stopped before returning.
             // The order of operations is important; the RX transfer must be ready to receive before the TX transfer is initiated.
             unsafe {
-                read_dma_buffer::<_, _, S>(rx, sercom_ptr.clone(), sink)?;
+                read_dma_buffer::<_, _, S>(rx, sercom_ptr.clone(), &mut sink)?;
 
                 // We can't use the ? operator here; we need to stop the read transfer before returning.
                 if let Err(e) = write_dma::<_, S>(tx, sercom_ptr, words) {
@@ -296,11 +302,34 @@ mod dma {
 
         #[inline]
         fn transfer_in_place<'w>(&mut self, words: &mut [C::Word]) -> Result<(), Self::Error> {
-            // Can only ever do word-by-word to avoid DMA race conditions
-            for word in words {
-                let read = self.transfer_word_in_place(*word)?;
-                *word = read;
+            let spi_ptr = self.sercom_ptr();
+            let tx = self.tx_channel.as_mut();
+            let rx = self.rx_channel.as_mut();
+
+            let mut write_buf = ImmutableSlice::from_slice(words);
+
+            // SAFETY: We make sure that any DMA transfer is complete or stopped before returning.
+            // The order of operations is important; the RX transfer must be ready to receive before the TX transfer is initiated.
+            // In this case, the two DMA transfers are reading/writing to the same buffer. However, this seems to be safe because the read transfer will always be lagging one word behind the write transfer, since writing a word initiates the reading of a word.
+            unsafe {
+                read_dma::<_, S>(rx, spi_ptr.clone(), words)?;
+
+                // We can't use the ? operator here; we need to stop the read transfer before returning.
+                if let Err(e) = write_dma_buffer::<_, _, S>(tx, spi_ptr, &mut write_buf) {
+                    rx.stop();
+                    return Err(e.into());
+                };
             }
+
+            while !(tx.xfer_complete() && rx.xfer_complete()) {
+                core::hint::spin_loop();
+            }
+
+            self.block_on_flags(Flags::RXC | Flags::TXC)?;
+            self.tx_channel
+                .as_mut()
+                .xfer_success()
+                .and(self.rx_channel.as_mut().xfer_success())?;
             Ok(())
         }
 

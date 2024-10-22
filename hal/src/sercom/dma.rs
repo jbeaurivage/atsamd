@@ -505,9 +505,9 @@ fn prepare_interrupts<C: AnyChannel<Status = Ready>>(chan: &mut C) {
 pub(super) unsafe fn read_dma<T: Beat, S: Sercom>(
     channel: &mut impl AnyChannel<Status = Ready>,
     sercom_ptr: SercomPtr<T>,
-    words: &mut [T],
+    mut words: &mut [T],
 ) -> Result<(), Error> {
-    read_dma_buffer::<_, _, S>(channel, sercom_ptr, words)
+    read_dma_buffer::<_, _, S>(channel, sercom_ptr, &mut words)
 }
 
 /// Perform a SERCOM DMA read with a provided [`Buffer`]
@@ -521,8 +521,8 @@ pub(super) unsafe fn read_dma<T: Beat, S: Sercom>(
 #[hal_macro_helper]
 pub(super) unsafe fn read_dma_buffer<T, B, S>(
     channel: &mut impl AnyChannel<Status = Ready>,
-    sercom_ptr: SercomPtr<T>,
-    buf: B,
+    mut sercom_ptr: SercomPtr<T>,
+    buf: &mut B,
 ) -> Result<(), Error>
 where
     T: Beat,
@@ -538,7 +538,7 @@ where
     prepare_interrupts(channel);
     channel
         .as_mut()
-        .transfer(sercom_ptr, buf, S::DMA_RX_TRIGGER, trigger_action)
+        .transfer(&mut sercom_ptr, buf, S::DMA_RX_TRIGGER, trigger_action)
 }
 
 /// Perform a SERCOM DMA write with a provided `&[T]`.
@@ -556,9 +556,9 @@ pub(super) unsafe fn write_dma<T: Beat, S: Sercom>(
 ) -> Result<(), Error> {
     // SAFETY: For this call to be safe, we need hold on
     // to words as long as the transfer hasn't completed.
-    let words = ImmutableSlice::from_slice(words);
+    let mut words = ImmutableSlice::from_slice(words);
 
-    write_dma_buffer::<_, _, S>(channel, sercom_ptr, words)
+    write_dma_buffer::<_, _, S>(channel, sercom_ptr, &mut words)
 }
 
 /// Perform a SERCOM DMA write with a provided [`Buffer`]
@@ -572,8 +572,8 @@ pub(super) unsafe fn write_dma<T: Beat, S: Sercom>(
 #[hal_macro_helper]
 pub(super) unsafe fn write_dma_buffer<T, B, S>(
     channel: &mut impl AnyChannel<Status = Ready>,
-    sercom_ptr: SercomPtr<T>,
-    buf: B,
+    mut sercom_ptr: SercomPtr<T>,
+    buf: &mut B,
 ) -> Result<(), Error>
 where
     T: Beat,
@@ -589,5 +589,5 @@ where
     prepare_interrupts(channel);
     channel
         .as_mut()
-        .transfer(buf, sercom_ptr, S::DMA_TX_TRIGGER, trigger_action)
+        .transfer(buf, &mut sercom_ptr, S::DMA_TX_TRIGGER, trigger_action)
 }
