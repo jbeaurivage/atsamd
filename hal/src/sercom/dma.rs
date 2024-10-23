@@ -12,7 +12,7 @@ use crate::{
         self,
         channel::{AnyChannel, Busy, CallbackStatus, Channel, InterruptFlags, Ready},
         transfer::BufferPair,
-        Beat, Buffer, Error, Transfer, TriggerAction,
+        Beat, Buffer, DmacDescriptor, Error, Transfer, TriggerAction,
     },
     sercom::{
         i2c::{self, I2c},
@@ -420,12 +420,12 @@ where
 ///
 /// # Safety
 ///
-/// [`ImmutableSlice`]s should only ever be used as **source** buffers for DMA
+/// [`SharedSliceBuffer`]s should only ever be used as **source** buffers for DMA
 /// transfers, and never as destination buffers.
 #[doc(hidden)]
-pub(crate) struct ImmutableSlice<T: Beat>(Range<*mut T>);
+pub(crate) struct SharedSliceBuffer<T: Beat>(Range<*mut T>);
 
-impl<T: Beat> ImmutableSlice<T> {
+impl<T: Beat> SharedSliceBuffer<T> {
     #[inline]
     pub(in super::super) fn from_slice(slice: &[T]) -> Self {
         let ptrs = slice.as_ptr_range();
@@ -435,11 +435,11 @@ impl<T: Beat> ImmutableSlice<T> {
             end: ptrs.end.cast_mut(),
         };
 
-        ImmutableSlice(ptrs)
+        SharedSliceBuffer(ptrs)
     }
 }
 
-unsafe impl<T: Beat> Buffer for ImmutableSlice<T> {
+unsafe impl<T: Beat> Buffer for SharedSliceBuffer<T> {
     type Beat = T;
     #[inline]
     fn dma_ptr(&mut self) -> *mut Self::Beat {
@@ -494,22 +494,6 @@ fn prepare_interrupts<C: AnyChannel<Status = Ready>>(chan: &mut C) {
         .enable_interrupts(InterruptFlags::new().with_tcmpl(true).with_terr(true));
 }
 
-/// Perform a SERCOM DMA read with a provided `&mut [T]`
-///
-/// This function will never return [`Err`] is the transfer has been started.
-///
-/// # Safety
-///
-/// You **must** guarantee that the DMA transfer is either stopped or completed
-/// before giving back control of `channel` AND `words`.
-pub(super) unsafe fn read_dma<T: Beat, S: Sercom>(
-    channel: &mut impl AnyChannel<Status = Ready>,
-    sercom_ptr: SercomPtr<T>,
-    mut words: &mut [T],
-) -> Result<(), Error> {
-    read_dma_buffer::<_, _, S>(channel, sercom_ptr, &mut words)
-}
-
 /// Perform a SERCOM DMA read with a provided [`Buffer`]
 ///
 /// This function will never return [`Err`] is the transfer has been started.
@@ -519,10 +503,34 @@ pub(super) unsafe fn read_dma<T: Beat, S: Sercom>(
 /// You **must** guarantee that the DMA transfer is either stopped or completed
 /// before giving back control of `channel` AND `buf`.
 #[hal_macro_helper]
-pub(super) unsafe fn read_dma_buffer<T, B, S>(
+pub(super) unsafe fn read_dma<T, B, S>(
+    channel: &mut impl AnyChannel<Status = Ready>,
+    sercom_ptr: SercomPtr<T>,
+    buf: &mut B,
+) -> Result<(), Error>
+where
+    T: Beat,
+    B: Buffer<Beat = T>,
+    S: Sercom,
+{
+    read_dma_linked::<_, _, S>(channel, sercom_ptr, buf, None)
+}
+
+/// Perform a SERCOM DMA read with a provided [`Buffer`], and add an optional link
+/// to a next [`DmacDescriptor`] to support linked transfers.
+///
+/// This function will never return [`Err`] is the transfer has been started.
+///
+/// # Safety
+///
+/// You **must** guarantee that the DMA transfer is either stopped or completed
+/// before giving back control of `channel` AND `buf`.
+#[hal_macro_helper]
+pub(super) unsafe fn read_dma_linked<T, B, S>(
     channel: &mut impl AnyChannel<Status = Ready>,
     mut sercom_ptr: SercomPtr<T>,
     buf: &mut B,
+    next: Option<&mut DmacDescriptor>,
 ) -> Result<(), Error>
 where
     T: Beat,
@@ -536,29 +544,13 @@ where
     let trigger_action = TriggerAction::Beat;
 
     prepare_interrupts(channel);
-    channel
-        .as_mut()
-        .transfer(&mut sercom_ptr, buf, S::DMA_RX_TRIGGER, trigger_action)
-}
-
-/// Perform a SERCOM DMA write with a provided `&[T]`.
-///
-/// This function will never return [`Err`] is the transfer has been started.
-///
-/// # Safety
-///
-/// You **must** guarantee that the DMA transfer is either stopped or completed
-/// before giving back control of `channel` AND `words`.
-pub(super) unsafe fn write_dma<T: Beat, S: Sercom>(
-    channel: &mut impl AnyChannel<Status = Ready>,
-    sercom_ptr: SercomPtr<T>,
-    words: &[T],
-) -> Result<(), Error> {
-    // SAFETY: For this call to be safe, we need hold on
-    // to words as long as the transfer hasn't completed.
-    let mut words = ImmutableSlice::from_slice(words);
-
-    write_dma_buffer::<_, _, S>(channel, sercom_ptr, &mut words)
+    channel.as_mut().transfer(
+        &mut sercom_ptr,
+        buf,
+        S::DMA_RX_TRIGGER,
+        trigger_action,
+        next,
+    )
 }
 
 /// Perform a SERCOM DMA write with a provided [`Buffer`]
@@ -570,10 +562,34 @@ pub(super) unsafe fn write_dma<T: Beat, S: Sercom>(
 /// You **must** guarantee that the DMA transfer is either stopped or completed
 /// before giving back control of `channel` AND `buf`.
 #[hal_macro_helper]
-pub(super) unsafe fn write_dma_buffer<T, B, S>(
+pub(super) unsafe fn write_dma<T, B, S>(
+    channel: &mut impl AnyChannel<Status = Ready>,
+    sercom_ptr: SercomPtr<T>,
+    buf: &mut B,
+) -> Result<(), Error>
+where
+    T: Beat,
+    B: Buffer<Beat = T>,
+    S: Sercom,
+{
+    write_dma_linked::<_, _, S>(channel, sercom_ptr, buf, None)
+}
+
+/// Perform a SERCOM DMA write with a provided [`Buffer`], and add an optional link
+/// to a next [`DmacDescriptor`] to support linked transfers.
+///
+/// This function will never return [`Err`] is the transfer has been started.
+///
+/// # Safety
+///
+/// You **must** guarantee that the DMA transfer is either stopped or completed
+/// before giving back control of `channel` AND `buf`.
+#[hal_macro_helper]
+pub(super) unsafe fn write_dma_linked<T, B, S>(
     channel: &mut impl AnyChannel<Status = Ready>,
     mut sercom_ptr: SercomPtr<T>,
     buf: &mut B,
+    next: Option<&mut DmacDescriptor>,
 ) -> Result<(), Error>
 where
     T: Beat,
@@ -587,7 +603,11 @@ where
     let trigger_action = TriggerAction::Beat;
 
     prepare_interrupts(channel);
-    channel
-        .as_mut()
-        .transfer(buf, &mut sercom_ptr, S::DMA_TX_TRIGGER, trigger_action)
+    channel.as_mut().transfer(
+        buf,
+        &mut sercom_ptr,
+        S::DMA_TX_TRIGGER,
+        trigger_action,
+        next,
+    )
 }

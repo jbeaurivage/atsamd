@@ -365,24 +365,52 @@ where
         }
     }
 
+    /// Fill the first descriptor of a channel into the SRAM descriptor section.
     #[inline]
     pub(super) unsafe fn fill_descriptor(source: &mut S, destination: &mut D, circular: bool) {
         let id = <C as AnyChannel>::Id::USIZE;
+
+        // SAFETY this is safe as long as we ONLY read/write to the descriptor
+        // belonging to OUR channel. We assume this is the only place
+        // in the entire library that this section of the array
+        // will be accessed.
+        let descriptor = &mut DESCRIPTOR_SECTION[id];
 
         // Enable support for circular transfers. If circular_xfer is true,
         // we set the address of the "next" block descriptor to actually
         // be the same address as the current block descriptor.
         // Otherwise we set it to NULL, which terminates the transaction.
-        // TODO: Enable support for linked lists (?)
         let descaddr = if circular {
             // SAFETY This is safe as we are only reading the descriptor's address,
             // and not actually writing any data to it. We also assume the descriptor
             // will never be moved.
-            &mut DESCRIPTOR_SECTION[id] as *mut _
+            descriptor as *mut _
         } else {
             null_mut()
         };
 
+        Self::link_descriptor(descriptor, source, destination, descaddr);
+    }
+
+    /// Add a linked descriptor after the first descriptor in the transfer.
+    pub(super) unsafe fn link_next(next: *mut DmacDescriptor) {
+        let id = <C as AnyChannel>::Id::USIZE;
+
+        DESCRIPTOR_SECTION[id].descaddr = next;
+    }
+
+    /// Generate a [`DmacDescriptor`], and write it to the provided descriptor reference.
+    ///
+    /// `next` is the address of the next descriptor (for linked transfers). If
+    /// it is set to `0`, the transfer will terminate after this descriptor. For
+    /// circular transfers, set `next` to the descriptor's own address.
+    #[inline]
+    pub(crate) fn link_descriptor(
+        descriptor: &mut DmacDescriptor,
+        source: &mut S,
+        destination: &mut D,
+        next: *mut DmacDescriptor,
+    ) {
         let src_ptr = source.dma_ptr();
         let src_inc = source.incrementing();
         let src_len = source.buffer_len();
@@ -403,10 +431,10 @@ where
             .with_beatsize(S::Beat::BEATSIZE)
             .with_valid(true);
 
-        let xfer_descriptor = DmacDescriptor {
+        *descriptor = DmacDescriptor {
             // Next descriptor address:  0x0 terminates the transaction (no linked list),
             // any other address points to the next block descriptor
-            descaddr,
+            descaddr: next,
             // Source address: address of the last beat transfer source in block
             srcaddr: src_ptr as *mut _,
             // Destination address: address of the last beat transfer destination in block
@@ -416,12 +444,6 @@ where
             // Block transfer control: Datasheet  section 19.8.2.1 p.329
             btctrl,
         };
-
-        // SAFETY this is safe as long as we ONLY write to the descriptor
-        // belonging to OUR channel. We assume this is the only place
-        // in the entire library that this section or the array
-        // will be written to.
-        DESCRIPTOR_SECTION[id] = xfer_descriptor;
     }
 }
 

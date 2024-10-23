@@ -31,13 +31,18 @@
 //! `Uninitialized` state. You will be required to call [`Channel::init`]
 //! again before being able to use it with a `Transfer`.
 
+use core::marker::PhantomData;
 use core::sync::atomic;
 
 use atsamd_hal_macros::{hal_cfg, hal_macro_helper};
 
-use super::dma_controller::{ChId, PriorityLevel, TriggerAction, TriggerSource};
+use super::{
+    dma_controller::{ChId, PriorityLevel, TriggerAction, TriggerSource},
+    transfer::{BufferPair, Transfer},
+    Buffer, DmacDescriptor, Error,
+};
 use crate::typelevel::{Is, Sealed};
-use core::marker::PhantomData;
+
 use modular_bitfield::prelude::*;
 
 mod reg;
@@ -335,17 +340,22 @@ impl<Id: ChId> Channel<Id, Ready> {
 
     /// Begin a [`Transfer`], without changing the channel's type to [`Busy`].
     ///
-    /// This function guarantees that it will never return [`Err`] if the transfer has been started.
+    /// Also provides support for linked transfers via an optional `&mut
+    /// DmacDescriptor`.
+    ///
+    /// This function guarantees that it will never return [`Err`] if the
+    /// transfer has been started.
     ///
     /// # Safety
     ///
-    /// You must ensure that the transfer is completed or stopped before
-    /// returning the [`Channel`]. Doing otherwise breaks type safety, because a
-    /// [`Ready`] channel would still be in the middle of a transfer.
-    ///
-    /// Additionnally, this function doesn't take `'static` buffers. Again, you
-    /// must guarantee that the returned transfer has completed or has been
-    /// stopped before giving up control of the underlying [`Channel`].
+    /// * You must ensure that the transfer is completed or stopped before
+    ///   returning the [`Channel`]. Doing otherwise breaks type safety, because a
+    ///   [`Ready`] channel would still be in the middle of a transfer.
+    /// * If the provided `linked_descriptor` is `Some` it must not be dropped
+    ///   until the transfer is completed or stopped.
+    /// * Additionnally, this function doesn't take `'static` buffers. Again, you
+    ///   must guarantee that the returned transfer has completed or has been
+    ///   stopped before giving up control of the underlying [`Channel`].
     #[inline]
     pub(crate) unsafe fn transfer<S, D>(
         &mut self,
@@ -353,18 +363,18 @@ impl<Id: ChId> Channel<Id, Ready> {
         dest: &mut D,
         trig_src: TriggerSource,
         trig_act: TriggerAction,
-    ) -> Result<(), super::Error>
+        linked_descriptor: Option<&mut DmacDescriptor>,
+    ) -> Result<(), Error>
     where
-        S: super::Buffer,
-        D: super::Buffer<Beat = S::Beat>,
+        S: Buffer,
+        D: Buffer<Beat = S::Beat>,
     {
-        super::Transfer::<Self, super::transfer::BufferPair<S, D>>::check_buffer_pair(
-            source, dest,
-        )?;
+        Transfer::<Self, BufferPair<S, D>>::check_buffer_pair(source, dest)?;
+        Transfer::<Self, BufferPair<S, D>>::fill_descriptor(source, dest, false);
 
-        super::Transfer::<Self, super::transfer::BufferPair<S, D>>::fill_descriptor(
-            source, dest, false,
-        );
+        if let Some(next) = linked_descriptor {
+            Transfer::<Self, BufferPair<S, D>>::link_next(next as *mut _);
+        }
 
         self.configure_trigger(trig_src, trig_act);
 
