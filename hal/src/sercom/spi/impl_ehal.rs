@@ -282,8 +282,9 @@ mod dma {
                 return self.write(write);
             }
 
-            // Reserve space for a DMAC SRAM descriptor if we need to make a linked transfer.
-            // Must not be dropped until all transfers have completed or have been stopped.
+            // Reserve space for a DMAC SRAM descriptor if we need to make a linked
+            // transfer. Must not be dropped until all transfers have completed
+            // or have been stopped.
             let mut linked_descriptor = DEFAULT_DESCRIPTOR;
             // TODO: make this configurable
             // Must not be dropped until all transfers have completed or have been stopped.
@@ -296,7 +297,8 @@ mod dma {
                     return self.transfer_blocking(&mut read, &mut write);
                 }
 
-                // `read` is shorter; link transfer to sink incoming words after the buffer has been filled.
+                // `read` is shorter; link transfer to sink incoming words after the buffer has been
+                // filled.
                 Ordering::Less => {
                     let mut sink =
                         SinkSourceBuffer::new(&mut source_sink_word, write.len() - read.len());
@@ -311,7 +313,8 @@ mod dma {
                     (Some(&mut linked_descriptor), None)
                 }
 
-                // `write` is shorter; link transfer to send NOP word after the buffer has been exhausted.
+                // `write` is shorter; link transfer to send NOP word after the buffer has been
+                // exhausted.
                 Ordering::Greater => {
                     let mut source =
                         SinkSourceBuffer::new(&mut source_sink_word, read.len() - write.len());

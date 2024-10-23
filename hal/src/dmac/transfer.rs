@@ -399,7 +399,8 @@ where
         DESCRIPTOR_SECTION[id].descaddr = next;
     }
 
-    /// Generate a [`DmacDescriptor`], and write it to the provided descriptor reference.
+    /// Generate a [`DmacDescriptor`], and write it to the provided descriptor
+    /// reference.
     ///
     /// `next` is the address of the next descriptor (for linked transfers). If
     /// it is set to `0`, the transfer will terminate after this descriptor. For
