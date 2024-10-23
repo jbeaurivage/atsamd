@@ -402,23 +402,33 @@ pub struct DmacDescriptor {
     descaddr: *const DmacDescriptor,
 }
 
-#[doc(hidden)]
-pub const DEFAULT_DESCRIPTOR: DmacDescriptor = DmacDescriptor {
-    btctrl: BlockTransferControl::new(),
-    btcnt: 0,
-    srcaddr: 0 as *mut _,
-    dstaddr: 0 as *mut _,
-    descaddr: 0 as *mut _,
-};
+impl DmacDescriptor {
+    pub(crate) fn set_next_descriptor(&mut self, next: *mut DmacDescriptor) {
+        self.descaddr = next;
+    }
+}
+
+impl DmacDescriptor {
+    pub(crate) const fn default() -> Self {
+        Self {
+            btctrl: BlockTransferControl::new(),
+            btcnt: 0,
+            srcaddr: 0 as *mut _,
+            dstaddr: 0 as *mut _,
+            descaddr: 0 as *mut _,
+        }
+    }
+}
 
 // Writeback section. This static variable should never be written to in an
 // interrupt or thread context.
 #[doc(hidden)]
-static mut WRITEBACK: [DmacDescriptor; NUM_CHANNELS] = [DEFAULT_DESCRIPTOR; NUM_CHANNELS];
+static mut WRITEBACK: [DmacDescriptor; NUM_CHANNELS] = [DmacDescriptor::default(); NUM_CHANNELS];
 // Descriptor section. This static variable should never be written to in an
 // interrupt or thread context.
 #[doc(hidden)]
-static mut DESCRIPTOR_SECTION: [DmacDescriptor; NUM_CHANNELS] = [DEFAULT_DESCRIPTOR; NUM_CHANNELS];
+static mut DESCRIPTOR_SECTION: [DmacDescriptor; NUM_CHANNELS] =
+    [DmacDescriptor::default(); NUM_CHANNELS];
 
 pub mod channel;
 pub mod dma_controller;

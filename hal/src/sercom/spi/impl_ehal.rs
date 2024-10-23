@@ -126,7 +126,7 @@ where
 #[cfg(feature = "dma")]
 mod dma {
     use super::*;
-    use crate::dmac::{channel::Ready, AnyChannel, Beat, Buffer, DEFAULT_DESCRIPTOR};
+    use crate::dmac::{channel::Ready, AnyChannel, Beat, Buffer, DmacDescriptor};
     use crate::sercom::dma::{
         read_dma, read_dma_linked, write_dma, write_dma_linked, SercomPtr, SharedSliceBuffer,
     };
@@ -284,7 +284,7 @@ mod dma {
             // Reserve space for a DMAC SRAM descriptor if we need to make a linked
             // transfer. Must not be dropped until all transfers have completed
             // or have been stopped.
-            let mut linked_descriptor = DEFAULT_DESCRIPTOR;
+            let mut linked_descriptor = DmacDescriptor::default();
             // If read < write, the incoming words will be written to this memory location;
             // it will be discarded after. If read > write, all writes after the
             // buffer has been exhausted will write the nop word to "stimulate" the slave
