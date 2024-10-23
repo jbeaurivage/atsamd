@@ -53,7 +53,3 @@ name = "blinky_rtic"
 [[example]]
 name = "mcan"
 required-features = ["can"]
-
-[[example]]
-name = "spi"
-required-features = ["dma"]
