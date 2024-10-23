@@ -349,13 +349,13 @@ impl<Id: ChId> Channel<Id, Ready> {
     /// # Safety
     ///
     /// * You must ensure that the transfer is completed or stopped before
-    ///   returning the [`Channel`]. Doing otherwise breaks type safety, because a
-    ///   [`Ready`] channel would still be in the middle of a transfer.
+    ///   returning the [`Channel`]. Doing otherwise breaks type safety, because
+    ///   a [`Ready`] channel would still be in the middle of a transfer.
     /// * If the provided `linked_descriptor` is `Some` it must not be dropped
     ///   until the transfer is completed or stopped.
-    /// * Additionnally, this function doesn't take `'static` buffers. Again, you
-    ///   must guarantee that the returned transfer has completed or has been
-    ///   stopped before giving up control of the underlying [`Channel`].
+    /// * Additionnally, this function doesn't take `'static` buffers. Again,
+    ///   you must guarantee that the returned transfer has completed or has
+    ///   been stopped before giving up control of the underlying [`Channel`].
     #[inline]
     pub(crate) unsafe fn transfer<S, D>(
         &mut self,

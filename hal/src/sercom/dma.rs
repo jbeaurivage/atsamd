@@ -420,8 +420,8 @@ where
 ///
 /// # Safety
 ///
-/// [`SharedSliceBuffer`]s should only ever be used as **source** buffers for DMA
-/// transfers, and never as destination buffers.
+/// [`SharedSliceBuffer`]s should only ever be used as **source** buffers for
+/// DMA transfers, and never as destination buffers.
 #[doc(hidden)]
 pub(crate) struct SharedSliceBuffer<T: Beat>(Range<*mut T>);
 
@@ -516,8 +516,8 @@ where
     read_dma_linked::<_, _, S>(channel, sercom_ptr, buf, None)
 }
 
-/// Perform a SERCOM DMA read with a provided [`Buffer`], and add an optional link
-/// to a next [`DmacDescriptor`] to support linked transfers.
+/// Perform a SERCOM DMA read with a provided [`Buffer`], and add an optional
+/// link to a next [`DmacDescriptor`] to support linked transfers.
 ///
 /// This function will never return [`Err`] is the transfer has been started.
 ///
@@ -575,8 +575,8 @@ where
     write_dma_linked::<_, _, S>(channel, sercom_ptr, buf, None)
 }
 
-/// Perform a SERCOM DMA write with a provided [`Buffer`], and add an optional link
-/// to a next [`DmacDescriptor`] to support linked transfers.
+/// Perform a SERCOM DMA write with a provided [`Buffer`], and add an optional
+/// link to a next [`DmacDescriptor`] to support linked transfers.
 ///
 /// This function will never return [`Err`] is the transfer has been started.
 ///
