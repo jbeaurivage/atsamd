@@ -245,8 +245,7 @@ mod dma {
     {
         #[hal_macro_helper]
         fn read(&mut self, mut words: &mut [C::Word]) -> Result<(), Self::Error> {
-            // TODO: make this configurable
-            let mut source_word = 0x00.as_();
+            let mut source_word = self.config.nop_word.as_();
             let mut source = SinkSourceBuffer::new(&mut source_word, words.len());
 
             self.transfer_blocking(&mut words, &mut source)
@@ -286,9 +285,12 @@ mod dma {
             // transfer. Must not be dropped until all transfers have completed
             // or have been stopped.
             let mut linked_descriptor = DEFAULT_DESCRIPTOR;
-            // TODO: make this configurable
-            // Must not be dropped until all transfers have completed or have been stopped.
-            let mut source_sink_word = 0x00.as_();
+            // If read < write, the incoming words will be written to this memory location;
+            // it will be discarded after. If read > write, all writes after the
+            // buffer has been exhausted will write the nop word to "stimulate" the slave
+            // into sending data. Must not be dropped until all transfers have
+            // completed or have been stopped.
+            let mut source_sink_word = self.config.nop_word.as_();
             let mut sercom_ptr = self.sercom_ptr();
 
             let (read_link, write_link) = match read.len().cmp(&write.len()) {
