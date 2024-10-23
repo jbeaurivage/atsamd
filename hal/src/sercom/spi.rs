@@ -1327,6 +1327,9 @@ impl<C> Spi<C, Duplex>
 where
     C: ValidConfig,
 {
+    /// Attach a DMA channel to this [`Spi`]. Its
+    /// [`SpiBus`](crate::ehal::spi::SpiBus) implementation will use DMA to
+    /// carry out its transactions.
     #[cfg(feature = "dma")]
     pub fn with_dma_channels<R, T>(self, rx: R, tx: T) -> Spi<C, Duplex, R, T>
     where

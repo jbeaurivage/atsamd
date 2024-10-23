@@ -280,6 +280,12 @@ impl From<Error> for crate::sercom::spi::Error {
     }
 }
 
+impl From<Error> for crate::sercom::i2c::Error {
+    fn from(value: Error) -> Self {
+        crate::sercom::i2c::Error::Dma(value)
+    }
+}
+
 /// Result for DMAC operations
 pub type Result<T> = core::result::Result<T, Error>;
 

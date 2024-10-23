@@ -294,11 +294,12 @@ pub enum InactiveTimeout {
 }
 
 /// Abstraction over a I2C peripheral, allowing to perform I2C transactions.
-pub struct I2c<C: AnyConfig> {
+pub struct I2c<C: AnyConfig, D = crate::typelevel::NoneT> {
     config: C,
+    dma_channel: D,
 }
 
-impl<C: AnyConfig> I2c<C> {
+impl<C: AnyConfig, D> I2c<C, D> {
     /// Obtain a pointer to the `DATA` register. Necessary for DMA transfers.
     #[inline]
     pub fn data_ptr(&self) -> *mut Word {
@@ -339,6 +340,21 @@ impl<C: AnyConfig> I2c<C> {
     #[inline]
     pub fn clear_status(&mut self, status: Status) {
         self.config.as_mut().registers.clear_status(status);
+    }
+
+    /// Attach a DMA channel to this [`I2c`]. Its
+    /// [`embedded_hal::i2c::I2c`](crate::ehal::i2c::I2c) implementation will
+    /// use DMA to carry out its transactions.
+    #[cfg(feature = "dma")]
+    #[inline]
+    pub fn with_dma_channel<Chan: crate::dmac::AnyChannel<Status = crate::dmac::Ready>>(
+        self,
+        channel: Chan,
+    ) -> I2c<C, Chan> {
+        I2c {
+            config: self.config,
+            dma_channel: channel,
+        }
     }
 
     #[cfg(feature = "dma")]

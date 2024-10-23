@@ -71,6 +71,10 @@ impl<C: i2c::AnyConfig> I2c<C> {
     /// [`init_dma_transfer`]: super::i2c::I2c::init_dma_transfer
     /// [`send_with_dma`]: super::i2c::I2c::send_with_dma
     /// [`receive_with_dma`]: super::i2c::I2c::receive_with_dma
+    #[deprecated(
+        since = "0.18.1",
+        note = "Use I2c::with_dma` instead. You will have access to DMA-enabled `embedded-hal` implementations."
+    )]
     pub fn init_dma_transfer(&mut self) -> Result<I2cBusReady, super::i2c::Error> {
         self.check_bus_status()?;
         Ok(I2cBusReady)
