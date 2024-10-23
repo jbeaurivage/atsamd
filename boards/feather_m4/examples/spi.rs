@@ -36,7 +36,7 @@ fn main() -> ! {
     let pins = bsp::Pins::new(peripherals.port);
 
     // Take SPI pins
-    let (miso, mosi, sclk) = (pins.miso, pins.mosi, pins.sclk);
+    let (miso, mosi, sclk) = (pins.miso, pins.mosi, pins.sck);
 
     // Setup DMA channels for later use
     let mut dmac = DmaController::init(dmac, &mut peripherals.pm);
