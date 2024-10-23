@@ -8,7 +8,7 @@ use panic_halt as _;
 #[cfg(feature = "use_semihosting")]
 use panic_semihosting as _;
 
-use metro_m4 as bsp;
+use feather_m4 as bsp;
 
 use bsp::entry;
 use bsp::hal;
@@ -47,7 +47,7 @@ fn main() -> ! {
     let mut spi = bsp::spi_master(
         &mut clocks,
         100.kHz(),
-        peripherals.sercom2,
+        peripherals.sercom1,
         &mut peripherals.mclk,
         sclk,
         mosi,
