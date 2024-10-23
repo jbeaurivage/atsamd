@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.1](https://github.com/jbeaurivage/atsamd/compare/atsamd-hal-0.18.0...atsamd-hal-0.18.1) - 2024-10-23
+
+### Fixed
+
+- Cleanup newly introduced nightly Clippy lints ([#763](https://github.com/jbeaurivage/atsamd/pull/763))
+
 ## [0.18.0](https://github.com/atsamd-rs/atsamd/compare/atsamd-hal-0.17.0...atsamd-hal-0.18.0) - 2024-10-17
 
 ### Dependencies
