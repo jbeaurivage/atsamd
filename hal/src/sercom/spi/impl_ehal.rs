@@ -150,7 +150,7 @@ mod dma {
             Self { word, length }
         }
     }
-    unsafe impl<'a, T: Beat> Buffer for SinkSourceBuffer<'a, T> {
+    unsafe impl<T: Beat> Buffer for SinkSourceBuffer<'_, T> {
         type Beat = T;
         fn incrementing(&self) -> bool {
             false
