@@ -399,13 +399,21 @@ mod sram {
         pub(super) descaddr: *const DmacDescriptor,
     }
 
-    pub(super) const DEFAULT_DESCRIPTOR: DmacDescriptor = DmacDescriptor {
-        btctrl: BlockTransferControl::new(),
-        btcnt: 0,
-        srcaddr: 0 as *mut _,
-        dstaddr: 0 as *mut _,
-        descaddr: 0 as *mut _,
-    };
+    impl DmacDescriptor {
+        pub(crate) const fn default() -> Self {
+            Self {
+                btctrl: BlockTransferControl::new(),
+                btcnt: 0,
+                srcaddr: 0 as *mut _,
+                dstaddr: 0 as *mut _,
+                descaddr: 0 as *mut _,
+            }
+        }
+
+        pub(crate) fn set_next_descriptor(&mut self, next: *mut DmacDescriptor) {
+            self.descaddr = next;
+        }
+    }
 
     /// Writeback section. This static variable should never be written to in an
     /// interrupt or thread context.
