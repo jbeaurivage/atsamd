@@ -1201,6 +1201,7 @@ where
     /// [`Length`], you **must** wait for a TXC flag before changing to a new
     /// [`Length`].
     #[inline]
+    #[allow(clippy::type_complexity)]
     #[hal_cfg("sercom0-d5x")]
     pub fn length<L: Length>(self) -> Spi<Config<C::Pads, C::OpMode, L>, A, RxDma, TxDma>
     where
