@@ -8,7 +8,7 @@ use panic_halt as _;
 #[cfg(feature = "use_semihosting")]
 use panic_semihosting as _;
 
-use metro_m4 as bsp;
+use atsame54_xpro as bsp;
 
 use bsp::entry;
 use bsp::hal;
@@ -44,10 +44,10 @@ fn main() -> ! {
     let chan0 = channels.0.init(PriorityLevel::Lvl0);
     let chan1 = channels.1.init(PriorityLevel::Lvl0);
 
-    let mut spi = bsp::spi_master(
+    let mut spi = bsp::ext1_spi(
         &mut clocks,
         100.kHz(),
-        peripherals.sercom2,
+        peripherals.sercom4,
         &mut peripherals.mclk,
         sclk,
         mosi,

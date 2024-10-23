@@ -132,3 +132,7 @@ required-features = ["dma"]
 [[example]]
 name = "i2c"
 required-features = ["dma"]
+
+[[example]]
+name = "spi"
+required-features = ["dma"]
