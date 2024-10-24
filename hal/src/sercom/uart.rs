@@ -4,8 +4,9 @@
 //! a set of [`Pads`] for use by the peripheral. Next, you assemble pieces into
 //! a [`Config`] struct. After configuring the peripheral, you then [`enable`]
 //! it, yielding a functional [`Uart`] struct.
-//! Transactions are performed using the [`serial`](embedded_hal::serial) traits
-//! from embedded HAL.
+//! Transactions are performed using the [`embedded_io::Write`],
+//! [`embedded_io::Read`], [`embedded_hal_nb::serial::Write`], and
+//! [`embedded_hal_nb::serial::Read`] traits.
 //!
 //! # [`Pads`]
 //!
@@ -200,11 +201,12 @@
 //!
 //! Only the [`Uart`] struct can actually perform
 //! transactions. To do so, use the embedded HAL traits, like
-//! [`serial::Read`] and [`serial::Write`].
+//! [`embedded_hal_nb::serial::Read`], [`embedded_hal_nb::serial::Write`],
+//! [`embedded_io::Read`], and [`embedded_io::Write`].
 //!
 //! ```
 //! use nb::block;
-//! use embedded_hal::serial::Write;
+//! use atsamd_hal::embedded_hal_nb::serial::Write;
 //!
 //! block!(uart_tx.write(0x0fe));
 //! ```
@@ -265,7 +267,6 @@
 //!
 //! ```
 //! use atsamd_hal::sercom::uart::Uart;
-//! use atsamd_hal::time::*;
 //!
 //! // Assume rx is a Uart<C, RxDuplex> and tx is a Uart<C, TxDuplex>
 //!
@@ -322,8 +323,63 @@
 //! * Synchronous mode (USART) is not supported
 //! * LIN mode is not supported (SAMx5x)
 //! * 32-bit extension mode is not supported (SAMx5x). If you need to transfer
-//!   slices, consider using the DMA methods instead. The `dma` Cargo feature
-//!   must be enabled.
+//!   slices, consider using the DMA methods instead. The <span class="stab
+//!   portability" title="Available on crate feature `dma`
+//!   only"><code>dma</code></span> Cargo feature must be enabled.
+//!
+//! # Using UART with DMA <span class="stab portability" title="Available on crate feature `dma` only"><code>dma</code></span>
+//!
+//! This HAL includes support for DMA-enabled UART transfers. Use
+//! [`Uart::with_rx_channel`] and [`Uart::with_tx_channel`] to attach DMA
+//! channels to the [`Uart`] struct. A DMA-enabled [`Uart`] implements the
+//! blocking [`embedded_io::Write`] and/or [`embedded_io::Read`] traits, which
+//! can be used to perform UART read/writes which are fast, continuous and low
+//! jitter, even if they are preemped by a higher priority interrupt.
+//!
+//!
+//! ```no_run
+//! use atsamd_hal::dmac::channel::{AnyChannel, Ready};
+//! use atsand_hal::sercom::Uart::{I2c, ValidConfig, Error, TxDuplex};
+//! use atsamd_hal::embedded_io::Write;
+//! fn uart_send_with_dma<A: ValidConfig, C: AnyChannel<Status = Ready>>(uart: Uart<A, TxDuplex>, channel: C, bytes: &[u8]) -> Result<(), Error>{
+//!     // Attach a DMA channel
+//!     let uart = uart.with_tx_channel(channel);
+//!     uart.write(bytes)?;
+//! }
+//! ```
+//!
+//! ## Non-blocking DMA transfers
+//!
+//! Non-blocking DMA transfers are also supported.
+//!
+//! The provided [`send_with_dma`] and
+//! [`receive_with_dma`] build and begin a
+//! [`dmac::Transfer`], thus starting the UART
+//! in a non-blocking way. Note that these methods require `'static` buffers in
+//! order to remain memory-safe.
+//!
+//! Optionally, interrupts can be enabled on the provided
+//! [`Channel`]. Please refer to the [`dmac`](crate::dmac) module-level
+//! documentation for more information.
+//!
+//! ```
+//! // Assume channel0 and channel1 are configured `dmac::Channel`s,
+//! // rx is a Uart<C, RxDuplex>, and tx is a Uart<C, TxDuplex>.
+//!
+//! /// Create data to send
+//! let tx_buffer: [u8; 50] = [0xff; 50];
+//! let rx_buffer: [u8; 100] = [0xab; 100];
+//!
+//! // Launch transmit transfer
+//! let tx_dma = tx.send_with_dma(&mut tx_buffer, channel0, |_| {});
+//!
+//! // Launch receive transfer
+//! let rx_dma = rx.receive_with_dma(&mut rx_buffer, channel1, |_| {});
+//!
+//! // Wait for transfers to complete and reclaim resources
+//! let (chan0, tx_buffer, tx) = tx_dma.wait();
+//! let (chan1, rx, rx_buffer) = rx_dma.wait();
+//! ```
 //!
 //! [`enable`]: Config::enable
 //! [`disable`]: Uart::disable
@@ -338,49 +394,10 @@
 //! [`NoneT`]: crate::typelevel::NoneT
 //! [`serial::Write`]: embedded_hal::serial::Write
 //! [`serial::Read`]: embedded_hal::serial::Read
-#![cfg_attr(
-    feature = "dma",
-    doc = "
-# Using UART with DMA
-
-This HAL includes support for DMA-enabled UART transfers. [`Uart`]
-implements the DMAC [`Buffer`]
-trait. The provided [`send_with_dma`] and
-[`receive_with_dma`] build and begin a
-[`dmac::Transfer`], thus starting the UART
-in a non-blocking way. Optionally, interrupts can be enabled on the provided
-[`Channel`]. Note that the `dma` feature must
-be enabled. Please refer to the [`dmac`](crate::dmac) module-level
-documentation for more information.
-
-```
-// Assume channel0 and channel1 are configured `dmac::Channel`s,
-// rx is a Uart<C, RxDuplex>, and tx is a Uart<C, TxDuplex>.
-
-/// Create data to send
-let tx_buffer: [u8; 50] = [0xff; 50];
-let rx_buffer: [u8; 100] = [0xab; 100];
-
-// Launch transmit transfer
-let tx_dma = tx.send_with_dma(&mut tx_buffer, channel0, |_| {});
-
-// Launch receive transfer
-let rx_dma = rx.receive_with_dma(&mut rx_buffer, channel1, |_| {});
-
-// Wait for transfers to complete and reclaim resources
-let (chan0, tx_buffer, tx) = tx_dma.wait();
-let (chan1, rx, rx_buffer) = rx_dma.wait();
-```
-
-[`Buffer`]: crate::dmac::transfer::Buffer
-[`send_with_dma`]: Uart::send_with_dma
-[`receive_with_dma`]: Uart::receive_with_dma
-[`dmac::Transfer`]: crate::dmac::Transfer
-[`Channel`]: crate::dmac::channel::Channel
-[`dmac`]: crate::dmac
-
-"
-)]
+//! [`receive_with_dma`]: Self::receive_with_dma
+//! [`send_with_dma`]: Self::send_with_dma
+//! [`dmac::Transfer`]: crate::dmac::Transfer
+//! [`Channel`]: crate::dmac::Channel
 
 use atsamd_hal_macros::{hal_cfg, hal_module};
 
@@ -658,8 +675,8 @@ where
     /// * Since [`Duplex`] [`Uart`]s are [`Receive`] + [`Transmit`] they have
     ///   all flags available.
     ///
-    /// **Warning:** The implementation of of
-    /// [`Write::flush`](embedded_hal::serial::Write::flush) waits on and
+    /// **Warning:** The implementations of of
+    /// [`Write::flush`](embedded_hal_nb::serial::Write::flush) waits on and
     /// clears the `TXC` flag. Manually clearing this flag could cause it to
     /// hang indefinitely.
     #[inline]

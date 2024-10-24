@@ -240,11 +240,13 @@
 //! type Spi = spi::Spi<Config, Rx>;
 //! ```
 //!
-//! Only `Spi` structs can actually perform transactions. To do so, use the
+//! Only [`Spi`] structs can actually perform transactions. To do so, use the
 //! various embedded HAL traits, like
-//! [`spi::FullDuplex`](crate::ehal_02::spi::FullDuplex),
-//! [`serial::Read`](crate::ehal_02::serial::Read) or
-//! [`serial::Write`](crate::ehal_02::serial::Write).
+//! [`spi::SpiBus`](crate::ehal::spi::SpiBus),
+//! [`embedded_io::Read`](crate::embedded_io::Read),
+//! [`embedded_io::Write`](crate::embedded_io::Write),
+//! [`embedded_hal_nb::serial::Read`](crate::ehal_nb::serial::Read), or
+//! [`embedded_hal_nb::serial::Write`](crate::ehal_nb::serial::Write).
 //! See the [`impl_ehal`] module documentation for more details about the
 //! specific trait implementations, which vary based on [`Size`] and
 //! [`Capability`].
@@ -257,47 +259,37 @@
 //! let rcvd: u16 = block!(spi.read());
 //! ```
 //!
+//! # Using SPI with DMA <span class="stab portability" title="Available on crate feature `dma` only"><code>dma</code></span>
+//!
+//! This HAL includes support for DMA-enabled SPI transfers. Use
+//! [`Spi::with_dma_channels`] ([`Duplex`]), [`Spi::with_rx_channel`] (RX-only)
+//! and [`Spi::with_tx_channel`] (TX-only) to attach DMA channels to the [`Spi`]
+//! struct. A DMA-enabled [`Spi`] implements the
+//! blocking [`embedded_hal::spi::SpiBus`], [`embedded_io::Write`] and/or
+//! [`embedded_io::Read`] traits, which can be used to perform SPI transactions
+//! which are fast, continuous and low jitter, even if they are preemped by a
+//! higher priority interrupt.
+//!
+//! ```
+//! // Assume channel0 and channel1 are configured `dmac::Channel`, and spi a
+//! // fully-configured `Spi`
+//!
+//! // Create data to send
+//! let buffer: [u8; 50] = [0xff; 50];
+//!
+//! // Attach DMA channels
+//! let spi = spi.with_dma_channels(channel0, channel1);
+//!
+//! // Perform the transfer
+//! spi.write(&mut buffer)?;
+//! ```
+//!
 //! [`enable`]: Config::enable
 //! [`gpio`]: crate::gpio
 //! [`Pin`]: crate::gpio::pin::Pin
 //! [`PinId`]: crate::gpio::pin::PinId
 //! [`PinMode`]: crate::gpio::pin::PinMode
-#![cfg_attr(
-    feature = "dma",
-    doc = "
-# Using SPI with DMA
-
-This HAL includes support for DMA-enabled SPI transfers. An enabled [`Spi`]
-struct implements the DMAC [`Buffer`] trait. The provided [`send_with_dma`]
-and [`receive_with_dma`] methods will build and begin a [`dmac::Transfer`]
-to create a non-blocking SPI transfer.
-
-Optionally, interrupts can be enabled on the provided [`Channel`]. Note that
-the `dma` feature must be enabled. Refer to the [`dmac`] module-level
-documentation for more information.
-
-```
-// Assume channel is a configured `dmac::Channel`, and spi a
-// fully-configured `Spi`
-
-// Create data to send
-let buffer: [u8; 50] = [0xff; 50]
-
-// Launch the transfer
-let dma_transfer = spi.send_with_dma(&mut buffer, channel, ());
-
-// Wait for the transfer to complete and reclaim resources
-let (chan0, _, spi, _) = dma_transfer.wait();
-```
-
-[`Buffer`]: crate::dmac::transfer::Buffer
-[`send_with_dma`]: Spi::send_with_dma
-[`receive_with_dma`]: Spi::receive_with_dma
-[`dmac::Transfer`]: crate::dmac::Transfer
-[`Channel`]: crate::dmac::channel::Channel
-[`dmac`]: crate::dmac
-"
-)]
+//! [`embedded_hal::spi::SpiBus`]: crate::ehal::spi::SpiBus
 
 use atsamd_hal_macros::{hal_cfg, hal_docs, hal_macro_helper, hal_module};
 
