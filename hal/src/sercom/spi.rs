@@ -1345,6 +1345,29 @@ where
     }
 }
 
+#[cfg(feature = "dma")]
+impl<C, A, RxDma, TxDma> Spi<C, A, RxDma, TxDma>
+where
+    C: ValidConfig,
+    A: Capability,
+    RxDma: crate::dmac::AnyChannel<Status = crate::dmac::Ready>,
+    TxDma: crate::dmac::AnyChannel<Status = crate::dmac::Ready>,
+{
+    /// Reclaim the DMA channels
+    pub fn take_dma_channels(self) -> (Spi<C, A, NoneT, NoneT>, RxDma, TxDma) {
+        (
+            Spi {
+                capability: self.capability,
+                config: self.config,
+                rx_channel: NoneT,
+                tx_channel: NoneT,
+            },
+            self.rx_channel,
+            self.tx_channel,
+        )
+    }
+}
+
 #[hal_cfg("sercom0-d5x")]
 impl<P, M, A> Spi<Config<P, M, DynLength>, A>
 where

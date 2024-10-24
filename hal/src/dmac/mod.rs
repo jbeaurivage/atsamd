@@ -402,16 +402,23 @@ mod sram {
     impl DmacDescriptor {
         pub(crate) const fn default() -> Self {
             Self {
-                btctrl: BlockTransferControl::new(),
+                btctrl: BlockTransferControl::default(),
                 btcnt: 0,
                 srcaddr: 0 as *mut _,
                 dstaddr: 0 as *mut _,
                 descaddr: 0 as *mut _,
             }
         }
+        pub(crate) fn next_descriptor(&self) -> *const DmacDescriptor {
+            self.descaddr
+        }
 
         pub(crate) fn set_next_descriptor(&mut self, next: *mut DmacDescriptor) {
             self.descaddr = next;
+        }
+
+        pub(crate) fn beat_count(&self) -> u16 {
+            self.btcnt
         }
     }
 

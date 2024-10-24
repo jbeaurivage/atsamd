@@ -285,6 +285,7 @@ mod dma {
             // transfer. Must not be dropped until all transfers have completed
             // or have been stopped.
             let mut linked_descriptor = DmacDescriptor::default();
+
             // If read < write, the incoming words will be written to this memory location;
             // it will be discarded after. If read > write, all writes after the
             // buffer has been exhausted will write the nop word to "stimulate" the slave
