@@ -126,7 +126,7 @@ where
 #[cfg(feature = "dma")]
 mod dma {
     use super::*;
-    use crate::dmac::{channel::Ready, AnyChannel, Beat, Buffer, DmacDescriptor};
+    use crate::dmac::{channel::Ready, sram::DmacDescriptor, AnyChannel, Beat, Buffer};
     use crate::sercom::dma::{
         read_dma, read_dma_linked, write_dma, write_dma_linked, SercomPtr, SharedSliceBuffer,
     };

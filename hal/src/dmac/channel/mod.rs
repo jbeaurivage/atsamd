@@ -40,8 +40,9 @@ use atsamd_hal_macros::{hal_cfg, hal_macro_helper};
 
 use super::{
     dma_controller::{ChId, PriorityLevel, TriggerAction, TriggerSource},
+    sram::DmacDescriptor,
     transfer::{BufferPair, Transfer},
-    Buffer, DmacDescriptor, Error,
+    Buffer, Error,
 };
 use crate::typelevel::{Is, Sealed};
 use modular_bitfield::prelude::*;

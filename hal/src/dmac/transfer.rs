@@ -85,7 +85,8 @@
 use super::{
     channel::{AnyChannel, Busy, CallbackStatus, Channel, ChannelId, InterruptFlags, Ready},
     dma_controller::{ChId, TriggerAction, TriggerSource},
-    sram, Error, Result,
+    sram::{self, DmacDescriptor},
+    Error, Result,
 };
 use crate::typelevel::{Is, Sealed};
 use core::{ptr::null_mut, sync::atomic};
@@ -374,7 +375,7 @@ where
         // belonging to OUR channel. We assume this is the only place
         // in the entire library that this section of the array
         // will be accessed.
-        let descriptor = &mut DESCRIPTOR_SECTION[id];
+        let descriptor = &mut sram::DESCRIPTOR_SECTION[id];
 
         // Enable support for circular transfers. If circular_xfer is true,
         // we set the address of the "next" block descriptor to actually
@@ -396,7 +397,7 @@ where
     pub(super) unsafe fn link_next(next: *mut DmacDescriptor) {
         let id = <C as AnyChannel>::Id::USIZE;
 
-        DESCRIPTOR_SECTION[id].descaddr = next;
+        sram::DESCRIPTOR_SECTION[id].descaddr = next;
     }
 
     /// Generate a [`DmacDescriptor`], and write it to the provided descriptor

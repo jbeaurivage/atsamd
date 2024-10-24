@@ -353,7 +353,7 @@ macro_rules! get {
 pub const NUM_CHANNELS: usize = with_num_channels!(get);
 
 /// DMAC SRAM registers
-mod sram {
+pub(crate) mod sram {
     #![allow(dead_code, unused_braces)]
 
     use super::{BeatSize, NUM_CHANNELS};
@@ -391,7 +391,7 @@ mod sram {
     /// Descriptor representing a SRAM register. Datasheet section 19.8.2
     #[derive(Clone, Copy)]
     #[repr(C, align(16))]
-    pub(super) struct DmacDescriptor {
+    pub struct DmacDescriptor {
         pub(super) btctrl: BlockTransferControl,
         pub(super) btcnt: u16,
         pub(super) srcaddr: *const (),
@@ -400,24 +400,24 @@ mod sram {
     }
 
     impl DmacDescriptor {
-        pub(crate) const fn default() -> Self {
+        pub const fn default() -> Self {
             Self {
-                btctrl: BlockTransferControl::default(),
+                btctrl: BlockTransferControl::new(),
                 btcnt: 0,
                 srcaddr: 0 as *mut _,
                 dstaddr: 0 as *mut _,
                 descaddr: 0 as *mut _,
             }
         }
-        pub(crate) fn next_descriptor(&self) -> *const DmacDescriptor {
+        pub fn next_descriptor(&self) -> *const DmacDescriptor {
             self.descaddr
         }
 
-        pub(crate) fn set_next_descriptor(&mut self, next: *mut DmacDescriptor) {
+        pub fn set_next_descriptor(&mut self, next: *mut DmacDescriptor) {
             self.descaddr = next;
         }
 
-        pub(crate) fn beat_count(&self) -> u16 {
+        pub fn beat_count(&self) -> u16 {
             self.btcnt
         }
     }
@@ -425,12 +425,12 @@ mod sram {
     /// Writeback section. This static variable should never be written to in an
     /// interrupt or thread context.
     pub(super) static mut WRITEBACK: [DmacDescriptor; NUM_CHANNELS] =
-        [DEFAULT_DESCRIPTOR; NUM_CHANNELS];
+        [DmacDescriptor::default(); NUM_CHANNELS];
 
     /// Descriptor section. This static variable should never be written to in
     /// an interrupt or thread context.
     pub(super) static mut DESCRIPTOR_SECTION: [DmacDescriptor; NUM_CHANNELS] =
-        [DEFAULT_DESCRIPTOR; NUM_CHANNELS];
+        [DmacDescriptor::default(); NUM_CHANNELS];
 }
 
 pub mod channel;

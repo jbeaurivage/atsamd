@@ -11,8 +11,9 @@ use crate::{
     dmac::{
         self,
         channel::{AnyChannel, Busy, CallbackStatus, Channel, InterruptFlags, Ready},
+        sram::DmacDescriptor,
         transfer::BufferPair,
-        Beat, Buffer, DmacDescriptor, Error, Transfer, TriggerAction,
+        Beat, Buffer, Error, Transfer, TriggerAction,
     },
     sercom::{
         i2c::{self, I2c},

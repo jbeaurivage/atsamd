@@ -103,7 +103,7 @@ impl<C: AnyConfig> i2c::I2c for I2c<C> {
 #[cfg(feature = "dma")]
 mod dma {
     use super::*;
-    use crate::dmac::{AnyChannel, DmacDescriptor, Ready};
+    use crate::dmac::{sram::DmacDescriptor, AnyChannel, Ready};
     use crate::sercom::dma::{read_dma_linked, write_dma_linked, SercomPtr, SharedSliceBuffer};
     use crate::sercom::{self, Sercom};
 
