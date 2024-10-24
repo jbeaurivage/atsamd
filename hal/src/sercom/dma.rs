@@ -3,7 +3,7 @@
 //! See the [`mod@uart`], [`mod@i2c`] and [`mod@spi`] modules for the
 //! corresponding DMA transfer implementations.
 
-use core::ops::Range;
+use core::{marker::PhantomData, ops::Range};
 
 use atsamd_hal_macros::hal_macro_helper;
 
@@ -428,11 +428,19 @@ where
 /// [`SharedSliceBuffer`]s should only ever be used as **source** buffers for
 /// DMA transfers, and never as destination buffers.
 #[doc(hidden)]
-pub(crate) struct SharedSliceBuffer<T: Beat>(Range<*mut T>);
+pub(crate) struct SharedSliceBuffer<'a, T: Beat> {
+    ptrs: Range<*mut T>,
+    _lifetime: PhantomData<&'a T>,
+}
 
-impl<T: Beat> SharedSliceBuffer<T> {
+impl<'a, T: Beat> SharedSliceBuffer<'a, T> {
     #[inline]
-    pub(in super::super) fn from_slice(slice: &[T]) -> Self {
+    pub(in super::super) fn from_slice(slice: &'a [T]) -> Self {
+        unsafe { Self::from_slice_unchecked(slice) }
+    }
+
+    #[inline]
+    pub(in super::super) unsafe fn from_slice_unchecked(slice: &[T]) -> Self {
         let ptrs = slice.as_ptr_range();
 
         let ptrs = Range {
@@ -440,18 +448,21 @@ impl<T: Beat> SharedSliceBuffer<T> {
             end: ptrs.end.cast_mut(),
         };
 
-        SharedSliceBuffer(ptrs)
+        Self {
+            ptrs,
+            _lifetime: PhantomData,
+        }
     }
 }
 
-unsafe impl<T: Beat> Buffer for SharedSliceBuffer<T> {
+unsafe impl<T: Beat> Buffer for SharedSliceBuffer<'_, T> {
     type Beat = T;
     #[inline]
     fn dma_ptr(&mut self) -> *mut Self::Beat {
         if self.incrementing() {
-            self.0.end
+            self.ptrs.end
         } else {
-            self.0.start
+            self.ptrs.start
         }
     }
 
@@ -462,7 +473,7 @@ unsafe impl<T: Beat> Buffer for SharedSliceBuffer<T> {
 
     #[inline]
     fn buffer_len(&self) -> usize {
-        self.0.end as usize - self.0.start as usize
+        self.ptrs.end as usize - self.ptrs.start as usize
     }
 }
 

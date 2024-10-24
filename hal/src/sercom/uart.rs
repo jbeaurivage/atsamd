@@ -406,7 +406,10 @@ pub use config::*;
 
 pub mod impl_ehal;
 
-use crate::{sercom::pad::SomePad, typelevel::Sealed};
+use crate::{
+    sercom::pad::SomePad,
+    typelevel::{NoneT, Sealed},
+};
 use core::marker::PhantomData;
 use num_traits::AsPrimitive;
 
@@ -594,16 +597,18 @@ impl Transmit for TxDuplex {}
 /// * [`Duplex`]: Can perform receive and transmit transactions. Additionally,
 ///   you can call [`split`](Uart::split) to return a `(Uart<C, RxDuplex>,
 ///   Uart<C, TxDuplex>)` tuple.
-pub struct Uart<C, D>
+pub struct Uart<C, D, RxDma = NoneT, TxDma = NoneT>
 where
     C: ValidConfig,
     D: Capability,
 {
     config: C,
     capability: PhantomData<D>,
+    rx_channel: RxDma,
+    tx_channel: TxDma,
 }
 
-impl<C, D> Uart<C, D>
+impl<C, D, R, T> Uart<C, D, R, T>
 where
     C: ValidConfig,
     D: Capability,
@@ -738,7 +743,7 @@ where
     }
 }
 
-impl<C, D> Uart<C, D>
+impl<C, D, R, T> Uart<C, D, R, T>
 where
     C: ValidConfig,
     <C::Pads as PadSet>::Cts: SomePad,
@@ -775,7 +780,7 @@ where
     }
 }
 
-impl<C, D> Uart<C, D>
+impl<C, D, R, T> Uart<C, D, R, T>
 where
     C: ValidConfig,
     D: Simplex,
@@ -807,22 +812,113 @@ where
     }
 }
 
-impl<C> Uart<C, Duplex>
+#[cfg(feature = "dma")]
+impl<C, D, T> Uart<C, D, NoneT, T>
+where
+    C: ValidConfig,
+    D: Capability,
+{
+    /// Attach a DMA channel to this [`Uart`] for RX transactions. Its
+    /// [`Read`](embedded_io::Read) implementation will use DMA to
+    /// carry out its transactions.
+    pub fn with_rx_channel<R: crate::dmac::AnyChannel<Status = crate::dmac::Ready>>(
+        self,
+        rx_channel: R,
+    ) -> Uart<C, D, R, T> {
+        Uart {
+            config: self.config,
+            capability: self.capability,
+            tx_channel: self.tx_channel,
+            rx_channel,
+        }
+    }
+}
+
+#[cfg(feature = "dma")]
+impl<C, D, R> Uart<C, D, R, NoneT>
+where
+    C: ValidConfig,
+    D: Capability,
+{
+    /// Attach a DMA channel to this [`Uart`] for TX transactions. Its
+    /// [`Write`](embedded_io::Write) implementation will use DMA to
+    /// carry out its transactions.
+    pub fn with_tx_channel<T: crate::dmac::AnyChannel<Status = crate::dmac::Ready>>(
+        self,
+        tx_channel: T,
+    ) -> Uart<C, D, R, T> {
+        Uart {
+            config: self.config,
+            capability: self.capability,
+            rx_channel: self.rx_channel,
+            tx_channel,
+        }
+    }
+}
+
+#[cfg(feature = "dma")]
+impl<C, D, R, T> Uart<C, D, R, T>
+where
+    C: ValidConfig,
+    D: Capability,
+    R: crate::dmac::AnyChannel<Status = crate::dmac::Ready>,
+{
+    /// Reclaim the RX DMA channel
+    pub fn take_rx_channel(self) -> (Uart<C, D, NoneT, T>, R) {
+        (
+            Uart {
+                config: self.config,
+                capability: self.capability,
+                tx_channel: self.tx_channel,
+                rx_channel: NoneT,
+            },
+            self.rx_channel,
+        )
+    }
+}
+
+#[cfg(feature = "dma")]
+impl<C, D, R, T> Uart<C, D, R, T>
+where
+    C: ValidConfig,
+    D: Capability,
+    T: crate::dmac::AnyChannel<Status = crate::dmac::Ready>,
+{
+    /// Reclaim the TX DMA channel
+    pub fn take_tx_channel(self) -> (Uart<C, D, R, NoneT>, T) {
+        (
+            Uart {
+                config: self.config,
+                capability: self.capability,
+                rx_channel: self.rx_channel,
+                tx_channel: NoneT,
+            },
+            self.tx_channel,
+        )
+    }
+}
+
+impl<C, R, T> Uart<C, Duplex, R, T>
 where
     C: ValidConfig,
 {
     /// Split the [`Uart`] into [`RxDuplex`] and [`TxDuplex`] halves
+    #[allow(clippy::type_complexity)]
     #[inline]
-    pub fn split(self) -> (Uart<C, RxDuplex>, Uart<C, TxDuplex>) {
+    pub fn split(self) -> (Uart<C, RxDuplex, R, NoneT>, Uart<C, TxDuplex, NoneT, T>) {
         let config = unsafe { core::ptr::read(&self.config) };
         (
             Uart {
                 config: self.config,
                 capability: PhantomData,
+                rx_channel: self.rx_channel,
+                tx_channel: NoneT,
             },
             Uart {
                 config,
                 capability: PhantomData,
+                rx_channel: NoneT,
+                tx_channel: self.tx_channel,
             },
         )
     }
@@ -855,21 +951,27 @@ where
 
     /// Join [`RxDuplex`] and [`TxDuplex`] halves back into a full `Uart<C,
     /// Duplex>`
-    pub fn join(rx: Uart<C, RxDuplex>, _tx: Uart<C, TxDuplex>) -> Self {
+    pub fn join(rx: Uart<C, RxDuplex, R, NoneT>, tx: Uart<C, TxDuplex, NoneT, T>) -> Self {
         Self {
             config: rx.config,
             capability: PhantomData,
+            rx_channel: rx.rx_channel,
+            tx_channel: tx.tx_channel,
         }
     }
 }
 
-impl<C: ValidConfig> AsMut<Uart<C, Duplex>> for (&mut Uart<C, RxDuplex>, &mut Uart<C, TxDuplex>) {
+impl<C: ValidConfig, R, T> AsMut<Uart<C, Duplex, R, T>>
+    for (
+        &mut Uart<C, RxDuplex, R, NoneT>,
+        &mut Uart<C, TxDuplex, NoneT, T>,
+    )
+{
     #[inline]
-    fn as_mut(&mut self) -> &mut Uart<C, Duplex> {
+    fn as_mut(&mut self) -> &mut Uart<C, Duplex, R, T> {
         // SAFETY: Pointer casting &mut Uart<C, RxDuplex> into &mut
-        // Uart<C, Duplex> should be safe as long as RxDuplex and Duplex
-        // both only have one nonzero-sized field.
-        unsafe { &mut *(self.0 as *mut _ as *mut Uart<C, Duplex>) }
+        // Uart<C, Duplex> should be safe as long as RxDuplex, TxDuplex, R and T are all zero-sized types
+        unsafe { &mut *(self.0 as *mut _ as *mut Uart<C, Duplex, R, T>) }
     }
 }
 
@@ -888,7 +990,7 @@ where
 // Rx/Tx specific functionality
 //=============================================================================
 
-impl<C, D> Uart<C, D>
+impl<C, D, R, T> Uart<C, D, R, T>
 where
     C: ValidConfig,
     D: Receive,
@@ -945,7 +1047,7 @@ where
     }
 }
 
-impl<C, D> Uart<C, D>
+impl<C, D, R, T> Uart<C, D, R, T>
 where
     C: ValidConfig,
     D: Transmit,

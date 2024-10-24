@@ -370,7 +370,7 @@ mod dma {
 
         #[inline]
         fn transfer_in_place<'w>(&mut self, mut words: &mut [C::Word]) -> Result<(), Self::Error> {
-            let mut write_buf = SharedSliceBuffer::from_slice(words);
+            let mut write_buf = unsafe { SharedSliceBuffer::from_slice_unchecked(words) };
             self.transfer_blocking(&mut words, &mut write_buf)
         }
 
