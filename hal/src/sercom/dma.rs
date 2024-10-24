@@ -507,13 +507,6 @@ where
     }
 }
 
-fn prepare_interrupts<C: AnyChannel<Status = Ready>>(chan: &mut C) {
-    chan.as_mut()
-        .disable_interrupts(InterruptFlags::new().with_susp(true));
-    chan.as_mut()
-        .enable_interrupts(InterruptFlags::new().with_tcmpl(true).with_terr(true));
-}
-
 /// Perform a SERCOM DMA read with a provided [`Buffer`]
 ///
 /// # Safety
@@ -556,8 +549,6 @@ pub(super) unsafe fn read_dma_linked<T, B, S>(
 
     #[hal_cfg(any("dmac-d11", "dmac-d21"))]
     let trigger_action = TriggerAction::Beat;
-
-    prepare_interrupts(channel);
 
     // Safety: It is safe to bypass the buffer length check because `SercomPtr`
     // always has a buffer length of 1.
@@ -613,7 +604,6 @@ pub(super) unsafe fn write_dma_linked<T, B, S>(
     #[hal_cfg(any("dmac-d11", "dmac-d21"))]
     let trigger_action = TriggerAction::Beat;
 
-    prepare_interrupts(channel);
     // Safety: It is safe to bypass the buffer length check because `SercomPtr`
     // always has a buffer length of 1.
     channel.as_mut().transfer_unchecked(
