@@ -64,8 +64,6 @@ fn main() -> ! {
     // Test writing then reading from an I2C chip
     i2c.write_read(ADDRESS, &[0x00; 8], &mut received).unwrap();
 
-    defmt::info!("Received: {:#x}", received);
-
     loop {
         // Go to sleep
         asm::wfi();
