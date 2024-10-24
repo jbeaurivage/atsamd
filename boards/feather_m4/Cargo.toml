@@ -63,6 +63,16 @@ required-features = ["dma"]
 
 [[example]]
 name = "uart"
+
+[[example]]
+name = "uart_poll_echo"
+
+[[example]]
+name = "uart_dma_nonblocking"
+required-features = ["dma"]
+
+[[example]]
+name = "uart_dma_blocking"
 required-features = ["dma"]
 
 [[example]]
