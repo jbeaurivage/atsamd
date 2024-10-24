@@ -221,7 +221,7 @@ mod dma {
             let mut buffer = SharedSliceBuffer::from_slice(bytes);
 
             unsafe {
-                write_dma::<_, _, S>(channel, sercom_ptr, &mut buffer)?;
+                write_dma::<_, _, S>(channel, sercom_ptr, &mut buffer);
             }
 
             while !channel.xfer_complete() {
@@ -260,7 +260,7 @@ mod dma {
             let channel = self.rx_channel.as_mut();
 
             unsafe {
-                read_dma::<_, _, S>(channel, sercom_ptr, &mut buffer)?;
+                read_dma::<_, _, S>(channel, sercom_ptr, &mut buffer);
             }
 
             while !channel.xfer_complete() {

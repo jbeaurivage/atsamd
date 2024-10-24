@@ -341,6 +341,10 @@ impl<Id: ChId> Channel<Id, Ready> {
 
     /// Begin a [`Transfer`], without changing the channel's type to [`Busy`].
     ///
+    /// This method provides an additional safety guarantee over
+    /// [`Self::transfer_unchecked`]; it checks that the buffer lengths are
+    /// valid before attempting to start the transfer.
+    ///
     /// Also provides support for linked transfers via an optional `&mut
     /// DmacDescriptor`.
     ///
@@ -358,6 +362,7 @@ impl<Id: ChId> Channel<Id, Ready> {
     ///   you must guarantee that the returned transfer has completed or has
     ///   been stopped before giving up control of the underlying [`Channel`].
     #[inline]
+    #[allow(dead_code)]
     pub(crate) unsafe fn transfer<S, D>(
         &mut self,
         source: &mut S,
@@ -371,6 +376,41 @@ impl<Id: ChId> Channel<Id, Ready> {
         D: Buffer<Beat = S::Beat>,
     {
         Transfer::<Self, BufferPair<S, D>>::check_buffer_pair(source, dest)?;
+        self.transfer_unchecked(source, dest, trig_src, trig_act, linked_descriptor);
+        Ok(())
+    }
+
+    /// Begin a [`Transfer`], without changing the channel's type to [`Busy`].
+    ///
+    /// Also provides support for linked transfers via an optional `&mut
+    /// DmacDescriptor`.
+    ///
+    /// # Safety
+    ///
+    /// * This method does not check that the two provided buffers have
+    ///   compatible lengths. You must guarantee that:
+    ///   - Either `source` or `dest` has a buffer length of 1, or
+    ///   - Both buffers have the same length.
+    /// * You must ensure that the transfer is completed or stopped before
+    ///   returning the [`Channel`]. Doing otherwise breaks type safety, because
+    ///   a [`Ready`] channel would still be in the middle of a transfer.
+    /// * If the provided `linked_descriptor` is `Some` it must not be dropped
+    ///   until the transfer is completed or stopped.
+    /// * Additionnally, this function doesn't take `'static` buffers. Again,
+    ///   you must guarantee that the returned transfer has completed or has
+    ///   been stopped before giving up control of the underlying [`Channel`].
+    #[inline]
+    pub(crate) unsafe fn transfer_unchecked<S, D>(
+        &mut self,
+        source: &mut S,
+        dest: &mut D,
+        trig_src: TriggerSource,
+        trig_act: TriggerAction,
+        linked_descriptor: Option<&mut DmacDescriptor>,
+    ) where
+        S: Buffer,
+        D: Buffer<Beat = S::Beat>,
+    {
         Transfer::<Self, BufferPair<S, D>>::fill_descriptor(source, dest, false);
 
         if let Some(next) = linked_descriptor {
@@ -385,8 +425,6 @@ impl<Id: ChId> Channel<Id, Ready> {
         if trig_src == TriggerSource::Disable {
             self._trigger_private();
         }
-
-        Ok(())
     }
 }
 

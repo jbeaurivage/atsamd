@@ -204,14 +204,8 @@ mod dma {
             // returning. The order of operations is important; the RX transfer
             // must be ready to receive before the TX transfer is initiated.
             unsafe {
-                read_dma::<_, _, S>(rx, sercom_ptr.clone(), dest)?;
-
-                // We can't use the ? operator here; we need to stop the read transfer before
-                // returning.
-                if let Err(e) = write_dma::<_, _, S>(tx, sercom_ptr, source) {
-                    rx.stop();
-                    return Err(e.into());
-                };
+                read_dma::<_, _, S>(rx, sercom_ptr.clone(), dest);
+                write_dma::<_, _, S>(tx, sercom_ptr, source);
             }
 
             while !(rx.xfer_complete() && tx.xfer_complete()) {
@@ -342,15 +336,8 @@ mod dma {
             // returning. The order of operations is important; the RX transfer
             // must be ready to receive before the TX transfer is initiated.
             unsafe {
-                read_dma_linked::<_, _, S>(rx, sercom_ptr.clone(), &mut read, read_link)?;
-
-                // We can't use the ? operator here; we need to stop the read transfer
-                // before returning.
-                if let Err(e) = write_dma_linked::<_, _, S>(tx, sercom_ptr, &mut write, write_link)
-                {
-                    rx.stop();
-                    return Err(e.into());
-                };
+                read_dma_linked::<_, _, S>(rx, sercom_ptr.clone(), &mut read, read_link);
+                write_dma_linked::<_, _, S>(tx, sercom_ptr, &mut write, write_link);
             }
 
             while !(rx.xfer_complete() && tx.xfer_complete()) {

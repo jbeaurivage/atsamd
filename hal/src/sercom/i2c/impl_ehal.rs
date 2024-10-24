@@ -183,7 +183,7 @@ mod dma {
 
             // SAFETY: We must make sure that any DMA transfer is complete or stopped before
             // returning.
-            read_dma_linked::<_, _, S>(channel, sercom_ptr, &mut dest, next)?;
+            read_dma_linked::<_, _, S>(channel, sercom_ptr, &mut dest, next);
 
             while !channel.xfer_complete() {
                 core::hint::spin_loop();
@@ -237,7 +237,7 @@ mod dma {
 
             // SAFETY: We must make sure that any DMA transfer is complete or stopped before
             // returning.
-            write_dma_linked::<_, _, S>(channel, sercom_ptr, &mut bytes, next)?;
+            write_dma_linked::<_, _, S>(channel, sercom_ptr, &mut bytes, next);
 
             while !channel.xfer_complete() {
                 core::hint::spin_loop();
