@@ -117,7 +117,8 @@ mod dma {
             SercomPtr(self.data_ptr())
         }
 
-        /// Walk up the transfer linked list, and calculate the number of beats the entire block list contains.
+        /// Walk up the transfer linked list, and calculate the number of beats
+        /// the entire block list contains.
         ///
         /// # Safety
         ///
@@ -152,8 +153,8 @@ mod dma {
         /// with the descriptor it points to, etc, must point to a valid
         /// [`DmacDescriptor`] memory location, or be null. They must not be
         /// circular (ie, points to itself). Any linked transfer must
-        /// strictly be a read transaction (destination pointer is a byte buffer,
-        /// source pointer is the SERCOM DATA register).
+        /// strictly be a read transaction (destination pointer is a byte
+        /// buffer, source pointer is the SERCOM DATA register).
         #[inline]
         unsafe fn read_linked(
             &mut self,
@@ -168,7 +169,8 @@ mod dma {
                 return Ok(());
             }
 
-            // Calculate the total number of bytes for this transaction across all linked transfers, including the first transfer.
+            // Calculate the total number of bytes for this transaction across all linked
+            // transfers, including the first transfer.
             let transfer_len = dest.len() + Self::linked_transfer_length(&next);
 
             assert!(
@@ -220,7 +222,8 @@ mod dma {
                 return Ok(());
             }
 
-            // Calculate the total number of bytes for this transaction across all linked transfers, including the first transfer.
+            // Calculate the total number of bytes for this transaction across all linked
+            // transfers, including the first transfer.
             let transfer_len = source.len() + Self::linked_transfer_length(&next);
 
             assert!(
