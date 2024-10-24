@@ -1,4 +1,5 @@
-//! This example shows how to use the UART to perform non-blocking transfers using DMA.
+//! This example shows how to use the UART to perform non-blocking transfers
+//! using DMA.
 
 #![no_std]
 #![no_main]
@@ -46,7 +47,8 @@ fn main() -> ! {
     let uart_rx = pin_alias!(pins.uart_rx);
     let uart_tx = pin_alias!(pins.uart_tx);
 
-    // Setup UART peripheral. We shouldn't attach DMA channels to the UART; they instead must be passed to `send_with_dma` and `receive_with_dma`.
+    // Setup UART peripheral. We shouldn't attach DMA channels to the UART; they
+    // instead must be passed to `send_with_dma` and `receive_with_dma`.
     let uart = bsp::uart(
         &mut clocks,
         9600.Hz(),
@@ -74,7 +76,8 @@ fn main() -> ! {
     //...and receive (blocking) using DMA
     rx.flush_rx_buffer();
 
-    // Let's receive AND send data at the same time with DMA. Note that these transfers require static buffers
+    // Let's receive AND send data at the same time with DMA. Note that these
+    // transfers require static buffers
 
     // Setup a DMA transfer to send our data asynchronously.
     // We'll set the waker to be a no-op

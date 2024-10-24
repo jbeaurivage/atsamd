@@ -1,4 +1,5 @@
-//! This example shows how to use the UART to perform blocking transfers using DMA and the embedded-io traits.
+//! This example shows how to use the UART to perform blocking transfers using
+//! DMA and the embedded-io traits.
 
 #![no_std]
 #![no_main]
