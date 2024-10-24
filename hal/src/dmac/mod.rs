@@ -403,8 +403,16 @@ pub struct DmacDescriptor {
 }
 
 impl DmacDescriptor {
+    pub(crate) fn next_descriptor(&self) -> *const DmacDescriptor {
+        self.descaddr
+    }
+
     pub(crate) fn set_next_descriptor(&mut self, next: *mut DmacDescriptor) {
         self.descaddr = next;
+    }
+
+    pub(crate) fn beat_count(&self) -> u16 {
+        self.btcnt
     }
 }
 
