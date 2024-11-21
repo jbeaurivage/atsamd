@@ -1,4 +1,3 @@
-use crate::ehal_02::watchdog;
 use crate::pac::Wdt;
 use atsamd_hal_macros::hal_macro_helper;
 

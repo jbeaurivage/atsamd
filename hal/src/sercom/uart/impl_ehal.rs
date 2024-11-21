@@ -4,13 +4,7 @@ use super::{
     Capability, Config, DataReg, EightBit, Error, Error as UartError, Flags, Receive, Transmit,
     Uart, ValidConfig, ValidPads,
 };
-use crate::{
-    ehal_02::{
-        blocking,
-        serial::{Read, Write},
-    },
-    typelevel::NoneT,
-};
+use crate::typelevel::NoneT;
 use nb::Error::WouldBlock;
 use num_traits::AsPrimitive;
 

@@ -2,7 +2,6 @@
 use atsamd_hal_macros::{hal_cfg, hal_macro_helper};
 use fugit::NanosDurationU32;
 
-use crate::ehal_02;
 use crate::pac;
 use crate::pac::rtc::{Mode0, Mode2};
 use crate::time::{Hertz, Nanoseconds};

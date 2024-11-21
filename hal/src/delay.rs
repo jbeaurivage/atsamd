@@ -5,7 +5,6 @@ use cortex_m::peripheral::SYST;
 
 use crate::clock::GenericClockController;
 use crate::ehal::delay::DelayNs;
-use crate::ehal_02;
 use crate::time::Hertz;
 
 /// System timer (SysTick) as a delay provider

@@ -176,8 +176,6 @@ use atsamd_hal_macros::hal_cfg;
 use core::convert::Infallible;
 use core::task::Poll;
 
-use crate::ehal_02::digital::v2::OutputPin;
-
 use crate::gpio::pin::{OptionalPin, SomePin};
 use crate::typelevel::NoneT;
 

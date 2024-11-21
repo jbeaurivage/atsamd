@@ -4,7 +4,6 @@ use core::convert::Infallible;
 use atsamd_hal_macros::hal_cfg;
 use fugit::NanosDurationU32;
 
-use crate::ehal_02::timer::{CountDown, Periodic};
 use crate::pac::Pm;
 #[hal_cfg("tc1-d11")]
 use crate::pac::{tc1::Count16 as Count16Reg, Tc1};

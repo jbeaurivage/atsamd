@@ -90,7 +90,6 @@
 //! These traits are implemented following all of the rules outlined above for
 //! the different [`Size`] and [`Capability`] options.
 
-use crate::ehal_02;
 use crate::ehal_nb;
 use crate::sercom::spi::{
     AtomicSize, Config, DataWidth, Duplex, DynLength, Error, Flags, GreaterThan4, Length,

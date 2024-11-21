@@ -1,7 +1,6 @@
 #![no_std]
 
-use embedded_hal_02 as ehal_02;
-pub use embedded_hal_1 as ehal;
+pub use embedded_hal as ehal;
 pub use embedded_hal_nb as ehal_nb;
 pub use embedded_io;
 pub use fugit;
@@ -75,8 +74,6 @@ pub mod async_hal;
 pub mod delay;
 #[cfg(feature = "device")]
 pub mod gpio;
-#[cfg(feature = "device")]
-pub mod prelude;
 #[cfg(feature = "device")]
 pub mod rtc;
 #[cfg(feature = "device")]

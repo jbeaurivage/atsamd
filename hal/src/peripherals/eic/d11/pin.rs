@@ -1,4 +1,3 @@
-use crate::ehal_02::digital::v2::InputPin;
 use crate::gpio::{
     self, pin::*, AnyPin, FloatingInterrupt, PinMode, PullDownInterrupt, PullUpInterrupt,
 };
