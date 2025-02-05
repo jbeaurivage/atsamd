@@ -1,13 +1,10 @@
 #![no_std]
 #![no_main]
 
-// #[cfg(not(feature = "use_semihosting"))]
-// use panic_halt as _;
-// #[cfg(feature = "use_semihosting")]
-// use panic_semihosting as _;
-
-use defmt_rtt as _;
-use panic_probe as _;
+#[cfg(not(feature = "use_semihosting"))]
+use panic_halt as _;
+#[cfg(feature = "use_semihosting")]
+use panic_semihosting as _;
 
 use cortex_m_semihosting::hprintln;
 
@@ -39,16 +36,17 @@ fn main() -> ! {
 
     let adc_config = Config::new()
         .clock_cycles_per_sample(5)
-        .clock_divider(Prescaler::Div4)
+        .clock_divider(Prescaler::Div8)
         .sample_resolution(Resolution::_12bit)
         .accumulation_method(Accumulation::Single);
 
     let mut adc = Adc::new(peripherals.adc, adc_config, &mut peripherals.pm, &adc_clock).unwrap();
-    let mut a0: bsp::A0 = pins.a0.into();
+    let mut a0 = pins.a0.into_alternate();
 
     loop {
-        let data = adc.read_blocking(&mut a0);
-        defmt::info!("{}", data);
+        let mut buf = [0; 16];
+        let data = adc.read_buffer_blocking(&mut a0, &mut buf).unwrap();
+        hprintln!("{}", buf);
         delay.delay_ms(1000u16);
     }
 }
