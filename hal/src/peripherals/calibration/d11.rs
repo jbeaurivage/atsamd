@@ -34,6 +34,7 @@ fn cal_with_errata(
 }
 
 /// ADC Linearity Calibration. Should be written to ADC CALIB register.
+#[allow(clippy::unusual_byte_groupings)]
 pub fn adc_linearity_cal() -> u8 {
     cal(3, 3, 0b1111_111) as u8
 }

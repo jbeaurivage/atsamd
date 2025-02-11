@@ -5,8 +5,6 @@ use super::{
 };
 
 use crate::{calibration, pac};
-use pac::adc::avgctrl::Samplenumselect;
-use pac::adc::ctrlb::Resselselect;
 use pac::adc::inputctrl::Gainselect;
 use pac::Peripherals;
 pub mod pin;
@@ -36,11 +34,9 @@ impl AdcInstance for Adc0 {
 
     #[inline]
     fn calibrate(instance: &Self::Instance) {
-        instance.calib().write(|w| {
-            unsafe {
-                w.bias_cal().bits(calibration::adc_bias_cal());
-                w.linearity_cal().bits(calibration::adc_linearity_cal())
-            }
+        instance.calib().write(|w| unsafe {
+            w.bias_cal().bits(calibration::adc_bias_cal());
+            w.linearity_cal().bits(calibration::adc_linearity_cal())
         });
     }
 
