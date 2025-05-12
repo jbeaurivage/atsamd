@@ -2,7 +2,6 @@
 use atsamd_hal_macros::{hal_cfg, hal_macro_helper};
 use fugit::NanosDurationU32;
 
-use crate::ehal_02;
 use crate::pac;
 use crate::pac::rtc::{Mode0, Mode2};
 use crate::time::{Hertz, Nanoseconds};
@@ -287,10 +286,7 @@ impl Rtc<Count32Mode> {
     /// This resets the internal counter and sets the prescaler to match the
     /// provided timeout. You should configure the prescaler using the longest
     /// timeout you plan to measure.
-    pub fn reset_and_compute_prescaler<T: Into<<Self as ehal_02::timer::CountDown>::Time>>(
-        &mut self,
-        timeout: T,
-    ) -> &Self {
+    pub fn reset_and_compute_prescaler<T: Into<NanosDurationU32>>(&mut self, timeout: T) -> &Self {
         let params = TimerParams::new_us(timeout, self.rtc_clock_freq);
         let divider = params.divider;
 
@@ -353,24 +349,6 @@ impl Rtc<ClockMode> {
 }
 
 // --- Timer / Counter Functionality
-
-impl ehal_02::timer::Periodic for Rtc<Count32Mode> {}
-impl ehal_02::timer::CountDown for Rtc<Count32Mode> {
-    type Time = Nanoseconds;
-
-    fn start<T>(&mut self, timeout: T)
-    where
-        T: Into<Self::Time>,
-    {
-        <Self as InterruptDrivenTimer>::start(self, timeout);
-    }
-
-    fn wait(&mut self) -> nb::Result<(), void::Void> {
-        // Unwrapping an unreacheable error is totally OK
-        <Self as InterruptDrivenTimer>::wait(self).unwrap();
-        Ok(())
-    }
-}
 
 impl InterruptDrivenTimer for Rtc<Count32Mode> {
     /// Enable the interrupt generation for this hardware timer.

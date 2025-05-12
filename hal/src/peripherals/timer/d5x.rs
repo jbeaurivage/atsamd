@@ -4,7 +4,6 @@ use core::convert::Infallible;
 use atsamd_hal_macros::hal_cfg;
 use fugit::NanosDurationU32;
 
-use crate::ehal_02::timer::{CountDown, Periodic};
 use crate::pac::tc0::Count16 as Count16Reg;
 use crate::pac::{Mclk, Tc2, Tc3};
 #[hal_cfg(all("tc4", "tc5"))]
@@ -15,7 +14,7 @@ use crate::timer_params::TimerParams;
 use crate::timer_traits::InterruptDrivenTimer;
 
 use crate::clock;
-use crate::time::{Hertz, Nanoseconds};
+use crate::time::Hertz;
 
 #[cfg(feature = "async")]
 mod async_api;
@@ -48,29 +47,6 @@ pub struct TimerCounter<TC> {
 /// to try to implement this trait outside of this module.
 pub trait Count16 {
     fn count_16(&self) -> &Count16Reg;
-}
-
-impl<TC> Periodic for TimerCounter<TC> {}
-impl<TC> CountDown for TimerCounter<TC>
-where
-    TC: Count16,
-{
-    type Time = Nanoseconds;
-
-    fn start<T>(&mut self, timeout: T)
-    where
-        T: Into<Self::Time>,
-    {
-        <Self as InterruptDrivenTimer>::start(self, timeout);
-    }
-
-    fn wait(&mut self) -> nb::Result<(), void::Void> {
-        nb::block! {
-            <Self as InterruptDrivenTimer>::wait(self)
-        }
-        .unwrap(); // wait() is Infallible
-        Ok(())
-    }
 }
 
 impl<TC> InterruptDrivenTimer for TimerCounter<TC>

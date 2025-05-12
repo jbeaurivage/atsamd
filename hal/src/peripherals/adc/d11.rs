@@ -2,7 +2,6 @@
 use atsamd_hal_macros::hal_cfg;
 
 use crate::clock::GenericClockController;
-use crate::ehal_02::adc::{Channel, OneShot};
 use crate::gpio::*;
 use crate::pac::{self, adc, Pm};
 

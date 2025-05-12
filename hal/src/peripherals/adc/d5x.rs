@@ -4,7 +4,6 @@ use atsamd_hal_macros::hal_cfg;
 use crate::clock::GenericClockController;
 #[rustfmt::skip]
 use crate::gpio::*;
-use crate::ehal_02::adc::{Channel, OneShot};
 use crate::pac::gclk::genctrl::Srcselect::Dfll;
 use crate::pac::gclk::pchctrl::Genselect;
 use crate::pac::{adc0, Adc0, Adc1, Mclk};
