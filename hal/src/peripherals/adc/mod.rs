@@ -49,10 +49,7 @@ pub use builder::*;
 use crate::pac::adc as adc0;
 #[hal_cfg("adc-d5x")]
 use crate::{
-    clock::v2::{
-        apb::ApbClk,
-        pclk::{DynPclkSourceId, Pclk},
-    },
+    clock::v2::{apb::ApbClk, pclk::DynPclk},
     pac::adc0,
 };
 
@@ -181,7 +178,7 @@ pub struct Adc<I: AdcInstance> {
 pub struct Adc<I: AdcInstance> {
     adc: I::Instance,
     _apbclk: ApbClk<I::ClockId>,
-    _pclk: Pclk<I::ClockId, DynPclkSourceId>,
+    _pclk: DynPclk<I::ClockId>,
     cfg: AdcSettings,
     discard: bool,
 }
@@ -214,7 +211,7 @@ impl<I: AdcInstance> Adc<I> {
         adc: I::Instance,
         settings: AdcSettings,
         clk: ApbClk<I::ClockId>,
-        pclk: Pclk<I::ClockId, DynPclkSourceId>,
+        pclk: DynPclk<I::ClockId>,
     ) -> Result<Self, Error> {
         // TODO: Ideally, the ADC struct would take ownership of the Pclk type here.
         // However, since clock::v2 is not implemented for all chips yet, the
@@ -430,15 +427,8 @@ impl<I: AdcInstance> Adc<I> {
 
     /// Return the underlying ADC PAC object and the enabled APB ADC clock.
     #[hal_cfg("adc-d5x")]
-    #[allow(clippy::type_complexity)]
     #[inline]
-    pub fn free(
-        mut self,
-    ) -> (
-        I::Instance,
-        ApbClk<I::ClockId>,
-        Pclk<I::ClockId, DynPclkSourceId>,
-    ) {
+    pub fn free(mut self) -> (I::Instance, ApbClk<I::ClockId>, DynPclk<I::ClockId>) {
         self.software_reset();
         (self.adc, self._apbclk, self._pclk)
     }

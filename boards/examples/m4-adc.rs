@@ -44,7 +44,7 @@ fn main() -> ! {
     let apb_adc0 = buses.apb.enable(tokens.apbs.adc0);
     // ...and enable the ADC0 PCLK. Both of these are required for the
     // ADC to run.
-    let (pclk_adc0, _gclk0) = Pclk::enable_dyn(tokens.pclks.adc0, clocks.gclk0);
+    let (pclk_adc0, _gclk0) = Pclk::enable(tokens.pclks.adc0, clocks.gclk0);
 
     let mut adc = AdcBuilder::new(Accumulation::single(atsamd_hal::adc::AdcResolution::_12))
         .with_clock_cycles_per_sample(5)
