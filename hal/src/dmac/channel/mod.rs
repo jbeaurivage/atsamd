@@ -34,7 +34,6 @@
 #![allow(unused_braces)]
 
 use core::marker::PhantomData;
-use core::sync::atomic;
 
 use atsamd_hal_macros::{hal_cfg, hal_macro_helper};
 
@@ -271,10 +270,7 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
     /// Enable the transfer, and emit a compiler fence.
     #[inline]
     fn _enable_private(&mut self) {
-        // Prevent the compiler from re-ordering read/write
-        // operations beyond this fence.
-        // (see https://docs.rust-embedded.org/embedonomicon/dma.html#compiler-misoptimizations)
-        atomic::fence(atomic::Ordering::Release); // ▲
+        release_fence(); // ▲
         self.regs.chctrla.modify(|_, w| w.enable().set_bit());
     }
 
@@ -288,10 +284,7 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
             core::hint::spin_loop();
         }
 
-        // Prevent the compiler from re-ordering read/write
-        // operations beyond this fence.
-        // (see https://docs.rust-embedded.org/embedonomicon/dma.html#compiler-misoptimizations)
-        atomic::fence(atomic::Ordering::Acquire); // ▼
+        acquire_fence(); // ▼
     }
 
     /// Returns whether or not the transfer is complete.
@@ -881,4 +874,36 @@ pub(crate) unsafe fn write_descriptor<Src: Buffer, Dst: Buffer<Beat = Src::Beat>
         // Block transfer control: Datasheet  section 19.8.2.1 p.329
         btctrl,
     };
+}
+
+/// Prevent the compiler from re-ordering read/write
+/// operations beyond this function.
+/// (see https://docs.rust-embedded.org/embedonomicon/dma.html#compiler-misoptimizations)
+#[inline(always)]
+pub(super) fn acquire_fence() {
+    // TODO: Seems like compiler fences aren't enough to guarantee memory accesses
+    // won't be reordered. (see https://users.rust-lang.org/t/compiler-fence-dma/132027)
+    // core::sync::atomic::fence(core::sync::atomic::Ordering::Acquire); // ▼
+
+    // Apparently, the only truly foolproof way to prevent reordering is with inline
+    // asm
+    unsafe {
+        core::arch::asm!("dmb");
+    }
+}
+
+/// Prevent the compiler from re-ordering read/write
+/// operations beyond this function.
+/// (see https://docs.rust-embedded.org/embedonomicon/dma.html#compiler-misoptimizations)
+#[inline(always)]
+pub(super) fn release_fence() {
+    // TODO: Seems like compiler fences aren't enough to guarantee memory accesses
+    // won't be reordered. (see https://users.rust-lang.org/t/compiler-fence-dma/132027)
+    // core::sync::atomic::fence(atomic::Ordering::Release); // ▲
+
+    // Apparently, the only truly foolproof way to prevent reordering is with inline
+    // asm
+    unsafe {
+        core::arch::asm!("dmb");
+    }
 }
