@@ -247,7 +247,7 @@ impl AdcBuilder {
     /// Turn the builder into an ADC.
     ///
     /// This function will convert the provided
-    /// [`Pclk`](crate::clock::v2::pclk::Pclk) into a [`DynPclk`].
+    /// [`Pclk`](crate::clock::v2::pclk::Pclk) into a [`DynPclk`](crate::clock::v2::pclk::DynPclk).
     #[hal_cfg("adc-d5x")]
     #[inline]
     pub fn enable<I: AdcInstance>(
