@@ -33,7 +33,7 @@
 
 #![allow(unused_braces)]
 
-use core::marker::PhantomData;
+use core::{marker::PhantomData, ptr::NonNull};
 
 use atsamd_hal_macros::{hal_cfg, hal_macro_helper};
 
@@ -342,9 +342,9 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
             // SAFETY This is safe as we are only reading the descriptor's address,
             // and not actually writing any data to it. We also assume the descriptor
             // will never be moved.
-            descriptor as *mut _
+            NonNull::new(descriptor)
         } else {
-            core::ptr::null_mut()
+            None
         };
 
         unsafe {
@@ -842,7 +842,7 @@ pub(crate) unsafe fn write_descriptor<Src: Buffer, Dst: Buffer<Beat = Src::Beat>
     descriptor: &mut DmacDescriptor,
     source: &mut Src,
     destination: &mut Dst,
-    next: *mut DmacDescriptor,
+    next: Option<NonNull<DmacDescriptor>>,
 ) {
     let src_ptr = source.dma_ptr();
     let src_inc = source.incrementing();
@@ -864,7 +864,7 @@ pub(crate) unsafe fn write_descriptor<Src: Buffer, Dst: Buffer<Beat = Src::Beat>
         .with_beatsize(Src::Beat::BEATSIZE)
         .with_valid(true);
 
-    // Seems like we need a fence before the buffer pointer escaped the current
+    // Seems like we need a fence before the buffer pointer "escapes" the current
     // function. I don't claim to fully understand why, or what the gnarly LLVM
     // optimization details might be. But seems like the buffer pointers must be
     // written somewhere with a _volatile_ access, _after_ an (asm) compiler
@@ -875,7 +875,7 @@ pub(crate) unsafe fn write_descriptor<Src: Buffer, Dst: Buffer<Beat = Src::Beat>
         core::ptr::from_mut(descriptor).write_volatile(DmacDescriptor {
             // Next descriptor address:  0x0 terminates the transaction (no linked list),
             // any other address points to the next block descriptor
-            descaddr: next,
+            descaddr: next.map(|n| n.as_ptr()).unwrap_or(core::ptr::null_mut()),
             // Source address: address of the last beat transfer source in block
             srcaddr: src_ptr as *mut _,
             // Destination address: address of the last beat transfer destination in block
