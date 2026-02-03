@@ -4,7 +4,7 @@ use atsamd_hal_macros::hal_cfg;
 
 use crate::{
     async_hal::interrupts::{DMAC, Handler},
-    dmac::{TriggerSource, waker::WAKERS},
+    dmac::{TriggerSource, asm_fence, waker::WAKERS},
     util::BitIter,
 };
 
@@ -54,7 +54,7 @@ impl Handler<DMAC> for InterruptHandler {
                         core::hint::spin_loop();
                     }
 
-                    super::channel::release_fence(); // ▲
+                    asm_fence(); // ▲
                     WAKERS[pend_channel as usize].wake();
                 }
             }
@@ -107,8 +107,7 @@ impl Handler<DMAC> for InterruptHandler {
                     core::hint::spin_loop();
                 }
 
-                super::channel::acquire_fence(); // ▼
-
+                asm_fence(); // ▲
                 WAKERS[channel].wake();
             }
         }

@@ -43,7 +43,10 @@ use super::{
     sram::{self, DmacDescriptor},
     transfer::{BufferPair, Transfer},
 };
-use crate::typelevel::{Is, Sealed};
+use crate::{
+    dmac::asm_fence,
+    typelevel::{Is, Sealed},
+};
 use modular_bitfield::prelude::*;
 
 mod reg;
@@ -270,7 +273,7 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
     /// Enable the transfer, and emit a compiler fence.
     #[inline]
     fn _enable_private(&mut self) {
-        release_fence(); // ▲
+        asm_fence(); // ▲
         self.regs.chctrla.modify(|_, w| w.enable().set_bit());
     }
 
@@ -284,7 +287,7 @@ impl<Id: ChId, S: Status> Channel<Id, S> {
             core::hint::spin_loop();
         }
 
-        acquire_fence(); // ▼
+        asm_fence(); // ▼
     }
 
     /// Returns whether or not the transfer is complete.
@@ -861,49 +864,26 @@ pub(crate) unsafe fn write_descriptor<Src: Buffer, Dst: Buffer<Beat = Src::Beat>
         .with_beatsize(Src::Beat::BEATSIZE)
         .with_valid(true);
 
-    *descriptor = DmacDescriptor {
-        // Next descriptor address:  0x0 terminates the transaction (no linked list),
-        // any other address points to the next block descriptor
-        descaddr: next,
-        // Source address: address of the last beat transfer source in block
-        srcaddr: src_ptr as *mut _,
-        // Destination address: address of the last beat transfer destination in block
-        dstaddr: dst_ptr as *mut _,
-        // Block transfer count: number of beats in block transfer
-        btcnt: length as u16,
-        // Block transfer control: Datasheet  section 19.8.2.1 p.329
-        btctrl,
-    };
-}
+    // Seems like we need a fence before the buffer pointer escaped the current
+    // function. I don't claim to fully understand why, or what the gnarly LLVM
+    // optimization details might be. But seems like the buffer pointers must be
+    // written somewhere with a _volatile_ access, _after_ an (asm) compiler
+    // fence: https://users.rust-lang.org/t/compiler-fence-dma/132027/40
+    asm_fence();
 
-/// Prevent the compiler from re-ordering read/write
-/// operations beyond this function.
-/// (see https://docs.rust-embedded.org/embedonomicon/dma.html#compiler-misoptimizations)
-#[inline(always)]
-pub(super) fn acquire_fence() {
-    // TODO: Seems like compiler fences aren't enough to guarantee memory accesses
-    // won't be reordered. (see https://users.rust-lang.org/t/compiler-fence-dma/132027)
-    // core::sync::atomic::fence(core::sync::atomic::Ordering::Acquire); // ▼
-
-    // Apparently, the only truly foolproof way to prevent reordering is with inline
-    // asm
     unsafe {
-        core::arch::asm!("dmb");
-    }
-}
-
-/// Prevent the compiler from re-ordering read/write
-/// operations beyond this function.
-/// (see https://docs.rust-embedded.org/embedonomicon/dma.html#compiler-misoptimizations)
-#[inline(always)]
-pub(super) fn release_fence() {
-    // TODO: Seems like compiler fences aren't enough to guarantee memory accesses
-    // won't be reordered. (see https://users.rust-lang.org/t/compiler-fence-dma/132027)
-    // core::sync::atomic::fence(atomic::Ordering::Release); // ▲
-
-    // Apparently, the only truly foolproof way to prevent reordering is with inline
-    // asm
-    unsafe {
-        core::arch::asm!("dmb");
+        core::ptr::from_mut(descriptor).write_volatile(DmacDescriptor {
+            // Next descriptor address:  0x0 terminates the transaction (no linked list),
+            // any other address points to the next block descriptor
+            descaddr: next,
+            // Source address: address of the last beat transfer source in block
+            srcaddr: src_ptr as *mut _,
+            // Destination address: address of the last beat transfer destination in block
+            dstaddr: dst_ptr as *mut _,
+            // Block transfer count: number of beats in block transfer
+            btcnt: length as u16,
+            // Block transfer control: Datasheet  section 19.8.2.1 p.329
+            btctrl,
+        });
     }
 }

@@ -323,6 +323,6 @@ impl<Id: ChId> Drop for RegisterBlock<Id> {
             core::hint::spin_loop();
         }
 
-        crate::dmac::channel::acquire_fence(); // ▼
+        crate::dmac::channel::asm_fence(); // ▼
     }
 }
